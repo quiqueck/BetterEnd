@@ -37,25 +37,27 @@ public class ColoredMaterial {
     ) {
         String id = BuiltInRegistries.BLOCK.getKey(source).getPath();
         colors.forEach((color, name) -> {
-            String blockName = id + "_" + name;
-            Block block = constructor.apply(FabricBlockSettings.copyOf(source).mapColor(MapColor.COLOR_BLACK));
-            EndBlocks.registerBlock(blockName, block);
-            if (craftEight) {
-                BCLRecipeBuilder.crafting(BetterEnd.makeID(blockName), block)
-                                .setOutputCount(8)
-                                .setShape("###", "#D#", "###")
-                                .addMaterial('#', source)
-                                .addMaterial('D', dyes.get(color))
-                                .build();
-            } else {
-                BCLRecipeBuilder.crafting(BetterEnd.makeID(blockName), block)
-                                .setList("#D")
-                                .addMaterial('#', source)
-                                .addMaterial('D', dyes.get(color))
-                                .build();
+            if(dyes.containsKey(color) && dyes.get(color) != null){
+                String blockName = id + "_" + name;
+                Block block = constructor.apply(FabricBlockSettings.copyOf(source).mapColor(MapColor.COLOR_BLACK));
+                EndBlocks.registerBlock(blockName, block);
+                if (craftEight) {
+                    BCLRecipeBuilder.crafting(BetterEnd.makeID(blockName), block)
+                                    .setOutputCount(8)
+                                    .setShape("###", "#D#", "###")
+                                    .addMaterial('#', source)
+                                    .addMaterial('D', dyes.get(color))
+                                    .build();
+                } else {
+                    BCLRecipeBuilder.crafting(BetterEnd.makeID(blockName), block)
+                                    .setList("#D")
+                                    .addMaterial('#', source)
+                                    .addMaterial('D', dyes.get(color))
+                                    .build();
+                }
+                this.colors.put(color, block);
+                BlocksHelper.addBlockColor(block, color);
             }
-            this.colors.put(color, block);
-            BlocksHelper.addBlockColor(block, color);
         });
     }
 

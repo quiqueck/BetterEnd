@@ -1239,12 +1239,14 @@ public class EndBlocks {
             p -> new BaseOreBlock(p, () -> EndItems.ENDER_SHARD, 1, 3, 5)
     )
             .addTrait(BlockTraits.STONE_BLOCK)
+            .addTrait(ModelTraitLibrary.cube())
             .buildAndRegister();
     public static final Block AMBER_ORE = defineBlock(
             "amber_ore",
             p -> new BaseOreBlock(p, () -> EndItems.RAW_AMBER, 1, 2, 4)
     )
             .addTrait(BlockTraits.STONE_BLOCK)
+            .addTrait(ModelTraitLibrary.cube())
             .buildAndRegister();
 
     // Materials //

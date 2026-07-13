@@ -12,7 +12,7 @@ import org.betterx.wover.recipe.api.RecipeBuilder;
 import org.betterx.wover.sets.api.blocks.BlockSet;
 import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
 
-import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.SoundType;
 
@@ -81,10 +81,7 @@ public class Chain extends SlotFromDefinition {
         private static BlockModelTrait build() {
             return ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> {
-                        generator.vanillaGenerator.createAxisAlignedPillarBlockCustomModel(
-                                block,
-                                generator.vanillaGenerator.plainVariant(ModelLocationUtils.getModelLocation(block))
-                        );
+                        generator.createChainModel(block, TextureMapping.getBlockTexture(block));
                     });
         }
     }

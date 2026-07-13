@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourSeed;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
@@ -13,12 +12,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 
 public class BulbVineSeedBlock extends EndPlantWithAgeBlock implements BehaviourSeed, SurvivesOnEndStoneOrTrees {
-    public BulbVineSeedBlock() {
-        super(BehaviourBuilders.createSeed(MapColor.COLOR_PURPLE));
+    public BulbVineSeedBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override

@@ -1,17 +1,13 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -20,19 +16,11 @@ import com.google.common.collect.Maps;
 
 import java.util.EnumMap;
 
-public class FilaluxWingsBlock extends BaseAttachedBlock implements RenderLayerProvider, BehaviourPlant {
+public class FilaluxWingsBlock extends BaseAttachedBlock implements BehaviourPlant {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
 
-    public FilaluxWingsBlock() {
-        super(BehaviourBuilders
-                .createPlant(MapColor.COLOR_RED)
-                .sound(SoundType.WET_GRASS)
-        );
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
+    public FilaluxWingsBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override

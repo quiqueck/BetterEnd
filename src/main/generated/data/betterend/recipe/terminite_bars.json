@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_metal_bars",
   "key": {
-    "#": {
-      "item": "betterend:terminite_ingot"
-    }
+    "#": "betterend:terminite_ingot"
   },
   "pattern": [
     "###",

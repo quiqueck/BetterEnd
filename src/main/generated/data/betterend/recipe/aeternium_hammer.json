@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "betterend:leather_wrapped_stick"
-  },
-  "base": {
-    "item": "betterend:aeternium_hammer_head"
-  },
+  "addition": "betterend:leather_wrapped_stick",
+  "base": "betterend:aeternium_hammer_head",
   "result": {
-    "count": 1,
     "id": "betterend:aeternium_hammer"
   },
-  "template": {
-    "item": "betterend:leather_handle_attachment_smithing_template"
-  }
+  "template": "betterend:leather_handle_attachment_smithing_template"
 }

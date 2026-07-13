@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 public class CrystaliteHelmet extends CrystaliteArmor {
     public static ItemDefinition<CrystaliteHelmet, ?> definition(ItemRegistry registry, String name) {
         return CrystaliteArmor.crystaliteArmorDefinition(
-                registry, name, ArmorSlot.CHESTPLATE_SLOT,
+                registry, name, ArmorSlot.HELMET_SLOT,
                 CrystaliteHelmet::new
         ).addAttribute(
                 EndAttributes.BLINDNESS_RESISTANCE,

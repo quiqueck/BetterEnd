@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "redstone",
-  "group": "button",
+  "group": "wooden_button",
   "ingredients": [
-    {
-      "item": "betterend:jellyshroom_planks"
-    }
+    "betterend:jellyshroom_planks"
   ],
   "result": {
     "count": 1,

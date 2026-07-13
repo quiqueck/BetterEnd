@@ -1,6 +1,7 @@
 {
-  "parent": "bclib:block/ladder",
+  "parent": "minecraft:block/ladder",
   "textures": {
+    "particle": "betterend:block/end_lotus_ladder",
     "texture": "betterend:block/end_lotus_ladder"
   }
 }

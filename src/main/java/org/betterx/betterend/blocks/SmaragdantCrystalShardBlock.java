@@ -2,9 +2,6 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.bclib.interfaces.tools.AddMineablePickaxe;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -35,28 +33,18 @@ import java.util.EnumMap;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class SmaragdantCrystalShardBlock extends BaseAttachedBlock implements AddMineablePickaxe, RenderLayerProvider, SimpleWaterloggedBlock, LiquidBlockContainer {
+public class SmaragdantCrystalShardBlock extends BaseAttachedBlock implements SimpleWaterloggedBlock, LiquidBlockContainer {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public SmaragdantCrystalShardBlock() {
-        super(BehaviourBuilders.createStone(MapColor.COLOR_GREEN)
-                               .lightLevel((bs) -> 15)
-                               .sound(SoundType.AMETHYST_CLUSTER)
-                               .requiresCorrectToolForDrops()
-                               .noCollission()
-        );
+    public SmaragdantCrystalShardBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManager) {
         super.createBlockStateDefinition(stateManager);
         stateManager.add(WATERLOGGED);
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     @Override

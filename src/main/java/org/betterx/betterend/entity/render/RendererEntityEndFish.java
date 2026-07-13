@@ -3,6 +3,7 @@ package org.betterx.betterend.entity.render;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.entity.EndFishEntity;
 import org.betterx.betterend.entity.model.EndFishEntityModel;
+import org.betterx.betterend.entity.render.state.EndFishRenderState;
 import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,13 +16,13 @@ import net.minecraft.client.renderer.entity.layers.EyesLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityEndFish extends MobRenderer<EndFishEntity, EndFishEntityModel> {
+public class RendererEntityEndFish extends MobRenderer<EndFishEntity, EndFishRenderState, EndFishEntityModel> {
     private static final ResourceLocation[] TEXTURE = new ResourceLocation[EndFishEntity.VARIANTS];
     private static final RenderType[] GLOW = new RenderType[EndFishEntity.VARIANTS];
 
     public RendererEntityEndFish(EntityRendererProvider.Context ctx) {
         super(ctx, new EndFishEntityModel(ctx.bakeLayer(EndEntitiesRenders.END_FISH_MODEL)), 0.5f);
-        this.addLayer(new EyesLayer<EndFishEntity, EndFishEntityModel>(this) {
+        this.addLayer(new EyesLayer<EndFishRenderState, EndFishEntityModel>(this) {
             @Override
             public RenderType renderType() {
                 return GLOW[0];
@@ -32,15 +33,11 @@ public class RendererEntityEndFish extends MobRenderer<EndFishEntity, EndFishEnt
                     PoseStack matrices,
                     MultiBufferSource vertexConsumers,
                     int light,
-                    EndFishEntity entity,
-                    float limbAngle,
-                    float limbDistance,
-                    float tickDelta,
-                    float animationProgress,
-                    float headYaw,
-                    float headPitch
+                    EndFishRenderState state,
+                    float yRot,
+                    float xRot
             ) {
-                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(GLOW[entity.getVariant()]);
+                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(GLOW[state.variant]);
                 this.getParentModel()
                     .renderToBuffer(
                             matrices,
@@ -54,14 +51,19 @@ public class RendererEntityEndFish extends MobRenderer<EndFishEntity, EndFishEnt
     }
 
     @Override
-    protected void scale(EndFishEntity entity, PoseStack matrixStack, float f) {
-        float scale = entity.getScale();
-        matrixStack.scale(scale, scale, scale);
+    public EndFishRenderState createRenderState() {
+        return new EndFishRenderState();
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EndFishEntity entity) {
-        return TEXTURE[entity.getVariant()];
+    public void extractRenderState(EndFishEntity entity, EndFishRenderState state, float partialTick) {
+        super.extractRenderState(entity, state, partialTick);
+        state.variant = entity.getVariant();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(EndFishRenderState state) {
+        return TEXTURE[state.variant];
     }
 
     static {

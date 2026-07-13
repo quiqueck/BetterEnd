@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/button_inventory",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "betterend:block/virid_jadestone"
+    "layer0": "betterend:item/virid_jadestone_button"
   }
 }

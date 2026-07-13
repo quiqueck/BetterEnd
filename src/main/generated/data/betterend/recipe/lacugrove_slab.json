@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "slab",
+  "group": "wooden_slab",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_planks"
-    }
+    "#": "betterend:lacugrove_planks"
   },
   "pattern": [
     "###"

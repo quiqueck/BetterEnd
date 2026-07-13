@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "betterend:amber_gem"
-    },
-    "P": {
-      "item": "minecraft:ender_pearl"
-    },
-    "S": {
-      "item": "betterend:crystal_shards"
-    }
+    "A": "betterend:amber_gem",
+    "P": "minecraft:ender_pearl",
+    "S": "betterend:crystal_shards"
   },
   "pattern": [
     "SAS",

@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseDoublePlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
@@ -13,15 +12,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public class UmbrellaMossBlock extends EndPlantBlock implements BehaviourPlant, SurvivesOnJungleMossOrMycelium {
-    public UmbrellaMossBlock() {
-        super(BehaviourBuilders.createGrass(MapColor.COLOR_ORANGE).ignitedByLava().lightLevel((state) -> 11));
+    public UmbrellaMossBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Environment(EnvType.CLIENT)

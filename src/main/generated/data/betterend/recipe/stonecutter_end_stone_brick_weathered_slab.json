@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
   "group": "slab",
-  "ingredient": {
-    "item": "betterend:end_stone_brick_weathered"
-  },
+  "ingredient": "betterend:end_stone_brick_weathered",
   "result": {
     "count": 2,
     "id": "betterend:end_stone_brick_weathered_slab"

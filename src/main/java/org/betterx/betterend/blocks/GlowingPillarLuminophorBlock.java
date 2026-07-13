@@ -1,36 +1,26 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.blocks.BaseBlock;
-import org.betterx.bclib.interfaces.tools.AddMineableShears;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.model.BlockModelProvider;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.MapColor;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-public class GlowingPillarLuminophorBlock extends BaseBlock implements AddMineableShears, BlockModelProvider {
+public class GlowingPillarLuminophorBlock extends BaseBlock {
     public static final BooleanProperty NATURAL = EndBlockProperties.NATURAL;
 
-    public GlowingPillarLuminophorBlock() {
-        super(BehaviourBuilders
-                .createMetal(MapColor.COLOR_ORANGE)
-                .strength(0.2F)
-                .lightLevel((bs) -> 15)
-                .sound(SoundType.GRASS));
+    public GlowingPillarLuminophorBlock(BlockBehaviour.Properties props) {
+        super(props);
         this.registerDefaultState(this.stateDefinition.any().setValue(NATURAL, false));
     }
 
@@ -44,11 +34,13 @@ public class GlowingPillarLuminophorBlock extends BaseBlock implements AddMineab
     @SuppressWarnings("deprecation")
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
     ) {
         if (!canSurvive(state, world, pos)) {
             return Blocks.AIR.defaultBlockState();
@@ -60,11 +52,5 @@ public class GlowingPillarLuminophorBlock extends BaseBlock implements AddMineab
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManager) {
         stateManager.add(NATURAL);
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
-        GlowingHymenophoreBlock.provideUnshadedCubeModel(generator, this);
     }
 }

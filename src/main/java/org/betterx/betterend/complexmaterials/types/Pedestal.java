@@ -46,6 +46,7 @@ public class Pedestal extends SlotFromDefinition {
     protected void addSlotSpecificDefinitions(BlockSet<?> set, BlockDefinition<?, ?> def) {
         super.addSlotSpecificDefinitions(set, def);
         def.addTags(EndTags.PEDESTALS);
+        def.addTrait(BlockTraits.LOOT_TABLE.dropSelf());
     }
 
     @Override

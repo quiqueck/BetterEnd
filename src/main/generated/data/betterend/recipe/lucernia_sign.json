@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "sign",
   "key": {
-    "#": {
-      "item": "betterend:lucernia_planks"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:lucernia_planks",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "###",

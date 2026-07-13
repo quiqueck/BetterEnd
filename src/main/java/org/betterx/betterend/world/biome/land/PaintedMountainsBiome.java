@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.biome.land;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndSounds;
@@ -49,8 +51,8 @@ public class PaintedMountainsBiome extends EndBiome.Config {
                         VerticalBandNoiseCondition.DEFAULT,
                         List.of(
                                 SurfaceRules.state(Blocks.END_STONE.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.FLAVOLITE.stone.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.VIOLECITE.stone.defaultBlockState())
+                                SurfaceRules.state(EndBlocks.FLAVOLITE.getBlock(SlotType.SOURCE).defaultBlockState()),
+                                SurfaceRules.state(EndBlocks.VIOLECITE.getBlock(SlotType.SOURCE).defaultBlockState())
                         )
                 );
                 return SurfaceRuleBuilder.start().rule(surfaceBlockRule, 9);

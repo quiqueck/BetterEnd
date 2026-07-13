@@ -4,43 +4,92 @@ import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.client.models.EndModels;
+import org.betterx.betterend.complexmaterials.types.FlowerPot;
+import org.betterx.betterend.complexmaterials.types.Pedestal;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockRegistry;
+import org.betterx.wover.block.api.client.trait.BlockModelTrait;
+import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import org.betterx.wover.core.api.IntegrationCore;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverModelProvider;
+import org.betterx.wover.item.api.ItemRegistry;
+import org.betterx.wover.item.api.client.trait.ClientItemTraits;
+import org.betterx.wover.item.api.client.trait.ItemModelTrait;
+import org.betterx.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.data.models.blockstates.Variant;
-import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.WeightedList;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-import java.util.ArrayList;
+import com.mojang.math.Quadrant;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 public class EndModelProvider extends WoverModelProvider {
     @Override
     protected void bootstrapItemModels(ItemModelGenerators itemModelGenerator) {
+        ItemModelTrait.bootstrapModels(modCore, itemModelGenerator);
 
+        // Block items normally get their item model as a side effect of their block's model
+        // generation (trait, override, or legacy BlockModelProvider) - but some BlockModelProvider
+        // overrides (e.g. BaseTerrainBlock) only ever generate a block state model and never
+        // delegate an item model, which would otherwise fail Fabric's item model validation.
+        // Every other item that wasn't given an explicit ItemModelTrait above needs a model too -
+        // fall back to a plain flat icon for those, matching vanilla's own convention for simple
+        // items. Attempting a flat icon for every item and swallowing the "already has a model"
+        // failure is simpler and more robust than trying to track exactly which blocks already
+        // delegate one themselves.
+        ItemRegistry.forMod(BetterEnd.C).allEntries().forEach(entry -> {
+            var item = entry.getValue();
+            if (!(item instanceof BlockItem) && ClientItemTraits.MODEL.getRuntimeTraits(item) != null) return;
+            try {
+                itemModelGenerator.generateFlatItem(item, ModelTemplates.FLAT_ITEM);
+            } catch (IllegalStateException alreadyHasModel) {
+                // item already got a model delegated by its block - nothing to do.
+            }
+        });
     }
 
     @Override
     protected void bootstrapBlockStateModels(WoverBlockModelGenerators generator) {
-        this.addFromRegistry(
-                generator,
-                BlockRegistry.forMod(BetterEnd.C),
-                true,
-                ModelOverides.create()
+        final BlockRegistry registry = BlockRegistry.forMod(BetterEnd.C);
+        final ModelOverides overrides = buildModelOverrides(generator);
+
+        // Blocks with an explicit entry in ModelOverides above are meant to use that custom model
+        // instead of whatever their ClientBlockTraits.MODEL trait would generate (e.g. a "lit"
+        // variant with custom emissive textures) - skip them here so the trait-based model isn't
+        // ALSO generated, which would collide with the override's model.
+        BlockModelTrait.bootstrapModels(modCore, generator, (key, block) -> !overrides.contain(block));
+
+        // Blocks with an explicit ClientBlockTraits.MODEL trait are already fully handled by
+        // BlockModelTrait.bootstrapModels() above - skip the legacy BlockModelProvider-interface
+        // fallback in addFromRegistry() for them, since BaseBlock implements that interface
+        // unconditionally (defaulting to a plain cube model) and running both would register the
+        // same model twice.
+        registry.allBlocks().forEach(block -> {
+            if (!overrides.contain(block) && ClientBlockTraits.MODEL.getRuntimeTraits(block) != null) {
+                overrides.ignore(block);
+            }
+        });
+
+        this.addFromRegistry(generator, registry, true, overrides);
+    }
+
+    private ModelOverides buildModelOverrides(WoverBlockModelGenerators generator) {
+        return ModelOverides.create()
                              .override(EndBlocks.TWISTED_VINE, createTwistedVineModel(generator))
                              .override(EndBlocks.AMBER_MOSS, createAmberMossModel(generator))
                              .override(
@@ -48,7 +97,7 @@ public class EndModelProvider extends WoverModelProvider {
                                      createAmberMossPathModel(generator, EndBlocks.AMBER_MOSS)
                              )
                              .override(
-                                     EndBlocks.QUARTZ_PEDESTAL, block -> PedestalBlock.provideBlockModel(
+                                     EndBlocks.QUARTZ_SET.getBlock(Pedestal.SLOT), block -> PedestalBlock.provideBlockModel(
                                              generator, new TextureMapping()
                                                      .put(
                                                              TextureSlot.TOP,
@@ -69,7 +118,7 @@ public class EndModelProvider extends WoverModelProvider {
                                      )
                              )
                              .override(
-                                     EndBlocks.PURPUR_PEDESTAL, block -> PedestalBlock.provideBlockModel(
+                                     EndBlocks.PURPUR_SET.getBlock(Pedestal.SLOT), block -> PedestalBlock.provideBlockModel(
                                              generator, new TextureMapping()
                                                      .put(
                                                              TextureSlot.TOP,
@@ -226,14 +275,14 @@ public class EndModelProvider extends WoverModelProvider {
                              .ignore(EndBlocks.PURPLE_POLYPORE)
                              .ignore(EndBlocks.AURANT_POLYPORE)
                              .ignore(EndBlocks.NEEDLEGRASS)
-                             .ignore(EndBlocks.VIOLECITE.flowerPot)
-                             .ignore(EndBlocks.UMBRALITH.flowerPot)
-                             .ignore(EndBlocks.SULPHURIC_ROCK.flowerPot)
-                             .ignore(EndBlocks.VIRID_JADESTONE.flowerPot)
-                             .ignore(EndBlocks.AZURE_JADESTONE.flowerPot)
-                             .ignore(EndBlocks.SANDY_JADESTONE.flowerPot)
-                             .ignore(EndBlocks.FLAVOLITE.flowerPot)
-                             .ignore(EndBlocks.ENDSTONE_FLOWER_POT)
+                             .ignore(EndBlocks.VIOLECITE.getBlock(FlowerPot.SLOT))
+                             .ignore(EndBlocks.UMBRALITH.getBlock(FlowerPot.SLOT))
+                             .ignore(EndBlocks.SULPHURIC_ROCK.getBlock(FlowerPot.SLOT))
+                             .ignore(EndBlocks.VIRID_JADESTONE.getBlock(FlowerPot.SLOT))
+                             .ignore(EndBlocks.AZURE_JADESTONE.getBlock(FlowerPot.SLOT))
+                             .ignore(EndBlocks.SANDY_JADESTONE.getBlock(FlowerPot.SLOT))
+                             .ignore(EndBlocks.FLAVOLITE.getBlock(FlowerPot.SLOT))
+                             .ignore(EndBlocks.END_STONE_SET.getBlock(FlowerPot.SLOT))
                              .ignore(EndBlocks.SMARAGDANT_CRYSTAL_SHARD)
                              .override(EndBlocks.END_LOTUS_STEM, generator::delegateItemModel)
 //                             .ignore(EndBlocks.THALLASIUM.chandelier)
@@ -285,10 +334,10 @@ public class EndModelProvider extends WoverModelProvider {
                              .ignore(EndBlocks.POND_ANEMONE)
                              .override(EndBlocks.SHADOW_PLANT, generator::createFlatItem)
                              .override(EndBlocks.TAIL_MOSS, generator::createFlatItem)
-                             .override(EndBlocks.SULPHURIC_ROCK.stone, generator::delegateItemModel)
+                             .override(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE), generator::delegateItemModel)
                              .override(EndBlocks.TENANEA_OUTER_LEAVES, generator::delegateItemModel)
                              .override(
-                                     EndBlocks.UMBRALITH.stone,
+                                     EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE),
                                      b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/umbralith_5"))
                              )
                              .override(EndBlocks.TWISTED_MOSS, generator::createFlatItem)
@@ -298,7 +347,7 @@ public class EndModelProvider extends WoverModelProvider {
                              .override(EndBlocks.MENGER_SPONGE, generator::delegateItemModel)
                              .override(EndBlocks.MENGER_SPONGE_WET, generator::delegateItemModel)
                              .override(
-                                     EndBlocks.VIOLECITE.brickWall,
+                                     EndBlocks.VIOLECITE.getBlock(SlotType.BRICK_WALL),
                                      b -> generator.delegateItemModel(
                                              b,
                                              BetterEnd.C.mk("block/violecite_bricks_wall_post")
@@ -311,8 +360,7 @@ public class EndModelProvider extends WoverModelProvider {
                                      b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/neon_cactus_small"))
                              )
                              .ignore(EndBlocks.AMARANITA_STEM)
-                             .ignore(EndBlocks.MOSSY_DRAGON_BONE)
-        );
+                             .ignore(EndBlocks.MOSSY_DRAGON_BONE);
     }
 
     private static ModelOverides.@NotNull BlockModelProvider createAmberMossPathModel(
@@ -357,21 +405,15 @@ public class EndModelProvider extends WoverModelProvider {
     }
 
     private static void buildRotated(WoverBlockModelGenerators generator, Block block, List<ResourceLocation> models) {
-        final ArrayList<Variant> variants = new ArrayList<>(models.size() * 4);
+        final WeightedList.Builder<Variant> variants = WeightedList.builder();
         models.forEach(model -> {
-            variants.add(Variant.variant().with(VariantProperties.MODEL, model));
-            variants.add(Variant.variant()
-                                .with(VariantProperties.MODEL, model)
-                                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90));
-            variants.add(Variant.variant()
-                                .with(VariantProperties.MODEL, model)
-                                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180));
-            variants.add(Variant.variant()
-                                .with(VariantProperties.MODEL, model)
-                                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+            variants.add(new Variant(model));
+            variants.add(new Variant(model).withYRot(Quadrant.R90));
+            variants.add(new Variant(model).withYRot(Quadrant.R180));
+            variants.add(new Variant(model).withYRot(Quadrant.R270));
         });
 
-        generator.acceptBlockState(MultiVariantGenerator.multiVariant(block, variants.toArray(new Variant[0])));
+        generator.acceptBlockState(MultiVariantGenerator.dispatch(block, new MultiVariant(variants.build())));
         generator.delegateItemModel(block, models.get(0));
     }
 
@@ -413,26 +455,25 @@ public class EndModelProvider extends WoverModelProvider {
             var top = EndModels.TWISTED_VINE.createWithSuffix(block, "_top", topMapping, generator.modelOutput());
 
             generator.acceptBlockState(MultiVariantGenerator
-                    .multiVariant(block)
-                    .with(PropertyDispatch.property(BaseVineBlock.SHAPE)
+                    .dispatch(block)
+                    .with(PropertyDispatch.initial(BaseVineBlock.SHAPE)
                                           .select(
                                                   BlockProperties.TripleShape.TOP,
-                                                  Variant.variant().with(VariantProperties.MODEL, top)
+                                                  new MultiVariant(WeightedList.of(new Variant(top)))
                                           )
                                           .select(
                                                   BlockProperties.TripleShape.MIDDLE,
-                                                  List.of(
-                                                          Variant.variant().with(VariantProperties.MODEL, middle_1),
-                                                          Variant.variant().with(VariantProperties.MODEL, middle_2)
-                                                  )
-
+                                                  new MultiVariant(WeightedList.<Variant>builder()
+                                                          .add(new Variant(middle_1))
+                                                          .add(new Variant(middle_2))
+                                                          .build())
                                           )
                                           .select(
                                                   BlockProperties.TripleShape.BOTTOM,
-                                                  List.of(
-                                                          Variant.variant().with(VariantProperties.MODEL, bottom_1),
-                                                          Variant.variant().with(VariantProperties.MODEL, bottom_2)
-                                                  )
+                                                  new MultiVariant(WeightedList.<Variant>builder()
+                                                          .add(new Variant(bottom_1))
+                                                          .add(new Variant(bottom_2))
+                                                          .build())
                                           )
                     )
             );

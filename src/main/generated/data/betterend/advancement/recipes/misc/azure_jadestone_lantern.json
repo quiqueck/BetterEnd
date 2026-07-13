@@ -1,14 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_azure_jadestone_slab_azure_jadestone_b": {
+    "has_azure_jadestone_slab": {
       "conditions": {
         "items": [
           {
             "items": "betterend:azure_jadestone_slab"
-          },
-          {
-            "items": "betterend:azure_jadestone_bricks_slab"
           }
         ]
       },
@@ -34,7 +31,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_azure_jadestone_slab_azure_jadestone_b",
+      "has_azure_jadestone_slab",
       "has_crystal_shards"
     ]
   ],

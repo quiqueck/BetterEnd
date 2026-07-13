@@ -1,5 +1,6 @@
 package org.betterx.betterend.complexmaterials.types;
 
+import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.blocks.BaseOreBlock;
 import org.betterx.betterend.complexmaterials.MetalMaterial;
 import org.betterx.wover.block.api.BlockDefinition;
@@ -11,6 +12,8 @@ import org.betterx.wover.sets.api.blocks.BlockSet;
 import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
 
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.MapColor;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +32,17 @@ public class Ore extends SlotFromDefinition {
             @NotNull BlockSet<?> set,
             @NotNull String name
     ) {
-        return registry.defineDefaultBlock(name, (def) -> new BaseOreBlock(() -> metalMaterial.rawOre, 1, 3, 1));
+        return registry.defineDefaultBlock(
+                name,
+                (def) -> new BaseOreBlock(
+                        BehaviourBuilders.createStone(def.getProperties(), MapColor.SAND)
+                                .requiresCorrectToolForDrops()
+                                .destroyTime(3F)
+                                .explosionResistance(9F)
+                                .sound(SoundType.STONE),
+                        () -> metalMaterial.rawOre, 1, 3, 1
+                )
+        );
     }
 
     @Override

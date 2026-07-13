@@ -1,3 +1,6 @@
 {
-  "parent": "betterend:block/hydrothermal_vent"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/hydrothermal_vent"
+  }
 }

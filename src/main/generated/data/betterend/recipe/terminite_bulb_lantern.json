@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:glowing_bulb"
-    },
-    "C": {
-      "item": "betterend:terminite_chain"
-    },
-    "I": {
-      "item": "betterend:terminite_ingot"
-    }
+    "#": "betterend:glowing_bulb",
+    "C": "betterend:terminite_chain",
+    "I": "betterend:terminite_ingot"
   },
   "pattern": [
     "C",

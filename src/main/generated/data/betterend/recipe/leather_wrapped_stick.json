@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:stick"
-    },
-    {
-      "item": "betterend:leather_stripe"
-    }
+    "minecraft:stick",
+    "betterend:leather_stripe"
   ],
   "result": {
     "count": 1,

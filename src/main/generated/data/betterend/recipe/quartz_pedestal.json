@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:quartz_pillar"
-    },
-    "S": {
-      "item": "minecraft:quartz_slab"
-    }
+    "#": "minecraft:quartz_pillar",
+    "S": "minecraft:quartz_slab"
   },
   "pattern": [
     "S",

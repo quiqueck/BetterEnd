@@ -73,7 +73,6 @@ public class DragonflyEntity extends DespawnableAnimal implements FlyingAnimal {
         };
         birdNavigation.setCanOpenDoors(false);
         birdNavigation.setCanFloat(false);
-        birdNavigation.setCanPassDoors(true);
         return birdNavigation;
     }
 
@@ -101,7 +100,7 @@ public class DragonflyEntity extends DespawnableAnimal implements FlyingAnimal {
     }
 
     @Override
-    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+    public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
         return false;
     }
 
@@ -219,6 +218,6 @@ public class DragonflyEntity extends DespawnableAnimal implements FlyingAnimal {
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {
-        return EndEntities.DRAGONFLY.type().create(world);
+        return EndEntities.DRAGONFLY.type().create(world, EntitySpawnReason.BREEDING);
     }
 }

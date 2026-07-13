@@ -13,15 +13,6 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 
 public class HydraluxPetalBlock extends BaseBlock.Wood {
-    public HydraluxPetalBlock() {
-        this(
-                BehaviourBuilders
-                        .createWalkablePlant(MapColor.PODZOL)
-                        .strength(1)
-                        .sound(SoundType.WART_BLOCK)
-        );
-    }
-
     public HydraluxPetalBlock(Properties settings) {
         super(settings);
     }
@@ -32,7 +23,7 @@ public class HydraluxPetalBlock extends BaseBlock.Wood {
             @NotNull BlockState blockState,
             @NotNull BlockPos blockPos,
             @NotNull Entity entity,
-            float f
+            double f
     ) {
     }
 }

@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:thallasium_sword"
-  },
+  "ingredient": "betterend:thallasium_sword",
   "result": {
     "id": "betterend:thallasium_nugget"
   }

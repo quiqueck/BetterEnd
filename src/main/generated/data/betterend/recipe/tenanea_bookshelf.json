@@ -3,12 +3,8 @@
   "category": "building",
   "group": "bookshelf",
   "key": {
-    "#": {
-      "item": "betterend:tenanea_planks"
-    },
-    "P": {
-      "item": "minecraft:book"
-    }
+    "#": "betterend:tenanea_planks",
+    "P": "minecraft:book"
   },
   "pattern": [
     "###",

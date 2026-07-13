@@ -1,14 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "sign",
+  "group": "hanging_sign",
   "key": {
-    "#": {
-      "item": "betterend:pythadendron_stripped_log"
-    },
-    "I": {
-      "item": "minecraft:chain"
-    }
+    "#": "betterend:pythadendron_stripped_log",
+    "I": "minecraft:chain"
   },
   "pattern": [
     "I I",

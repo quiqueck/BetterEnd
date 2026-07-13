@@ -3,13 +3,11 @@
   "category": "misc",
   "group": "wall",
   "key": {
-    "#": {
-      "item": "minecraft:end_stone_bricks"
-    }
+    "*": "betterend:end_stone_brick_weathered"
   },
   "pattern": [
-    "###",
-    "###"
+    "***",
+    "***"
   ],
   "result": {
     "count": 6,

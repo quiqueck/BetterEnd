@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "sign",
   "key": {
-    "#": {
-      "item": "betterend:helix_tree_planks"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:helix_tree_planks",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "###",

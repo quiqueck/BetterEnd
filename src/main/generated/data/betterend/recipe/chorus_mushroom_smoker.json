@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 100,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:chorus_mushroom_raw"
-  },
+  "ingredient": "betterend:chorus_mushroom_raw",
   "result": {
     "id": "betterend:chorus_mushroom_cooked"
   }

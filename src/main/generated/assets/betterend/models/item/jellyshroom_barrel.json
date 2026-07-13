@@ -1,3 +1,6 @@
 {
-  "parent": "betterend:block/jellyshroom_barrel"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/jellyshroom_barrel"
+  }
 }

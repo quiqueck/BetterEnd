@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 100,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:shadow_berry_raw"
-  },
+  "ingredient": "betterend:shadow_berry_raw",
   "result": {
     "id": "betterend:shadow_berry_cooked"
   }

@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_endstone_dust": {
+    "has_item.betterend.endstone_dust": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_endstone_dust"
+      "has_item.betterend.endstone_dust"
     ]
   ],
   "rewards": {

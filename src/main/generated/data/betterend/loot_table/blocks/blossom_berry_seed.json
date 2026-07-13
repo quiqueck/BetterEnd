@@ -1,84 +1,16 @@
 {
   "type": "minecraft:block",
-  "functions": [
-    {
-      "function": "minecraft:explosion_decay"
-    }
-  ],
   "pools": [
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:alternatives",
-          "children": [
-            {
-              "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "betterend:blossom_berry_seed",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "age": "3"
-                  }
-                }
-              ],
-              "functions": [
-                {
-                  "add": false,
-                  "count": {
-                    "type": "minecraft:uniform",
-                    "max": 2.0,
-                    "min": 1.0
-                  },
-                  "function": "minecraft:set_count"
-                }
-              ],
-              "name": "betterend:blossom_berry"
-            },
-            {
-              "type": "minecraft:item",
-              "name": "betterend:blossom_berry_seed"
-            }
-          ]
-        }
-      ],
-      "rolls": 1.0
-    },
     {
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "betterend:blossom_berry_seed",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "3"
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            },
-            {
-              "enchantment": "minecraft:fortune",
-              "formula": "minecraft:binomial_with_bonus_count",
-              "function": "minecraft:apply_bonus",
-              "parameters": {
-                "extra": 3,
-                "probability": 0.571
-              }
-            }
-          ],
           "name": "betterend:blossom_berry_seed"
         }
       ],

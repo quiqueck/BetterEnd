@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "betterend:block/pythadendron_log",
+      "model": "betterend:block/pythadendron_log_horizontal",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "betterend:block/pythadendron_log"
     },
     "axis=z": {
-      "model": "betterend:block/pythadendron_log",
+      "model": "betterend:block/pythadendron_log_horizontal",
       "x": 90
     }
   }

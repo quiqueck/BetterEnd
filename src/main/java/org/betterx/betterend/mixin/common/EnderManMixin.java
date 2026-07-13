@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnderMan.class)
 public abstract class EnderManMixin {
-    @Inject(method = "isLookingAtMe", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "isBeingStaredBy", at = @At("HEAD"), cancellable = true)
     private void be_isLookingAtMe(Player player, CallbackInfoReturnable<Boolean> info) {
         final ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
 

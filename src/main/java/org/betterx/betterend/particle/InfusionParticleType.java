@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import net.fabricmc.api.EnvType;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class InfusionParticleType extends ParticleType<InfusionParticleType> implements ParticleOptions {
     public static final MapCodec<InfusionParticleType> CODEC = Codec
-            .withAlternative(ItemStack.SINGLE_ITEM_CODEC, ItemStack.ITEM_NON_AIR_CODEC, ItemStack::new)
+            .withAlternative(ItemStack.SINGLE_ITEM_CODEC, Item.CODEC, ItemStack::new)
             .xmap((itemStack) -> new InfusionParticleType(EndParticles.INFUSION, itemStack), (itemParticleOption) -> itemParticleOption.itemStack)
             .fieldOf("item");
 

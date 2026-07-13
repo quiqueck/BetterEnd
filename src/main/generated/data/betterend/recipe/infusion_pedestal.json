@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:obsidian"
-    },
-    "O": {
-      "item": "minecraft:ender_pearl"
-    },
-    "Y": {
-      "item": "minecraft:ender_eye"
-    }
+    "#": "minecraft:obsidian",
+    "O": "minecraft:ender_pearl",
+    "Y": "minecraft:ender_eye"
   },
   "pattern": [
     " Y ",

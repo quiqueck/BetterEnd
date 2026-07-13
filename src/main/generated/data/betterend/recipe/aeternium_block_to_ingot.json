@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:aeternium_block"
-    }
+    "betterend:aeternium_block"
   ],
   "result": {
     "count": 9,

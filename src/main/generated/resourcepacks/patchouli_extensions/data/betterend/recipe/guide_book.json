@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "minecraft:book"
-    },
-    "C": {
-      "item": "betterend:crystal_shards"
-    },
-    "D": {
-      "item": "betterend:ender_dust"
-    }
+    "B": "minecraft:book",
+    "C": "betterend:crystal_shards",
+    "D": "betterend:ender_dust"
   },
   "pattern": [
     "D",

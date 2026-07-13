@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "gate",
   "key": {
-    "#": {
-      "item": "betterend:end_lotus_planks"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:end_lotus_planks",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "I#I",

@@ -3,16 +3,16 @@ package org.betterx.betterend.blocks;
 import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.model.BlockModelProvider;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -20,14 +20,11 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class BlueVineLanternBlock extends BaseBlock.Wood implements BlockModelProvider {
+public class BlueVineLanternBlock extends BaseBlock.Wood {
     public static final BooleanProperty NATURAL = BlockProperties.NATURAL;
 
-    public BlueVineLanternBlock() {
-        super(Properties.of()
-                        .lightLevel((bs) -> 15)
-                        .sound(SoundType.WART_BLOCK)
-        );
+    public BlueVineLanternBlock(BlockBehaviour.Properties props) {
+        super(props);
         this.registerDefaultState(this.stateDefinition.any().setValue(NATURAL, false));
     }
 
@@ -38,16 +35,17 @@ public class BlueVineLanternBlock extends BaseBlock.Wood implements BlockModelPr
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(
+    protected BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader levelReader,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction direction,
+            BlockPos blockPos2,
+            BlockState blockState2,
+            RandomSource randomSource
     ) {
-        if (!canSurvive(state, world, pos)) {
+        if (!canSurvive(state, levelReader, pos)) {
             return Blocks.AIR.defaultBlockState();
         } else {
             return state;
@@ -59,9 +57,8 @@ public class BlueVineLanternBlock extends BaseBlock.Wood implements BlockModelPr
         stateManager.add(NATURAL);
     }
 
-    @Override
     @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
-        GlowingHymenophoreBlock.provideUnshadedCubeModel(generator, this);
+    public static void provideBlockModel(WoverBlockModelGenerators generator, Block block) {
+        GlowingHymenophoreBlock.provideUnshadedCubeModel(generator, block);
     }
 }

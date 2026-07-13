@@ -2,12 +2,8 @@
   "type": "bclib:alloying",
   "experience": 2.1,
   "ingredients": [
-    {
-      "tag": "betterend:alloying_iron"
-    },
-    {
-      "tag": "betterend:alloying_iron"
-    }
+    "#betterend:alloying_iron",
+    "#betterend:alloying_iron"
   ],
   "result": {
     "count": 3,

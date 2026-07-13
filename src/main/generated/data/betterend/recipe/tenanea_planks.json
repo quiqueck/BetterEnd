@@ -3,20 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    [
-      {
-        "item": "betterend:tenanea_log"
-      },
-      {
-        "item": "betterend:tenanea_bark"
-      },
-      {
-        "item": "betterend:tenanea_stripped_log"
-      },
-      {
-        "item": "betterend:tenanea_stripped_bark"
-      }
-    ]
+    "#betterend:tenanea_logs"
   ],
   "result": {
     "count": 4,

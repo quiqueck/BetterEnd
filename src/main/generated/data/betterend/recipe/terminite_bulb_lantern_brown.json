@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:terminite_bulb_lantern"
-    },
-    {
-      "item": "minecraft:brown_dye"
-    }
+    "betterend:terminite_bulb_lantern",
+    "minecraft:brown_dye"
   ],
   "result": {
     "count": 1,

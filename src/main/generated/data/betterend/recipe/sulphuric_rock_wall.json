@@ -1,15 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "end_wall",
+  "group": "wall",
   "key": {
-    "#": {
-      "item": "betterend:sulphuric_rock"
-    }
+    "*": "betterend:sulphuric_rock"
   },
   "pattern": [
-    "###",
-    "###"
+    "***",
+    "***"
   ],
   "result": {
     "count": 6,

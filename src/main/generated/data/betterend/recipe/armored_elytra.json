@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "betterend:aeternium_ingot"
-  },
-  "base": {
-    "item": "minecraft:elytra"
-  },
+  "addition": "betterend:aeternium_ingot",
+  "base": "minecraft:elytra",
   "result": {
-    "count": 1,
     "id": "betterend:elytra_armored"
   },
-  "template": {
-    "item": "betterend:aeternium_upgrade_smithing_template"
-  }
+  "template": "betterend:aeternium_upgrade_smithing_template"
 }

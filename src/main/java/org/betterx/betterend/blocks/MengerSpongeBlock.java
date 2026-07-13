@@ -1,9 +1,6 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlockNotFull;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.bclib.interfaces.tools.AddMineableHoe;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
@@ -11,9 +8,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -32,11 +32,11 @@ import java.util.Queue;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class MengerSpongeBlock extends BaseBlockNotFull implements RenderLayerProvider, AddMineableHoe {
+public class MengerSpongeBlock extends BaseBlockNotFull {
     public static final VoxelShape SHAPE;
 
-    public MengerSpongeBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.SPONGE).noOcclusion());
+    public MengerSpongeBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -50,13 +50,15 @@ public class MengerSpongeBlock extends BaseBlockNotFull implements RenderLayerPr
     @Override
     public @NotNull BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
     ) {
-        if (absorbWater(world, pos)) {
+        if (world instanceof LevelAccessor levelAccessor && absorbWater(levelAccessor, pos)) {
             return EndBlocks.MENGER_SPONGE_WET.defaultBlockState();
         }
         return state;
@@ -110,11 +112,6 @@ public class MengerSpongeBlock extends BaseBlockNotFull implements RenderLayerPr
         }
 
         return i > 0;
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     @Override

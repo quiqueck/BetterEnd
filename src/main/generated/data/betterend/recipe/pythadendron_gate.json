@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "gate",
   "key": {
-    "#": {
-      "item": "betterend:pythadendron_planks"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:pythadendron_planks",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "I#I",

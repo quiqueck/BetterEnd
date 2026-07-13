@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.entities.BlockEntityHydrothermalVent;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -79,22 +82,24 @@ public class HydrothermalVentBlock extends BaseBlockNotFull.Stone implements Ent
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         state = world.getBlockState(pos.below());
-        return state.is(EndBlocks.SULPHURIC_ROCK.stone);
+        return state.is(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
     }
 
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
     ) {
         if (!canSurvive(state, world, pos)) {
             return Blocks.WATER.defaultBlockState();
         } else if (state.getValue(WATERLOGGED) && facing == Direction.UP && neighborState.is(Blocks.WATER)) {
-            world.scheduleTick(pos, this, 20);
+            scheduledTickAccess.scheduleTick(pos, this, 20);
         }
         return state;
     }

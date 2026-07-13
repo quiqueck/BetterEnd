@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.biome.land;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndParticles;
@@ -24,7 +26,7 @@ public class UmbraValleyBiome extends EndBiome.Config {
             EndBlocks.PALLIDIUM_HEAVY,
             EndBlocks.PALLIDIUM_THIN,
             EndBlocks.PALLIDIUM_TINY,
-            EndBlocks.UMBRALITH.stone
+            EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE)
     };
 
     public UmbraValleyBiome() {
@@ -51,12 +53,12 @@ public class UmbraValleyBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.UMBRALITH.stone.defaultBlockState();
+                return EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE).defaultBlockState();
             }
 
             @Override
             public BlockState getUnderMaterial() {
-                return EndBlocks.UMBRALITH.stone.defaultBlockState();
+                return EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE).defaultBlockState();
             }
 
             @Override

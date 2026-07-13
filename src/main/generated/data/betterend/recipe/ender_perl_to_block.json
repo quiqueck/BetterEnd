@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "O": {
-      "item": "minecraft:ender_pearl"
-    }
+    "O": "minecraft:ender_pearl"
   },
   "pattern": [
     "OO",

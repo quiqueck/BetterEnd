@@ -1,6 +1,7 @@
 package org.betterx.betterend.complexmaterials.types;
 
 import org.betterx.bclib.blocks.BaseFurnaceBlock;
+import org.betterx.bclib.registry.BaseBlockEntities;
 import static org.betterx.betterend.blocks.EndStoneSmelter.LIT;
 import org.betterx.betterend.complexmaterials.StoneMaterial;
 import org.betterx.wover.block.api.BlockDefinition;
@@ -43,6 +44,7 @@ public class Furnace extends SlotFromDefinition {
         def
                 .lightLevel(state -> state.getValue(LIT) ? 15 : 0)
                 .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
+                .addTrait(BlockTraits.VALID_BLOCK_ENTITY.with(BaseBlockEntities.FURNACE))
                 .addTags(CommonPoiTags.ARMORER_WORKSTATION)
                 .addItemTags(CommonItemTags.FURNACES);
     }

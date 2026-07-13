@@ -9,17 +9,13 @@ import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import com.google.common.collect.Lists;
-
-import java.util.Collections;
-
 @Environment(EnvType.CLIENT)
-public class CrystaliteHelmetModel extends HumanoidModel<LivingEntity> {
+public class CrystaliteHelmetModel extends HumanoidModel<HumanoidRenderState> {
     final ModelPart myHat;
 
     public static LayerDefinition getTexturedModelData() {
@@ -30,8 +26,7 @@ public class CrystaliteHelmetModel extends HumanoidModel<LivingEntity> {
         // TODO: see if we need to subclass HumanoidModel
         // Humanoid model tries to retrieve all parts in it's constructor,
         // so we need to add empty Nodes
-        modelPartData.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
-        //modelPartData.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition head = modelPartData.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
         modelPartData.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.ZERO);
         modelPartData.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.ZERO);
         modelPartData.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.ZERO);
@@ -39,7 +34,7 @@ public class CrystaliteHelmetModel extends HumanoidModel<LivingEntity> {
         modelPartData.addOrReplaceChild("left_leg", CubeListBuilder.create(), PartPose.ZERO);
 
         CubeDeformation deformation_hat = new CubeDeformation(scale + 0.5f);
-        PartDefinition hat = modelPartData.addOrReplaceChild(
+        PartDefinition hat = head.addOrReplaceChild(
                 PartNames.HAT,
                 CubeListBuilder.create().texOffs(0, 0).addBox(-4.0f, -8.0f, -4.0f, 8.0f, 8.0f, 8.0f, deformation_hat),
                 PartPose.ZERO
@@ -59,16 +54,6 @@ public class CrystaliteHelmetModel extends HumanoidModel<LivingEntity> {
     public CrystaliteHelmetModel(ModelPart modelPart) {
         super(modelPart, RenderType::entityTranslucent);
 
-        myHat = modelPart.getChild(PartNames.HAT);
-    }
-
-    @Override
-    protected Iterable<ModelPart> headParts() {
-        return Collections::emptyIterator;
-    }
-
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return Lists.newArrayList(myHat);
+        myHat = this.head.getChild(PartNames.HAT);
     }
 }

@@ -36,31 +36,18 @@ public class BetterEndClient implements ClientModInitializer {
 
         ModMenu.addModMenuScreen(BetterEnd.C.modId, ConfigScreen::new);
 
-        ResourceLocation checkFlowerId = ResourceLocation.withDefaultNamespace("item/chorus_flower");
-        ResourceLocation checkPlantId = ResourceLocation.withDefaultNamespace("item/chorus_plant");
-        ResourceLocation toLoadFlowerId = BetterEnd.C.mk("item/custom_chorus_flower");
-        ResourceLocation toLoadPlantId = BetterEnd.C.mk("item/custom_chorus_plant");
-
-
-        ModelLoadingPlugin.register(pluginContext -> {
-            pluginContext.resolveModel().register((context) -> {
-                if (GeneratorOptions.changeChorusPlant()) {
-                    if (context.id().equals(checkFlowerId)) {
-                        return context.getOrLoadModel(toLoadFlowerId);
-                    } else if (context.id().equals(checkPlantId)) {
-                        return context.getOrLoadModel(toLoadPlantId);
-                    }
-                }
-                return null;
-            });
-        });
+        //TODO: Fabric's ModelLoadingPlugin.Context.resolveModel() was removed in favor of the
+        // modifyModelOnLoad()/BeforeBake event family, which no longer exposes a simple
+        // "load a different model by id" helper. Re-enable the custom chorus flower/plant
+        // model swap (GeneratorOptions.changeChorusPlant()) once a working replacement is found.
 
         if (Configs.CLIENT_CONFIG.customSky.get()) {
             DimensionRenderingRegistry.registerSkyRenderer(Level.END, new BetterEndSkyRenderer());
         }
-        if (BetterEnd.TRINKETS_CORE.isLoaded()) {
-            org.betterx.betterend.integration.trinkets.ElytraClient.register();
-        }
+        //TODO: Trinkets integration disabled (dependency commented out in build.gradle)
+//        if (BetterEnd.TRINKETS_CORE.isLoaded()) {
+//            org.betterx.betterend.integration.trinkets.ElytraClient.register();
+//        }
     }
 
     public static void registerTooltips() {

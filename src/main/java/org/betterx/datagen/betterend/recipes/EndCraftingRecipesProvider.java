@@ -1,13 +1,18 @@
 package org.betterx.datagen.betterend.recipes;
 
-import org.betterx.bclib.complexmaterials.ComplexMaterial;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.complexmaterials.MetalMaterial;
+import org.betterx.betterend.complexmaterials.types.Furnace;
+import org.betterx.betterend.complexmaterials.types.FlowerPot;
+import org.betterx.betterend.complexmaterials.types.Pedestal;
+import org.betterx.betterend.complexmaterials.types.StoneLantern;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
 import org.betterx.wover.recipe.api.CraftingRecipeBuilder;
 import org.betterx.wover.recipe.api.RecipeBuilder;
+import org.betterx.wover.sets.api.blocks.SlotType;
 import org.betterx.wover.tag.api.predefined.CommonItemTags;
 
 import net.minecraft.core.Holder;
@@ -49,42 +54,42 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         );
         craftingRecipeBuilder61.shape("T#T", "V V", "T#T")
                                .addMaterial('#', Blocks.END_STONE_BRICKS)
-                               .addMaterial('T', EndBlocks.THALLASIUM.ingot)
+                               .addMaterial('T', EndBlocks.THALLASIUM.equipment.ingot)
                                .addMaterial('V', CommonItemTags.FURNACES)
                                .build(context);
 
         registerPedestal(
                 context,
                 "andesite_pedestal",
-                EndBlocks.ANDESITE_PEDESTAL,
+                EndBlocks.ANDESITE_SET.getBlock(Pedestal.SLOT),
                 Blocks.POLISHED_ANDESITE_SLAB,
                 Blocks.POLISHED_ANDESITE
         );
         registerPedestal(
                 context,
                 "diorite_pedestal",
-                EndBlocks.DIORITE_PEDESTAL,
+                EndBlocks.DIORITE_SET.getBlock(Pedestal.SLOT),
                 Blocks.POLISHED_DIORITE_SLAB,
                 Blocks.POLISHED_DIORITE
         );
         registerPedestal(
                 context,
                 "granite_pedestal",
-                EndBlocks.GRANITE_PEDESTAL,
+                EndBlocks.GRANITE_SET.getBlock(Pedestal.SLOT),
                 Blocks.POLISHED_GRANITE_SLAB,
                 Blocks.POLISHED_GRANITE
         );
         registerPedestal(
                 context,
                 "quartz_pedestal",
-                EndBlocks.QUARTZ_PEDESTAL,
+                EndBlocks.QUARTZ_SET.getBlock(Pedestal.SLOT),
                 Blocks.QUARTZ_SLAB,
                 Blocks.QUARTZ_PILLAR
         );
         registerPedestal(
                 context,
                 "purpur_pedestal",
-                EndBlocks.PURPUR_PEDESTAL,
+                EndBlocks.PURPUR_SET.getBlock(Pedestal.SLOT),
                 Blocks.PURPUR_SLAB,
                 Blocks.PURPUR_PILLAR
         );
@@ -105,10 +110,10 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 EndBlocks.AETERNIUM_BLOCK
         );
         craftingRecipeBuilder59.shape("III", "III", "III")
-                               .addMaterial('I', EndItems.AETERNIUM_INGOT)
+                               .addMaterial('I', EndItems.AETERNIUM_SET.ingot)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder26 = RecipeBuilder
-                .crafting(BetterEnd.C.mk(material + "_block_to_ingot"), EndItems.AETERNIUM_INGOT)
+                .crafting(BetterEnd.C.mk(material + "_block_to_ingot"), EndItems.AETERNIUM_SET.ingot)
                 .addMaterial('#', EndBlocks.AETERNIUM_BLOCK);
         craftingRecipeBuilder26.outputCount(9)
                                .shapeless()
@@ -179,13 +184,48 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                      .addMaterial('#', EndBlocks.PURPLE_POLYPORE)
                      .build(context);
 
-        registerLantern(context, "end_stone_lantern", EndBlocks.END_STONE_LANTERN, Blocks.END_STONE_BRICK_SLAB);
-        registerLantern(context, "andesite_lantern", EndBlocks.ANDESITE_LANTERN, Blocks.ANDESITE_SLAB);
-        registerLantern(context, "diorite_lantern", EndBlocks.DIORITE_LANTERN, Blocks.DIORITE_SLAB);
-        registerLantern(context, "granite_lantern", EndBlocks.GRANITE_LANTERN, Blocks.GRANITE_SLAB);
-        registerLantern(context, "quartz_lantern", EndBlocks.QUARTZ_LANTERN, Blocks.QUARTZ_SLAB);
-        registerLantern(context, "purpur_lantern", EndBlocks.PURPUR_LANTERN, Blocks.PURPUR_SLAB);
-        registerLantern(context, "blackstone_lantern", EndBlocks.BLACKSTONE_LANTERN, Blocks.BLACKSTONE_SLAB);
+        registerLantern(
+                context,
+                "end_stone_lantern",
+                EndBlocks.END_STONE_SET.getBlock(StoneLantern.SLOT),
+                Blocks.END_STONE_BRICK_SLAB
+        );
+        registerLantern(
+                context,
+                "andesite_lantern",
+                EndBlocks.ANDESITE_SET.getBlock(StoneLantern.SLOT),
+                Blocks.ANDESITE_SLAB
+        );
+        registerLantern(
+                context,
+                "diorite_lantern",
+                EndBlocks.DIORITE_SET.getBlock(StoneLantern.SLOT),
+                Blocks.DIORITE_SLAB
+        );
+        registerLantern(
+                context,
+                "granite_lantern",
+                EndBlocks.GRANITE_SET.getBlock(StoneLantern.SLOT),
+                Blocks.GRANITE_SLAB
+        );
+        registerLantern(
+                context,
+                "quartz_lantern",
+                EndBlocks.QUARTZ_SET.getBlock(StoneLantern.SLOT),
+                Blocks.QUARTZ_SLAB
+        );
+        registerLantern(
+                context,
+                "purpur_lantern",
+                EndBlocks.PURPUR_SET.getBlock(StoneLantern.SLOT),
+                Blocks.PURPUR_SLAB
+        );
+        registerLantern(
+                context,
+                "blackstone_lantern",
+                EndBlocks.BLACKSTONE_SET.getBlock(StoneLantern.SLOT),
+                Blocks.BLACKSTONE_SLAB
+        );
 
         CraftingRecipeBuilder craftingRecipeBuilder55 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("amber_gem"),
@@ -211,7 +251,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder53 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("iron_bulb_lantern"),
-                EndBlocks.IRON_BULB_LANTERN
+                EndBlocks.IRON_SET.getBlock(MetalMaterial.BULB_LANTERN)
         );
         craftingRecipeBuilder53.shape("C", "I", "#")
                                .addMaterial('C', Items.CHAIN)
@@ -410,7 +450,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
 
         CraftingRecipeBuilder craftingRecipeBuilder45 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("iron_chandelier"),
-                EndBlocks.IRON_CHANDELIER
+                EndBlocks.IRON_SET.getBlock(MetalMaterial.CHANDELIER)
         );
         CraftingRecipeBuilder craftingRecipeBuilder2 = craftingRecipeBuilder45.shape("I#I", " # ")
                                                                               .addMaterial('#', Items.IRON_INGOT)
@@ -419,7 +459,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                               .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder44 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("gold_chandelier"),
-                EndBlocks.GOLD_CHANDELIER
+                EndBlocks.GOLD_SET.getBlock(MetalMaterial.CHANDELIER)
         );
         CraftingRecipeBuilder craftingRecipeBuilder1 = craftingRecipeBuilder44.shape("I#I", " # ")
                                                                               .addMaterial('#', Items.GOLD_INGOT)
@@ -435,9 +475,9 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         craftingRecipeBuilder43.shape("#P", "P#")
                                .addMaterial(
                                        '#',
-                                       EndBlocks.VIOLECITE.stone,
-                                       EndBlocks.VIOLECITE.bricks,
-                                       EndBlocks.VIOLECITE.tiles
+                                       EndBlocks.VIOLECITE.getBlock(SlotType.SOURCE),
+                                       EndBlocks.VIOLECITE.getBlock(SlotType.BRICK),
+                                       EndBlocks.VIOLECITE.getBlock(SlotType.TILES)
                                )
                                .addMaterial('P', Blocks.PURPUR_BLOCK)
                                .build(context);
@@ -463,7 +503,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder41 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("end_stone_furnace"),
-                EndBlocks.END_STONE_FURNACE
+                EndBlocks.END_STONE_SET.getBlock(Furnace.SLOT)
         );
         craftingRecipeBuilder41.shape("###", "# #", "###")
                                .addMaterial('#', Blocks.END_STONE)
@@ -481,7 +521,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 EndBlocks.SILK_MOTH_HIVE
         );
         craftingRecipeBuilder39.shape("#L#", "LML", "#L#")
-                               .addMaterial('#', EndBlocks.TENANEA.getBlock("planks"))
+                               .addMaterial('#', EndBlocks.TENANEA.getBlock(SlotType.PLANKS))
                                .addMaterial('L', EndBlocks.TENANEA_LEAVES)
                                .addMaterial('M', EndItems.SILK_MOTH_MATRIX)
                                .build(context);
@@ -538,7 +578,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder12 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("endstone_flower_pot"),
-                EndBlocks.ENDSTONE_FLOWER_POT
+                EndBlocks.END_STONE_SET.getBlock(FlowerPot.SLOT)
         );
         CraftingRecipeBuilder craftingRecipeBuilder33 = craftingRecipeBuilder12.outputCount(3);
         CraftingRecipeBuilder craftingRecipeBuilder = craftingRecipeBuilder33.shape("# #", " # ")
@@ -586,9 +626,6 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .addMaterial('#', EndBlocks.SMARAGDANT_CRYSTAL_SHARD)
                                .addMaterial('G', Blocks.GLASS)
                                .build(context);
-
-
-        ComplexMaterial.provideAllRecipes(context, BetterEnd.C);
     }
 
     private static void registerLantern(RecipeBuilder.Context context, String name, Block lantern, Block slab) {

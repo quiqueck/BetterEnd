@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_flavolite_bricks": {
+    "has_flavolite_brick": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:flavolite_bricks"
+            "items": "betterend:flavolite_brick"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_flavolite_bricks"
+      "has_flavolite_brick"
     ]
   ],
   "rewards": {

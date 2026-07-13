@@ -29,7 +29,7 @@ public class EndArmorTier {
             .armorMaterial(EndArmorMaterial.AETERNIUM)
             .armorValuesWithOffset(
                     ArmorTiers.NETHERITE_ARMOR,
-                    new ArmorTier.ArmorValues(100, EndTemplates.PLATE_UPGRADE)
+                    new ArmorTier.ArmorValues(100, () -> EndTemplates.PLATE_UPGRADE)
             )
             .build();
 }

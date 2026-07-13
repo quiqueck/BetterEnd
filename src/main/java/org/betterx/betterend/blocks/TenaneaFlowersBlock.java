@@ -7,7 +7,6 @@ import org.betterx.betterend.registry.EndParticles;
 import org.betterx.ui.ColorUtil;
 
 import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
@@ -50,11 +49,6 @@ public class TenaneaFlowersBlock extends BaseVineBlock implements CustomColorPro
 
             return ColorUtil.HSBtoRGB(hsb[0], MHelper.max(0.5F, hsb[1]), hsb[2]);
         };
-    }
-
-    @Override
-    public ItemColor getItemProvider() {
-        return (stack, tintIndex) -> ColorUtil.color(255, 255, 255);
     }
 
     @Override

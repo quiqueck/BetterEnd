@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "end_metal_boots",
+  "category": "equipment",
+  "group": "boots",
   "key": {
-    "#": {
-      "item": "betterend:thallasium_forged_plate"
-    }
+    "#": "#betterend:thallasiumrepair/"
   },
   "pattern": [
     "# #",

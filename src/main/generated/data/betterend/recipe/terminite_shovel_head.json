@@ -3,9 +3,7 @@
   "allowedTools": "betterend:anvil_tool/diamond",
   "anvilLevel": 3,
   "damage": 3,
-  "input": {
-    "item": "betterend:terminite_ingot"
-  },
+  "input": "betterend:terminite_ingot",
   "result": {
     "item": "betterend:terminite_shovel_head"
   }

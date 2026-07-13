@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "betterend:block/dragon_tree_planks_particles"
+      "model": "betterend:block/dragon_tree_chest"
     }
   }
 }

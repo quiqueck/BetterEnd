@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "betterend:amber_block"
-    },
-    "C": {
-      "item": "betterend:aurora_crystal"
-    },
-    "S": {
-      "item": "betterend:eternal_crystal"
-    }
+    "A": "betterend:amber_block",
+    "C": "betterend:aurora_crystal",
+    "S": "betterend:eternal_crystal"
   },
   "pattern": [
     "CSC",

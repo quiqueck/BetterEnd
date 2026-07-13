@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_thallasium_hoe": {
+    "has_item.betterend.thallasium_hoe": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_thallasium_hoe"
+      "has_item.betterend.thallasium_hoe"
     ]
   ],
   "rewards": {

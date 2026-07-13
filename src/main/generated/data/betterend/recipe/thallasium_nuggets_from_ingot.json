@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "group": "end_metal_nuggets_ing",
+  "group": "end_metal_ingot",
   "ingredients": [
-    {
-      "item": "betterend:thallasium_ingot"
-    }
+    "betterend:thallasium_ingot"
   ],
   "result": {
     "count": 9,

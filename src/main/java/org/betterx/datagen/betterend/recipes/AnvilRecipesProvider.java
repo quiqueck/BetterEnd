@@ -2,14 +2,13 @@ package org.betterx.datagen.betterend.recipes;
 
 import org.betterx.bclib.recipes.BCLRecipeBuilder;
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.item.material.EndToolMaterial;
+import org.betterx.betterend.item.material.EndToolTier;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTags;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
+import org.betterx.wover.recipe.api.RecipeBuilder;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 
 public class AnvilRecipesProvider extends WoverRecipeProvider {
@@ -17,60 +16,61 @@ public class AnvilRecipesProvider extends WoverRecipeProvider {
         super(modCore, "BetterEnd - Anvil Recipes");
     }
 
-    public void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
+    @Override
+    protected void bootstrap(RecipeBuilder.Context context) {
         BCLRecipeBuilder.anvil(BetterEnd.C.mk("ender_pearl_to_dust"), EndItems.ENDER_DUST)
                         .setPrimaryInputAndUnlock(Items.ENDER_PEARL)
-                        .setAnvilLevel(EndToolMaterial.THALLASIUM.getLevel())
+                        .setAnvilLevel(EndToolTier.THALLASIUM.level)
                         .setAllowedTools(EndTags.ANVIL_IRON_TOOL)
                         .setDamage(5)
                         .build(context);
 
         BCLRecipeBuilder.anvil(BetterEnd.C.mk("ender_shard_to_dust"), EndItems.ENDER_DUST)
                         .setPrimaryInputAndUnlock(EndItems.ENDER_SHARD)
-                        .setAnvilLevel(EndToolMaterial.THALLASIUM.getLevel())
+                        .setAnvilLevel(EndToolTier.THALLASIUM.level)
                         .setAllowedTools(EndTags.ANVIL_IRON_TOOL)
                         .setDamage(3)
                         .build(context);
 
-        final int anvilLevel = EndToolMaterial.AETERNIUM.getLevel();
-        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_axe_head"), EndItems.AETERNIUM_AXE_HEAD)
-                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_INGOT)
+        final int anvilLevel = EndToolTier.AETERNIUM.level;
+        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_axe_head"), EndItems.AETERNIUM_SET.axeHead)
+                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_SET.ingot)
                         .setAnvilLevel(anvilLevel)
                         .setAllowedTools(EndTags.ANVIL_NETHERITE_TOOL)
                         .setDamage(6)
                         .build(context);
-        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_pickaxe_head"), EndItems.AETERNIUM_PICKAXE_HEAD)
-                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_INGOT)
+        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_pickaxe_head"), EndItems.AETERNIUM_SET.pickaxeHead)
+                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_SET.ingot)
                         .setAnvilLevel(anvilLevel)
                         .setAllowedTools(EndTags.ANVIL_NETHERITE_TOOL)
                         .setDamage(6)
                         .build(context);
-        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_shovel_head"), EndItems.AETERNIUM_SHOVEL_HEAD)
-                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_INGOT)
+        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_shovel_head"), EndItems.AETERNIUM_SET.shovelHead)
+                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_SET.ingot)
                         .setAnvilLevel(anvilLevel)
                         .setAllowedTools(EndTags.ANVIL_NETHERITE_TOOL)
                         .setDamage(6)
                         .build(context);
-        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_hoe_head"), EndItems.AETERNIUM_HOE_HEAD)
-                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_INGOT)
+        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_hoe_head"), EndItems.AETERNIUM_SET.hoeHead)
+                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_SET.ingot)
                         .setAnvilLevel(anvilLevel)
                         .setAllowedTools(EndTags.ANVIL_NETHERITE_TOOL)
                         .setDamage(6)
                         .build(context);
-        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_hammer_head"), EndItems.AETERNIUM_HAMMER_HEAD)
-                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_INGOT)
+        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_hammer_head"), EndItems.AETERNIUM_SET.hammerHead)
+                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_SET.ingot)
                         .setAnvilLevel(anvilLevel)
                         .setAllowedTools(EndTags.ANVIL_NETHERITE_TOOL)
                         .setDamage(6)
                         .build(context);
-        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_sword_blade"), EndItems.AETERNIUM_SWORD_BLADE)
-                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_INGOT)
+        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_sword_blade"), EndItems.AETERNIUM_SET.swordBlade)
+                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_SET.ingot)
                         .setAnvilLevel(anvilLevel)
                         .setAllowedTools(EndTags.ANVIL_DIAMOND_TOOL)
                         .setDamage(6)
                         .build(context);
-        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_forged_plate"), EndItems.AETERNIUM_FORGED_PLATE)
-                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_INGOT)
+        BCLRecipeBuilder.anvil(BetterEnd.C.mk("aeternium_forged_plate"), EndItems.AETERNIUM_SET.forgedPlate)
+                        .setPrimaryInputAndUnlock(EndItems.AETERNIUM_SET.ingot)
                         .setAnvilLevel(anvilLevel)
                         .setAllowedTools(EndTags.ANVIL_NETHERITE_TOOL)
                         .setDamage(6)

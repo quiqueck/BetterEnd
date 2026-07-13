@@ -9,7 +9,7 @@ import org.betterx.betterend.rituals.EternalRitual;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -47,7 +47,7 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
             }
         }
 
-        public Payload(FriendlyByteBuf buf) {
+        public Payload(RegistryFriendlyByteBuf buf) {
             super(INSTANCE);
             center = buf.readBlockPos();
             axis = Direction.Axis.byName(BaseDataHandler.readString(buf));
@@ -56,7 +56,7 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
 
 
         @Override
-        protected void write(FriendlyByteBuf buf) {
+        protected void write(RegistryFriendlyByteBuf buf) {
             buf.writeBlockPos(center);
             BaseDataHandler.writeString(buf, axis.getName());
             buf.writeByte(flags);

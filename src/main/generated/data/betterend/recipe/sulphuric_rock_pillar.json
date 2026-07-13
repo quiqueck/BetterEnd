@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_pillar",
   "key": {
-    "#": {
-      "item": "betterend:sulphuric_rock_slab"
-    }
+    "#": "betterend:sulphuric_rock_slab"
   },
   "pattern": [
     "#",

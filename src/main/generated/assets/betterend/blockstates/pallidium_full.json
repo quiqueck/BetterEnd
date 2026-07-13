@@ -2,27 +2,18 @@
   "variants": {
     "": [
       {
-        "model": "betterend:block/pallidium_full",
-        "uvlock": false,
-        "weight": 1,
-        "y": 0
+        "model": "betterend:block/pallidium_full"
       },
       {
         "model": "betterend:block/pallidium_full",
-        "uvlock": false,
-        "weight": 1,
         "y": 90
       },
       {
         "model": "betterend:block/pallidium_full",
-        "uvlock": false,
-        "weight": 1,
         "y": 180
       },
       {
         "model": "betterend:block/pallidium_full",
-        "uvlock": false,
-        "weight": 1,
         "y": 270
       }
     ]

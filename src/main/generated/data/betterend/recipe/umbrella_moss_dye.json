@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:umbrella_moss"
-    }
+    "betterend:umbrella_moss"
   ],
   "result": {
     "count": 1,

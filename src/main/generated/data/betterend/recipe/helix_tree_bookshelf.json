@@ -3,12 +3,8 @@
   "category": "building",
   "group": "bookshelf",
   "key": {
-    "#": {
-      "item": "betterend:helix_tree_planks"
-    },
-    "P": {
-      "item": "minecraft:book"
-    }
+    "#": "betterend:helix_tree_planks",
+    "P": "minecraft:book"
   },
   "pattern": [
     "###",

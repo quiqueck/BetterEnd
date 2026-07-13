@@ -3,12 +3,8 @@
   "category": "building",
   "group": "bookshelf",
   "key": {
-    "#": {
-      "item": "betterend:lucernia_planks"
-    },
-    "P": {
-      "item": "minecraft:book"
-    }
+    "#": "betterend:lucernia_planks",
+    "P": "minecraft:book"
   },
   "pattern": [
     "###",

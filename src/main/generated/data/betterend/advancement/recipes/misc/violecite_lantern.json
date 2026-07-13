@@ -17,14 +17,11 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_violecite_slab_violecite_bricks_slab": {
+    "has_violecite_slab": {
       "conditions": {
         "items": [
           {
             "items": "betterend:violecite_slab"
-          },
-          {
-            "items": "betterend:violecite_bricks_slab"
           }
         ]
       },
@@ -34,7 +31,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_violecite_slab_violecite_bricks_slab",
+      "has_violecite_slab",
       "has_crystal_shards"
     ]
   ],

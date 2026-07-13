@@ -7,11 +7,11 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_umbralith_bricks": {
+    "has_umbralith_brick": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:umbralith_bricks"
+            "items": "betterend:umbralith_brick"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_umbralith_bricks"
+      "has_umbralith_brick"
     ]
   ],
   "rewards": {

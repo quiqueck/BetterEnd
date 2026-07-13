@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "end_metal_leggings",
+  "category": "equipment",
+  "group": "leggings",
   "key": {
-    "#": {
-      "item": "betterend:terminite_forged_plate"
-    }
+    "#": "#betterend:terminiterepair/"
   },
   "pattern": [
     "###",

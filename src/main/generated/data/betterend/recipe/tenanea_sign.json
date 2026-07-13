@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "sign",
   "key": {
-    "#": {
-      "item": "betterend:tenanea_planks"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:tenanea_planks",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "###",

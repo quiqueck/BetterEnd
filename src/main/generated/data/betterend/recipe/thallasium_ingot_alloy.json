@@ -2,12 +2,8 @@
   "type": "bclib:alloying",
   "experience": 2.1,
   "ingredients": [
-    {
-      "tag": "betterend:thallasium_alloying"
-    },
-    {
-      "tag": "betterend:thallasium_alloying"
-    }
+    "#betterend:thallasium_alloying",
+    "#betterend:thallasium_alloying"
   ],
   "result": {
     "count": 3,

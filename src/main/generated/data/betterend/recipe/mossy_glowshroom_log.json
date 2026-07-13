@@ -1,10 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "log",
   "key": {
-    "#": {
-      "item": "betterend:mossy_glowshroom_bark"
-    }
+    "#": "betterend:mossy_glowshroom_bark"
   },
   "pattern": [
     "##",

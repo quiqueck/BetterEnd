@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:thallasium_raw"
-  },
+  "ingredient": "betterend:thallasium_raw",
   "result": {
     "id": "betterend:thallasium_ingot"
   }

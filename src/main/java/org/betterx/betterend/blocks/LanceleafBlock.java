@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.PentaShape;
@@ -11,11 +10,13 @@ import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -31,8 +32,8 @@ public class LanceleafBlock extends EndPlantBlock implements SurvivesOnAmberMoss
     public static final EnumProperty<PentaShape> SHAPE = BlockProperties.PENTA_SHAPE;
     public static final IntegerProperty ROTATION = BlockProperties.ROTATION;
 
-    public LanceleafBlock() {
-        super(BehaviourBuilders.createPlant(MapColor.TERRACOTTA_BROWN).ignitedByLava().offsetType(OffsetType.XZ));
+    public LanceleafBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -55,11 +56,13 @@ public class LanceleafBlock extends EndPlantBlock implements SurvivesOnAmberMoss
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
     ) {
         if (!canSurvive(state, world, pos)) {
             return Blocks.AIR.defaultBlockState();

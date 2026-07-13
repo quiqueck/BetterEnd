@@ -41,7 +41,7 @@ public class SmelterOutputSlot extends Slot {
     }
 
     protected void checkTakeAchievements(ItemStack stack) {
-        stack.onCraftedBy(this.player.level(), this.player, this.amount);
+        stack.onCraftedBy(this.player, this.amount);
         if (player instanceof ServerPlayer serverPlayer && this.container instanceof EndStoneSmelterBlockEntity) {
             ((EndStoneSmelterBlockEntity) this.container).dropExperience(serverPlayer);
         }

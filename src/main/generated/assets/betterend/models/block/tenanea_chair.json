@@ -1,6 +1,0 @@
-{
-  "parent": "bclib:block/chair",
-  "textures": {
-    "texture": "betterend:block/tenanea_planks"
-  }
-}

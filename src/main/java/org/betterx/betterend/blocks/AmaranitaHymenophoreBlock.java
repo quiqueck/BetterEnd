@@ -1,19 +1,11 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.blocks.BaseBlock;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class AmaranitaHymenophoreBlock extends BaseBlock.Wood implements RenderLayerProvider {
-    public AmaranitaHymenophoreBlock() {
-        super(BehaviourBuilders.createWood().sound(SoundType.WOOD));
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
+public class AmaranitaHymenophoreBlock extends BaseBlock.Wood {
+    public AmaranitaHymenophoreBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 }

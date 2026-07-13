@@ -1,9 +1,6 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlock;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.bclib.interfaces.tools.AddMineableShears;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.LootUtil;
 import org.betterx.bclib.util.MHelper;
@@ -26,14 +23,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.AABB;
@@ -46,20 +44,15 @@ import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
-public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider, AddMineableShears {
+public class SilkMothNestBlock extends BaseBlock {
     public static final BooleanProperty ACTIVE = EndBlockProperties.ACTIVE;
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty FULLNESS = EndBlockProperties.FULLNESS;
     private static final VoxelShape TOP = box(6, 0, 6, 10, 16, 10);
     private static final VoxelShape BOTTOM = box(0, 0, 0, 16, 16, 16);
 
-    public SilkMothNestBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
-                                       .hardness(0.5F)
-                                       .resistance(0.1F)
-                                       .sound(SoundType.WOOL)
-                                       .noOcclusion()
-                                       .randomTicks());
+    public SilkMothNestBlock(BlockBehaviour.Properties props) {
+        super(props);
         this.registerDefaultState(defaultBlockState().setValue(ACTIVE, true).setValue(FULLNESS, 0));
     }
 
@@ -75,11 +68,6 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
     }
 
     @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         Direction dir = ctx.getHorizontalDirection().getOpposite();
         return this.defaultBlockState().setValue(FACING, dir);
@@ -89,11 +77,13 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
     @SuppressWarnings("deprecation")
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
     ) {
         if (!state.getValue(ACTIVE)) {
             if (canSupportCenter(world, pos.above(), Direction.DOWN) || world.getBlockState(pos.above())
@@ -158,7 +148,7 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
             return;
         }
         SilkMothEntity moth = new SilkMothEntity(EndEntities.SILK_MOTH.type(), world);
-        moth.moveTo(spawn.getX() + 0.5, spawn.getY() + 0.5, spawn.getZ() + 0.5, dir.toYRot(), 0);
+        moth.snapTo(spawn.getX() + 0.5, spawn.getY() + 0.5, spawn.getZ() + 0.5, dir.toYRot(), 0);
         moth.setDeltaMovement(new Vec3(dir.getStepX() * 0.4, 0, dir.getStepZ() * 0.4));
         moth.setHive(world, pos);
         world.addFreshEntity(moth);

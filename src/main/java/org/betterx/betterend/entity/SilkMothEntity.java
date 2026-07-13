@@ -11,8 +11,6 @@ import org.betterx.wover.enchantment.api.EnchantmentUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -42,6 +40,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -81,27 +81,27 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
         if (hivePos != null) {
-            tag.put("HivePos", NbtUtils.writeBlockPos(hivePos));
-            tag.putString("HiveWorld", hiveWorld.dimension().location().toString());
+            output.store("HivePos", BlockPos.CODEC, hivePos);
+            output.putString("HiveWorld", hiveWorld.dimension().location().toString());
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("HivePos")) {
-            hivePos = NbtUtils.readBlockPos(tag, "HivePos").orElse(BlockPos.ZERO);
-            ResourceLocation worldID = ResourceLocation.parse(tag.getString("HiveWorld"));
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        input.read("HivePos", BlockPos.CODEC).ifPresent(pos -> {
+            hivePos = pos;
+            ResourceLocation worldID = ResourceLocation.parse(input.getStringOr("HiveWorld", ""));
             try {
                 hiveWorld = level().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, worldID));
             } catch (Exception e) {
                 BetterEnd.LOGGER.warn("Silk Moth Hive World {} is missing!", worldID);
                 hivePos = null;
             }
-        }
+        });
     }
 
     @Override
@@ -128,7 +128,6 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
         };
         birdNavigation.setCanOpenDoors(false);
         birdNavigation.setCanFloat(false);
-        birdNavigation.setCanPassDoors(true);
         return birdNavigation;
     }
 
@@ -138,7 +137,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+    public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
         return false;
     }
 
@@ -159,15 +158,16 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {
-        return EndEntities.SILK_MOTH.type().create(world);
+        return EndEntities.SILK_MOTH.type().create(world, EntitySpawnReason.BREEDING);
     }
 
     @Override
-    protected void dropFromLootTable(DamageSource source, boolean causedByPlayer) {
+    protected void dropFromLootTable(ServerLevel serverLevel, DamageSource source, boolean causedByPlayer) {
         int minCount = 0;
         int maxCount = 1;
-        if (causedByPlayer && this.lastHurtByPlayer != null) {
-            int looting = EnchantmentUtils.getItemEnchantmentLevel(this.lastHurtByPlayer.level(), Enchantments.LOOTING, this.lastHurtByPlayer);
+        Player lastHurtByPlayer = this.getLastHurtByPlayer();
+        if (causedByPlayer && lastHurtByPlayer != null) {
+            int looting = EnchantmentUtils.getItemEnchantmentLevel(lastHurtByPlayer.level(), Enchantments.LOOTING, lastHurtByPlayer);
             minCount += looting;
             maxCount += looting;
             if (maxCount > 2) {

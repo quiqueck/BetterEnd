@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.*;
@@ -67,7 +69,7 @@ public class GeyserFeature extends DefaultFeature {
         SDF sdf = new SDFCappedCone().setHeight(halfHeight)
                                      .setRadius1(radius1)
                                      .setRadius2(radius2)
-                                     .setBlock(EndBlocks.SULPHURIC_ROCK.stone);
+                                     .setBlock(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
         sdf = new SDFTranslate().setTranslate(0, halfHeight - 3, 0).setSource(sdf);
 
         int count = halfHeight;
@@ -79,7 +81,7 @@ public class GeyserFeature extends DefaultFeature {
             SDF bowl = new SDFCappedCone().setHeight(radius)
                                           .setRadius1(0)
                                           .setRadius2(radius)
-                                          .setBlock(EndBlocks.SULPHURIC_ROCK.stone);
+                                          .setBlock(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
 
             SDF brimstone = new SDFCappedCone().setHeight(radius)
                                                .setRadius1(0)
@@ -154,8 +156,8 @@ public class GeyserFeature extends DefaultFeature {
                              .setReplaceFunction(REPLACE1)
                              .fillRecursiveIgnore(world, pos, IGNORE);
 
-        obj1.setBlock(EndBlocks.SULPHURIC_ROCK.stone);
-        obj2.setBlock(EndBlocks.SULPHURIC_ROCK.stone);
+        obj1.setBlock(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
+        obj2.setBlock(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
         new SDFDisplacement().setFunction((vec) -> -4F)
                              .setSource(cave)
                              .setReplaceFunction(REPLACE1)
@@ -197,7 +199,7 @@ public class GeyserFeature extends DefaultFeature {
                 if (state.is(CommonBlockTags.END_STONES) && !world.getBlockState(mut.above())
                                                                   .is(EndBlocks.HYDROTHERMAL_VENT)) {
                     for (int j = 0; j <= dist; j++) {
-                        BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.stone);
+                        BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
                         MHelper.shuffle(HORIZONTAL, random);
                         for (Direction dir : HORIZONTAL) {
                             BlockPos p = mut.relative(dir);
@@ -243,7 +245,7 @@ public class GeyserFeature extends DefaultFeature {
                 }
                 if (state.is(CommonBlockTags.END_STONES)) {
                     for (int j = 0; j <= dist; j++) {
-                        BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.stone);
+                        BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
                         mut.setY(mut.getY() + 1);
                     }
                     state = EndBlocks.HYDROTHERMAL_VENT.defaultBlockState()
@@ -280,7 +282,7 @@ public class GeyserFeature extends DefaultFeature {
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = (state) -> state.is(Blocks.WATER) || state.is(Blocks.CAVE_AIR) || state.is(EndBlocks.SULPHURIC_ROCK.stone) || state
+        IGNORE = (state) -> state.is(Blocks.WATER) || state.is(Blocks.CAVE_AIR) || state.is(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE)) || state
                 .is(EndBlocks.BRIMSTONE);
     }
 }

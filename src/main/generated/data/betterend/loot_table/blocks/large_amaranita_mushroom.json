@@ -34,7 +34,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "betterend:large_amaranita_mushroom"
         }
       ],
       "rolls": 1.0

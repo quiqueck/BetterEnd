@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "end_metal_helmets",
+  "category": "equipment",
+  "group": "helmet",
   "key": {
-    "#": {
-      "item": "betterend:terminite_forged_plate"
-    }
+    "#": "#betterend:terminiterepair/"
   },
   "pattern": [
     "###",

@@ -1,3 +1,6 @@
 {
-  "parent": "betterend:block/blue_vine_lantern"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/blue_vine_lantern"
+  }
 }

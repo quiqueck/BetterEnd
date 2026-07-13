@@ -7,11 +7,11 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_virid_jadestone_bricks": {
+    "has_virid_jadestone_brick": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:virid_jadestone_bricks"
+            "items": "betterend:virid_jadestone_brick"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_virid_jadestone_bricks"
+      "has_virid_jadestone_brick"
     ]
   ],
   "rewards": {

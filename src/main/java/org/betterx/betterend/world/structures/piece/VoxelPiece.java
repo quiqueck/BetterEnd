@@ -37,7 +37,7 @@ public class VoxelPiece extends BasePiece {
 
     @Override
     protected void fromNbt(CompoundTag tag) {
-        world = new StructureWorld(tag.getCompound("world"));
+        world = new StructureWorld(tag.getCompoundOrEmpty("world"));
     }
 
     @Override

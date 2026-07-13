@@ -2,12 +2,8 @@
   "type": "bclib:alloying",
   "experience": 3.0,
   "ingredients": [
-    {
-      "tag": "betterend:alloying_gold"
-    },
-    {
-      "tag": "betterend:alloying_gold"
-    }
+    "#betterend:alloying_gold",
+    "#betterend:alloying_gold"
   ],
   "result": {
     "count": 3,

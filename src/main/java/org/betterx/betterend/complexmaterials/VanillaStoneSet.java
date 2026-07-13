@@ -24,6 +24,7 @@ public class VanillaStoneSet extends BlockSet<VanillaStoneSet> {
         super(BetterEnd.C, baseName, SlotType.SOURCE);
         this.baseBlock = baseBlock;
         this.slotMap = slots.add(new SlotFromBlock(SlotType.SOURCE, baseBlock));
+        this.buildAndRegister();
     }
 
     @Override

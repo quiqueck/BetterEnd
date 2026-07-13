@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:thallasium_bulb_lantern"
-    },
-    {
-      "item": "minecraft:black_dye"
-    }
+    "betterend:thallasium_bulb_lantern",
+    "minecraft:black_dye"
   ],
   "result": {
     "count": 1,

@@ -1,6 +1,6 @@
 {
   "parent": "betterend:block/pedestal_pillar",
   "textures": {
-    "pillar": "betterend:block/granite_pillar"
+    "pillar": "betterend:block/granite_pillar_side"
   }
 }

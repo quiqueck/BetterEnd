@@ -1,9 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.blocks.BaseBlockNotFull;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
@@ -11,12 +8,15 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class LumecornBlock extends BaseBlockNotFull.Wood implements RenderLayerProvider {
+public class LumecornBlock extends BaseBlockNotFull.Wood {
     public static final EnumProperty<EndBlockProperties.LumecornShape> SHAPE = EnumProperty.create(
             "shape",
             EndBlockProperties.LumecornShape.class
@@ -39,22 +39,13 @@ public class LumecornBlock extends BaseBlockNotFull.Wood implements RenderLayerP
     private static final VoxelShape SHAPE_BOTTOM = Block.box(6, 0, 6, 10, 16, 10);
     private static final VoxelShape SHAPE_TOP = Block.box(6, 0, 6, 10, 8, 10);
 
-    public LumecornBlock() {
-        super(BehaviourBuilders
-                .createWood()
-                .strength(0.5F)
-                .lightLevel(state -> state.getValue(SHAPE).getLight())
-        );
+    public LumecornBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManager) {
         stateManager.add(SHAPE);
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     @Override
@@ -77,11 +68,13 @@ public class LumecornBlock extends BaseBlockNotFull.Wood implements RenderLayerP
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
     ) {
         if (!canSurvive(state, world, pos)) {
             return Blocks.AIR.defaultBlockState();
@@ -107,7 +100,7 @@ public class LumecornBlock extends BaseBlockNotFull.Wood implements RenderLayerP
 
     @Override
     @Environment(EnvType.CLIENT)
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
         EndBlockProperties.LumecornShape shape = blockState.getValue(SHAPE);
         if (shape == EndBlockProperties.LumecornShape.BOTTOM_BIG || shape == EndBlockProperties.LumecornShape.BOTTOM_SMALL || shape == EndBlockProperties.LumecornShape.MIDDLE) {
             return new ItemStack(EndBlocks.LUMECORN_SEED);

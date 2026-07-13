@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "betterend:aeternium_ingot"
-  },
-  "base": {
-    "item": "betterend:terminite_anvil"
-  },
+  "addition": "betterend:aeternium_ingot",
+  "base": "betterend:terminite_anvil",
   "result": {
-    "count": 1,
     "id": "betterend:aeternium_anvil"
   },
-  "template": {
-    "item": "betterend:aeternium_upgrade_smithing_template"
-  }
+  "template": "betterend:aeternium_upgrade_smithing_template"
 }

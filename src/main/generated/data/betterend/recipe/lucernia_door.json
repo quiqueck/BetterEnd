@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "door",
   "key": {
-    "#": {
-      "item": "betterend:lucernia_planks"
-    }
+    "#": "betterend:lucernia_planks"
   },
   "pattern": [
     "##",

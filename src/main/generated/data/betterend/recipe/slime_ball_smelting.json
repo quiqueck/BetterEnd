@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:jellyshroom_cap_purple"
-  },
+  "ingredient": "betterend:jellyshroom_cap_purple",
   "result": {
     "id": "minecraft:slime_ball"
   }

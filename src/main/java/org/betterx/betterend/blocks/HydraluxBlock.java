@@ -1,9 +1,9 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.behaviours.interfaces.BehaviourWaterPlant;
 import org.betterx.bclib.blocks.UnderwaterPlantBlock;
-import org.betterx.bclib.interfaces.tools.AddMineableShears;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.EndBlockProperties.HydraluxShape;
 import org.betterx.betterend.registry.EndBlocks;
@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -29,16 +30,12 @@ import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 
-public class HydraluxBlock extends UnderwaterPlantBlock implements BehaviourWaterPlant, AddMineableShears {
+public class HydraluxBlock extends UnderwaterPlantBlock implements BehaviourWaterPlant {
 
     public static final EnumProperty<HydraluxShape> SHAPE = EndBlockProperties.HYDRALUX_SHAPE;
 
-    public HydraluxBlock() {
-        super(
-                BehaviourBuilders
-                        .createWaterPlant()
-                        .lightLevel((state) -> state.getValue(SHAPE).hasGlow() ? 15 : 0)
-        );
+    public HydraluxBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -53,7 +50,7 @@ public class HydraluxBlock extends UnderwaterPlantBlock implements BehaviourWate
         if (shape == HydraluxShape.FLOWER_BIG_TOP || shape == HydraluxShape.FLOWER_SMALL_TOP) {
             return down.is(this);
         } else if (shape == HydraluxShape.ROOTS) {
-            return down.is(EndBlocks.SULPHURIC_ROCK.stone) && world.getBlockState(pos.above()).is(this);
+            return down.is(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE)) && world.getBlockState(pos.above()).is(this);
         } else {
             return down.is(this) && world.getBlockState(pos.above()).is(this);
         }
@@ -76,7 +73,7 @@ public class HydraluxBlock extends UnderwaterPlantBlock implements BehaviourWate
 
     @Override
     @Environment(EnvType.CLIENT)
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
         return new ItemStack(EndBlocks.HYDRALUX_SAPLING);
     }
 

@@ -1,17 +1,17 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.client.models.ModelsHelper;
 import org.betterx.bclib.interfaces.CustomColorProvider;
-import org.betterx.bclib.interfaces.RuntimeBlockModelProvider;
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.client.models.Patterns;
+import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.client.models.EndModels;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.ui.ColorUtil;
+import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -23,10 +23,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
-
-public class JellyshroomCapBlock extends SlimeBlock implements RuntimeBlockModelProvider, CustomColorProvider {
+public class JellyshroomCapBlock extends SlimeBlock implements CustomColorProvider {
     public static final IntegerProperty COLOR = EndBlockProperties.COLOR;
     private static final OpenSimplexNoise NOISE = new OpenSimplexNoise(0);
     private final Vec3i colorStart;
@@ -53,17 +50,13 @@ public class JellyshroomCapBlock extends SlimeBlock implements RuntimeBlockModel
         stateManager.add(COLOR);
     }
 
-    @Override
     @Environment(EnvType.CLIENT)
-    public BlockModel getItemModel(ResourceLocation resourceLocation) {
-        return getBlockModel(resourceLocation, defaultBlockState());
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public @Nullable BlockModel getBlockModel(ResourceLocation resourceLocation, BlockState blockState) {
-        Optional<String> pattern = Patterns.createJson(Patterns.BLOCK_COLORED, "jellyshroom_cap");
-        return ModelsHelper.fromPattern(pattern);
+    public static void provideBlockModel(WoverBlockModelGenerators generator, Block block) {
+        generator.createSimpleTemplatedBlock(
+                block,
+                EndModels.PETAL_COLORED,
+                new TextureMapping().put(TextureSlot.TEXTURE, BetterEnd.C.mk("block/jellyshroom_cap"))
+        );
     }
 
     @Override

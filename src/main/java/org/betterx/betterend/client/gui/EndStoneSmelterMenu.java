@@ -7,6 +7,8 @@ import org.betterx.betterend.client.gui.slot.SmelterFuelSlot;
 import org.betterx.betterend.client.gui.slot.SmelterOutputSlot;
 import org.betterx.betterend.registry.EndMenuTypes;
 
+import net.minecraft.recipebook.ServerPlaceRecipe;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,12 +22,13 @@ import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import java.util.List;
 import org.anti_ad.mc.ipn.api.IPNIgnore;
 
 import org.jetbrains.annotations.NotNull;
 
 @IPNIgnore
-public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, AlloyingRecipe> {
+public class EndStoneSmelterMenu extends RecipeBookMenu {
     public static final int INGREDIENT_SLOT_A = 0;
     public static final int INGREDIENT_SLOT_B = 1;
     public static final int FUEL_SLOT = 2;
@@ -84,14 +87,12 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
         }
     }
 
-    @Override
     public void clearCraftingContent() {
         this.getSlot(INGREDIENT_SLOT_A).set(ItemStack.EMPTY);
         this.getSlot(INGREDIENT_SLOT_B).set(ItemStack.EMPTY);
         this.getSlot(RESULT_SLOT).set(ItemStack.EMPTY);
     }
 
-    @Override
     public boolean recipeMatches(RecipeHolder<AlloyingRecipe> recipeHolder) {
         return recipeHolder
                 .value()
@@ -104,23 +105,46 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
     }
 
     @Override
-    public int getResultSlotIndex() {
-        return RESULT_SLOT;
-    }
+    @SuppressWarnings("unchecked")
+    public RecipeBookMenu.PostPlaceAction handlePlacement(
+            boolean useMaxItems,
+            boolean isRecipeBookServerControlled,
+            RecipeHolder<?> recipe,
+            ServerLevel serverLevel,
+            Inventory inventory
+    ) {
+        final List<Slot> gridSlots = List.of(this.getSlot(INGREDIENT_SLOT_A), this.getSlot(INGREDIENT_SLOT_B));
+        final List<Slot> slotsToClear = List.of(
+                this.getSlot(INGREDIENT_SLOT_A),
+                this.getSlot(INGREDIENT_SLOT_B),
+                this.getSlot(RESULT_SLOT)
+        );
+        return ServerPlaceRecipe.placeRecipe(
+                new ServerPlaceRecipe.CraftingMenuAccess<AlloyingRecipe>() {
+                    @Override
+                    public void fillCraftSlotsStackedContents(StackedItemContents stackedItemContents) {
+                        EndStoneSmelterMenu.this.fillCraftSlotsStackedContents(stackedItemContents);
+                    }
 
-    @Override
-    public int getGridWidth() {
-        return 2;
-    }
+                    @Override
+                    public void clearCraftingContent() {
+                        EndStoneSmelterMenu.this.clearCraftingContent();
+                    }
 
-    @Override
-    public int getGridHeight() {
-        return 1;
-    }
-
-    @Override
-    public int getSize() {
-        return SLOT_COUNT;
+                    @Override
+                    public boolean recipeMatches(RecipeHolder<AlloyingRecipe> recipeHolder) {
+                        return EndStoneSmelterMenu.this.recipeMatches(recipeHolder);
+                    }
+                },
+                2,
+                1,
+                gridSlots,
+                slotsToClear,
+                inventory,
+                (RecipeHolder<AlloyingRecipe>) recipe,
+                useMaxItems,
+                isRecipeBookServerControlled
+        );
     }
 
     @Override
@@ -129,19 +153,17 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
     }
 
     @Override
-    public boolean shouldMoveToInventory(int i) {
-        return i != FUEL_SLOT;
-    }
-
-    @Override
     public boolean stillValid(Player player) {
         return inventory.stillValid(player);
     }
 
     protected boolean isSmeltable(ItemStack itemStack) {
-        return world.recipeAccess()
-                    .getRecipeFor(AlloyingRecipe.TYPE, new AlloyingRecipeInput(itemStack), world)
-                    .isPresent();
+        if (world instanceof ServerLevel serverLevel) {
+            return serverLevel.recipeAccess()
+                               .getRecipeFor(AlloyingRecipe.TYPE, new AlloyingRecipeInput(itemStack), serverLevel)
+                               .isPresent();
+        }
+        return true;
     }
 
     public boolean isFuel(ItemStack fuelStack) {

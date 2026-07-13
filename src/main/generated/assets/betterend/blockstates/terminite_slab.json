@@ -4,7 +4,7 @@
       "model": "betterend:block/terminite_slab"
     },
     "type=double": {
-      "model": "betterend:block/terminite_tile"
+      "model": "betterend:block/terminite_block"
     },
     "type=top": {
       "model": "betterend:block/terminite_slab_top"

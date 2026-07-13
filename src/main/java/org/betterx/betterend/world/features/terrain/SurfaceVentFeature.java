@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
@@ -49,7 +51,7 @@ public class SurfaceVentFeature extends DefaultFeature {
                 if (state.is(CommonBlockTags.END_STONES) && !world.getBlockState(mut.above())
                                                                   .is(EndBlocks.HYDROTHERMAL_VENT)) {
                     for (int j = 0; j <= dist; j++) {
-                        BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.stone);
+                        BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
                         mut.setY(mut.getY() + 1);
                     }
                     BlocksHelper.setWithoutUpdate(world, mut, vent);

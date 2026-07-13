@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "S": {
-      "item": "betterend:leather_stripe"
-    }
+    "S": "betterend:leather_stripe"
   },
   "pattern": [
     "SSS"

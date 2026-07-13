@@ -6,6 +6,7 @@ import org.betterx.betterend.registry.EndSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -111,8 +112,8 @@ public class ShadowWalkerEntity extends Monster {
     }
 
     @Override
-    public boolean doHurtTarget(Entity target) {
-        boolean attack = super.doHurtTarget(target);
+    public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
+        boolean attack = super.doHurtTarget(serverLevel, target);
         if (attack && target instanceof LivingEntity) {
             LivingEntity living = (LivingEntity) target;
             if (!(living.hasEffect(MobEffects.BLINDNESS))) {

@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "betterend:thallasium_sword_handle"
-  },
-  "base": {
-    "item": "betterend:thallasium_sword_blade"
-  },
+  "addition": "betterend:thallasium_sword_handle",
+  "base": "betterend:thallasium_sword_blade",
   "result": {
-    "count": 1,
     "id": "betterend:thallasium_sword"
   },
-  "template": {
-    "item": "betterend:tool_assembly_smithing_template"
-  }
+  "template": "betterend:thallasium_upgrade_smithing_template"
 }

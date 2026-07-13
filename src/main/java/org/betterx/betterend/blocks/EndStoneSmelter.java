@@ -23,11 +23,12 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -43,12 +44,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements AlloyingRecipeWorkstation {
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final String ID = "end_stone_smelter";
 
-    public EndStoneSmelter() {
-        super(BehaviourBuilders.createStone(MapColor.COLOR_YELLOW)
+    public EndStoneSmelter(BlockBehaviour.Properties props) {
+        super(BehaviourBuilders.createStone(props, MapColor.COLOR_YELLOW)
                                .lightLevel(state -> state.getValue(LIT) ? 15 : 0)
                                .strength(4F, 100F)
                                .requiresCorrectToolForDrops()

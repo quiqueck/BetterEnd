@@ -4,33 +4,43 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.world.generator.GeneratorOptions;
 
 import net.minecraft.client.resources.model.BlockStateModelLoader;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
+/**
+ * {@link BlockStateModelLoader#loadBlockStates} discovers blockstate json files by scanning
+ * every pack, then maps each file back to the block id it defines via {@code fileToId}. To make
+ * betterend's {@code custom_chorus_plant}/{@code custom_chorus_flower} files (shipped in the
+ * betterend namespace) act as the definition for {@code minecraft:chorus_plant}/{@code chorus_flower},
+ * we redirect that file-to-id resolution: the vanilla files are pointed at a discarded id (so they're
+ * ignored, since no such block exists) and the custom files are pointed at the real vanilla block id.
+ */
 @Mixin(BlockStateModelLoader.class)
 public abstract class BlockStateModelLoaderMixin {
-    @ModifyArg(method = "loadBlockStateDefinitions", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/FileToIdConverter;idToFile(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/resources/ResourceLocation;"))
-    public ResourceLocation be_switchModelOnLoad(ResourceLocation loc) {
-        //this should allways be a block state, as it is supplied a BLOCKSTATE_LISTER
-        if (GeneratorOptions.changeChorusPlant() && be_changeModel(loc)) {
-            String path = loc.getPath().replace("chorus", "custom_chorus");
-            return BetterEnd.C.mk(path);
+    @Redirect(method = "loadBlockStates", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/FileToIdConverter;fileToId(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/resources/ResourceLocation;"))
+    public ResourceLocation be_switchModelOnLoad(FileToIdConverter instance, ResourceLocation file) {
+        ResourceLocation id = instance.fileToId(file);
+        if (GeneratorOptions.changeChorusPlant()) {
+            if (id.getNamespace().equals("minecraft") && be_isChorusPath(id.getPath())) {
+                return BetterEnd.C.mk("discarded_" + id.getPath());
+            }
+            if (id.getNamespace().equals(BetterEnd.MOD_ID) && id.getPath().startsWith("custom_")) {
+                String path = id.getPath().substring("custom_".length());
+                if (be_isChorusPath(path)) {
+                    return ResourceLocation.withDefaultNamespace(path);
+                }
+            }
         }
-        return loc;
+        return id;
     }
 
     @Unique
-    private boolean be_changeModel(ResourceLocation id) {
-        if (id.getNamespace().equals("minecraft")) {
-            if (id.getPath().equals("chorus_plant") || id.getPath().equals("chorus_flower")) {
-                return true;
-            }
-            return false;
-        }
-        return false;
+    private static boolean be_isChorusPath(String path) {
+        return path.equals("chorus_plant") || path.equals("chorus_flower");
     }
 }

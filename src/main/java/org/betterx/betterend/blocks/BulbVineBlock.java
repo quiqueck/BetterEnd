@@ -5,14 +5,13 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
-import org.betterx.wover.loot.api.BlockLootProvider;
 import org.betterx.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -23,11 +22,9 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-import org.jetbrains.annotations.NotNull;
-
-public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
-    public BulbVineBlock() {
-        super(15, true);
+public class BulbVineBlock extends BaseVineBlock {
+    public BulbVineBlock(BlockBehaviour.Properties props) {
+        super(props, 15, true);
     }
 
     @Override
@@ -55,14 +52,9 @@ public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
 //        }
 //    }
 
-    @Override
-    public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
-            @NotNull LootLookupProvider provider,
-            @NotNull ResourceKey<LootTable> tableKey
-    ) {
+    public static LootTable.Builder buildLoot(Block block, LootLookupProvider provider) {
         var bottom = LootItemBlockStatePropertyCondition
-                .hasBlockStateProperties(this)
+                .hasBlockStateProperties(block)
                 .setProperties(StatePropertiesPredicate.Builder
                         .properties()
                         .hasProperty(SHAPE, BlockProperties.TripleShape.BOTTOM));
@@ -85,7 +77,10 @@ public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
                                 .add(LootItem.lootTableItem(EndBlocks.BULB_VINE_SEED.asItem())
                                              .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                                              .when(ExplosionCondition.survivesExplosion())
-                                             .when(BonusLevelTableCondition.bonusLevelFlatChance(provider.fortune(), LootLookupProvider.VANILLA_LEAVES_SAPLING_CHANCES))
+                                             .when(BonusLevelTableCondition.bonusLevelFlatChance(
+                                                     provider.fortune(),
+                                                     LootLookupProvider.VANILLA_LEAVES_SAPLING_CHANCES
+                                             ))
                                 )
                                 .when(bottom.invert())
                 );

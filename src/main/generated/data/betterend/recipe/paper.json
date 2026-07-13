@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:end_lily_leaf_dried"
-    }
+    "#": "betterend:end_lily_leaf_dried"
   },
   "pattern": [
     "###"

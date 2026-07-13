@@ -1,16 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "end_metal_stairs",
+  "category": "building",
+  "group": "stairs",
   "key": {
-    "#": [
-      {
-        "item": "betterend:terminite_block"
-      },
-      {
-        "item": "betterend:terminite_tile"
-      }
-    ]
+    "#": "betterend:terminite_block"
   },
   "pattern": [
     "#  ",

@@ -3,12 +3,8 @@
   "category": "building",
   "group": "bookshelf",
   "key": {
-    "#": {
-      "item": "betterend:jellyshroom_planks"
-    },
-    "P": {
-      "item": "minecraft:book"
-    }
+    "#": "betterend:jellyshroom_planks",
+    "P": "minecraft:book"
   },
   "pattern": [
     "###",

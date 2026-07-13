@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "C": {
-      "item": "betterend:thallasium_ingot"
-    },
-    "S": {
-      "item": "betterend:thallasium_upgrade_smithing_template"
-    }
+    "#": "minecraft:stick",
+    "C": "betterend:thallasium_ingot",
+    "S": "betterend:thallasium_upgrade_smithing_template"
   },
   "pattern": [
     "#S#",

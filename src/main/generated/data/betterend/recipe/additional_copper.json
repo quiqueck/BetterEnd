@@ -2,12 +2,8 @@
   "type": "bclib:alloying",
   "experience": 3.0,
   "ingredients": [
-    {
-      "tag": "betterend:alloying_copper"
-    },
-    {
-      "tag": "betterend:alloying_copper"
-    }
+    "#betterend:alloying_copper",
+    "#betterend:alloying_copper"
   ],
   "result": {
     "count": 3,

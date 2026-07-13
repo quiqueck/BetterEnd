@@ -3,9 +3,7 @@
   "allowedTools": "betterend:anvil_tool/iron",
   "anvilLevel": 2,
   "damage": 3,
-  "input": {
-    "item": "betterend:ender_shard"
-  },
+  "input": "betterend:ender_shard",
   "result": {
     "item": "betterend:ender_dust"
   }

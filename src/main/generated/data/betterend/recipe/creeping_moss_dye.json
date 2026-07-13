@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:creeping_moss"
-    }
+    "betterend:creeping_moss"
   ],
   "result": {
     "count": 1,

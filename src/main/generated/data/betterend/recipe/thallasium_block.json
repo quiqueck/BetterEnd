@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_metal_blocks",
   "key": {
-    "#": {
-      "item": "betterend:thallasium_ingot"
-    }
+    "#": "betterend:thallasium_ingot"
   },
   "pattern": [
     "###",

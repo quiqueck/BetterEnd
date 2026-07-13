@@ -14,6 +14,7 @@ import org.betterx.betterend.world.features.trees.*;
 import org.betterx.wover.feature.api.FeatureManager;
 import org.betterx.wover.state.api.WorldState;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -97,13 +98,13 @@ public class EndFeatures {
 
         final Registry<Feature<?>> features;
         if (WorldState.registryAccess() != null) {
-            features = WorldState.allStageRegistryAccess().registryOrThrow(Registries.FEATURE);
+            features = WorldState.allStageRegistryAccess().lookupOrThrow(Registries.FEATURE);
         } else {
             features = BuiltInRegistries.FEATURE;
         }
 
         if (features.containsKey(l)) {
-            return (F) features.get(l);
+            return (F) features.get(l).map(Holder::value).orElseThrow();
         }
 
 

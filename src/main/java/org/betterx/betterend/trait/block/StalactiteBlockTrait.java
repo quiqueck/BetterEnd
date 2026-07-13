@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.List;
 
 public class StalactiteBlockTrait extends BlockTraitImpl<Block, GenericBlockTrait> {
-    private static final BlockTraitKey KEY = BlockTraitKey.ofUnique(BetterEnd.C, "ice");
+    private static final BlockTraitKey KEY = BlockTraitKey.ofUnique(BetterEnd.C, "stalactite");
 
     public final Block sourceBlock;
 

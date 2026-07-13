@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,13 +56,15 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
 
     public final ToolsWithHeadsSet equipment;
 
+    private final Consumer<BlockDefinition<?, ?>> settingsSupplier;
+
     public static MetalMaterial makeNormal(
             String name,
             MapColor color,
             ToolTier material,
             ArmorTier armor,
             TagKey<Item> anvilTools,
-            SmithingTemplateItem swordHandleTemplate
+            Supplier<SmithingTemplateItem> swordHandleTemplate
     ) {
         return new MetalMaterial(
                 name,
@@ -71,7 +74,7 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 armor,
                 Items.STICK,
                 anvilTools,
-                EndTemplates.HANDLE_ATTACHMENT,
+                () -> EndTemplates.HANDLE_ATTACHMENT,
                 swordHandleTemplate
         );
     }
@@ -85,7 +88,7 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
             ToolTier material,
             ArmorTier armor,
             TagKey<Item> anvilTools,
-            SmithingTemplateItem swordHandleTemplate
+            Supplier<SmithingTemplateItem> swordHandleTemplate
     ) {
         return new MetalMaterial(
                 name,
@@ -98,7 +101,7 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 armor,
                 Items.STICK,
                 anvilTools,
-                EndTemplates.HANDLE_ATTACHMENT,
+                () -> EndTemplates.HANDLE_ATTACHMENT,
                 swordHandleTemplate
         );
     }
@@ -111,10 +114,11 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
             ArmorTier armor,
             Item handleItem,
             TagKey<Item> anvilTools,
-            SmithingTemplateItem handleTemplate,
-            SmithingTemplateItem swordHandleTemplate
+            Supplier<SmithingTemplateItem> handleTemplate,
+            Supplier<SmithingTemplateItem> swordHandleTemplate
     ) {
         super(BetterEnd.C, name, SlotType.SOURCE);
+        this.settingsSupplier = settingsSupplier;
         equipment = new ToolsWithHeadsSet(
                 name, material, armor,
                 handleItem, handleTemplate, swordHandleTemplate,
@@ -133,6 +137,7 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 : null;
 
         MaterialManager.register(this);
+        this.buildAndRegister();
     }
 
     @Override
@@ -146,6 +151,8 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 .strength(5.0F, 6.0F)
                 .requiresCorrectToolForDrops()
                 .sound(SoundType.IRON);
+
+        settingsSupplier.accept(blockDefinition);
     }
 
     private SlotFactory oreSlot() {

@@ -1,60 +1,22 @@
 {
   "type": "betterend:infusion",
   "catalysts": {
-    "east": {
-      "item": {
-        "item": "minecraft:fermented_spider_eye"
-      }
-    },
-    "north": {
-      "item": {
-        "item": "betterend:enchanted_petal"
-      }
-    },
-    "north_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "north_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "south": {
-      "item": {
-        "item": "minecraft:iron_ingot"
-      }
-    },
-    "south_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "south_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "west": {
-      "item": {
-        "item": "minecraft:fermented_spider_eye"
-      }
-    }
+    "east": "minecraft:fermented_spider_eye",
+    "north": "betterend:enchanted_petal",
+    "north_east": "minecraft:lapis_lazuli",
+    "north_west": "minecraft:lapis_lazuli",
+    "south": "minecraft:iron_ingot",
+    "south_east": "minecraft:lapis_lazuli",
+    "south_west": "minecraft:lapis_lazuli",
+    "west": "minecraft:fermented_spider_eye"
   },
   "group": "enchantment",
-  "input": {
-    "item": {
-      "item": "minecraft:book"
-    }
-  },
+  "input": "minecraft:book",
   "result": {
     "item": "minecraft:enchanted_book",
     "nbt": {
       "minecraft:stored_enchantments": {
-        "levels": {
-          "minecraft:bane_of_arthropods": 1
-        }
+        "minecraft:bane_of_arthropods": 1
       }
     }
   },

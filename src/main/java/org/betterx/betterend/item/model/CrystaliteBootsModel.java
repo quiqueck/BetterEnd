@@ -1,21 +1,17 @@
 package org.betterx.betterend.item.model;
 
-import org.betterx.bclib.client.render.HumanoidArmorRenderer;
 import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
-import com.google.common.collect.Lists;
-
-import java.util.Collections;
-
-public class CrystaliteBootsModel extends HumanoidModel<LivingEntity> implements HumanoidArmorRenderer.CopyExtraState {
+public class CrystaliteBootsModel extends HumanoidModel<HumanoidRenderState> implements CrystaliteArmorRenderer.CopyExtraState {
 
     public ModelPart leftBoot;
     public ModelPart rightBoot;
@@ -27,8 +23,8 @@ public class CrystaliteBootsModel extends HumanoidModel<LivingEntity> implements
 
         // Humanoid model tries to retrieve all parts in it's constructor,
         // so we need to add empty Nodes
-        modelPartData.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
-        modelPartData.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition head = modelPartData.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
+        head.addOrReplaceChild(PartNames.HAT, CubeListBuilder.create(), PartPose.ZERO);
         modelPartData.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.ZERO);
         modelPartData.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.ZERO);
         modelPartData.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.ZERO);
@@ -66,18 +62,8 @@ public class CrystaliteBootsModel extends HumanoidModel<LivingEntity> implements
     }
 
     @Override
-    public void copyPropertiesFrom(HumanoidModel<LivingEntity> bipedEntityModel) {
+    public void copyExtraState() {
         this.leftBoot.copyFrom(leftLeg);
         this.rightBoot.copyFrom(rightLeg);
-    }
-
-    @Override
-    protected Iterable<ModelPart> headParts() {
-        return Collections::emptyIterator;
-    }
-
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return Lists.newArrayList(leftBoot, rightBoot);
     }
 }

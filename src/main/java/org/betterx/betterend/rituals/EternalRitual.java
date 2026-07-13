@@ -18,7 +18,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -489,27 +488,27 @@ public class EternalRitual {
     }
 
     public CompoundTag toTag(CompoundTag tag) {
-        tag.put("center", NbtUtils.writeBlockPos(center));
+        tag.store("center", BlockPos.CODEC, center);
         tag.putString("axis", axis.getName());
         tag.putBoolean("active", active);
         if (targetWorldId != null) {
             tag.putString("key_item", targetWorldId.toString());
         }
         if (exit != null) {
-            tag.put("exit", NbtUtils.writeBlockPos(exit));
+            tag.store("exit", BlockPos.CODEC, exit);
         }
         return tag;
     }
 
     public void fromTag(CompoundTag tag) {
-        axis = Direction.Axis.byName(tag.getString("axis"));
-        center = NbtUtils.readBlockPos(tag, "center").orElse(BlockPos.ZERO);
-        active = tag.getBoolean("active");
+        axis = Direction.Axis.byName(tag.getStringOr("axis", ""));
+        center = tag.read("center", BlockPos.CODEC).orElse(BlockPos.ZERO);
+        active = tag.getBooleanOr("active", false);
         if (tag.contains("exit")) {
-            exit = NbtUtils.readBlockPos(tag, "exit").orElse(BlockPos.ZERO);
+            exit = tag.read("exit", BlockPos.CODEC).orElse(BlockPos.ZERO);
         }
         if (tag.contains("key_item")) {
-            targetWorldId = ResourceLocation.parse(tag.getString("key_item"));
+            targetWorldId = ResourceLocation.parse(tag.getStringOr("key_item", ""));
         }
     }
 

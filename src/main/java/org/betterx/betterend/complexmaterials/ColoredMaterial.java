@@ -3,6 +3,7 @@ package org.betterx.betterend.complexmaterials;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.block.api.DefaultBlockDefinition;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.recipe.api.RecipeBuilder;
 import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
@@ -21,6 +22,7 @@ import com.google.common.collect.Maps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ColoredMaterial implements MaterialManager.Material {
@@ -29,7 +31,16 @@ public class ColoredMaterial implements MaterialManager.Material {
     private final Map<Integer, Block> colors = Maps.newHashMap();
 
     public ColoredMaterial(Function<BlockBehaviour.Properties, Block> constructor, Block source, boolean craftEight) {
-        this(constructor, source, COLORS, DYES, craftEight);
+        this(constructor, source, COLORS, DYES, craftEight, null);
+    }
+
+    public ColoredMaterial(
+            Function<BlockBehaviour.Properties, Block> constructor,
+            Block source,
+            boolean craftEight,
+            Consumer<DefaultBlockDefinition<Block>> customizer
+    ) {
+        this(constructor, source, COLORS, DYES, craftEight, customizer);
     }
 
     private List<MaterialManager.MaterialRecipe> RECIPES;
@@ -41,6 +52,17 @@ public class ColoredMaterial implements MaterialManager.Material {
             Map<Integer, ItemLike> dyes,
             boolean craftEight
     ) {
+        this(constructor, source, colors, dyes, craftEight, null);
+    }
+
+    public ColoredMaterial(
+            Function<BlockBehaviour.Properties, Block> constructor,
+            Block source,
+            Map<Integer, String> colors,
+            Map<Integer, ItemLike> dyes,
+            boolean craftEight,
+            Consumer<DefaultBlockDefinition<Block>> customizer
+    ) {
         if (ModCore.isDatagen()) {
             RECIPES = new ArrayList<>(colors.size());
             MaterialManager.register(this);
@@ -48,10 +70,13 @@ public class ColoredMaterial implements MaterialManager.Material {
         String id = BuiltInRegistries.BLOCK.getKey(source).getPath();
         colors.forEach((color, name) -> {
             String blockName = id + "_" + name;
-            Block block = constructor.apply(BlockBehaviour.Properties
-                    .ofFullCopy(source)
-                    .mapColor(MapColor.COLOR_BLACK));
-            EndBlocks.registerBlock(blockName, block);
+            DefaultBlockDefinition<Block> definition = EndBlocks.defineBlock(blockName, constructor)
+                                                                 .replacePropertiesWithCopy(source)
+                                                                 .mapColor(MapColor.COLOR_BLACK);
+            if (customizer != null) {
+                customizer.accept(definition);
+            }
+            Block block = definition.buildAndRegister();
             if (ModCore.isDatagen()) {
                 RECIPES.add(context -> {
                     if (craftEight) {

@@ -1,7 +1,5 @@
 package org.betterx.datagen.betterend.worldgen;
 
-import org.betterx.bclib.complexmaterials.set.stone.StoneSlots;
-import org.betterx.bclib.complexmaterials.set.wood.WoodSlots;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndProcessors;
@@ -9,6 +7,8 @@ import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.world.structures.village.VillagePools;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.multi.WoverStructureProvider;
+import org.betterx.wover.sets.api.blocks.slots.StoneSlots;
+import org.betterx.wover.sets.api.blocks.slots.WoodSlots;
 import org.betterx.wover.structure.api.sets.StructureSetManager;
 import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
@@ -307,7 +307,7 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .bootstrap(bootstapContext).startRule().add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.1f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED).defaultBlockState()
+                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState()
                 )).endRule().register();
 
         EndProcessors
@@ -315,7 +315,7 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .bootstrap(bootstapContext).startRule().add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.2f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED).defaultBlockState()
+                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED_SOURCE).defaultBlockState()
                 )).endRule().register();
 
         EndProcessors
@@ -324,12 +324,12 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.2f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED).defaultBlockState()
+                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED_SOURCE).defaultBlockState()
                 ))
                 .add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.1f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED).defaultBlockState()
+                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState()
                 ))
                 .endRule().register();
 
@@ -354,12 +354,12 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.2f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED).defaultBlockState()
+                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED_SOURCE).defaultBlockState()
                 ))
                 .add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.1f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED).defaultBlockState()
+                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState()
                 ))
                 .endRule().register();
     }

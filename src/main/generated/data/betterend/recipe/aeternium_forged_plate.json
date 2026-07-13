@@ -1,11 +1,9 @@
 {
   "type": "bclib:smithing",
   "allowedTools": "betterend:anvil_tool/netherite",
-  "anvilLevel": 5,
+  "anvilLevel": 4,
   "damage": 6,
-  "input": {
-    "item": "betterend:aeternium_ingot"
-  },
+  "input": "betterend:aeternium_ingot",
   "result": {
     "item": "betterend:aeternium_forged_plate"
   }

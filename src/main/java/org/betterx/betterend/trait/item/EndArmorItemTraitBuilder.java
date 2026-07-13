@@ -95,7 +95,7 @@ public class EndArmorItemTraitBuilder extends AbstractItemTraitBuilder.Generic {
         @Override
         public void configure(ItemDefinition<Item, ? extends ItemDefinition<Item, ?>> definition) {
             if (definition instanceof ArmorItemDefinition armorDefiniton) {
-                if (armorDefiniton.armorType() != null || armorDefiniton.material() != null) {
+                if (armorDefiniton.armorType() == null && armorDefiniton.material() == null) {
                     armorDefiniton.humanoidArmor(tier.armorMaterial, slot.armorType);
                 }
                 if (armorDefiniton.material() != tier.armorMaterial) {

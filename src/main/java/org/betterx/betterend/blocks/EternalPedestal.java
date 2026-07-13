@@ -13,22 +13,23 @@ import org.betterx.betterend.client.render.PedestalItemRenderer;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndPortals;
 import org.betterx.betterend.rituals.EternalRitual;
-import org.betterx.wover.block.api.model.BlockModelProvider;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.data.models.blockstates.Variant;
-import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.block.model.Variant;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +37,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -55,11 +57,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
-public class EternalPedestal extends PedestalBlock implements BehaviourStone, BlockModelProvider {
+public class EternalPedestal extends PedestalBlock implements BehaviourStone {
     public static final BooleanProperty ACTIVATED = EndBlockProperties.ACTIVE;
 
-    public EternalPedestal() {
-        super(EndBlocks.FLAVOLITE_RUNED_ETERNAL);
+    public EternalPedestal(ResourceKey<Block> blockKey) {
+        super(EndBlocks.FLAVOLITE_RUNED_ETERNAL, blockKey);
         this.registerDefaultState(defaultBlockState().setValue(ACTIVATED, false));
     }
 
@@ -106,16 +108,26 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
     }
 
     @Override
-    @Deprecated
-    public @NotNull BlockState updateShape(
+    protected @NotNull BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            Direction direction,
+            BlockPos posFrom,
+            BlockState newState,
+            RandomSource randomSource
     ) {
-        BlockState updated = super.updateShape(state, direction, newState, world, pos, posFrom);
+        BlockState updated = super.updateShape(
+                state,
+                world,
+                scheduledTickAccess,
+                pos,
+                direction,
+                posFrom,
+                newState,
+                randomSource
+        );
         if (!updated.is(this)) return updated;
         if (!this.isPlaceable(updated)) {
             return updated.setValue(ACTIVATED, false);
@@ -263,7 +275,7 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
         dispatchParticles(level, blockPos, randomSource);
     }
 
-    private static List<Variant> createVariants(
+    private static MultiVariant createVariants(
             WoverBlockModelGenerators generator,
             TextureMapping mapping,
             ResourceLocation modelLocation,
@@ -271,25 +283,19 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
             ResourceLocation textureLocation,
             int count
     ) {
-        final List<Variant> variants = new ArrayList<>(count);
+        final WeightedList.Builder<Variant> variants = WeightedList.builder();
 
         for (int i = 0; i < count; i++) {
             ResourceLocation topTexture = textureLocation.withSuffix("_" + (i + 1));
             mapping.put(TextureSlot.TOP, topTexture);
 
-            variants.add(Variant
-                    .variant()
-                    .with(
-                            VariantProperties.MODEL,
-                            template.create(modelLocation.withSuffix("_" + (i + 1)), mapping, generator.modelOutput())
-                    ));
+            variants.add(new Variant(template.create(modelLocation.withSuffix("_" + (i + 1)), mapping, generator.modelOutput())));
         }
-        return variants;
+        return new MultiVariant(variants.build());
     }
 
-    @Override
     @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
+    public void provideBlockModelsInstance(WoverBlockModelGenerators generator) {
         final ResourceLocation id = TextureMapping.getBlockTexture(this);
         final ResourceLocation baseTexture = BetterEnd.C.mk("block/flavolite_polished");
         final ResourceLocation pillarTexture = BetterEnd.C.mk("block/flavolite_pillar_side");
@@ -320,7 +326,7 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
         );
 
         final var properties = PropertyDispatch
-                .properties(STATE, ACTIVATED)
+                .initial(STATE, ACTIVATED)
                 .select(
                         EndBlockProperties.PedestalState.DEFAULT, false, createVariants(
                                 generator, mapping,
@@ -359,39 +365,38 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
                 )
                 .select(
                         EndBlockProperties.PedestalState.COLUMN, true,
-                        Variant.variant().with(VariantProperties.MODEL, column)
+                        new MultiVariant(WeightedList.of(new Variant(column)))
                 )
                 .select(
                         EndBlockProperties.PedestalState.COLUMN, false,
-                        Variant.variant().with(VariantProperties.MODEL, column)
+                        new MultiVariant(WeightedList.of(new Variant(column)))
                 )
                 .select(
                         EndBlockProperties.PedestalState.COLUMN_TOP, true,
-                        Variant.variant().with(VariantProperties.MODEL, top)
+                        new MultiVariant(WeightedList.of(new Variant(top)))
                 )
                 .select(
                         EndBlockProperties.PedestalState.COLUMN_TOP, false,
-                        Variant.variant().with(VariantProperties.MODEL, top)
+                        new MultiVariant(WeightedList.of(new Variant(top)))
                 )
                 .select(
                         EndBlockProperties.PedestalState.BOTTOM, true,
-                        Variant.variant().with(VariantProperties.MODEL, bottom)
+                        new MultiVariant(WeightedList.of(new Variant(bottom)))
                 )
                 .select(
                         EndBlockProperties.PedestalState.BOTTOM, false,
-                        Variant.variant().with(VariantProperties.MODEL, bottom)
+                        new MultiVariant(WeightedList.of(new Variant(bottom)))
                 )
                 .select(
                         EndBlockProperties.PedestalState.PILLAR, true,
-                        Variant.variant().with(VariantProperties.MODEL, pillar)
+                        new MultiVariant(WeightedList.of(new Variant(pillar)))
                 )
                 .select(
                         EndBlockProperties.PedestalState.PILLAR, false,
-                        Variant.variant().with(VariantProperties.MODEL, pillar)
+                        new MultiVariant(WeightedList.of(new Variant(pillar)))
                 );
-        ;
 
-        generator.acceptBlockState(MultiVariantGenerator.multiVariant(this).with(properties));
+        generator.acceptBlockState(MultiVariantGenerator.dispatch(this).with(properties));
         generator.delegateItemModel(this, id.withSuffix("_default_1"));
     }
 }

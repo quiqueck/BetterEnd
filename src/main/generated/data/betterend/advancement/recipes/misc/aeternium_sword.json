@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item.betterend.tool_assembly_smithing_template": {
+    "has_item.betterend.tool_assembly": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_item.betterend.tool_assembly_smithing_template"
+      "has_item.betterend.tool_assembly"
     ]
   ],
   "rewards": {

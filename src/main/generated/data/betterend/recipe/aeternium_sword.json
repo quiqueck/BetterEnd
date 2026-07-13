@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "betterend:aeternium_sword_handle"
-  },
-  "base": {
-    "item": "betterend:aeternium_sword_blade"
-  },
+  "addition": "betterend:aeternium_sword_handle",
+  "base": "betterend:aeternium_sword_blade",
   "result": {
-    "count": 1,
     "id": "betterend:aeternium_sword"
   },
-  "template": {
-    "item": "betterend:tool_assembly_smithing_template"
-  }
+  "template": "betterend:tool_assembly_smithing_template"
 }

@@ -1,9 +1,7 @@
 package org.betterx.betterend.entity.model;
 
-import org.betterx.betterend.entity.DragonflyEntity;
+import org.betterx.betterend.entity.render.state.DragonflyRenderState;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
@@ -14,7 +12,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
-public class DragonflyEntityModel extends EntityModel<DragonflyEntity> {
+public class DragonflyEntityModel extends EntityModel<DragonflyRenderState> {
     private final ModelPart model;
     private final ModelPart head;
     private final ModelPart tail;
@@ -94,7 +92,7 @@ public class DragonflyEntityModel extends EntityModel<DragonflyEntity> {
     }
 
     public DragonflyEntityModel(ModelPart modelPart) {
-        super(RenderType::entityCutout);
+        super(modelPart, RenderType::entityCutout);
 
         model = modelPart.getChild(PartNames.BODY);
         head = model.getChild(PartNames.HEAD);
@@ -109,15 +107,8 @@ public class DragonflyEntityModel extends EntityModel<DragonflyEntity> {
     }
 
     @Override
-    public void setupAnim(
-            DragonflyEntity entity,
-            float limbAngle,
-            float limbDistance,
-            float animationProgress,
-            float headYaw,
-            float headPitch
-    ) {
-        float progress = animationProgress * 2F;
+    public void setupAnim(DragonflyRenderState state) {
+        float progress = state.ageInTicks * 2F;
 
         wing_1.zRot = 0.3491F + (float) Math.sin(progress) * 0.3491F;
         wing_2.zRot = -wing_1.zRot;
@@ -125,21 +116,10 @@ public class DragonflyEntityModel extends EntityModel<DragonflyEntity> {
         wing_3.zRot = 0.3491F + (float) Math.cos(progress) * 0.3491F;
         wing_4.zRot = -wing_3.zRot;
 
-        progress = animationProgress * 0.05F;
+        progress = state.ageInTicks * 0.05F;
 
         head.xRot = 0.3491F + (float) Math.sin(progress * 0.7F) * 0.1F;
         tail.xRot = (float) Math.cos(progress) * 0.05F - 0.05F;
         tail_2.xRot = -tail.xRot * 1.5F;
-    }
-
-    @Override
-    public void renderToBuffer(
-            PoseStack matrices,
-            VertexConsumer vertices,
-            int light,
-            int overlay,
-            int color
-    ) {
-        model.render(matrices, vertices, light, overlay);
     }
 }

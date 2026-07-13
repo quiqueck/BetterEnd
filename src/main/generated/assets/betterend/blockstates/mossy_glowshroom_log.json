@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "betterend:block/mossy_glowshroom_log",
+      "model": "betterend:block/mossy_glowshroom_log_horizontal",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "betterend:block/mossy_glowshroom_log"
     },
     "axis=z": {
-      "model": "betterend:block/mossy_glowshroom_log",
+      "model": "betterend:block/mossy_glowshroom_log_horizontal",
       "x": 90
     }
   }

@@ -52,17 +52,11 @@
   "has_caves": false,
   "surface": {
     "alt": {
-      "Name": "betterend:cave_moss",
-      "Properties": {
-        "shape": "bottom"
-      }
+      "Name": "betterend:cave_moss"
     },
     "floor_rule": true,
     "top": {
-      "Name": "betterend:cave_moss",
-      "Properties": {
-        "shape": "bottom"
-      }
+      "Name": "betterend:cave_moss"
     },
     "under": {
       "Name": "minecraft:end_stone"

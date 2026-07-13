@@ -1,7 +1,0 @@
-{
-  "parent": "bclib:block/bar_stool",
-  "textures": {
-    "cloth": "minecraft:block/purple_wool",
-    "texture": "betterend:block/jellyshroom_planks"
-  }
-}

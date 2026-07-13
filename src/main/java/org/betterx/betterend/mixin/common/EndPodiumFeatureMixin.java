@@ -8,7 +8,6 @@ import org.betterx.wover.state.api.WorldConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -79,7 +78,7 @@ public class EndPodiumFeatureMixin {
     @Unique
     private BlockPos be_updatePortalPos(WorldGenLevel world) {
         CompoundTag compound = WorldConfig.getRootTag(BetterEnd.C);
-        be_portalPosition = NbtUtils.readBlockPos(compound, "portal").orElse(new BlockPos(0, 0, 0));
+        be_portalPosition = compound.read("portal", BlockPos.CODEC).orElse(new BlockPos(0, 0, 0));
 
         if (be_portalPosition.getY() == 0) {
 			/*if (GeneratorOptions.useNewGenerator()) {
@@ -91,7 +90,7 @@ public class EndPodiumFeatureMixin {
 			}*/
             int y = world.getHeight(Types.WORLD_SURFACE, 0, 0);
             be_portalPosition = new BlockPos(0, y, 0);
-            WorldConfig.getRootTag(BetterEnd.C).put("portal", NbtUtils.writeBlockPos(be_portalPosition));
+            WorldConfig.getRootTag(BetterEnd.C).store("portal", BlockPos.CODEC, be_portalPosition);
             WorldConfig.saveFile(BetterEnd.C);
         }
 

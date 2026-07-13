@@ -1,21 +1,23 @@
 package org.betterx.betterend.item;
 
-import org.betterx.bclib.interfaces.ItemModelProvider;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.item.material.EndArmorTier;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.complex.api.equipment.ArmorSlot;
 import org.betterx.wover.complex.api.equipment.ArmorTier;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.Equippable;
 
-public class EndArmorItem extends ArmorItem implements ItemModelProvider {
+public class EndArmorItem extends Item {
     public static final ResourceLocation BASE_BLINDNESS_RESISTANCE = BetterEnd.C.mk("base_blindness_resistance");
     public static final ResourceLocation BASE_KNOCKBACK_RESISTANCE = BetterEnd.C.mk("base_knockback_resistance");
     public static final ResourceLocation MAX_HEALTH_BOOST = BetterEnd.C.mk("max_health_boost");
@@ -38,10 +40,9 @@ public class EndArmorItem extends ArmorItem implements ItemModelProvider {
         return startAttributeBuilder(
                 slot, tier,
                 EndArmorTier.CRYSTALITE.armorMaterial
-                        .value()
-                        .getDefense(slot.armorType),
+                        .defense()
+                        .getOrDefault(slot.armorType, 0),
                 EndArmorTier.CRYSTALITE.armorMaterial
-                        .value()
                         .toughness(),
                 0.0f
         );
@@ -61,8 +62,8 @@ public class EndArmorItem extends ArmorItem implements ItemModelProvider {
                         new AttributeModifier(
                                 ARMOR_BOOST,
                                 tier.armorMaterial
-                                        .value()
-                                        .getDefense(Type.CHESTPLATE) / 1.25f,
+                                        .defense()
+                                        .getOrDefault(ArmorType.CHESTPLATE, 0) / 1.25f,
                                 AttributeModifier.Operation.ADD_VALUE
                         ),
                         EquipmentSlotGroup.CHEST
@@ -72,7 +73,6 @@ public class EndArmorItem extends ArmorItem implements ItemModelProvider {
                         new AttributeModifier(
                                 TOUGHNESS_BOOST,
                                 EndArmorTier.CRYSTALITE.armorMaterial
-                                        .value()
                                         .toughness() / 1.25f,
                                 AttributeModifier.Operation.ADD_VALUE
                         ),
@@ -109,6 +109,12 @@ public class EndArmorItem extends ArmorItem implements ItemModelProvider {
     }
 
     public EndArmorItem(ArmorTier tier, ArmorSlot slot, Properties settings) {
-        super(tier.armorMaterial, slot.armorType, settings);
+        super(settings.component(
+                DataComponents.EQUIPPABLE,
+                Equippable.builder(slot.armorType.getSlot())
+                          .setEquipSound(tier.armorMaterial.equipSound())
+                          .setAsset(tier.armorMaterial.assetId())
+                          .build()
+        ));
     }
 }

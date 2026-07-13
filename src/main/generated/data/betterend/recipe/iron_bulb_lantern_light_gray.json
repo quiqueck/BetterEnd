@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:iron_bulb_lantern"
-    },
-    {
-      "item": "minecraft:light_gray_dye"
-    }
+    "betterend:iron_bulb_lantern",
+    "minecraft:light_gray_dye"
   ],
   "result": {
     "count": 1,

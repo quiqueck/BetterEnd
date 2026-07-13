@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "C": {
-      "item": "minecraft:iron_block"
-    },
-    "S": {
-      "item": "betterend:tool_assembly_smithing_template"
-    }
+    "#": "minecraft:stick",
+    "C": "minecraft:iron_block",
+    "S": "betterend:tool_assembly_smithing_template"
   },
   "pattern": [
     "#S#",

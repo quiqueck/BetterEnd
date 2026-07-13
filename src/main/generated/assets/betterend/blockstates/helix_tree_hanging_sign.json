@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "betterend:block/helix_tree_planks_particles"
+      "model": "betterend:block/helix_tree_stripped_log_particles"
     }
   }
 }

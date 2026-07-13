@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:charcoal_block"
-    }
+    "betterend:charcoal_block"
   ],
   "result": {
     "count": 9,

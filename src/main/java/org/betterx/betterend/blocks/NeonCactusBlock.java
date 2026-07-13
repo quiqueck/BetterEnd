@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class NeonCactusBlock extends LitPillarBlock {
-    public NeonCactusBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).lightLevel((bs) -> 15));
+    public NeonCactusBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 }

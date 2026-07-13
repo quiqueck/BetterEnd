@@ -6,13 +6,9 @@ import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndParticles;
-import org.betterx.wover.loot.api.BlockLootProvider;
-import org.betterx.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -20,11 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootTable;
 
-import org.jetbrains.annotations.NotNull;
-
-public class AncientEmeraldIceBlock extends BaseBlock implements BehaviourIce, BlockLootProvider {
+public class AncientEmeraldIceBlock extends BaseBlock implements BehaviourIce {
     public AncientEmeraldIceBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -68,15 +61,6 @@ public class AncientEmeraldIceBlock extends BaseBlock implements BehaviourIce, B
                 0.5,
                 0
         );
-    }
-
-    @Override
-    public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
-            @NotNull LootLookupProvider provider,
-            @NotNull ResourceKey<LootTable> tableKey
-    ) {
-        return provider.dropWithSilkTouch(this);
     }
 
     @Override

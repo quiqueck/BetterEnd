@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "end_metal_doors",
+  "category": "redstone",
+  "group": "door",
   "key": {
-    "#": {
-      "item": "betterend:thallasium_ingot"
-    }
+    "#": "betterend:thallasium_block"
   },
   "pattern": [
     "##",

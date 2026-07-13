@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:neon_cactus_block"
-    }
+    "#": "betterend:neon_cactus_block"
   },
   "pattern": [
     "###"

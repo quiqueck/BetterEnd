@@ -5,13 +5,13 @@ import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.entities.InfusionPedestalEntity;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.betterend.rituals.InfusionRitual;
-import org.betterx.wover.block.api.model.BlockModelProvider;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -33,12 +33,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class InfusionPedestal extends PedestalBlock implements BehaviourStone, BlockModelProvider {
+public class InfusionPedestal extends PedestalBlock implements BehaviourStone {
     private static final VoxelShape SHAPE_DEFAULT;
     private static final VoxelShape SHAPE_PEDESTAL_TOP;
 
-    public InfusionPedestal() {
-        super(Blocks.OBSIDIAN);
+    public InfusionPedestal(ResourceKey<Block> blockKey) {
+        super(Blocks.OBSIDIAN, blockKey);
         this.height = 1.08F;
     }
 
@@ -117,9 +117,8 @@ public class InfusionPedestal extends PedestalBlock implements BehaviourStone, B
                 .put(EndModels.PILLAR, parentTexture.withSuffix("_pillar"));
     }
 
-    @Override
     @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
+    public void provideBlockModelsInstance(WoverBlockModelGenerators generator) {
         provideBlockModel(generator, createTextureMapping(), this, PEDESTAL_MODELS);
     }
 

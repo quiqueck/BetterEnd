@@ -1,7 +1,7 @@
 {
   "parent": "bclib:block/path",
   "textures": {
-    "bottom": "minecraft:block/end_stone",
+    "bottom": "betterend:block/sangnum",
     "side": "betterend:block/sangnum_side",
     "top": "betterend:block/sangnum_path_top"
   }

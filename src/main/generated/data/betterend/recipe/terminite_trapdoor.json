@@ -1,18 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "end_metal_trapdoors",
+  "category": "redstone",
+  "group": "trapdoor",
   "key": {
-    "#": {
-      "item": "betterend:terminite_ingot"
-    }
+    "#": "betterend:terminite_block"
   },
   "pattern": [
-    "##",
-    "##"
+    "###",
+    "###"
   ],
   "result": {
-    "count": 1,
+    "count": 2,
     "id": "betterend:terminite_trapdoor"
   }
 }

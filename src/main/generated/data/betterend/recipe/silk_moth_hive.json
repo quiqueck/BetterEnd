@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:tenanea_planks"
-    },
-    "L": {
-      "item": "betterend:tenanea_leaves"
-    },
-    "M": {
-      "item": "betterend:silk_moth_matrix"
-    }
+    "#": "betterend:tenanea_planks",
+    "L": "betterend:tenanea_leaves",
+    "M": "betterend:silk_moth_matrix"
   },
   "pattern": [
     "#L#",

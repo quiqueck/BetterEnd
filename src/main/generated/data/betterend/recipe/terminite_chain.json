@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "end_metal_chain",
   "key": {
-    "#": {
-      "item": "betterend:terminite_ingot"
-    },
-    "N": {
-      "item": "betterend:terminite_nugget"
-    }
+    "#": "betterend:terminite_ingot",
+    "N": "betterend:terminite_nugget"
   },
   "pattern": [
     "N",

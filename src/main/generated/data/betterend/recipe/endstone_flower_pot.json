@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_pots",
   "key": {
-    "#": {
-      "item": "minecraft:end_stone_bricks"
-    }
+    "#": "minecraft:end_stone_bricks"
   },
   "pattern": [
     "# #",
@@ -13,6 +11,6 @@
   ],
   "result": {
     "count": 3,
-    "id": "betterend:endstone_flower_pot"
+    "id": "betterend:end_stone_flower_pot"
   }
 }

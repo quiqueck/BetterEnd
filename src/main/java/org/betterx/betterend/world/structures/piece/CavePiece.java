@@ -10,7 +10,6 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -93,14 +92,14 @@ public class CavePiece extends BasePiece {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.put("center", NbtUtils.writeBlockPos(center));
+        tag.store("center", BlockPos.CODEC, center);
         tag.putFloat("radius", radius);
     }
 
     @Override
     protected void fromNbt(CompoundTag tag) {
-        center = NbtUtils.readBlockPos(tag, "center").orElse(BlockPos.ZERO);
-        radius = tag.getFloat("radius");
+        center = tag.read("center", BlockPos.CODEC).orElse(BlockPos.ZERO);
+        radius = tag.getFloatOr("radius", 0);
         noise = new OpenSimplexNoise(MHelper.getSeed(534, center.getX(), center.getZ()));
     }
 

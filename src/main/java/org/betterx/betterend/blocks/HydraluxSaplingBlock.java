@@ -17,11 +17,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
 public class HydraluxSaplingBlock extends UnderwaterPlantWithAgeBlock implements BehaviourWaterPlantSapling, SurvivesOnSulphuricRock {
+    public HydraluxSaplingBlock(BlockBehaviour.Properties props) {
+        super(props);
+    }
 
     @Override
     public void grow(WorldGenLevel world, RandomSource random, BlockPos pos) {
@@ -80,17 +84,5 @@ public class HydraluxSaplingBlock extends UnderwaterPlantWithAgeBlock implements
     @Override
     public boolean isTerrain(BlockState state) {
         return SurvivesOnSulphuricRock.super.isTerrain(state);
-    }
-
-
-    @Override
-    public void appendHoverText(
-            ItemStack itemStack,
-            Item.TooltipContext tooltipContext,
-            List<Component> list,
-            TooltipFlag tooltipFlag
-    ) {
-        super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
-        SurvivesOnSpecialGround.appendHoverTextUnderwaterInDepth(list, 5);
     }
 }

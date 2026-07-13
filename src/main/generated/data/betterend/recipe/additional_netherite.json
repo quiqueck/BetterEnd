@@ -2,12 +2,8 @@
   "type": "bclib:alloying",
   "experience": 6.0,
   "ingredients": [
-    {
-      "item": "minecraft:ancient_debris"
-    },
-    {
-      "item": "minecraft:ancient_debris"
-    }
+    "minecraft:ancient_debris",
+    "minecraft:ancient_debris"
   ],
   "result": {
     "count": 3,

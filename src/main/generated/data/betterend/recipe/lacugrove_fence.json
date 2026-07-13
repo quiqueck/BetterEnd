@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "fence",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_planks"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:lacugrove_planks",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "#I#",

@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "chest",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_planks"
-    }
+    "#": "betterend:lacugrove_planks"
   },
   "pattern": [
     "###",

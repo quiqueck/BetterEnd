@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_small_tile",
   "key": {
-    "#": {
-      "item": "betterend:smaragdant_crystal_polished"
-    }
+    "#": "betterend:smaragdant_crystal_polished"
   },
   "pattern": [
     "##",

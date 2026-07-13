@@ -23,7 +23,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "betterend:blue_vine"
         }
       ],
       "rolls": 1.0

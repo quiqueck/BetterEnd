@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:needlegrass"
-    }
+    "betterend:needlegrass"
   ],
   "result": {
     "count": 2,

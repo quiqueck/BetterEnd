@@ -11,14 +11,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_sulphuric_rock_slab_sulphuric_rock_bri": {
+    "has_sulphuric_rock_slab": {
       "conditions": {
         "items": [
           {
             "items": "betterend:sulphuric_rock_slab"
-          },
-          {
-            "items": "betterend:sulphuric_rock_bricks_slab"
           }
         ]
       },
@@ -34,7 +31,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_sulphuric_rock_slab_sulphuric_rock_bri",
+      "has_sulphuric_rock_slab",
       "has_crystal_shards"
     ]
   ],

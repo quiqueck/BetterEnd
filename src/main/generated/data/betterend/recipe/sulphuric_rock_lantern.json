@@ -3,17 +3,8 @@
   "category": "misc",
   "group": "end_stone_lanterns",
   "key": {
-    "#": {
-      "item": "betterend:crystal_shards"
-    },
-    "S": [
-      {
-        "item": "betterend:sulphuric_rock_slab"
-      },
-      {
-        "item": "betterend:sulphuric_rock_bricks_slab"
-      }
-    ]
+    "#": "betterend:crystal_shards",
+    "S": "betterend:sulphuric_rock_slab"
   },
   "pattern": [
     "S",

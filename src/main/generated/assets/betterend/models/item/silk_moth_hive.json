@@ -1,3 +1,6 @@
 {
-  "parent": "betterend:block/silk_moth_hive"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/silk_moth_hive"
+  }
 }

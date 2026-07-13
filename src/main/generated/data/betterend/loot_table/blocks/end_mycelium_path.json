@@ -40,7 +40,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "minecraft:end_stone"
+              "name": "betterend:end_mycelium"
             }
           ]
         }

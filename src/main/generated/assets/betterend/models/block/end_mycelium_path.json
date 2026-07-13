@@ -1,7 +1,7 @@
 {
   "parent": "bclib:block/path",
   "textures": {
-    "bottom": "minecraft:block/end_stone",
+    "bottom": "betterend:block/end_mycelium",
     "side": "betterend:block/end_mycelium_side",
     "top": "betterend:block/end_mycelium_path_top"
   }

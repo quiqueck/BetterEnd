@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "chest",
   "key": {
-    "#": {
-      "item": "betterend:jellyshroom_planks"
-    }
+    "#": "betterend:jellyshroom_planks"
   },
   "pattern": [
     "###",

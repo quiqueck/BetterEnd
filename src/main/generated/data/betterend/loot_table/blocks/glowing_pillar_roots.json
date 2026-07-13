@@ -23,7 +23,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "betterend:glowing_pillar_roots"
         }
       ],
       "rolls": 1.0

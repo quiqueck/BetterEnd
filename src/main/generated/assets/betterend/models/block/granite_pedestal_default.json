@@ -1,9 +1,9 @@
 {
   "parent": "betterend:block/pedestal_default",
   "textures": {
-    "base": "minecraft:block/polished_granite",
-    "bottom": "minecraft:block/polished_granite",
-    "pillar": "betterend:block/granite_pillar",
-    "top": "minecraft:block/polished_granite"
+    "base": "betterend:block/granite_polished",
+    "bottom": "betterend:block/granite_polished",
+    "pillar": "betterend:block/granite_pillar_side",
+    "top": "betterend:block/granite_polished"
   }
 }

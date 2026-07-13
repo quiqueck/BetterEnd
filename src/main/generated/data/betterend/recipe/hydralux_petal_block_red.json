@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:hydralux_petal_block"
-    },
-    "D": {
-      "item": "minecraft:red_dye"
-    }
+    "#": "betterend:hydralux_petal_block",
+    "D": "minecraft:red_dye"
   },
   "pattern": [
     "###",

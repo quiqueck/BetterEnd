@@ -27,6 +27,7 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -79,13 +80,21 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
     protected float height = 1.0F;
 
     public PedestalBlock(BlockBehaviour.Properties props) {
-        super(BlockBehaviour.Properties.ofFullCopy(parent).lightLevel(getLuminance(parent.defaultBlockState())));
+        super(props);
         this.registerDefaultState(
                 stateDefinition
                         .any()
                         .setValue(STATE, PedestalState.DEFAULT)
                         .setValue(HAS_ITEM, false)
                         .setValue(HAS_LIGHT, false)
+        );
+    }
+
+    public PedestalBlock(Block parent, ResourceKey<Block> blockKey) {
+        this(
+                BlockBehaviour.Properties.ofFullCopy(parent)
+                        .setId(blockKey)
+                        .lightLevel(getLuminance(parent.defaultBlockState()))
         );
     }
 
@@ -204,7 +213,16 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
             BlockState newState,
             RandomSource randomSource
     ) {
-        BlockState updated = getUpdatedState(state, direction, newState, world, pos, posFrom);
+        BlockState updated = getUpdatedState(
+                state,
+                direction,
+                newState,
+                world,
+                scheduledTickAccess,
+                pos,
+                posFrom,
+                randomSource
+        );
         if (!updated.is(this)) return updated;
         if (!isPlaceable(updated)) {
             moveStoredStack(world, updated, pos);
@@ -217,10 +235,14 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
             Direction direction,
             BlockState newState,
             LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            BlockPos posFrom,
+            RandomSource randomSource
     ) {
-        if (!state.is(this)) return state.updateShape(direction, newState, world, pos, posFrom);
+        if (!state.is(this)) {
+            return state.updateShape(world, scheduledTickAccess, pos, direction, posFrom, newState, randomSource);
+        }
         if (direction != Direction.UP && direction != Direction.DOWN) return state;
         BlockState upState = world.getBlockState(pos.above());
         BlockState downState = world.getBlockState(pos.below());
@@ -402,18 +424,10 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
     ) {
         final ResourceLocation id = TextureMapping.getBlockTexture(pedestalBlock);
 
-        // Get the first model as default for dispatch
-        final var firstEntry = pedestalModels.entrySet().iterator().next();
-        final ResourceLocation defaultModel = firstEntry
-                .getValue()
-                .createWithSuffix(
-                        pedestalBlock,
-                        "_" + firstEntry.getKey(),
-                        mapping,
-                        generator.vanillaGenerator.modelOutput
-                );
-
         var properties = PropertyDispatch.modify(STATE);
+        // The first model built also serves as the default for dispatch - build each model
+        // exactly once, since generator.vanillaGenerator.modelOutput rejects duplicates.
+        ResourceLocation defaultModel = null;
 
         for (var entry : pedestalModels.entrySet()) {
             final String suffix = "_" + entry.getKey();
@@ -421,6 +435,9 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
                     .getValue()
                     .createWithSuffix(pedestalBlock, suffix, mapping, generator.vanillaGenerator.modelOutput);
             properties = properties.select(entry.getKey(), (variant) -> BlockModelGenerators.plainModel(model));
+            if (defaultModel == null) {
+                defaultModel = model;
+            }
         }
 
         generator.acceptBlockState(MultiVariantGenerator

@@ -1,8 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourWaterPlant;
-import org.betterx.bclib.interfaces.tools.AddMineableShears;
 import org.betterx.betterend.blocks.basis.EndUnderwaterPlantBlock;
 import org.betterx.betterend.interfaces.survives.SurvivesOnEndStone;
 
@@ -13,7 +11,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -22,16 +19,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class BubbleCoralBlock extends EndUnderwaterPlantBlock implements BehaviourWaterPlant, AddMineableShears, SurvivesOnEndStone {
+public class BubbleCoralBlock extends EndUnderwaterPlantBlock implements BehaviourWaterPlant, SurvivesOnEndStone {
 
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 14, 16);
 
-    public BubbleCoralBlock() {
-        super(BehaviourBuilders
-                .createWaterPlant()
-                .sound(SoundType.CORAL_BLOCK)
-                .offsetType(BlockBehaviour.OffsetType.NONE)
-        );
+    public BubbleCoralBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Environment(EnvType.CLIENT)

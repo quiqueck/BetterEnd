@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:dragon_bone_block"
-    }
+    "#": "betterend:dragon_bone_block"
   },
   "pattern": [
     "#  ",

@@ -3,20 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    [
-      {
-        "item": "betterend:dragon_tree_log"
-      },
-      {
-        "item": "betterend:dragon_tree_bark"
-      },
-      {
-        "item": "betterend:dragon_tree_stripped_log"
-      },
-      {
-        "item": "betterend:dragon_tree_stripped_bark"
-      }
-    ]
+    "#betterend:dragon_tree_logs"
   ],
   "result": {
     "count": 4,

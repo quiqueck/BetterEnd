@@ -1,23 +1,24 @@
 package org.betterx.betterend.item.model;
 
-import org.betterx.bclib.client.render.HumanoidArmorRenderer;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndItems;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 
-import org.jetbrains.annotations.NotNull;
-
 @Environment(EnvType.CLIENT)
-public class CrystaliteArmorRenderer extends HumanoidArmorRenderer {
+public class CrystaliteArmorRenderer implements ArmorRenderer {
     private final static ResourceLocation FIRST_LAYER = BetterEnd.C.mk(
             "textures/models/armor/crystalite_layer_1.png");
     private final static ResourceLocation SECOND_LAYER = BetterEnd.C.mk(
@@ -43,24 +44,75 @@ public class CrystaliteArmorRenderer extends HumanoidArmorRenderer {
         }
     }
 
-    @NotNull
-    @Override
-    protected ResourceLocation getTextureForSlot(EquipmentSlot slot, boolean innerLayer) {
+    private ResourceLocation getTextureForSlot(boolean innerLayer) {
         return innerLayer ? SECOND_LAYER : FIRST_LAYER;
     }
 
-    @Override
-    protected HumanoidModel<LivingEntity> getModelForSlot(LivingEntity entity, EquipmentSlot slot) {
+    private HumanoidModel<HumanoidRenderState> getModelForSlot(HumanoidRenderState renderState, EquipmentSlot slot) {
         if (slot == EquipmentSlot.HEAD) return HELMET_MODEL;
         if (slot == EquipmentSlot.LEGS) return LEGGINGS_MODEL;
         if (slot == EquipmentSlot.FEET) return BOOTS_MODEL;
         if (slot == EquipmentSlot.CHEST) {
-            if (entity instanceof AbstractClientPlayer acp && acp.getSkin().model().id().equals("slim")) {
+            if (renderState instanceof PlayerRenderState playerRenderState
+                    && playerRenderState.skin.model() == PlayerSkin.Model.SLIM) {
                 return CHEST_MODEL_SLIM;
             } else {
                 return CHEST_MODEL;
             }
         }
         return null;
+    }
+
+    private void setPartVisibility(HumanoidModel<HumanoidRenderState> model, EquipmentSlot slot) {
+        model.setAllVisible(false);
+        switch (slot) {
+            case HEAD -> {
+                model.head.visible = true;
+                model.hat.visible = true;
+            }
+            case CHEST -> {
+                model.body.visible = true;
+                model.rightArm.visible = true;
+                model.leftArm.visible = true;
+            }
+            case LEGS -> {
+                model.body.visible = true;
+                model.rightLeg.visible = true;
+                model.leftLeg.visible = true;
+            }
+            case FEET -> {
+                model.rightLeg.visible = true;
+                model.leftLeg.visible = true;
+            }
+            default -> {
+            }
+        }
+    }
+
+    @Override
+    public void render(
+            PoseStack matrices,
+            MultiBufferSource vertexConsumers,
+            ItemStack stack,
+            HumanoidRenderState renderState,
+            EquipmentSlot slot,
+            int light,
+            HumanoidModel<HumanoidRenderState> contextModel
+    ) {
+        HumanoidModel<HumanoidRenderState> model = getModelForSlot(renderState, slot);
+        if (model == null) return;
+
+        contextModel.copyPropertiesTo(model);
+        if (model instanceof CopyExtraState copyExtraState) {
+            copyExtraState.copyExtraState();
+        }
+        setPartVisibility(model, slot);
+
+        ArmorRenderer.renderPart(matrices, vertexConsumers, light, stack, model, getTextureForSlot(false));
+        ArmorRenderer.renderPart(matrices, vertexConsumers, light, stack, model, getTextureForSlot(true));
+    }
+
+    public interface CopyExtraState {
+        void copyExtraState();
     }
 }

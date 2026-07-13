@@ -24,7 +24,6 @@ public class EndEntitiesRenders {
     public static final ModelLayerLocation SILK_MOTH_MODEL = registerMain("silkmoth");
     public static final ModelLayerLocation TEST_MODEL = registerMain("test");
 
-    public static final ModelLayerLocation ARMORED_ELYTRA = registerMain("armored_elytra");
     public static final ModelLayerLocation CRYSTALITE_CHESTPLATE = registerMain("crystalite_chestplate");
     public static final ModelLayerLocation CRYSTALITE_CHESTPLATE_THIN = registerMain("crystalite_chestplate_thin");
     public static final ModelLayerLocation CRYSTALITE_HELMET = registerMain("crystalite_helmet");
@@ -49,7 +48,6 @@ public class EndEntitiesRenders {
         EntityModelLayerRegistry.registerModelLayer(CUBOZOA_MODEL, CubozoaEntityModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(SILK_MOTH_MODEL, SilkMothEntityModel::getTexturedModelData);
 
-        EntityModelLayerRegistry.registerModelLayer(ARMORED_ELYTRA, ArmoredElytraModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(
                 CRYSTALITE_CHESTPLATE,
                 CrystaliteChestplateModel::getRegularTexturedModelData

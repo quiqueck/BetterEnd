@@ -1,8 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourSeed;
-import org.betterx.bclib.interfaces.tools.AddMineableShears;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
@@ -17,20 +15,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.MapColor;
 
-public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock implements AddMineableShears, SurvivesOnAmberMoss, BehaviourSeed {
-
-    public GlowingPillarSeedBlock() {
-        super(BehaviourBuilders
-                .createSeed(MapColor.COLOR_ORANGE)
-                .sound(SoundType.GRASS)
-                .lightLevel(state -> state.getValue(AGE) * 3 + 3)
-                .offsetType(OffsetType.XZ)
-                .randomTicks()
-        );
+public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock implements SurvivesOnAmberMoss, BehaviourSeed {
+    public GlowingPillarSeedBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_sandy_jadestone_bricks": {
+    "has_sandy_jadestone_brick": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:sandy_jadestone_bricks"
+            "items": "betterend:sandy_jadestone_brick"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_sandy_jadestone_bricks"
+      "has_sandy_jadestone_brick"
     ]
   ],
   "rewards": {

@@ -34,15 +34,14 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "findRespawnAndUseSpawnBlock", at = @At(value = "HEAD"), cancellable = true)
     private static void be_findRespawnAndUseSpawnBlock(
             ServerLevel world,
-            BlockPos pos,
-            float angle,
-            boolean bl,
+            ServerPlayer.RespawnConfig config,
             boolean bl2,
             CallbackInfoReturnable<Optional<ServerPlayer.RespawnPosAngle>> info
     ) {
+        BlockPos pos = config.pos();
         BlockState blockState = world.getBlockState(pos);
         if (blockState.is(EndBlocks.RESPAWN_OBELISK)) {
-            info.setReturnValue(be_obeliskRespawnPosition(world, pos, angle, blockState));
+            info.setReturnValue(be_obeliskRespawnPosition(world, pos, config.angle(), blockState));
             info.cancel();
         }
     }

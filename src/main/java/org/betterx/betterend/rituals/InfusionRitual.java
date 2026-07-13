@@ -85,10 +85,11 @@ public class InfusionRitual implements Container {
 
     public boolean checkRecipe() {
         if (!isValid()) return false;
-        RecipeHolder<InfusionRecipe> recipe = world
-                .getRecipeManager()
-                .getRecipeFor(InfusionRecipe.TYPE, new InfusionInput(), world)
-                .orElse(null);
+        RecipeHolder<InfusionRecipe> recipe = world instanceof net.minecraft.server.level.ServerLevel serverLevel
+                ? serverLevel.recipeAccess()
+                            .getRecipeFor(InfusionRecipe.TYPE, new InfusionInput(), serverLevel)
+                            .orElse(null)
+                : null;
         if (hasRecipe()) {
             if (recipe == null) {
                 reset();
@@ -261,9 +262,9 @@ public class InfusionRitual implements Container {
 
     public void fromTag(CompoundTag tag) {
         if (tag.contains("recipe")) {
-            hasRecipe = tag.getBoolean("recipe");
-            progress = tag.getInt("progress");
-            time = tag.getInt("time");
+            hasRecipe = tag.getBooleanOr("recipe", false);
+            progress = tag.getIntOr("progress", 0);
+            time = tag.getIntOr("time", 0);
         }
     }
 

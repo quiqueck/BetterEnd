@@ -4,16 +4,10 @@
   "group": "end_metal_anvil",
   "key": {
     "#": [
-      {
-        "item": "betterend:terminite_block"
-      },
-      {
-        "item": "betterend:terminite_tile"
-      }
+      "betterend:terminite_block",
+      "betterend:terminite_tile"
     ],
-    "I": {
-      "item": "betterend:terminite_ingot"
-    }
+    "I": "betterend:terminite_ingot"
   },
   "pattern": [
     "###",

@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:end_lily_leaf"
-  },
+  "ingredient": "betterend:end_lily_leaf",
   "result": {
     "id": "betterend:end_lily_leaf_dried"
   }

@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:helix_tree_planks"
-    },
-    "S": {
-      "item": "betterend:helix_tree_slab"
-    }
+    "#": "betterend:helix_tree_planks",
+    "S": "betterend:helix_tree_slab"
   },
   "pattern": [
     "#S#",

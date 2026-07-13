@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "betterend:block/jellyshroom_planks_particles"
+      "model": "betterend:block/jellyshroom_stripped_log_particles"
     }
   }
 }

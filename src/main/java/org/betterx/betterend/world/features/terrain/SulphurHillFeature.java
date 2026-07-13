@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.bclib.util.BlocksHelper;
@@ -47,7 +49,7 @@ public class SulphurHillFeature extends DefaultFeature {
         int min = -radius - 3;
         int max = radius + 4;
         MutableBlockPos mut = new MutableBlockPos();
-        BlockState rock = EndBlocks.SULPHURIC_ROCK.stone.defaultBlockState();
+        BlockState rock = EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE).defaultBlockState();
         BlockState brimstone = EndBlocks.BRIMSTONE.defaultBlockState().setValue(BlockProperties.ACTIVE, true);
         for (int x = min; x < max; x++) {
             int x2 = x * x;

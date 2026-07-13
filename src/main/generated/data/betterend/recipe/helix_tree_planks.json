@@ -3,20 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    [
-      {
-        "item": "betterend:helix_tree_log"
-      },
-      {
-        "item": "betterend:helix_tree_bark"
-      },
-      {
-        "item": "betterend:helix_tree_stripped_log"
-      },
-      {
-        "item": "betterend:helix_tree_stripped_bark"
-      }
-    ]
+    "#betterend:helix_tree_logs"
   ],
   "result": {
     "count": 4,

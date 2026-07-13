@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_pillar",
   "key": {
-    "#": {
-      "item": "betterend:virid_jadestone_slab"
-    }
+    "#": "betterend:virid_jadestone_slab"
   },
   "pattern": [
     "#",

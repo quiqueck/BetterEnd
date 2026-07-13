@@ -4,11 +4,12 @@ import org.betterx.betterend.registry.EndBlockEntities;
 import org.betterx.betterend.rituals.InfusionRitual;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class InfusionPedestalEntity extends PedestalBlockEntity {
     private InfusionRitual linkedRitual;
@@ -42,24 +43,24 @@ public class InfusionPedestalEntity extends PedestalBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+    protected void saveAdditional(ValueOutput output) {
         if (hasRitual()) {
-            tag.put("ritual", linkedRitual.toTag(new CompoundTag()));
+            output.store("ritual", CompoundTag.CODEC, linkedRitual.toTag(new CompoundTag()));
         }
-        super.saveAdditional(tag, provider);
+        super.saveAdditional(output);
     }
 
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
-        if (tag.contains("ritual")) {
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        input.read("ritual", CompoundTag.CODEC).ifPresent(ritualTag -> {
             if (!hasRitual()) {
                 linkedRitual = new InfusionRitual(this, level, worldPosition);
             }
-            linkedRitual.fromTag(tag.getCompound("ritual"));
+            linkedRitual.fromTag(ritualTag);
             linkedRitual.configure();
-        }
+        });
     }
 
     public static <T extends BlockEntity> void tickEntity(

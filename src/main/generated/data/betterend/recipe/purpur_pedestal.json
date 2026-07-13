@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:purpur_pillar"
-    },
-    "S": {
-      "item": "minecraft:purpur_slab"
-    }
+    "#": "minecraft:purpur_pillar",
+    "S": "minecraft:purpur_slab"
   },
   "pattern": [
     "S",
@@ -16,6 +12,6 @@
   ],
   "result": {
     "count": 2,
-    "id": "betterend:purpur_pedestal"
+    "id": "betterend:purple_pedestal"
   }
 }

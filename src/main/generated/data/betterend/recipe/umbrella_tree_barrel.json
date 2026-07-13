@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:umbrella_tree_planks"
-    },
-    "S": {
-      "item": "betterend:umbrella_tree_slab"
-    }
+    "#": "betterend:umbrella_tree_planks",
+    "S": "betterend:umbrella_tree_slab"
   },
   "pattern": [
     "#S#",

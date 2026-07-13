@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "betterend:block/end_lotus_planks_particles"
+      "model": "betterend:block/end_lotus_stripped_log_particles"
     }
   }
 }

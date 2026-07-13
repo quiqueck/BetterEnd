@@ -19,6 +19,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.util.random.Weighted;
 
 import java.util.List;
 
@@ -53,7 +54,10 @@ public class NightshadeRedwoods extends EndBiome.Config {
                                              .get();
             Holder<SoundEvent> music = effects.getBackgroundMusic()
                                               .get()
-                                              .getEvent();
+                                              .unwrap()
+                                              .getFirst()
+                                              .value()
+                                              .event();
             Holder<SoundEvent> additions = effects.getAmbientAdditionsSettings()
                                                   .get()
                                                   .getSoundEvent();
@@ -74,12 +78,13 @@ public class NightshadeRedwoods extends EndBiome.Config {
              });
 
         for (MobCategory group : MobCategory.values()) {
-            List<SpawnerData> list = biome.value()
-                                          .getMobSettings()
-                                          .getMobs(group)
-                                          .unwrap();
-            list.forEach(entry -> {
-                builder.spawn(entry.type, 1, entry.minCount, entry.maxCount);
+            List<Weighted<SpawnerData>> list = biome.value()
+                                                     .getMobSettings()
+                                                     .getMobs(group)
+                                                     .unwrap();
+            list.forEach(weighted -> {
+                SpawnerData entry = weighted.value();
+                builder.spawn(entry.type(), 1, entry.minCount(), entry.maxCount());
             });
         }
     }

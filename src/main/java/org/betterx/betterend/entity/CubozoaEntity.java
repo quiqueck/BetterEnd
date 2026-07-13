@@ -5,11 +5,11 @@ import org.betterx.betterend.registry.EndItems;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -18,6 +18,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
@@ -28,6 +29,8 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +47,7 @@ public class CubozoaEntity extends AbstractSchoolingFish {
 
     public CubozoaEntity(EntityType<CubozoaEntity> entityType, Level world) {
         super(entityType, world);
+        updateScaleAttribute();
     }
 
     @Nullable
@@ -51,7 +55,7 @@ public class CubozoaEntity extends AbstractSchoolingFish {
     public SpawnGroupData finalizeSpawn(
             ServerLevelAccessor world,
             DifficultyInstance difficulty,
-            MobSpawnType spawnReason,
+            EntitySpawnReason spawnReason,
             @Nullable SpawnGroupData entityData
     ) {
         SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData);
@@ -73,21 +77,18 @@ public class CubozoaEntity extends AbstractSchoolingFish {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("Variant", (byte) getVariant());
-        tag.putInt("Scale", this.entityData.get(SCALE));
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("Variant", (byte) getVariant());
+        output.putInt("Scale", this.entityData.get(SCALE));
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("Variant")) {
-            this.entityData.set(VARIANT, tag.getInt("Variant"));
-        }
-        if (tag.contains("Scale")) {
-            this.entityData.set(SCALE, tag.getInt("Scale"));
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.entityData.set(VARIANT, input.getIntOr("Variant", this.entityData.get(VARIANT)));
+        this.entityData.set(SCALE, input.getIntOr("Scale", this.entityData.get(SCALE)));
+        updateScaleAttribute();
     }
 
     @Override
@@ -121,8 +122,11 @@ public class CubozoaEntity extends AbstractSchoolingFish {
         return (int) this.entityData.get(VARIANT);
     }
 
-    public float getScale() {
-        return this.entityData.get(SCALE) / 32F + 0.75F;
+    private void updateScaleAttribute() {
+        AttributeInstance scaleAttribute = this.getAttribute(Attributes.SCALE);
+        if (scaleAttribute != null) {
+            scaleAttribute.setBaseValue(this.entityData.get(SCALE) / 32F + 0.75F);
+        }
     }
 
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
@@ -130,7 +134,7 @@ public class CubozoaEntity extends AbstractSchoolingFish {
     }
 
     @Override
-    protected void dropFromLootTable(DamageSource source, boolean causedByPlayer) {
+    protected void dropFromLootTable(ServerLevel serverLevel, DamageSource source, boolean causedByPlayer) {
         int count = random.nextInt(3);
         if (count > 0) {
             ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(EndItems.GELATINE, count));
@@ -145,7 +149,8 @@ public class CubozoaEntity extends AbstractSchoolingFish {
 
     @Override
     public void playerTouch(Player player) {
-        if (player instanceof ServerPlayer && player.hurt(player.damageSources().mobAttack(this), 0.5F)) {
+        if (player instanceof ServerPlayer && this.level() instanceof ServerLevel serverLevel
+                && player.hurtServer(serverLevel, player.damageSources().mobAttack(this), 0.5F)) {
             if (!this.isSilent()) {
                 ((ServerPlayer) player).connection.send(new ClientboundGameEventPacket(
                         ClientboundGameEventPacket.PUFFER_FISH_STING,

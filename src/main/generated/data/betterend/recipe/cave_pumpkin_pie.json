@@ -3,19 +3,11 @@
   "category": "misc",
   "key": {
     "B": [
-      {
-        "item": "betterend:blossom_berry"
-      },
-      {
-        "item": "betterend:shadow_berry_raw"
-      }
+      "betterend:blossom_berry",
+      "betterend:shadow_berry_raw"
     ],
-    "P": {
-      "item": "betterend:cave_pumpkin"
-    },
-    "S": {
-      "item": "minecraft:sugar"
-    }
+    "P": "betterend:cave_pumpkin",
+    "S": "minecraft:sugar"
   },
   "pattern": [
     "SBS",

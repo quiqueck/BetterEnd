@@ -4,16 +4,10 @@
   "group": "end_metal_anvil",
   "key": {
     "#": [
-      {
-        "item": "betterend:thallasium_block"
-      },
-      {
-        "item": "betterend:thallasium_tile"
-      }
+      "betterend:thallasium_block",
+      "betterend:thallasium_tile"
     ],
-    "I": {
-      "item": "betterend:thallasium_ingot"
-    }
+    "I": "betterend:thallasium_ingot"
   },
   "pattern": [
     "###",

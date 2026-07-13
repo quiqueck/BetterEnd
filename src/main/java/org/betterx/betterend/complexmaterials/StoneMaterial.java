@@ -35,6 +35,7 @@ public class StoneMaterial extends BlockSet<StoneMaterial> implements MaterialMa
         this.color = color;
 
         MaterialManager.register(this);
+        this.buildAndRegister();
     }
 
     @Override

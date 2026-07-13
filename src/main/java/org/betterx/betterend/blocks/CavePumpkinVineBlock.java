@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
 import org.betterx.betterend.interfaces.survives.SurvivesOnEndStone;
@@ -12,18 +11,20 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements SurvivesOnEndStone, BehaviourPlant {
-    public CavePumpkinVineBlock() {
-        super(BehaviourBuilders.createPlant(MapColor.TERRACOTTA_ORANGE));
+    public CavePumpkinVineBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     private static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 16, 12);
@@ -57,15 +58,26 @@ public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements Surviv
     }
 
     @Override
-    public BlockState updateShape(
+    protected @NotNull BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
     ) {
-        state = super.updateShape(state, facing, neighborState, world, pos, neighborPos);
+        state = super.updateShape(
+                state,
+                world,
+                scheduledTickAccess,
+                pos,
+                facing,
+                neighborPos,
+                neighborState,
+                randomSource
+        );
         if (state.is(this) && state.getValue(BlockProperties.AGE) > 1) {
             BlockState down = world.getBlockState(pos.below());
             if (!down.is(EndBlocks.CAVE_PUMPKIN)) {

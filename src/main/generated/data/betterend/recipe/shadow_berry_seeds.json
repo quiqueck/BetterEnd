@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:shadow_berry_raw"
-    }
+    "betterend:shadow_berry_raw"
   ],
   "result": {
     "count": 4,

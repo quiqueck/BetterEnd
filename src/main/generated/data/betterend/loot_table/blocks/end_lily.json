@@ -23,7 +23,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "betterend:end_lily"
         }
       ],
       "rolls": 1.0

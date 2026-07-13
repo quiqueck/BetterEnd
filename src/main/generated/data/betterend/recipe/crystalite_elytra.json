@@ -1,80 +1,42 @@
 {
   "type": "betterend:infusion",
   "catalysts": {
-    "east": {
-      "item": {
-        "item": "betterend:enchanted_membrane"
-      }
-    },
-    "north": {
-      "item": {
-        "item": "betterend:amber_gem"
-      }
-    },
-    "north_east": {
-      "item": {
-        "item": "betterend:crystal_shards"
-      }
-    },
-    "north_west": {
-      "item": {
-        "item": "betterend:crystal_shards"
-      }
-    },
-    "south": {
-      "item": {
-        "item": "betterend:enchanted_membrane"
-      }
-    },
-    "south_east": {
-      "item": {
-        "item": "betterend:crystal_shards"
-      }
-    },
-    "south_west": {
-      "item": {
-        "item": "betterend:crystal_shards"
-      }
-    },
-    "west": {
-      "item": {
-        "item": "betterend:enchanted_membrane"
-      }
-    }
+    "east": "betterend:enchanted_membrane",
+    "north": "betterend:amber_gem",
+    "north_east": "betterend:crystal_shards",
+    "north_west": "betterend:crystal_shards",
+    "south": "betterend:enchanted_membrane",
+    "south_east": "betterend:crystal_shards",
+    "south_west": "betterend:crystal_shards",
+    "west": "betterend:enchanted_membrane"
   },
-  "input": {
-    "item": {
-      "item": "minecraft:elytra"
-    }
-  },
+  "input": "minecraft:elytra",
   "result": {
     "item": "betterend:elytra_crystalite",
     "nbt": {
-      "minecraft:attribute_modifiers": {
-        "modifiers": [
-          {
-            "type": "minecraft:generic.armor",
-            "amount": 6.400000095367432,
-            "id": "betterend:armor_boost",
-            "operation": "add_value",
-            "slot": "chest"
-          },
-          {
-            "type": "minecraft:generic.armor_toughness",
-            "amount": 0.9600000381469727,
-            "id": "betterend:toughness_boost",
-            "operation": "add_value",
-            "slot": "chest"
-          },
-          {
-            "type": "minecraft:generic.knockback_resistance",
-            "amount": 0.5,
-            "id": "betterend:base_knockback_resistance",
-            "operation": "add_value",
-            "slot": "mainhand"
-          }
-        ]
-      }
+      "minecraft:attribute_modifiers": [
+        {
+          "type": "minecraft:armor",
+          "amount": 6.666666401757145,
+          "id": "betterend:armor_boost",
+          "operation": "add_value",
+          "slot": "chest"
+        },
+        {
+          "type": "minecraft:armor_toughness",
+          "amount": 0.9600000381469727,
+          "id": "betterend:toughness_boost",
+          "operation": "add_value",
+          "slot": "chest"
+        },
+        {
+          "type": "minecraft:knockback_resistance",
+          "amount": 0.5,
+          "id": "betterend:base_knockback_resistance",
+          "operation": "add_value",
+          "slot": "mainhand"
+        }
+      ]
     }
   },
   "time": 500

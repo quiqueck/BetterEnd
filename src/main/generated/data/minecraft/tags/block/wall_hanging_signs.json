@@ -1,15 +1,15 @@
 {
   "values": [
-    "betterend:dragon_tree_wall_hanging_sign",
-    "betterend:end_lotus_wall_hanging_sign",
-    "betterend:helix_tree_wall_hanging_sign",
-    "betterend:jellyshroom_wall_hanging_sign",
-    "betterend:lacugrove_wall_hanging_sign",
-    "betterend:lucernia_jellyshroom_wall_hanging_sign",
-    "betterend:lucernia_wall_hanging_sign",
-    "betterend:mossy_glowshroom_wall_hanging_sign",
-    "betterend:pythadendron_wall_hanging_sign",
-    "betterend:tenanea_wall_hanging_sign",
-    "betterend:umbrella_tree_wall_hanging_sign"
+    "betterend:dragon_tree_hanging_wall_sign",
+    "betterend:end_lotus_hanging_wall_sign",
+    "betterend:helix_tree_hanging_wall_sign",
+    "betterend:jellyshroom_hanging_wall_sign",
+    "betterend:lacugrove_hanging_wall_sign",
+    "betterend:lucernia_hanging_wall_sign",
+    "betterend:lucernia_jellyshroom_hanging_wall_sign",
+    "betterend:mossy_glowshroom_hanging_wall_sign",
+    "betterend:pythadendron_hanging_wall_sign",
+    "betterend:tenanea_hanging_wall_sign",
+    "betterend:umbrella_tree_hanging_wall_sign"
   ]
 }

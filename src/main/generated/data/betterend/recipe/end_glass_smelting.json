@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:endstone_dust"
-  },
+  "ingredient": "betterend:endstone_dust",
   "result": {
     "id": "minecraft:glass"
   }

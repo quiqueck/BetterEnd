@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:charnia_orange"
-    }
+    "betterend:charnia_orange"
   ],
   "result": {
     "count": 1,

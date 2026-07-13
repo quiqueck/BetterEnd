@@ -5,68 +5,13 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "betterend:bulb_vine",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "shape": "bottom"
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": 1.0,
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "betterend:glowing_bulb"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:inverted",
-          "term": {
-            "block": "betterend:bulb_vine",
-            "condition": "minecraft:block_state_property",
-            "properties": {
-              "shape": "bottom"
-            }
-          }
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "conditions": [
-            {
-              "condition": "minecraft:survives_explosion"
-            },
-            {
-              "chances": [
-                0.05,
-                0.0625,
-                0.083333336,
-                0.1
-              ],
-              "condition": "minecraft:table_bonus",
-              "enchantment": "minecraft:fortune"
-            }
-          ],
-          "functions": [
-            {
-              "add": false,
-              "count": 1.0,
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "betterend:bulb_vine_seed"
+          "name": "betterend:bulb_vine"
         }
       ],
       "rolls": 1.0

@@ -1,120 +1,22 @@
 {
   "type": "betterend:infusion",
   "catalysts": {
-    "east": {
-      "item": {
-        "item": "minecraft:golden_sword",
-        "nbt": {
-          "minecraft:attribute_modifiers": {
-            "modifiers": [
-              {
-                "type": "minecraft:generic.attack_damage",
-                "amount": 3.0,
-                "id": "minecraft:base_attack_damage",
-                "operation": "add_value",
-                "slot": "mainhand"
-              },
-              {
-                "type": "minecraft:generic.attack_speed",
-                "amount": -2.4000000953674316,
-                "id": "minecraft:base_attack_speed",
-                "operation": "add_value",
-                "slot": "mainhand"
-              }
-            ]
-          }
-        }
-      }
-    },
-    "north": {
-      "item": {
-        "item": "betterend:enchanted_petal"
-      }
-    },
-    "north_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "north_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "south": {
-      "item": {
-        "item": "minecraft:iron_sword",
-        "nbt": {
-          "minecraft:attribute_modifiers": {
-            "modifiers": [
-              {
-                "type": "minecraft:generic.attack_damage",
-                "amount": 5.0,
-                "id": "minecraft:base_attack_damage",
-                "operation": "add_value",
-                "slot": "mainhand"
-              },
-              {
-                "type": "minecraft:generic.attack_speed",
-                "amount": -2.4000000953674316,
-                "id": "minecraft:base_attack_speed",
-                "operation": "add_value",
-                "slot": "mainhand"
-              }
-            ]
-          }
-        }
-      }
-    },
-    "south_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "south_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "west": {
-      "item": {
-        "item": "minecraft:golden_sword",
-        "nbt": {
-          "minecraft:attribute_modifiers": {
-            "modifiers": [
-              {
-                "type": "minecraft:generic.attack_damage",
-                "amount": 3.0,
-                "id": "minecraft:base_attack_damage",
-                "operation": "add_value",
-                "slot": "mainhand"
-              },
-              {
-                "type": "minecraft:generic.attack_speed",
-                "amount": -2.4000000953674316,
-                "id": "minecraft:base_attack_speed",
-                "operation": "add_value",
-                "slot": "mainhand"
-              }
-            ]
-          }
-        }
-      }
-    }
+    "east": "minecraft:golden_sword",
+    "north": "betterend:enchanted_petal",
+    "north_east": "minecraft:lapis_lazuli",
+    "north_west": "minecraft:lapis_lazuli",
+    "south": "minecraft:iron_sword",
+    "south_east": "minecraft:lapis_lazuli",
+    "south_west": "minecraft:lapis_lazuli",
+    "west": "minecraft:golden_sword"
   },
   "group": "enchantment",
-  "input": {
-    "item": {
-      "item": "minecraft:book"
-    }
-  },
+  "input": "minecraft:book",
   "result": {
     "item": "minecraft:enchanted_book",
     "nbt": {
       "minecraft:stored_enchantments": {
-        "levels": {
-          "minecraft:sweeping_edge": 1
-        }
+        "minecraft:sweeping_edge": 1
       }
     }
   },

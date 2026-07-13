@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:mossy_glowshroom_planks"
-    },
-    "S": {
-      "item": "betterend:mossy_glowshroom_slab"
-    }
+    "#": "betterend:mossy_glowshroom_planks",
+    "S": "betterend:mossy_glowshroom_slab"
   },
   "pattern": [
     "#S#",

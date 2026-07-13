@@ -1,7 +1,7 @@
 {
   "parent": "bclib:block/path",
   "textures": {
-    "bottom": "minecraft:block/end_stone",
+    "bottom": "betterend:block/chorus_nylium",
     "side": "betterend:block/chorus_nylium_side",
     "top": "betterend:block/chorus_nylium_path_top"
   }

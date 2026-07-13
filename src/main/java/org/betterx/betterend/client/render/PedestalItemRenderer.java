@@ -13,7 +13,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -25,12 +26,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import org.joml.Vector3f;
-
 @Environment(EnvType.CLIENT)
 public class PedestalItemRenderer<T extends PedestalBlockEntity> implements BlockEntityRenderer<T> {
+    private final ItemModelResolver itemModelResolver;
+    private final ItemStackRenderState renderState = new ItemStackRenderState();
+
     public PedestalItemRenderer(BlockEntityRendererProvider.Context ctx) {
         super();
+        this.itemModelResolver = ctx.getItemModelResolver();
     }
 
     @Override
@@ -40,7 +43,8 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
             PoseStack matrices,
             MultiBufferSource vertexConsumers,
             int light,
-            int overlay
+            int overlay,
+            net.minecraft.world.phys.Vec3 cameraPos
     ) {
         Level world = blockEntity.getLevel();
         if (world == null || blockEntity.isEmpty()) return;
@@ -51,11 +55,16 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
         ItemStack activeItem = blockEntity.getItem(0);
 
         matrices.pushPose();
-        Minecraft minecraft = Minecraft.getInstance();
-        BakedModel model = minecraft.getItemRenderer().getModel(activeItem, world, null, 0);
-        Vector3f translate = model.getTransforms().ground.translation;
+        this.itemModelResolver.updateForTopItem(
+                this.renderState,
+                activeItem,
+                ItemDisplayContext.GROUND,
+                world,
+                null,
+                blockEntity.getBlockPos().hashCode()
+        );
         PedestalBlock pedestal = (PedestalBlock) state.getBlock();
-        matrices.translate(translate.x() + 0.5, translate.y() + pedestal.getHeight(state), translate.z() + 0.5);
+        matrices.translate(0.5, pedestal.getHeight(state), 0.5);
         if (activeItem.getItem() instanceof BlockItem) {
             matrices.scale(1.5F, 1.5F, 1.5F);
         } else {
@@ -88,17 +97,7 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
         } else {
             float rotation = (age + tickDelta) / 25.0F + 6.0F;
             matrices.mulPose(Axis.YP.rotation(rotation));
-            minecraft.getItemRenderer()
-                     .render(
-                             activeItem,
-                             ItemDisplayContext.GROUND,
-                             false,
-                             matrices,
-                             vertexConsumers,
-                             light,
-                             overlay,
-                             model
-                     );
+            this.renderState.render(matrices, vertexConsumers, light, overlay);
         }
         matrices.popPose();
     }

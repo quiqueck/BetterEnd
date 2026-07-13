@@ -7,6 +7,7 @@ import org.betterx.betterend.registry.EndItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -14,8 +15,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class ShadowBerryBlock extends PottableCropBlock {
     private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 8, 15);
 
-    public ShadowBerryBlock() {
-        super(EndItems.SHADOW_BERRY_RAW, EndBlocks.SHADOW_GRASS);
+    public ShadowBerryBlock(BlockBehaviour.Properties props) {
+        super(props, EndItems.SHADOW_BERRY_RAW, EndBlocks.SHADOW_GRASS);
     }
 
     @Override

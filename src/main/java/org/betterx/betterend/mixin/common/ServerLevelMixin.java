@@ -49,13 +49,12 @@ public abstract class ServerLevelMixin extends Level {
             ResourceKey<Level> resourceKey,
             RegistryAccess registryAccess,
             Holder<DimensionType> holder,
-            Supplier<ProfilerFiller> supplier,
             boolean bl,
             boolean bl2,
             long l,
             int i
     ) {
-        super(writableLevelData, resourceKey, registryAccess, holder, supplier, bl, bl2, l, i);
+        super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
     }
 
     @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Holder;is(Lnet/minecraft/resources/ResourceKey;)Z"))

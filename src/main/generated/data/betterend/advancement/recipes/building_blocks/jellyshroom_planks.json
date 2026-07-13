@@ -1,20 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_jellyshroom_log_jellyshroom_bark_jelly": {
+    "has_tag_betterend_jellyshroom_logs": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:jellyshroom_log"
-          },
-          {
-            "items": "betterend:jellyshroom_bark"
-          },
-          {
-            "items": "betterend:jellyshroom_stripped_log"
-          },
-          {
-            "items": "betterend:jellyshroom_stripped_bark"
+            "items": "#betterend:jellyshroom_logs"
           }
         ]
       },
@@ -30,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_jellyshroom_log_jellyshroom_bark_jelly"
+      "has_tag_betterend_jellyshroom_logs"
     ]
   ],
   "rewards": {

@@ -44,6 +44,7 @@ public class BulbLantern extends SlotFromDefinition {
            .explosionResistance(1)
            .lightLevel((bs) -> 15)
            .sound(SoundType.LANTERN);
+        def.addTrait(BlockTraits.LOOT_TABLE.dropSelf());
     }
 
     @Override

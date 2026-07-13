@@ -1,32 +1,12 @@
 {
   "type": "betterend:infusion",
   "catalysts": {
-    "east": {
-      "item": {
-        "item": "betterend:crystal_shards"
-      }
-    },
-    "north": {
-      "item": {
-        "item": "betterend:crystal_shards"
-      }
-    },
-    "south": {
-      "item": {
-        "item": "betterend:crystal_shards"
-      }
-    },
-    "west": {
-      "item": {
-        "item": "betterend:crystal_shards"
-      }
-    }
+    "east": "betterend:crystal_shards",
+    "north": "betterend:crystal_shards",
+    "south": "betterend:crystal_shards",
+    "west": "betterend:crystal_shards"
   },
-  "input": {
-    "item": {
-      "item": "betterend:hydralux_petal"
-    }
-  },
+  "input": "betterend:hydralux_petal",
   "result": {
     "item": "betterend:enchanted_petal"
   },

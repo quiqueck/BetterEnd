@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "minecraft:netherite_ingot"
-  },
-  "base": {
-    "item": "betterend:diamond_hammer"
-  },
+  "addition": "minecraft:netherite_ingot",
+  "base": "betterend:diamond_hammer",
   "result": {
-    "count": 1,
     "id": "betterend:netherite_hammer"
   },
-  "template": {
-    "item": "betterend:netherite_upgrade_smithing_template"
-  }
+  "template": "betterend:netherite_upgrade_smithing_template"
 }

@@ -7,14 +7,15 @@ import org.betterx.betterend.interfaces.PottablePlant;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.List;
 
 public class PottableCropBlock extends BaseCropBlock implements PottablePlant, BehaviourSeed, SurvivesOnBlocks {
     private final List<Block> terrain;
 
-    public PottableCropBlock(Item drop, Block... terrain) {
-        super(drop, terrain);
+    public PottableCropBlock(BlockBehaviour.Properties props, Item drop, Block... terrain) {
+        super(props, drop, terrain);
         this.terrain = List.of(terrain);
     }
 

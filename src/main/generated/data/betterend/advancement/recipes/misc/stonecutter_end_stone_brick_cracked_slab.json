@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_end_stone_brick_cracked": {
+    "has_item.betterend.end_stone_brick_cracked": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_end_stone_brick_cracked"
+      "has_item.betterend.end_stone_brick_cracked"
     ]
   ],
   "rewards": {

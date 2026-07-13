@@ -1,3 +1,6 @@
 {
-  "parent": "betterend:block/chorus_nylium"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/chorus_nylium"
+  }
 }

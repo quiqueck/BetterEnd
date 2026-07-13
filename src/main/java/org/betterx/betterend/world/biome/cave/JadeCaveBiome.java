@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.biome.cave;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.bclib.util.WeightedList;
 import org.betterx.betterend.noise.OpenSimplexNoise;
@@ -71,9 +73,9 @@ public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
         }
 
         static {
-            JADE[0] = EndBlocks.VIRID_JADESTONE.stone.defaultBlockState();
-            JADE[1] = EndBlocks.AZURE_JADESTONE.stone.defaultBlockState();
-            JADE[2] = EndBlocks.SANDY_JADESTONE.stone.defaultBlockState();
+            JADE[0] = EndBlocks.VIRID_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState();
+            JADE[1] = EndBlocks.AZURE_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState();
+            JADE[2] = EndBlocks.SANDY_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState();
         }
     }
 

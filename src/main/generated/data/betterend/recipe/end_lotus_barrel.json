@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:end_lotus_planks"
-    },
-    "S": {
-      "item": "betterend:end_lotus_slab"
-    }
+    "#": "betterend:end_lotus_planks",
+    "S": "betterend:end_lotus_slab"
   },
   "pattern": [
     "#S#",

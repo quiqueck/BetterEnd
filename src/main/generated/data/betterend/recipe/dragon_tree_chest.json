@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "chest",
   "key": {
-    "#": {
-      "item": "betterend:dragon_tree_planks"
-    }
+    "#": "betterend:dragon_tree_planks"
   },
   "pattern": [
     "###",

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:blue_vine_seed"
-    }
+    "betterend:blue_vine_seed"
   ],
   "result": {
     "count": 1,

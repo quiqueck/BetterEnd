@@ -7,7 +7,6 @@ import org.betterx.betterend.commands.CommandRegistry;
 import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.effects.EndPotions;
 import org.betterx.betterend.integration.Integrations;
-import org.betterx.betterend.integration.trinkets.Elytra;
 import org.betterx.betterend.network.RitualUpdate;
 import org.betterx.betterend.recipe.builders.InfusionRecipe;
 import org.betterx.betterend.registry.*;
@@ -82,8 +81,9 @@ public class BetterEnd implements ModInitializer {
 
         ClientBoundPacketHandler.register(RitualUpdate.CHANNEL, RitualUpdate.Payload::new);
 
-        if (TRINKETS_CORE.isLoaded()) {
-            Elytra.register();
-        }
+        //TODO: Trinkets integration disabled (dependency commented out in build.gradle)
+//        if (TRINKETS_CORE.isLoaded()) {
+//            Elytra.register();
+//        }
     }
 }

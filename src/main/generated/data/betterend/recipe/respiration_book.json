@@ -1,60 +1,22 @@
 {
   "type": "betterend:infusion",
   "catalysts": {
-    "east": {
-      "item": {
-        "item": "minecraft:nautilus_shell"
-      }
-    },
-    "north": {
-      "item": {
-        "item": "betterend:enchanted_petal"
-      }
-    },
-    "north_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "north_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "south": {
-      "item": {
-        "item": "minecraft:nautilus_shell"
-      }
-    },
-    "south_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "south_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "west": {
-      "item": {
-        "item": "minecraft:nautilus_shell"
-      }
-    }
+    "east": "minecraft:nautilus_shell",
+    "north": "betterend:enchanted_petal",
+    "north_east": "minecraft:lapis_lazuli",
+    "north_west": "minecraft:lapis_lazuli",
+    "south": "minecraft:nautilus_shell",
+    "south_east": "minecraft:lapis_lazuli",
+    "south_west": "minecraft:lapis_lazuli",
+    "west": "minecraft:nautilus_shell"
   },
   "group": "enchantment",
-  "input": {
-    "item": {
-      "item": "minecraft:book"
-    }
-  },
+  "input": "minecraft:book",
   "result": {
     "item": "minecraft:enchanted_book",
     "nbt": {
       "minecraft:stored_enchantments": {
-        "levels": {
-          "minecraft:respiration": 1
-        }
+        "minecraft:respiration": 1
       }
     }
   },

@@ -14,6 +14,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
@@ -21,10 +22,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SmallAmaranitaBlock extends EndPlantBlock implements SurvivesOnEndBone, BehaviourPlant {
-    public SmallAmaranitaBlock() {
-        super(
-                BehaviourBuilders.createPlant(MapColor.COLOR_RED).offsetType(OffsetType.XZ)
-        );
+    public SmallAmaranitaBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     private static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 10, 12);
@@ -49,7 +48,7 @@ public class SmallAmaranitaBlock extends EndPlantBlock implements SurvivesOnEndB
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext ePos) {
-        Vec3 vec3d = state.getOffset(view, pos);
+        Vec3 vec3d = state.getOffset(pos);
         return SHAPE.move(vec3d.x, vec3d.y, vec3d.z);
     }
 

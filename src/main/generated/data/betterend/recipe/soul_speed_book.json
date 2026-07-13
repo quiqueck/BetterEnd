@@ -2,80 +2,30 @@
   "type": "betterend:infusion",
   "catalysts": {
     "east": [
-      {
-        "item": {
-          "item": "minecraft:soul_sand"
-        }
-      },
-      {
-        "item": {
-          "item": "minecraft:soul_soil"
-        }
-      }
+      "minecraft:soul_sand",
+      "minecraft:soul_soil"
     ],
-    "north": {
-      "item": {
-        "item": "betterend:enchanted_petal"
-      }
-    },
-    "north_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "north_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
+    "north": "betterend:enchanted_petal",
+    "north_east": "minecraft:lapis_lazuli",
+    "north_west": "minecraft:lapis_lazuli",
     "south": [
-      {
-        "item": {
-          "item": "minecraft:soul_sand"
-        }
-      },
-      {
-        "item": {
-          "item": "minecraft:soul_soil"
-        }
-      }
+      "minecraft:soul_sand",
+      "minecraft:soul_soil"
     ],
-    "south_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "south_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
+    "south_east": "minecraft:lapis_lazuli",
+    "south_west": "minecraft:lapis_lazuli",
     "west": [
-      {
-        "item": {
-          "item": "minecraft:soul_sand"
-        }
-      },
-      {
-        "item": {
-          "item": "minecraft:soul_soil"
-        }
-      }
+      "minecraft:soul_sand",
+      "minecraft:soul_soil"
     ]
   },
   "group": "enchantment",
-  "input": {
-    "item": {
-      "item": "minecraft:book"
-    }
-  },
+  "input": "minecraft:book",
   "result": {
     "item": "minecraft:enchanted_book",
     "nbt": {
       "minecraft:stored_enchantments": {
-        "levels": {
-          "minecraft:soul_speed": 1
-        }
+        "minecraft:soul_speed": 1
       }
     }
   },

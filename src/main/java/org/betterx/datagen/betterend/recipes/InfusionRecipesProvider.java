@@ -3,12 +3,14 @@ package org.betterx.datagen.betterend.recipes;
 import org.betterx.betterend.recipe.builders.InfusionRecipe;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
+import org.betterx.wover.complex.api.equipment.ArmorSlot;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
+import org.betterx.wover.recipe.api.RecipeBuilder;
+import org.betterx.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -19,10 +21,12 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
         super(modCore, "BetterEnd - Infusion Recipes");
     }
 
-    public void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
-        final HolderLookup.RegistryLookup<Enchantment> enchantments = provider.lookupOrThrow(Registries.ENCHANTMENT);
+    @Override
+    protected void bootstrap(RecipeBuilder.Context context) {
+        final HolderLookup.RegistryLookup<Enchantment> enchantments =
+                context.lookupProvider().lookupOrThrow(Registries.ENCHANTMENT);
         InfusionRecipe.create("runed_flavolite", EndBlocks.FLAVOLITE_RUNED)
-                      .setPrimaryInput(EndBlocks.FLAVOLITE.polished)
+                      .setPrimaryInput(EndBlocks.FLAVOLITE.getBlock(SlotType.POLISHED))
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.CRYSTAL_SHARDS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.CRYSTAL_SHARDS)
@@ -44,14 +48,14 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
 
         InfusionRecipe.create("crystalite_helmet", EndItems.CRYSTALITE_HELMET)
-                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.helmet)
+                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.equipment.get(ArmorSlot.HELMET_SLOT))
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.AMBER_GEM)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.CRYSTAL_SHARDS)
                       .setTime(150)
                       .build(context);
         InfusionRecipe.create("crystalite_chestplate", EndItems.CRYSTALITE_CHESTPLATE)
-                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.chestplate)
+                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.equipment.get(ArmorSlot.CHESTPLATE_SLOT))
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.AMBER_GEM)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, EndItems.CRYSTAL_SHARDS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, EndItems.CRYSTAL_SHARDS)
@@ -60,7 +64,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .setTime(300)
                       .build(context);
         InfusionRecipe.create("crystalite_leggings", EndItems.CRYSTALITE_LEGGINGS)
-                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.leggings)
+                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.equipment.get(ArmorSlot.LEGGINGS_SLOT))
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.AMBER_GEM)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.CRYSTAL_SHARDS)
@@ -68,7 +72,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .setTime(225)
                       .build(context);
         InfusionRecipe.create("crystalite_boots", EndItems.CRYSTALITE_BOOTS)
-                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.boots)
+                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.equipment.get(ArmorSlot.BOOTS_SLOT))
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.AMBER_GEM)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.CRYSTAL_SHARDS)

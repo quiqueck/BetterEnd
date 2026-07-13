@@ -42,7 +42,7 @@ public class Chandelier extends SlotFromDefinition {
            .noOcclusion()
            .isValidSpawn((state, level, pos, entity) -> false)
            .requiresCorrectToolForDrops();
-        ;
+        def.addTrait(BlockTraits.LOOT_TABLE.dropSelf());
     }
 
     @Override

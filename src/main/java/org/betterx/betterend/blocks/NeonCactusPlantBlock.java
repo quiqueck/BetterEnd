@@ -1,8 +1,6 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlockNotFull;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.EndBlockProperties.CactusBottom;
@@ -26,7 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -45,11 +42,11 @@ import java.util.EnumMap;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWaterloggedBlock, RenderLayerProvider, PottablePlant {
+public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWaterloggedBlock, PottablePlant {
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     public static final EnumProperty<CactusBottom> CACTUS_BOTTOM = EndBlockProperties.CACTUS_BOTTOM;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
     private static final EnumMap<Direction, VoxelShape> BIG_SHAPES_OPEN = Maps.newEnumMap(Direction.class);
     private static final EnumMap<Direction, VoxelShape> MEDIUM_SHAPES_OPEN = Maps.newEnumMap(Direction.class);
@@ -59,8 +56,8 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     private static final EnumMap<Axis, VoxelShape> SMALL_SHAPES = Maps.newEnumMap(Axis.class);
     private static final int MAX_LENGTH = 12;
 
-    public NeonCactusPlantBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).lightLevel((bs) -> 15).randomTicks());
+    public NeonCactusPlantBlock(BlockBehaviour.Properties props) {
+        super(props);
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false)
                                                 .setValue(FACING, Direction.UP)
                                                 .setValue(SHAPE, TripleShape.TOP));
@@ -108,15 +105,17 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            Direction direction,
+            BlockPos posFrom,
+            BlockState newState,
+            RandomSource randomSource
     ) {
-        world.scheduleTick(pos, this, 2);
+        scheduledTickAccess.scheduleTick(pos, this, 2);
         if (state.getValue(WATERLOGGED)) {
-            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+            scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
         Direction dir = state.getValue(FACING);
         BlockState downState = world.getBlockState(pos.relative(dir.getOpposite()));
@@ -135,11 +134,6 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
         if (!blockState.canSurvive(serverLevel, blockPos)) {
             serverLevel.destroyBlock(blockPos, true, null, 1);
         }
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     @Override
@@ -323,7 +317,7 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     }
 
     @Override
-    public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
+    public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier insideBlockEffectApplier) {
         entity.hurt(level.damageSources().cactus(), 1.0F);
     }
 

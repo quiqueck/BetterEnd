@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "end_metal_chandelier",
   "key": {
-    "#": {
-      "item": "betterend:terminite_ingot"
-    },
-    "I": {
-      "item": "betterend:lumecorn_rod"
-    }
+    "#": "betterend:terminite_ingot",
+    "I": "betterend:lumecorn_rod"
   },
   "pattern": [
     "I#I",

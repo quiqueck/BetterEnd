@@ -1,5 +1,7 @@
 package org.betterx.betterend.portal;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.EndPortalBlock;
 import org.betterx.betterend.registry.EndBlocks;
@@ -65,7 +67,7 @@ public class PortalBuilder {
             new Point(0, 1),
             new Point(0, 2)
     );
-    private final static Block BASE = EndBlocks.FLAVOLITE.tiles;
+    private final static Block BASE = EndBlocks.FLAVOLITE.getBlock(SlotType.TILES);
     public final static Block FRAME = EndBlocks.FLAVOLITE_RUNED_ETERNAL;
     public final static Block PORTAL = EndBlocks.END_PORTAL_BLOCK;
     public static int SPIRAL_SEARCH_RADIUS = 128;
@@ -183,7 +185,7 @@ public class PortalBuilder {
         );
 
         return oPos.map(poiPos -> {
-            this.targetLevel.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(poiPos), 3, poiPos);
+            this.targetLevel.getChunkSource().addTicketWithRadius(TicketType.PORTAL, new ChunkPos(poiPos), 3);
             BlockState blockState = this.targetLevel.getBlockState(poiPos);
             return new FoundPortalRect(BlockUtil.getLargestRectangleAround(
                     poiPos,
@@ -226,8 +228,8 @@ public class PortalBuilder {
         final WorldBorder worldBorder = this.targetLevel.getWorldBorder();
 
         final int maxHeight = Math.min(
-                this.targetLevel.getMaxBuildHeight(),
-                this.targetLevel.getMinBuildHeight() + this.targetLevel.getLogicalHeight()
+                this.targetLevel.getMaxY(),
+                this.targetLevel.getMinY() + this.targetLevel.getLogicalHeight()
         ) - 1;
 
         BlockPos.MutableBlockPos currentPos = startPosition.mutable();
@@ -249,12 +251,12 @@ public class PortalBuilder {
                 continue;
 
             testPosition.move(portalDirection.getOpposite(), 1);
-            for (int yy = levelHeight; yy >= this.targetLevel.getMinBuildHeight(); --yy) {
+            for (int yy = levelHeight; yy >= this.targetLevel.getMinY(); --yy) {
                 int n;
                 testPosition.setY(yy);
                 if (!this.canPortalReplaceBlock(testPosition)) continue;
                 int startY = yy;
-                while (yy > this.targetLevel.getMinBuildHeight() && this.canPortalReplaceBlock(testPosition.move(
+                while (yy > this.targetLevel.getMinY() && this.canPortalReplaceBlock(testPosition.move(
                         Direction.DOWN))) {
                     --yy;
                 }
@@ -282,7 +284,7 @@ public class PortalBuilder {
         }
         if (d == -1.0) {
             int p = maxHeight - 9;
-            int o = Math.max(this.targetLevel.getMinBuildHeight() - -1, 70);
+            int o = Math.max(this.targetLevel.getMinY() - -1, 70);
             if (p < o) {
                 return Optional.empty();
             }
@@ -308,7 +310,7 @@ public class PortalBuilder {
 //        if (!checkIsAreaValid(targetLevel, centerPos, portalAxis)) {
 //            if (targetLevel.dimension() == Level.END) {
 //                WorldBootstrap.getLastRegistryAccess()
-//                              .registryOrThrow(Registries.CONFIGURED_FEATURE)
+//                              .lookupOrThrow(Registries.CONFIGURED_FEATURE)
 //                              .get(net.minecraft.data.worldgen.features.EndFeatures.END_ISLAND)
 //                              .place(
 //                                      targetLevel,

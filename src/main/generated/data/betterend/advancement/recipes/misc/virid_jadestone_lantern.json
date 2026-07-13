@@ -17,14 +17,11 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_virid_jadestone_slab_virid_jadestone_b": {
+    "has_virid_jadestone_slab": {
       "conditions": {
         "items": [
           {
             "items": "betterend:virid_jadestone_slab"
-          },
-          {
-            "items": "betterend:virid_jadestone_bricks_slab"
           }
         ]
       },
@@ -35,7 +32,7 @@
     [
       "has_the_recipe",
       "has_crystal_shards",
-      "has_virid_jadestone_slab_virid_jadestone_b"
+      "has_virid_jadestone_slab"
     ]
   ],
   "rewards": {

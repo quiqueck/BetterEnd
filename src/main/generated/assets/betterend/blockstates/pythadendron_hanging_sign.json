@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "betterend:block/pythadendron_planks_particles"
+      "model": "betterend:block/pythadendron_stripped_log_particles"
     }
   }
 }

@@ -1,12 +1,12 @@
 package org.betterx.betterend.entity.model;
 
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.entity.EndSlimeEntity;
+import org.betterx.betterend.entity.render.state.EndSlimeRenderState;
 import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
@@ -17,9 +17,11 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
-import com.google.common.collect.ImmutableList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-public class EndSlimeEntityModel<T extends EndSlimeEntity> extends ListModel<T> {
+public class EndSlimeEntityModel extends EntityModel<EndSlimeRenderState> {
     private final ModelPart innerCube;
     private final ModelPart rightEye;
     private final ModelPart leftEye;
@@ -100,11 +102,16 @@ public class EndSlimeEntityModel<T extends EndSlimeEntity> extends ListModel<T> 
     }
 
     public EndSlimeEntityModel(EntityModelSet modelSet, boolean onlyShell) {
-        super(RenderType::entityCutout);
+        this(
+                modelSet.bakeLayer(onlyShell
+                        ? EndEntitiesRenders.END_SLIME_SHELL_MODEL
+                        : EndEntitiesRenders.END_SLIME_MODEL),
+                onlyShell
+        );
+    }
 
-        ModelPart modelPart = modelSet.bakeLayer(onlyShell
-                ? EndEntitiesRenders.END_SLIME_SHELL_MODEL
-                : EndEntitiesRenders.END_SLIME_MODEL);
+    private EndSlimeEntityModel(ModelPart modelPart, boolean onlyShell) {
+        super(buildRenderRoot(modelPart, onlyShell), RenderType::entityCutout);
 
         innerCube = modelPart.getChild(PartNames.BODY);
         if (!onlyShell) {
@@ -122,15 +129,21 @@ public class EndSlimeEntityModel<T extends EndSlimeEntity> extends ListModel<T> 
         }
     }
 
+    // Builds a synthetic root containing only the parts that should be part of the
+    // regular renderToBuffer() pass; "flower" and "crop" are rendered separately on demand.
+    private static ModelPart buildRenderRoot(ModelPart modelPart, boolean onlyShell) {
+        Map<String, ModelPart> children = new LinkedHashMap<>();
+        children.put(PartNames.BODY, modelPart.getChild(PartNames.BODY));
+        if (!onlyShell) {
+            children.put(PartNames.RIGHT_EYE, modelPart.getChild(PartNames.RIGHT_EYE));
+            children.put(PartNames.LEFT_EYE, modelPart.getChild(PartNames.LEFT_EYE));
+            children.put(PartNames.MOUTH, modelPart.getChild(PartNames.MOUTH));
+        }
+        return new ModelPart(List.of(), children);
+    }
+
     @Override
-    public void setupAnim(
-            T entity,
-            float limbAngle,
-            float limbDistance,
-            float animationProgress,
-            float headYaw,
-            float headPitch
-    ) {
+    public void setupAnim(EndSlimeRenderState state) {
     }
 
     public void renderFlower(PoseStack matrices, VertexConsumer vertices, int light, int overlay) {
@@ -139,18 +152,5 @@ public class EndSlimeEntityModel<T extends EndSlimeEntity> extends ListModel<T> 
 
     public void renderCrop(PoseStack matrices, VertexConsumer vertices, int light, int overlay) {
         crop.render(matrices, vertices, light, overlay);
-    }
-
-    private boolean isOnlyShell() {
-        return rightEye == null;
-    }
-
-    @Override
-    public Iterable<ModelPart> parts() {
-        if (isOnlyShell()) {
-            return ImmutableList.of(this.innerCube);
-        } else {
-            return ImmutableList.of(this.innerCube, this.rightEye, this.leftEye, this.mouth);
-        }
     }
 }

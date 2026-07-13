@@ -152,9 +152,9 @@ public class CrystalMountainPiece extends MountainPiece {
                             for (int y = minY - 1; y < maxYI; y++) {
                                 pos.setY(y);
                                 if (needCover && y == cover) {
-                                    chunk.setBlockState(pos, top, false);
+                                    chunk.setBlockState(pos, top, 3);
                                 } else {
-                                    chunk.setBlockState(pos, Blocks.END_STONE.defaultBlockState(), false);
+                                    chunk.setBlockState(pos, Blocks.END_STONE.defaultBlockState(), 3);
                                 }
 //                                mossPos = pos.above();
 //                                if (needSurroundCover && chunk.getBlockState(mossPos).is(Blocks.AIR)) {
@@ -172,7 +172,7 @@ public class CrystalMountainPiece extends MountainPiece {
 //                                        );
 //                                        didChange = true;
 //                                    }
-//                                    if (didChange) chunk.setBlockState(mossPos, coverState, false);
+//                                    if (didChange) chunk.setBlockState(mossPos, coverState, 3);
 //
 //                                }
                             }
@@ -206,7 +206,7 @@ public class CrystalMountainPiece extends MountainPiece {
                             int h = coefX * x + coefZ * z + height;
                             for (int y = minY; y < h; y++) {
                                 mut.setY(y);
-                                chunk.setBlockState(mut, EndBlocks.AURORA_CRYSTAL.defaultBlockState(), false);
+                                chunk.setBlockState(mut, EndBlocks.AURORA_CRYSTAL.defaultBlockState(), 3);
                             }
                         }
                     }

@@ -1,19 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "composter",
-  "key": {
-    "#": {
-      "item": "betterend:helix_tree_slab"
-    }
-  },
-  "pattern": [
-    "# #",
-    "# #",
-    "###"
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    "betterend:helix_tree_slab"
   ],
   "result": {
-    "count": 1,
+    "count": 4,
     "id": "betterend:helix_tree_composter"
   }
 }

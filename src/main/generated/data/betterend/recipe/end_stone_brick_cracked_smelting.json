@@ -2,10 +2,8 @@
   "type": "minecraft:smelting",
   "category": "blocks",
   "cookingtime": 200,
-  "experience": 0.0,
-  "ingredient": {
-    "item": "minecraft:end_stone_bricks"
-  },
+  "experience": 0.1,
+  "ingredient": "minecraft:end_stone_bricks",
   "result": {
     "id": "betterend:end_stone_brick_cracked"
   }

@@ -1,6 +1,7 @@
 {
-  "parent": "bclib:block/ladder",
+  "parent": "minecraft:block/ladder",
   "textures": {
+    "particle": "betterend:block/tenanea_ladder",
     "texture": "betterend:block/tenanea_ladder"
   }
 }

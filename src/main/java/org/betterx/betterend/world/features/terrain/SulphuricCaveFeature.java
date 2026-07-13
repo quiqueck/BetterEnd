@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
@@ -81,7 +83,7 @@ public class SulphuricCaveFeature extends DefaultFeature {
         double nr = radius * 0.25;
 
         Set<BlockPos> brimstone = Sets.newHashSet();
-        BlockState rock = EndBlocks.SULPHURIC_ROCK.stone.defaultBlockState();
+        BlockState rock = EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE).defaultBlockState();
         int waterLevel = pos.getY() + MHelper.randRange(MHelper.floor(radius * 0.8), radius, random);
         for (int x = x1; x <= x2; x++) {
             int xsq = x - pos.getX();
@@ -148,7 +150,7 @@ public class SulphuricCaveFeature extends DefaultFeature {
                     if (state.is(CommonBlockTags.END_STONES) && !world.getBlockState(mut.above())
                                                                       .is(EndBlocks.HYDROTHERMAL_VENT)) {
                         for (int j = 0; j <= dist; j++) {
-                            BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.stone);
+                            BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
                             MHelper.shuffle(HORIZONTAL, random);
                             for (Direction dir : HORIZONTAL) {
                                 BlockPos p = mut.relative(dir);

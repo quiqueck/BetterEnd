@@ -1,7 +1,7 @@
 {
   "parent": "bclib:block/path",
   "textures": {
-    "bottom": "minecraft:block/end_stone",
+    "bottom": "betterend:block/jungle_moss",
     "side": "betterend:block/jungle_moss_side",
     "top": "betterend:block/jungle_moss_path_top"
   }

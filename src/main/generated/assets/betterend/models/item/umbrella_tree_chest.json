@@ -1,6 +1,6 @@
 {
-  "parent": "bclib:block/chest_item",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "betterend:entity/chest/umbrella_tree_chest"
+    "layer0": "betterend:item/umbrella_tree_chest"
   }
 }

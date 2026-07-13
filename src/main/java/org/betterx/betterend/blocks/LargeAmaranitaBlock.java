@@ -13,6 +13,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -26,12 +27,8 @@ public class LargeAmaranitaBlock extends EndPlantBlock implements BehaviourPlant
     private static final VoxelShape SHAPE_BOTTOM = Block.box(4, 0, 4, 12, 14, 12);
     private static final VoxelShape SHAPE_TOP = Shapes.or(Block.box(1, 3, 1, 15, 16, 15), SHAPE_BOTTOM);
 
-    public LargeAmaranitaBlock() {
-        super(BehaviourBuilders
-                .createWalkablePlant(MapColor.COLOR_RED)
-                .ignitedByLava()
-                .lightLevel((state) -> (state.getValue(SHAPE) == TripleShape.TOP) ? 15 : 0)
-        );
+    public LargeAmaranitaBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override

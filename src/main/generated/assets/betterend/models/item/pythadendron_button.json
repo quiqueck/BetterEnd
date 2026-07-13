@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/button_inventory",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "betterend:block/pythadendron_planks"
+    "layer0": "betterend:item/pythadendron_button"
   }
 }

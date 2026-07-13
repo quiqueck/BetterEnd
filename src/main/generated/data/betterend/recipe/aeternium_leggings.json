@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "betterend:aeternium_forged_plate"
-  },
-  "base": {
-    "item": "betterend:terminite_leggings"
-  },
+  "addition": "#betterend:aeterniumrepair/",
+  "base": "betterend:terminite_leggings",
   "result": {
-    "count": 1,
     "id": "betterend:aeternium_leggings"
   },
-  "template": {
-    "item": "betterend:plate_upgrade_smithing_template"
-  }
+  "template": "betterend:plate_upgrade_smithing_template"
 }

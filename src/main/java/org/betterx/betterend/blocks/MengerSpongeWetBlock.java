@@ -1,14 +1,13 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlockNotFull;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -30,9 +29,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 @SuppressWarnings("deprecation")
-public class MengerSpongeWetBlock extends BaseBlockNotFull implements RenderLayerProvider {
-    public MengerSpongeWetBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.WET_SPONGE).noOcclusion());
+public class MengerSpongeWetBlock extends BaseBlockNotFull {
+    public MengerSpongeWetBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -96,7 +95,9 @@ public class MengerSpongeWetBlock extends BaseBlockNotFull implements RenderLaye
         if (!world.isClientSide()) {
             world.levelEvent(2001, pos, getId(state));
         }
-        if (world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && (player == null || !player.isCreative())) {
+        if (world instanceof ServerLevel serverLevel
+                && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
+                && (player == null || !player.isCreative())) {
             ItemEntity drop = new ItemEntity(
                     world,
                     pos.getX() + 0.5,
@@ -107,11 +108,6 @@ public class MengerSpongeWetBlock extends BaseBlockNotFull implements RenderLaye
             world.addFreshEntity(drop);
         }
         return state;
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     @Override

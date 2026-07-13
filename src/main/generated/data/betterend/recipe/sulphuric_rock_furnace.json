@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "end_stone_ITEM_FURNACES",
+  "group": "end_stone_furnaces",
   "key": {
-    "#": {
-      "item": "betterend:sulphuric_rock"
-    }
+    "#": "betterend:sulphuric_rock"
   },
   "pattern": [
     "###",

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:block/blooming_cooksonia"
+    "layer0": "betterend:item/blooming_cooksonia"
   }
 }

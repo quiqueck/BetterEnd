@@ -3,18 +3,10 @@
   "category": "misc",
   "group": "end_berries",
   "ingredients": [
-    {
-      "item": "minecraft:sweet_berries"
-    },
-    {
-      "item": "minecraft:sugar"
-    },
-    {
-      "item": "minecraft:potion"
-    },
-    {
-      "item": "betterend:gelatine"
-    }
+    "minecraft:sweet_berries",
+    "minecraft:sugar",
+    "minecraft:potion",
+    "betterend:gelatine"
   ],
   "result": {
     "count": 1,

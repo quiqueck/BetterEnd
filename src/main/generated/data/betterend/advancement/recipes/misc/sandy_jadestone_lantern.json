@@ -11,14 +11,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_sandy_jadestone_slab_sandy_jadestone_b": {
+    "has_sandy_jadestone_slab": {
       "conditions": {
         "items": [
           {
             "items": "betterend:sandy_jadestone_slab"
-          },
-          {
-            "items": "betterend:sandy_jadestone_bricks_slab"
           }
         ]
       },
@@ -34,7 +31,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_sandy_jadestone_slab_sandy_jadestone_b",
+      "has_sandy_jadestone_slab",
       "has_crystal_shards"
     ]
   ],

@@ -6,6 +6,7 @@ import org.betterx.betterend.blocks.HydraluxPetalColoredBlock;
 import org.betterx.betterend.complexmaterials.ColoredMaterial;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.ui.ColorUtil;
+import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 
 import net.minecraft.world.level.ItemLike;
 
@@ -41,7 +42,16 @@ public class FlamboyantRefabricatedIntegration extends ModIntegration {
         addColor("6e8c9c", "slate_gray", colors, dyes);
         addColor("b02454", "violet", colors, dyes);
 
-        new ColoredMaterial(HydraluxPetalColoredBlock::new, EndBlocks.HYDRALUX_PETAL_BLOCK, colors, dyes, true);
+        new ColoredMaterial(
+                HydraluxPetalColoredBlock::new,
+                EndBlocks.HYDRALUX_PETAL_BLOCK,
+                colors,
+                dyes,
+                true,
+                (def) -> def.addTrait(ClientBlockTraits.MODEL.with(
+                        (key, block, generator) -> HydraluxPetalColoredBlock.provideBlockModel(generator, block)
+                ))
+        );
     }
 
     private void addColor(String hex, String name, Map<Integer, String> colors, Map<Integer, ItemLike> dyes) {

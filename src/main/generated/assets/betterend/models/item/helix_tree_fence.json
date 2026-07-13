@@ -1,3 +1,6 @@
 {
-  "parent": "betterend:block/helix_tree_fence_inventory"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/helix_tree_fence"
+  }
 }

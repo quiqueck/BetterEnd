@@ -1,6 +1,7 @@
 package org.betterx.datagen.betterend.recipes;
 
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.complexmaterials.MetalMaterial;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTemplates;
@@ -18,29 +19,29 @@ public class SmithingRecipesProvider extends WoverRecipeProvider {
 
     @Override
     protected void bootstrap(RecipeBuilder.Context context) {
-        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_sword_handle"), EndItems.AETERNIUM_SWORD_HANDLE)
+        RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_sword_handle"), EndItems.AETERNIUM_SET.swordHandle)
                      .template(EndTemplates.TERMINITE_UPGRADE)
                      .base(EndItems.LEATHER_WRAPPED_STICK)
-                     .addon(EndBlocks.TERMINITE.ingot)
+                     .addon(EndBlocks.TERMINITE.equipment.ingot)
                      .build(context);
 
-        RecipeBuilder.smithing(BetterEnd.C.mk("thallasium_anvil_updrade"), EndBlocks.TERMINITE.anvilBlock)
+        RecipeBuilder.smithing(BetterEnd.C.mk("thallasium_anvil_updrade"), EndBlocks.TERMINITE.getBlock(MetalMaterial.ANVIL))
                      .template(EndTemplates.TERMINITE_UPGRADE)
-                     .base(EndBlocks.THALLASIUM.anvilBlock)
-                     .addon(EndBlocks.TERMINITE.ingot)
+                     .base(EndBlocks.THALLASIUM.getBlock(MetalMaterial.ANVIL))
+                     .addon(EndBlocks.TERMINITE.equipment.ingot)
                      .build(context);
 
         RecipeBuilder.smithing(BetterEnd.C.mk("terminite_anvil_updrade"), EndBlocks.AETERNIUM_ANVIL)
                      .template(EndTemplates.AETERNIUM_UPGRADE)
-                     .base(EndBlocks.TERMINITE.anvilBlock)
-                     .addon(EndItems.AETERNIUM_INGOT)
+                     .base(EndBlocks.TERMINITE.getBlock(MetalMaterial.ANVIL))
+                     .addon(EndItems.AETERNIUM_SET.ingot)
                      .build(context);
 
 
         RecipeBuilder.smithing(BetterEnd.C.mk("armored_elytra"), EndItems.ARMORED_ELYTRA)
                      .template(EndTemplates.AETERNIUM_UPGRADE)
                      .base(Items.ELYTRA)
-                     .addon(EndItems.AETERNIUM_INGOT)
+                     .addon(EndItems.AETERNIUM_SET.ingot)
                      .build(context);
 
 
@@ -76,14 +77,14 @@ public class SmithingRecipesProvider extends WoverRecipeProvider {
                 BetterEnd.C.mk("copy_terminite_upgrade"),
                 RecipeBuilder.CopySmithingTemplateCostLevel.CHEAP,
                 EndTemplates.TERMINITE_UPGRADE,
-                EndBlocks.TERMINITE.ingot
+                EndBlocks.TERMINITE.equipment.ingot
         ).build(context);
 
         RecipeBuilder.copySmithingTemplate(
                 BetterEnd.C.mk("copy_thallasium_upgrade"),
                 RecipeBuilder.CopySmithingTemplateCostLevel.CHEAP,
                 EndTemplates.THALLASIUM_UPGRADE,
-                EndBlocks.THALLASIUM.ingot
+                EndBlocks.THALLASIUM.equipment.ingot
         ).build(context);
 
         RecipeBuilder.copySmithingTemplate(

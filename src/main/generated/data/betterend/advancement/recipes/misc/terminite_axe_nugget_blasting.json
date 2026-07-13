@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_terminite_axe": {
+    "has_item.betterend.terminite_axe": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_terminite_axe"
+      "has_item.betterend.terminite_axe"
     ]
   ],
   "rewards": {

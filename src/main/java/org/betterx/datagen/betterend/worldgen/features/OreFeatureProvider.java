@@ -9,6 +9,7 @@ import org.betterx.betterend.world.features.terrain.OreLayerFeatureConfig;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.multi.WoverFeatureProvider;
 import org.betterx.wover.feature.api.placed.PlacedFeatureKey;
+import org.betterx.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.block.Block;
@@ -76,6 +77,6 @@ public class OreFeatureProvider extends WoverFeatureProvider {
             BootstrapContext<PlacedFeature> context, PlacedFeatureKey key,
             StoneMaterial material, float radius, int minY, int maxY, int count
     ) {
-        registerLayer(context, key, material.stone, radius, minY, maxY, count);
+        registerLayer(context, key, material.getBlock(SlotType.SOURCE), radius, minY, maxY, count);
     }
 }

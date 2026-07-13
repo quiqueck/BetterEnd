@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "door",
   "key": {
-    "#": {
-      "item": "betterend:pythadendron_planks"
-    }
+    "#": "betterend:pythadendron_planks"
   },
   "pattern": [
     "##",

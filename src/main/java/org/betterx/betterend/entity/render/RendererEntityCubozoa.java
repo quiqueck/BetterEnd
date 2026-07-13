@@ -3,6 +3,7 @@ package org.betterx.betterend.entity.render;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.entity.CubozoaEntity;
 import org.betterx.betterend.entity.model.CubozoaEntityModel;
+import org.betterx.betterend.entity.render.state.CubozoaRenderState;
 import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,13 +16,13 @@ import net.minecraft.client.renderer.entity.layers.EyesLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityCubozoa extends MobRenderer<CubozoaEntity, CubozoaEntityModel> {
+public class RendererEntityCubozoa extends MobRenderer<CubozoaEntity, CubozoaRenderState, CubozoaEntityModel> {
     private static final ResourceLocation[] TEXTURE = new ResourceLocation[2];
     private static final RenderType[] GLOW = new RenderType[2];
 
     public RendererEntityCubozoa(EntityRendererProvider.Context ctx) {
         super(ctx, new CubozoaEntityModel(ctx.bakeLayer(EndEntitiesRenders.CUBOZOA_MODEL)), 0.5f);
-        this.addLayer(new EyesLayer<CubozoaEntity, CubozoaEntityModel>(this) {
+        this.addLayer(new EyesLayer<CubozoaRenderState, CubozoaEntityModel>(this) {
             @Override
             public RenderType renderType() {
                 return GLOW[0];
@@ -32,15 +33,11 @@ public class RendererEntityCubozoa extends MobRenderer<CubozoaEntity, CubozoaEnt
                     PoseStack matrices,
                     MultiBufferSource vertexConsumers,
                     int light,
-                    CubozoaEntity entity,
-                    float limbAngle,
-                    float limbDistance,
-                    float tickDelta,
-                    float animationProgress,
-                    float headYaw,
-                    float headPitch
+                    CubozoaRenderState state,
+                    float yRot,
+                    float xRot
             ) {
-                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(GLOW[entity.getVariant()]);
+                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(GLOW[state.variant]);
                 this.getParentModel()
                     .renderToBuffer(
                             matrices,
@@ -54,14 +51,19 @@ public class RendererEntityCubozoa extends MobRenderer<CubozoaEntity, CubozoaEnt
     }
 
     @Override
-    protected void scale(CubozoaEntity entity, PoseStack matrixStack, float f) {
-        float scale = entity.getScale();
-        matrixStack.scale(scale, scale, scale);
+    public CubozoaRenderState createRenderState() {
+        return new CubozoaRenderState();
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CubozoaEntity entity) {
-        return TEXTURE[entity.getVariant()];
+    public void extractRenderState(CubozoaEntity entity, CubozoaRenderState state, float partialTick) {
+        super.extractRenderState(entity, state, partialTick);
+        state.variant = entity.getVariant();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(CubozoaRenderState state) {
+        return TEXTURE[state.variant];
     }
 
     static {

@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 600,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:end_fish_raw"
-  },
+  "ingredient": "betterend:end_fish_raw",
   "result": {
     "id": "betterend:end_fish_cooked"
   }

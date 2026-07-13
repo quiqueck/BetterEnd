@@ -1,3 +1,6 @@
 {
-  "parent": "betterend:block/umbralith_5"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/umbralith"
+  }
 }

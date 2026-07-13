@@ -1,60 +1,22 @@
 {
   "type": "betterend:infusion",
   "catalysts": {
-    "east": {
-      "item": {
-        "item": "minecraft:lily_pad"
-      }
-    },
-    "north": {
-      "item": {
-        "item": "betterend:enchanted_petal"
-      }
-    },
-    "north_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "north_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "south": {
-      "item": {
-        "item": "betterend:end_lily_seed"
-      }
-    },
-    "south_east": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "south_west": {
-      "item": {
-        "item": "minecraft:lapis_lazuli"
-      }
-    },
-    "west": {
-      "item": {
-        "item": "minecraft:lily_pad"
-      }
-    }
+    "east": "minecraft:lily_pad",
+    "north": "betterend:enchanted_petal",
+    "north_east": "minecraft:lapis_lazuli",
+    "north_west": "minecraft:lapis_lazuli",
+    "south": "betterend:end_lily_seed",
+    "south_east": "minecraft:lapis_lazuli",
+    "south_west": "minecraft:lapis_lazuli",
+    "west": "minecraft:lily_pad"
   },
   "group": "enchantment",
-  "input": {
-    "item": {
-      "item": "minecraft:book"
-    }
-  },
+  "input": "minecraft:book",
   "result": {
     "item": "minecraft:enchanted_book",
     "nbt": {
       "minecraft:stored_enchantments": {
-        "levels": {
-          "minecraft:depth_strider": 1
-        }
+        "minecraft:depth_strider": 1
       }
     }
   },

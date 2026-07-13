@@ -1,6 +1,6 @@
 {
-  "parent": "bclib:block/chest_item",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "betterend:entity/chest/end_lotus_chest"
+    "layer0": "betterend:item/end_lotus_chest"
   }
 }

@@ -39,6 +39,7 @@ public class StoneLantern extends SlotFromDefinition {
     protected void addSlotSpecificDefinitions(BlockSet<?> set, BlockDefinition<?, ?> def) {
         super.addSlotSpecificDefinitions(set, def);
         def.lightLevel((bs) -> 15);
+        def.addTrait(BlockTraits.LOOT_TABLE.dropSelf());
     }
 
     @Override

@@ -3,19 +3,11 @@
   "category": "misc",
   "key": {
     "#": [
-      {
-        "item": "betterend:violecite"
-      },
-      {
-        "item": "betterend:violecite_bricks"
-      },
-      {
-        "item": "betterend:violecite_tiles"
-      }
+      "betterend:violecite",
+      "betterend:violecite_brick",
+      "betterend:violecite_tiles"
     ],
-    "P": {
-      "item": "minecraft:purpur_block"
-    }
+    "P": "minecraft:purpur_block"
   },
   "pattern": [
     "#P",

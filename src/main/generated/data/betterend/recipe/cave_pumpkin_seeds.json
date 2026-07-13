@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:cave_pumpkin"
-    }
+    "betterend:cave_pumpkin"
   ],
   "result": {
     "count": 4,

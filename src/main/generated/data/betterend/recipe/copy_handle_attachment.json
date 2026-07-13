@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "C": {
-      "item": "minecraft:diamond"
-    },
-    "S": {
-      "item": "betterend:handle_attachment_smithing_template"
-    }
+    "#": "minecraft:stick",
+    "C": "minecraft:diamond",
+    "S": "betterend:handle_attachment_smithing_template"
   },
   "pattern": [
     "#S#",

@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_metal_tiles",
   "key": {
-    "#": {
-      "item": "betterend:thallasium_block"
-    }
+    "#": "betterend:thallasium_block"
   },
   "pattern": [
     "##",

@@ -15,6 +15,7 @@ import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -28,11 +29,8 @@ import java.util.List;
 public class FlamaeaBlock extends EndPlantBlock implements CustomBlockItemProvider, BehaviourShearablePlant, SurvivesOnWater {
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 1, 16);
 
-    public FlamaeaBlock() {
-        super(BehaviourBuilders
-                .createPlant(MapColor.COLOR_ORANGE)
-                .sound(SoundType.WET_GRASS)
-        );
+    public FlamaeaBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override

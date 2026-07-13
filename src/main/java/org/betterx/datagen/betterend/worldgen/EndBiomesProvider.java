@@ -134,7 +134,7 @@ public class EndBiomesProvider extends WoverBiomeProvider {
 
         if (WorldState.allStageRegistryAccess() != null) {
             Registry<PlacedFeature> features = WorldState.allStageRegistryAccess()
-                                                         .registryOrThrow(Registries.PLACED_FEATURE);
+                                                         .lookupOrThrow(Registries.PLACED_FEATURE);
             if (features.containsKey(id)) {
                 BCLib.LOGGER.info("Feature for " + id + " was already build");
             }

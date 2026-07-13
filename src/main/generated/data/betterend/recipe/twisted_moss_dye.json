@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:twisted_moss"
-    }
+    "betterend:twisted_moss"
   ],
   "result": {
     "count": 1,

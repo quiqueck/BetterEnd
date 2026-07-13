@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "betterend:shadow_plant"
-    }
+    "betterend:shadow_plant"
   ],
   "result": {
     "count": 1,

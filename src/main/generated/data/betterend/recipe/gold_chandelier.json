@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "end_metal_chandelier",
   "key": {
-    "#": {
-      "item": "minecraft:gold_ingot"
-    },
-    "I": {
-      "item": "betterend:lumecorn_rod"
-    }
+    "#": "minecraft:gold_ingot",
+    "I": "betterend:lumecorn_rod"
   },
   "pattern": [
     "I#I",

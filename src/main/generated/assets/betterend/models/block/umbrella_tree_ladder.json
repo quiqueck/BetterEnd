@@ -1,6 +1,7 @@
 {
-  "parent": "bclib:block/ladder",
+  "parent": "minecraft:block/ladder",
   "textures": {
+    "particle": "betterend:block/umbrella_tree_ladder",
     "texture": "betterend:block/umbrella_tree_ladder"
   }
 }

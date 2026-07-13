@@ -3,19 +3,13 @@ package org.betterx.betterend.blocks;
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.interfaces.PottablePlant;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
-import org.betterx.wover.loot.api.BlockLootProvider;
-import org.betterx.wover.loot.api.LootLookupProvider;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
@@ -28,7 +22,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -39,15 +32,12 @@ import net.fabricmc.api.Environment;
 import com.google.common.collect.Maps;
 
 import java.util.EnumMap;
-import org.jetbrains.annotations.NotNull;
 
-public class SmallJellyshroomBlock extends BaseAttachedBlock implements RenderLayerProvider, BonemealableBlock, PottablePlant, BehaviourPlant, BlockLootProvider {
+public class SmallJellyshroomBlock extends BaseAttachedBlock implements BonemealableBlock, PottablePlant, BehaviourPlant {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
 
-    public SmallJellyshroomBlock() {
-        super(BehaviourBuilders.createPlant(MapColor.COLOR_LIGHT_BLUE)
-                               .sound(SoundType.NETHER_WART)
-                               .offsetType(BlockBehaviour.OffsetType.NONE));
+    public SmallJellyshroomBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -57,25 +47,11 @@ public class SmallJellyshroomBlock extends BaseAttachedBlock implements RenderLa
     }
 
     @Override
-    public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
-            @NotNull LootLookupProvider provider,
-            @NotNull ResourceKey<LootTable> tableKey
-    ) {
-        return provider.dropWithSilkTouch(this);
-    }
-
-    @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         Direction direction = state.getValue(FACING);
         BlockPos blockPos = pos.relative(direction.getOpposite());
         BlockState support = world.getBlockState(blockPos);
         return canSupportCenter(world, blockPos, direction) && support.canOcclude() && support.getLightEmission() == 0;
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     static {

@@ -22,7 +22,7 @@ public class EndStatusEffects {
             true
     );
     public final static MobEffectInstance CRYSTALITE_DIG_SPEED = new MobEffectInstance(
-            MobEffects.DIG_SPEED,
+            MobEffects.HASTE,
             80,
             0,
             true,
@@ -30,7 +30,7 @@ public class EndStatusEffects {
             true
     );
     public final static MobEffectInstance CRYSTALITE_MOVE_SPEED = new MobEffectInstance(
-            MobEffects.MOVEMENT_SPEED,
+            MobEffects.SPEED,
             80,
             0,
             true,

@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "door",
   "key": {
-    "#": {
-      "item": "betterend:tenanea_planks"
-    }
+    "#": "betterend:tenanea_planks"
   },
   "pattern": [
     "##",

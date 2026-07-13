@@ -1,16 +1,14 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlockNotFull;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.block.api.BlockProperties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -19,29 +17,22 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
-
 import java.util.Collections;
 import java.util.List;
 
-public class CavePumpkinBlock extends BaseBlockNotFull implements RenderLayerProvider {
+public class CavePumpkinBlock extends BaseBlockNotFull {
     public static final BooleanProperty SMALL = BlockProperties.SMALL;
     private static final VoxelShape SHAPE_SMALL;
     private static final VoxelShape SHAPE_BIG;
 
-    public CavePumpkinBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.PUMPKIN).luminance((state) -> state.getValue(SMALL) ? 10 : 15));
+    public CavePumpkinBlock(BlockBehaviour.Properties props) {
+        super(props);
         registerDefaultState(defaultBlockState().setValue(SMALL, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManager) {
         stateManager.add(SMALL);
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     @Override

@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "pressure_plate",
   "key": {
-    "#": {
-      "item": "betterend:dragon_tree_planks"
-    }
+    "#": "betterend:dragon_tree_planks"
   },
   "pattern": [
     "##"

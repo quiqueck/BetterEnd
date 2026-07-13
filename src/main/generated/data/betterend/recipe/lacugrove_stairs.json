@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "stairs",
+  "group": "wooden_stairs",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_planks"
-    }
+    "#": "betterend:lacugrove_planks"
   },
   "pattern": [
     "#  ",

@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:tenanea_planks"
-    },
-    "S": {
-      "item": "betterend:tenanea_slab"
-    }
+    "#": "betterend:tenanea_planks",
+    "S": "betterend:tenanea_slab"
   },
   "pattern": [
     "#S#",

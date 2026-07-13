@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 100,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:bolux_mushroom"
-  },
+  "ingredient": "betterend:bolux_mushroom",
   "result": {
     "id": "betterend:bolux_mushroom_cooked"
   }

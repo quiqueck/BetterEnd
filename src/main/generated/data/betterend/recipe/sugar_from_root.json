@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:amber_root_raw"
-    }
+    "#": "betterend:amber_root_raw"
   },
   "pattern": [
     "###"

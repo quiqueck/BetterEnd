@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "gate",
   "key": {
-    "#": {
-      "item": "betterend:mossy_glowshroom_planks"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:mossy_glowshroom_planks",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "I#I",

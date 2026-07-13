@@ -1,9 +1,7 @@
 package org.betterx.betterend.entity.model;
 
-import org.betterx.betterend.entity.CubozoaEntity;
+import org.betterx.betterend.entity.render.state.CubozoaRenderState;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
@@ -15,14 +13,12 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 
-public class CubozoaEntityModel extends EntityModel<CubozoaEntity> {
+public class CubozoaEntityModel extends EntityModel<CubozoaRenderState> {
     private final static int TENTACLE_COUNT = 4;
 
     private final ModelPart model;
     private final ModelPart[] tentacle_center;
     private final ModelPart[] tentacle;
-    private float scaleY;
-    private float scaleXZ;
 
     public static LayerDefinition getTexturedModelData() {
         MeshDefinition modelData = new MeshDefinition();
@@ -58,7 +54,7 @@ public class CubozoaEntityModel extends EntityModel<CubozoaEntity> {
     }
 
     public CubozoaEntityModel(ModelPart modelPart) {
-        super(RenderType::entityTranslucent);
+        super(modelPart, RenderType::entityTranslucent);
         tentacle = new ModelPart[TENTACLE_COUNT];
         tentacle_center = new ModelPart[TENTACLE_COUNT];
 
@@ -70,34 +66,16 @@ public class CubozoaEntityModel extends EntityModel<CubozoaEntity> {
     }
 
     @Override
-    public void setupAnim(
-            CubozoaEntity entity,
-            float limbAngle,
-            float limbDistance,
-            float animationProgress,
-            float headYaw,
-            float headPitch
-    ) {
-        float sin = Mth.sin(animationProgress * 0.13F);
-        scaleY = sin * 0.1F + 0.9F;
-        scaleXZ = Mth.sin(animationProgress * 0.13F + 3.14F) * 0.1F + 0.9F;
+    public void setupAnim(CubozoaRenderState state) {
+        float sin = Mth.sin(state.ageInTicks * 0.13F);
+        float scaleY = sin * 0.1F + 0.9F;
+        float scaleXZ = Mth.sin(state.ageInTicks * 0.13F + 3.14F) * 0.1F + 0.9F;
+        model.xScale = scaleXZ;
+        model.yScale = scaleY;
+        model.zScale = scaleXZ;
 
         for (int i = 0; i < TENTACLE_COUNT; i++) {
             tentacle[i].xRot = sin * 0.15f;
         }
-    }
-
-    @Override
-    public void renderToBuffer(
-            PoseStack matrices,
-            VertexConsumer vertices,
-            int light,
-            int overlay,
-            int color
-    ) {
-        matrices.pushPose();
-        matrices.scale(scaleXZ, scaleY, scaleXZ);
-        model.render(matrices, vertices, light, overlay);
-        matrices.popPose();
     }
 }

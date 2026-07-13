@@ -1,19 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "composter",
-  "key": {
-    "#": {
-      "item": "betterend:tenanea_slab"
-    }
-  },
-  "pattern": [
-    "# #",
-    "# #",
-    "###"
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    "betterend:tenanea_slab"
   ],
   "result": {
-    "count": 1,
+    "count": 4,
     "id": "betterend:tenanea_composter"
   }
 }

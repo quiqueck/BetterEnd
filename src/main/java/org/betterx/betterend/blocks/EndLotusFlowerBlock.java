@@ -4,8 +4,11 @@ import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -13,8 +16,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import org.jetbrains.annotations.NotNull;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -48,6 +54,18 @@ public class EndLotusFlowerBlock extends EndPlantBlock implements BehaviourPlant
     }
 
     @Override
+    public LootTable.Builder registerBlockLoot(
+            @NotNull ResourceLocation location,
+            @NotNull LootLookupProvider provider,
+            @NotNull ResourceKey<LootTable> tableKey
+    ) {
+        // No block item exists for this block (defineBlockOnly), so it must not drop itself -
+        // BaseBlock's default registerBlockLoot() would otherwise do exactly that. The actual
+        // drop (a random count of END_LOTUS_SEED) is handled by getDrops() below at runtime.
+        return null;
+    }
+
+    @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         int count = MHelper.randRange(1, 2, MHelper.RANDOM_SOURCE);
         return Lists.newArrayList(new ItemStack(EndBlocks.END_LOTUS_SEED, count));
@@ -55,7 +73,7 @@ public class EndLotusFlowerBlock extends EndPlantBlock implements BehaviourPlant
 
     @Override
     @Environment(EnvType.CLIENT)
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
         return new ItemStack(EndBlocks.END_LOTUS_SEED);
     }
 }

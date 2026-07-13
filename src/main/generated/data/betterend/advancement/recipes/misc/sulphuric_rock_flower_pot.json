@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_sulphuric_rock_bricks": {
+    "has_sulphuric_rock_brick": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:sulphuric_rock_bricks"
+            "items": "betterend:sulphuric_rock_brick"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_sulphuric_rock_bricks"
+      "has_sulphuric_rock_brick"
     ]
   ],
   "rewards": {

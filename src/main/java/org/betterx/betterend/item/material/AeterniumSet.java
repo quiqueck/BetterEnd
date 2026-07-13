@@ -17,11 +17,11 @@ public class AeterniumSet extends ToolsWithHeadsSet {
                 EndToolTier.AETERNIUM,
                 EndArmorTier.AETERNIUM,
                 EndItems.LEATHER_WRAPPED_STICK,
-                EndTemplates.LEATHER_HANDLE_ATTACHMENT,
-                EndTemplates.TOOL_ASSEMBLY,
+                () -> EndTemplates.LEATHER_HANDLE_ATTACHMENT,
+                () -> EndTemplates.TOOL_ASSEMBLY,
                 false,
                 EndTags.ANVIL_NETHERITE_TOOL,
-                EndBlocks.TERMINITE.equipment
+                () -> EndBlocks.TERMINITE.equipment
         );
 
     }

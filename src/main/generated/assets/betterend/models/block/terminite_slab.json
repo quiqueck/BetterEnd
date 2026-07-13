@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/slab",
   "textures": {
-    "bottom": "betterend:block/terminite_tile",
-    "side": "betterend:block/terminite_tile",
-    "top": "betterend:block/terminite_tile"
+    "bottom": "betterend:block/terminite_block",
+    "side": "betterend:block/terminite_block",
+    "top": "betterend:block/terminite_block"
   }
 }

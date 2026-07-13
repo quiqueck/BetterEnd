@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "end_stone_lanterns",
   "key": {
-    "#": {
-      "item": "betterend:crystal_shards"
-    },
-    "S": {
-      "item": "minecraft:blackstone_slab"
-    }
+    "#": "betterend:crystal_shards",
+    "S": "minecraft:blackstone_slab"
   },
   "pattern": [
     "S",

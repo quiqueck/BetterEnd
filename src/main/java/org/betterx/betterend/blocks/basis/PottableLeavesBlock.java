@@ -16,14 +16,6 @@ public class PottableLeavesBlock extends BaseLeavesBlock implements PottablePlan
         super(properties);
     }
 
-    public PottableLeavesBlock(Block sapling, MapColor color) {
-        super(BehaviourBuilders.createStaticLeaves(color, true));
-    }
-
-    public PottableLeavesBlock(Block sapling, MapColor color, int light) {
-        super(BehaviourBuilders.createStaticLeaves(color, true).lightLevel(state -> light));
-    }
-
     @Override
     public boolean canPlantOn(Block block) {
 //        if (sapling instanceof PottablePlant) {

@@ -1,20 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_mossy_glowshroom_log_mossy_glowshroom_": {
+    "has_tag_betterend_mossy_glowshroom_logs": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:mossy_glowshroom_log"
-          },
-          {
-            "items": "betterend:mossy_glowshroom_bark"
-          },
-          {
-            "items": "betterend:mossy_glowshroom_stripped_log"
-          },
-          {
-            "items": "betterend:mossy_glowshroom_stripped_bark"
+            "items": "#betterend:mossy_glowshroom_logs"
           }
         ]
       },
@@ -30,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_mossy_glowshroom_log_mossy_glowshroom_"
+      "has_tag_betterend_mossy_glowshroom_logs"
     ]
   ],
   "rewards": {

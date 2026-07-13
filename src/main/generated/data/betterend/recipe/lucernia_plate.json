@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "pressure_plate",
   "key": {
-    "#": {
-      "item": "betterend:lucernia_planks"
-    }
+    "#": "betterend:lucernia_planks"
   },
   "pattern": [
     "##"

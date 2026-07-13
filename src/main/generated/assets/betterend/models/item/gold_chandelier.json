@@ -1,3 +1,6 @@
 {
-  "parent": "betterend:block/gold_chandelier_ceil"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/gold_chandelier"
+  }
 }

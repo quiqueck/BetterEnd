@@ -31,7 +31,7 @@ public class BlockFixer {
 
     public static void fixBlocks(LevelAccessor level, BlockPos start, BlockPos end) {
         final Registry<DimensionType> registry = level.registryAccess()
-                                                      .registryOrThrow(Registries.DIMENSION_TYPE);
+                                                      .lookupOrThrow(Registries.DIMENSION_TYPE);
         final ResourceLocation dimKey = registry.getKey(level.dimensionType());
         if (dimKey != null && "world_blender".equals(dimKey.getNamespace())) {
             return;
@@ -40,8 +40,8 @@ public class BlockFixer {
         final int dx = end.getX() - start.getX() + 1;
         final int dz = end.getZ() - start.getZ() + 1;
         final int count = dx * dz;
-        final int minY = Math.max(start.getY(), level.getMinBuildHeight());
-        final int maxY = Math.min(end.getY(), level.getMaxBuildHeight());
+        final int minY = Math.max(start.getY(), level.getMinY());
+        final int maxY = Math.min(end.getY(), level.getMaxY());
         IntStream.range(0, count).forEach(index -> {
             MutableBlockPos POS = new MutableBlockPos();
             POS.setX((index % dx) + start.getX());

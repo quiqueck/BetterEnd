@@ -3,10 +3,7 @@
   "allowedTools": "betterend:anvil_tool/diamond",
   "anvilLevel": 3,
   "damage": 3,
-  "input": {
-    "item": "betterend:terminite_ingot"
-  },
-  "inputCount": 2,
+  "input": "betterend:terminite_ingot",
   "result": {
     "item": "betterend:terminite_hoe_head"
   }

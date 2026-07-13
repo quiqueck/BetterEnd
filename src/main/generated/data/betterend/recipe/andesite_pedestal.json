@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:polished_andesite"
-    },
-    "S": {
-      "item": "minecraft:polished_andesite_slab"
-    }
+    "#": "minecraft:polished_andesite",
+    "S": "minecraft:polished_andesite_slab"
   },
   "pattern": [
     "S",

@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:glowing_bulb"
-    },
-    "C": {
-      "item": "minecraft:chain"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    }
+    "#": "betterend:glowing_bulb",
+    "C": "minecraft:chain",
+    "I": "minecraft:iron_ingot"
   },
   "pattern": [
     "C",

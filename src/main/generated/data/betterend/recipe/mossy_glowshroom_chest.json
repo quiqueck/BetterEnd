@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "chest",
   "key": {
-    "#": {
-      "item": "betterend:mossy_glowshroom_planks"
-    }
+    "#": "betterend:mossy_glowshroom_planks"
   },
   "pattern": [
     "###",

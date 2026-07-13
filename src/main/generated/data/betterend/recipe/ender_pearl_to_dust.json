@@ -3,9 +3,7 @@
   "allowedTools": "betterend:anvil_tool/iron",
   "anvilLevel": 2,
   "damage": 5,
-  "input": {
-    "item": "minecraft:ender_pearl"
-  },
+  "input": "minecraft:ender_pearl",
   "result": {
     "item": "betterend:ender_dust"
   }

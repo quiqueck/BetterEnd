@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_stone_slabs",
   "key": {
-    "#": {
-      "item": "betterend:smaragdant_crystal"
-    }
+    "#": "betterend:smaragdant_crystal"
   },
   "pattern": [
     "###"

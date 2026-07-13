@@ -59,6 +59,7 @@ public class FlowerPot extends SlotFromDefinition {
     protected void addSlotSpecificDefinitions(BlockSet<?> set, BlockDefinition<?, ?> def) {
         super.addSlotSpecificDefinitions(set, def);
         asFlowerPot(def);
+        def.addTrait(BlockTraits.LOOT_TABLE.dropSelf());
     }
 
     @Override

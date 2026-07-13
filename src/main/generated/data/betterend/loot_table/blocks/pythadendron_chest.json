@@ -15,10 +15,7 @@
             {
               "function": "minecraft:copy_components",
               "include": [
-                "minecraft:custom_name",
-                "minecraft:container",
-                "minecraft:lock",
-                "minecraft:container_loot"
+                "minecraft:custom_name"
               ],
               "source": "block_entity"
             }
@@ -28,6 +25,5 @@
       ],
       "rolls": 1.0
     }
-  ],
-  "random_sequence": "betterend:pythadendron_chest"
+  ]
 }

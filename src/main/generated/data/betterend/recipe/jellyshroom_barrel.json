@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:jellyshroom_planks"
-    },
-    "S": {
-      "item": "betterend:jellyshroom_slab"
-    }
+    "#": "betterend:jellyshroom_planks",
+    "S": "betterend:jellyshroom_slab"
   },
   "pattern": [
     "#S#",

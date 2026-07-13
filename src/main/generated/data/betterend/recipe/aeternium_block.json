@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "item": "betterend:aeternium_ingot"
-    }
+    "I": "betterend:aeternium_ingot"
   },
   "pattern": [
     "III",

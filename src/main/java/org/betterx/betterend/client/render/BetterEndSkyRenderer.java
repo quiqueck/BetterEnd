@@ -4,26 +4,42 @@ import org.betterx.bclib.util.BackgroundInfo;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.BetterEnd;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.blaze3d.buffers.GpuBufferSlice;
+import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.client.renderer.GameRenderer;
+import com.mojang.blaze3d.textures.GpuTextureView;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.MeshData;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRenderer {
+    private record SkyMesh(GpuBuffer buffer, int indexCount) {
+    }
+
     @FunctionalInterface
     interface BufferFunction {
-        BufferBuilder make(Tesselator tesselator, float minSize, float maxSize, int count, long seed);
+        MeshData make(BufferBuilder builder, float minSize, float maxSize, int count, long seed);
     }
 
     private static final ResourceLocation NEBULA_1 = BetterEnd.C.mk("textures/sky/nebula_2.png");
@@ -32,14 +48,14 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
     private static final ResourceLocation STARS = BetterEnd.C.mk("textures/sky/stars.png");
     private static final ResourceLocation FOG = BetterEnd.C.mk("textures/sky/fog.png");
 
-    private VertexBuffer nebula1;
-    private VertexBuffer nebula2;
-    private VertexBuffer horizon;
-    private VertexBuffer stars1;
-    private VertexBuffer stars2;
-    private VertexBuffer stars3;
-    private VertexBuffer stars4;
-    private VertexBuffer fog;
+    private SkyMesh nebula1;
+    private SkyMesh nebula2;
+    private SkyMesh horizon;
+    private SkyMesh stars1;
+    private SkyMesh stars2;
+    private SkyMesh stars3;
+    private SkyMesh stars4;
+    private SkyMesh fog;
     private Vector3f axis1;
     private Vector3f axis2;
     private Vector3f axis3;
@@ -71,7 +87,6 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
 
         initialise();
 
-        Matrix4f projectionMatrix = context.projectionMatrix();
         PoseStack matrices = context.matrixStack();
 
         float time = ((context.world().getDayTime() + context
@@ -80,12 +95,6 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
         float time2 = time * 2;
         float time3 = time * 3;
 
-        FogRenderer.levelFogColor();
-        RenderSystem.depthMask(false);
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-
         float blindA = 1F - BackgroundInfo.blindness;
         float blind02 = blindA * 0.2f;
         float blind06 = blindA * 0.6f;
@@ -93,80 +102,37 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
         if (blindA > 0) {
             matrices.pushPose();
             matrices.mulPose(new Quaternionf().rotationXYZ(0, time, 0));
-            RenderSystem.setShaderTexture(0, HORIZON);
-            renderBuffer(
-                    matrices,
-                    projectionMatrix,
-                    horizon,
-                    DefaultVertexFormat.POSITION_TEX,
-                    0.77f,
-                    0.31f,
-                    0.73f,
-                    0.7f * blindA
-            );
+            renderTexturedMesh(matrices, horizon, HORIZON, 0.77f, 0.31f, 0.73f, 0.7f * blindA);
             matrices.popPose();
 
             matrices.pushPose();
             matrices.mulPose(new Quaternionf().rotationXYZ(0, -time, 0));
-            RenderSystem.setShaderTexture(0, NEBULA_1);
-            renderBuffer(
-                    matrices,
-                    projectionMatrix,
-                    nebula1,
-                    DefaultVertexFormat.POSITION_TEX,
-                    0.77f,
-                    0.31f,
-                    0.73f,
-                    blind02
-            );
+            renderTexturedMesh(matrices, nebula1, NEBULA_1, 0.77f, 0.31f, 0.73f, blind02);
             matrices.popPose();
 
             matrices.pushPose();
             matrices.mulPose(new Quaternionf().rotationXYZ(0, time2, 0));
-            RenderSystem.setShaderTexture(0, NEBULA_2);
-            renderBuffer(
-                    matrices,
-                    projectionMatrix,
-                    nebula2,
-                    DefaultVertexFormat.POSITION_TEX,
-                    0.77f,
-                    0.31f,
-                    0.73f,
-                    blind02
-            );
+            renderTexturedMesh(matrices, nebula2, NEBULA_2, 0.77f, 0.31f, 0.73f, blind02);
             matrices.popPose();
-
-            RenderSystem.setShaderTexture(0, STARS);
 
             matrices.pushPose();
             matrices.mulPose(new Quaternionf().setAngleAxis(time, axis3.x, axis3.y, axis3.z));
-            renderBuffer(
-                    matrices,
-                    projectionMatrix,
-                    stars3,
-                    DefaultVertexFormat.POSITION_TEX,
-                    0.77f,
-                    0.31f,
-                    0.73f,
-                    blind06
-            );
+            renderTexturedMesh(matrices, stars3, STARS, 0.77f, 0.31f, 0.73f, blind06);
             matrices.popPose();
 
             matrices.pushPose();
             matrices.mulPose(new Quaternionf().setAngleAxis(time2, axis4.x, axis4.y, axis4.z));
-            renderBuffer(matrices, projectionMatrix, stars4, DefaultVertexFormat.POSITION_TEX, 1F, 1F, 1F, blind06);
+            renderTexturedMesh(matrices, stars4, STARS, 1F, 1F, 1F, blind06);
             matrices.popPose();
         }
 
         float a = (BackgroundInfo.fogDensity - 1F);
         if (a > 0) {
             if (a > 1) a = 1;
-            RenderSystem.setShaderTexture(0, FOG);
-            renderBuffer(
+            renderTexturedMesh(
                     matrices,
-                    projectionMatrix,
                     fog,
-                    DefaultVertexFormat.POSITION_TEX,
+                    FOG,
                     BackgroundInfo.fogColorRed,
                     BackgroundInfo.fogColorGreen,
                     BackgroundInfo.fogColorBlue,
@@ -177,105 +143,138 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
         if (blindA > 0) {
             matrices.pushPose();
             matrices.mulPose(new Quaternionf().setAngleAxis(time3, axis1.x, axis1.y, axis1.z));
-            renderBuffer(matrices, projectionMatrix, stars1, DefaultVertexFormat.POSITION, 1, 1, 1, blind06);
+            renderStarMesh(matrices, stars1, 1, 1, 1, blind06);
             matrices.popPose();
 
             matrices.pushPose();
             matrices.mulPose(new Quaternionf().setAngleAxis(time2, axis2.x, axis2.y, axis2.z));
-            renderBuffer(
-                    matrices,
-                    projectionMatrix,
-                    stars2,
-                    DefaultVertexFormat.POSITION,
-                    0.95f,
-                    0.64f,
-                    0.93f,
-                    blind06
-            );
+            renderStarMesh(matrices, stars2, 0.95f, 0.64f, 0.93f, blind06);
             matrices.popPose();
         }
-
-        RenderSystem.depthMask(true);
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.disableBlend();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    private void renderBuffer(
+    private void renderTexturedMesh(
             PoseStack matrices,
-            Matrix4f matrix4f,
-            VertexBuffer buffer,
-            VertexFormat format,
+            SkyMesh mesh,
+            ResourceLocation texture,
             float r,
             float g,
             float b,
             float a
     ) {
-        RenderSystem.setShaderColor(r, g, b, a);
-        buffer.bind();
-        if (format == DefaultVertexFormat.POSITION) {
-            buffer.drawWithShader(matrices.last().pose(), matrix4f, GameRenderer.getPositionShader());
-        } else {
-            buffer.drawWithShader(matrices.last().pose(), matrix4f, GameRenderer.getPositionTexShader());
+        AbstractTexture abstractTexture = Minecraft.getInstance().getTextureManager().getTexture(texture);
+        GpuTextureView colorView = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
+        GpuTextureView depthView = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
+        GpuBufferSlice transform = RenderSystem.getDynamicUniforms()
+                                                .writeTransform(
+                                                        matrices.last().pose(),
+                                                        new Vector4f(r, g, b, a),
+                                                        new Vector3f(),
+                                                        new Matrix4f(),
+                                                        0.0F
+                                                );
+
+        RenderSystem.AutoStorageIndexBuffer indexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+        GpuBuffer indices = indexBuffer.getBuffer(mesh.indexCount());
+
+        try (RenderPass pass = RenderSystem.getDevice()
+                                            .createCommandEncoder()
+                                            .createRenderPass(
+                                                    () -> "BetterEnd sky",
+                                                    colorView,
+                                                    OptionalInt.empty(),
+                                                    depthView,
+                                                    OptionalDouble.empty()
+                                            )) {
+            pass.setPipeline(RenderPipelines.END_SKY);
+            RenderSystem.bindDefaultUniforms(pass);
+            pass.setUniform("DynamicTransforms", transform);
+            pass.bindSampler("Sampler0", abstractTexture.getTextureView());
+            pass.setVertexBuffer(0, mesh.buffer());
+            pass.setIndexBuffer(indices, indexBuffer.type());
+            pass.drawIndexed(0, 0, mesh.indexCount(), 1);
         }
-        VertexBuffer.unbind();
+    }
+
+    private void renderStarMesh(PoseStack matrices, SkyMesh mesh, float r, float g, float b, float a) {
+        GpuTextureView colorView = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
+        GpuTextureView depthView = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
+        GpuBufferSlice transform = RenderSystem.getDynamicUniforms()
+                                                .writeTransform(
+                                                        matrices.last().pose(),
+                                                        new Vector4f(r, g, b, a),
+                                                        new Vector3f(),
+                                                        new Matrix4f(),
+                                                        0.0F
+                                                );
+
+        RenderSystem.AutoStorageIndexBuffer indexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+        GpuBuffer indices = indexBuffer.getBuffer(mesh.indexCount());
+
+        try (RenderPass pass = RenderSystem.getDevice()
+                                            .createCommandEncoder()
+                                            .createRenderPass(
+                                                    () -> "BetterEnd stars",
+                                                    colorView,
+                                                    OptionalInt.empty(),
+                                                    depthView,
+                                                    OptionalDouble.empty()
+                                            )) {
+            pass.setPipeline(RenderPipelines.STARS);
+            RenderSystem.bindDefaultUniforms(pass);
+            pass.setUniform("DynamicTransforms", transform);
+            pass.setVertexBuffer(0, mesh.buffer());
+            pass.setIndexBuffer(indices, indexBuffer.type());
+            pass.drawIndexed(0, 0, mesh.indexCount(), 1);
+        }
     }
 
     private void initStars() {
-        Tesselator tesselator = Tesselator.getInstance();
-
-        stars1 = buildBuffer(tesselator, stars1, 0.1f, 0.30f, 3500, 41315, this::makeStars);
-        stars2 = buildBuffer(tesselator, stars2, 0.1f, 0.35f, 2000, 35151, this::makeStars);
-        stars3 = buildBuffer(tesselator, stars3, 0.4f, 1.2f, 1000, 61354, this::makeUVStars);
-        stars4 = buildBuffer(tesselator, stars4, 0.4f, 1.2f, 1000, 61355, this::makeUVStars);
-        nebula1 = buildBuffer(tesselator, nebula1, 40, 60, 30, 11515, this::makeFarFog);
-        nebula2 = buildBuffer(tesselator, nebula2, 40, 60, 10, 14151, this::makeFarFog);
-        horizon = buildBufferHorizon(tesselator, horizon);
-        fog = buildBufferFog(tesselator, fog);
+        stars1 = buildStarMesh(0.1f, 0.30f, 3500, 41315);
+        stars2 = buildStarMesh(0.1f, 0.35f, 2000, 35151);
+        stars3 = buildTexturedMesh(0.4f, 1.2f, 1000, 61354, this::makeUVStars);
+        stars4 = buildTexturedMesh(0.4f, 1.2f, 1000, 61355, this::makeUVStars);
+        nebula1 = buildTexturedMesh(40, 60, 30, 11515, this::makeFarFog);
+        nebula2 = buildTexturedMesh(40, 60, 10, 14151, this::makeFarFog);
+        horizon = buildTexturedMesh(0, 0, 0, 0, (b, min, max, count, seed) -> makeCylinder(b, 16, 50, 100));
+        fog = buildTexturedMesh(0, 0, 0, 0, (b, min, max, count, seed) -> makeCylinder(b, 16, 50, 70));
     }
 
-    private VertexBuffer buildBuffer(
-            Tesselator tesselator,
-            VertexBuffer vertexBuffer,
-            float minSize,
-            float maxSize,
-            int count,
-            long seed,
-            BufferFunction fkt
-    ) {
-        if (vertexBuffer != null) {
-            vertexBuffer.close();
+    private SkyMesh buildStarMesh(float minSize, float maxSize, int count, long seed) {
+        try (ByteBufferBuilder byteBufferBuilder = ByteBufferBuilder.exactlySized(
+                DefaultVertexFormat.POSITION.getVertexSize() * count * 4
+        )) {
+            BufferBuilder builder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+            MeshData meshData = makeStars(builder, minSize, maxSize, count, seed);
+            return uploadMesh(meshData, "BetterEnd stars vertex buffer");
         }
-
-        vertexBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
-        BufferBuilder bufferBuilder = fkt.make(tesselator, minSize, maxSize, count, seed);
-        MeshData meshData = bufferBuilder.build();
-        vertexBuffer.bind();
-        vertexBuffer.upload(meshData);
-
-        return vertexBuffer;
     }
 
-
-    private VertexBuffer buildBufferHorizon(Tesselator tesselator, VertexBuffer buffer) {
-        return buildBuffer(
-                tesselator, buffer, 0, 0, 0, 0,
-                (_builder, _minSize, _maxSize, _count, _seed) -> makeCylinder(_builder, 16, 50, 100)
-        );
-
+    private SkyMesh buildTexturedMesh(float minSize, float maxSize, int count, long seed, BufferFunction fkt) {
+        try (ByteBufferBuilder byteBufferBuilder = ByteBufferBuilder.exactlySized(
+                DefaultVertexFormat.POSITION_TEX_COLOR.getVertexSize() * Math.max(count, 64) * 4
+        )) {
+            BufferBuilder builder = new BufferBuilder(
+                    byteBufferBuilder,
+                    VertexFormat.Mode.QUADS,
+                    DefaultVertexFormat.POSITION_TEX_COLOR
+            );
+            MeshData meshData = fkt.make(builder, minSize, maxSize, count, seed);
+            return uploadMesh(meshData, "BetterEnd sky vertex buffer");
+        }
     }
 
-    private VertexBuffer buildBufferFog(Tesselator tesselator, VertexBuffer buffer) {
-        return buildBuffer(
-                tesselator, buffer, 0, 0, 0, 0,
-                (_builder, _minSize, _maxSize, _count, _seed) -> makeCylinder(_builder, 16, 50, 70)
-        );
+    private SkyMesh uploadMesh(MeshData meshData, String label) {
+        try (meshData) {
+            int indexCount = meshData.drawState().indexCount();
+            GpuBuffer buffer = RenderSystem.getDevice()
+                                            .createBuffer(() -> label, GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
+            return new SkyMesh(buffer, indexCount);
+        }
     }
 
-    private BufferBuilder makeStars(Tesselator tesselator, float minSize, float maxSize, int count, long seed) {
+    private MeshData makeStars(BufferBuilder buffer, float minSize, float maxSize, int count, long seed) {
         RandomSource random = new LegacyRandomSource(seed);
-        RenderSystem.setShader(GameRenderer::getPositionShader);
-        final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 
         for (int i = 0; i < count; ++i) {
             float posX = random.nextFloat() * 2.0f - 1.0f;
@@ -318,13 +317,12 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
             }
         }
 
-        return buffer;
+        return buffer.buildOrThrow();
     }
 
-    private BufferBuilder makeUVStars(Tesselator tesselator, float minSize, float maxSize, int count, long seed) {
+    private MeshData makeUVStars(BufferBuilder buffer, float minSize, float maxSize, int count, long seed) {
         RandomSource random = new LegacyRandomSource(seed);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        int white = ARGB.colorFromFloat(1F, 1F, 1F, 1F);
 
         for (int i = 0; i < count; ++i) {
             float posX = random.nextFloat() * 2.0f - 1.0f;
@@ -365,17 +363,17 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
                     float dz = ab * sin1 + ae * cos1;
                     float texU = (index >> 1) & 1;
                     float texV = (((index + 1) >> 1) & 1) / 4F + minV;
-                    buffer.addVertex(px + dx, py + dy, pz + dz).setUv(texU, texV);
+                    buffer.addVertex(px + dx, py + dy, pz + dz).setUv(texU, texV).setColor(white);
                 }
             }
         }
-        return buffer;
+
+        return buffer.buildOrThrow();
     }
 
-    private BufferBuilder makeFarFog(Tesselator tesselator, float minSize, float maxSize, int count, long seed) {
+    private MeshData makeFarFog(BufferBuilder buffer, float minSize, float maxSize, int count, long seed) {
         RandomSource random = new LegacyRandomSource(seed);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        int white = ARGB.colorFromFloat(1F, 1F, 1F, 1F);
 
         for (int i = 0; i < count; ++i) {
             float posX = random.nextFloat() * 2.0f - 1.0f;
@@ -417,16 +415,15 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
                     float dz = ab * sin1 + ae * cos1;
                     float texU = (index >> 1) & 1;
                     float texV = ((index + 1) >> 1) & 1;
-                    buffer.addVertex(px + dx, py + dy, pz + dz).setUv(texU, texV);
+                    buffer.addVertex(px + dx, py + dy, pz + dz).setUv(texU, texV).setColor(white);
                 }
             }
         }
-        return buffer;
+        return buffer.buildOrThrow();
     }
 
-    private BufferBuilder makeCylinder(Tesselator tesselator, int segments, float height, float radius) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+    private MeshData makeCylinder(BufferBuilder buffer, int segments, float height, float radius) {
+        int white = ARGB.colorFromFloat(1F, 1F, 1F, 1F);
         for (int i = 0; i < segments; i++) {
             float a1 = (float) i * (float) Math.PI * 2.0f / (float) segments;
             float a2 = (float) (i + 1) * (float) Math.PI * 2.0f / (float) segments;
@@ -438,11 +435,11 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
             float u0 = (float) i / (float) segments;
             float u1 = (float) (i + 1) / (float) segments;
 
-            buffer.addVertex(px1, -height, pz1).setUv(u0, 0);
-            buffer.addVertex(px1, height, pz1).setUv(u0, 1);
-            buffer.addVertex(px2, height, pz2).setUv(u1, 1);
-            buffer.addVertex(px2, -height, pz2).setUv(u1, 0);
+            buffer.addVertex(px1, -height, pz1).setUv(u0, 0).setColor(white);
+            buffer.addVertex(px1, height, pz1).setUv(u0, 1).setColor(white);
+            buffer.addVertex(px2, height, pz2).setUv(u1, 1).setColor(white);
+            buffer.addVertex(px2, -height, pz2).setUv(u1, 0).setColor(white);
         }
-        return buffer;
+        return buffer.buildOrThrow();
     }
 }

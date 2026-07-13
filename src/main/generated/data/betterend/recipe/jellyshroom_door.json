@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "door",
   "key": {
-    "#": {
-      "item": "betterend:jellyshroom_planks"
-    }
+    "#": "betterend:jellyshroom_planks"
   },
   "pattern": [
     "##",

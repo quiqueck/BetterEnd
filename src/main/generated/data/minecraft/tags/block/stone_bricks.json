@@ -1,12 +1,12 @@
 {
   "values": [
-    "betterend:azure_jadestone_bricks",
-    "betterend:flavolite_bricks",
-    "betterend:sandy_jadestone_bricks",
+    "betterend:azure_jadestone_brick",
+    "betterend:flavolite_brick",
+    "betterend:sandy_jadestone_brick",
     "betterend:smaragdant_crystal_bricks",
-    "betterend:sulphuric_rock_bricks",
-    "betterend:umbralith_bricks",
-    "betterend:violecite_bricks",
-    "betterend:virid_jadestone_bricks"
+    "betterend:sulphuric_rock_brick",
+    "betterend:umbralith_brick",
+    "betterend:violecite_brick",
+    "betterend:virid_jadestone_brick"
   ]
 }

@@ -1,20 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_dragon_tree_log_dragon_tree_bark_drago": {
+    "has_tag_betterend_dragon_tree_logs": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:dragon_tree_log"
-          },
-          {
-            "items": "betterend:dragon_tree_bark"
-          },
-          {
-            "items": "betterend:dragon_tree_stripped_log"
-          },
-          {
-            "items": "betterend:dragon_tree_stripped_bark"
+            "items": "#betterend:dragon_tree_logs"
           }
         ]
       },
@@ -30,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_dragon_tree_log_dragon_tree_bark_drago"
+      "has_tag_betterend_dragon_tree_logs"
     ]
   ],
   "rewards": {

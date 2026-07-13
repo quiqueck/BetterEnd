@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "betterend:terminite_sword_handle"
-  },
-  "base": {
-    "item": "betterend:terminite_sword_blade"
-  },
+  "addition": "betterend:terminite_sword_handle",
+  "base": "betterend:terminite_sword_blade",
   "result": {
-    "count": 1,
     "id": "betterend:terminite_sword"
   },
-  "template": {
-    "item": "betterend:tool_assembly_smithing_template"
-  }
+  "template": "betterend:terminite_upgrade_smithing_template"
 }

@@ -1,20 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_tenanea_log_tenanea_bark_tenanea_strip": {
+    "has_tag_betterend_tenanea_logs": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:tenanea_log"
-          },
-          {
-            "items": "betterend:tenanea_bark"
-          },
-          {
-            "items": "betterend:tenanea_stripped_log"
-          },
-          {
-            "items": "betterend:tenanea_stripped_bark"
+            "items": "#betterend:tenanea_logs"
           }
         ]
       },
@@ -30,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_tenanea_log_tenanea_bark_tenanea_strip"
+      "has_tag_betterend_tenanea_logs"
     ]
   ],
   "rewards": {

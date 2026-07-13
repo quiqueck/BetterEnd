@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "pressure_plate",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_planks"
-    }
+    "#": "betterend:lacugrove_planks"
   },
   "pattern": [
     "##"

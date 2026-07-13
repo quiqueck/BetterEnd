@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "end_metal_ingots_nug",
+  "group": "end_metal_nugget",
   "key": {
-    "#": {
-      "item": "betterend:terminite_nugget"
-    }
+    "#": "betterend:terminite_nugget"
   },
   "pattern": [
     "###",

@@ -3,20 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    [
-      {
-        "item": "betterend:mossy_glowshroom_log"
-      },
-      {
-        "item": "betterend:mossy_glowshroom_bark"
-      },
-      {
-        "item": "betterend:mossy_glowshroom_stripped_log"
-      },
-      {
-        "item": "betterend:mossy_glowshroom_stripped_bark"
-      }
-    ]
+    "#betterend:mossy_glowshroom_logs"
   ],
   "result": {
     "count": 4,

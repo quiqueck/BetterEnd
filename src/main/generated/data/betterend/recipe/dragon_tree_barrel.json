@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:dragon_tree_planks"
-    },
-    "S": {
-      "item": "betterend:dragon_tree_slab"
-    }
+    "#": "betterend:dragon_tree_planks",
+    "S": "betterend:dragon_tree_slab"
   },
   "pattern": [
     "#S#",

@@ -1,14 +1,12 @@
 package org.betterx.betterend.complexmaterials;
 
-import org.betterx.bclib.blocks.BaseSlabBlock;
-import org.betterx.bclib.blocks.BaseStairsBlock;
-import org.betterx.bclib.blocks.BaseWallBlock;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.EndPedestal;
 import org.betterx.betterend.blocks.basis.LitBaseBlock;
 import org.betterx.betterend.blocks.basis.LitPillarBlock;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.datagen.betterend.recipes.EndCraftingRecipesProvider;
+import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 import org.betterx.wover.recipe.api.CraftingRecipeBuilder;
 import org.betterx.wover.recipe.api.RecipeBuilder;
 import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
@@ -17,7 +15,9 @@ import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 
 public class CrystalSubblocksMaterial implements MaterialManager.Material {
     public final Block polished;
@@ -38,18 +38,48 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
         this.source = source;
         this.name = name;
 
-        BlockBehaviour.Properties material = BlockBehaviour.Properties.ofFullCopy(source);
-        polished = EndBlocks.registerBlock(name + "_polished", new LitBaseBlock(material));
-        tiles = EndBlocks.registerBlock(name + "_tiles", new LitBaseBlock(material));
-        pillar = EndBlocks.registerBlock(name + "_pillar", new LitPillarBlock(material));
-        stairs = EndBlocks.registerBlock(name + "_stairs", new BaseStairsBlock.Stone(source));
-        slab = EndBlocks.registerBlock(name + "_slab", new BaseSlabBlock.Stone(source));
-        wall = EndBlocks.registerBlock(name + "_wall", new BaseWallBlock.Stone(source));
-        pedestal = EndBlocks.registerBlock(name + "_pedestal", new EndPedestal.Stone(source));
-        bricks = EndBlocks.registerBlock(name + "_bricks", new LitBaseBlock(material));
-        brick_stairs = EndBlocks.registerBlock(name + "_bricks_stairs", new BaseStairsBlock.Stone(bricks));
-        brick_slab = EndBlocks.registerBlock(name + "_bricks_slab", new BaseSlabBlock.Stone(bricks));
-        brick_wall = EndBlocks.registerBlock(name + "_bricks_wall", new BaseWallBlock.Stone(bricks));
+        polished = EndBlocks.defineBlock(name + "_polished", LitBaseBlock::new)
+                             .replacePropertiesWithCopy(source)
+                             .addTrait(ClientBlockTraits.MODEL.with(
+                                     (key, block, generator) -> LitBaseBlock.provideBlockModel(generator, block)
+                             ))
+                             .buildAndRegister();
+        tiles = EndBlocks.defineBlock(name + "_tiles", LitBaseBlock::new)
+                          .replacePropertiesWithCopy(source)
+                          .addTrait(ClientBlockTraits.MODEL.with(
+                                  (key, block, generator) -> LitBaseBlock.provideBlockModel(generator, block)
+                          ))
+                          .buildAndRegister();
+        pillar = EndBlocks.defineBlock(name + "_pillar", LitPillarBlock::new)
+                           .replacePropertiesWithCopy(source)
+                           .buildAndRegister();
+        stairs = EndBlocks.defineBlock(name + "_stairs", p -> new StairBlock(source.defaultBlockState(), p))
+                           .replacePropertiesWithCopy(source)
+                           .buildAndRegister();
+        slab = EndBlocks.defineBlock(name + "_slab", SlabBlock::new)
+                         .replacePropertiesWithCopy(source)
+                         .buildAndRegister();
+        wall = EndBlocks.defineBlock(name + "_wall", WallBlock::new)
+                         .replacePropertiesWithCopy(source)
+                         .buildAndRegister();
+        pedestal = EndBlocks.defineBlock(name + "_pedestal", EndPedestal::new)
+                             .replacePropertiesWithCopy(source)
+                             .buildAndRegister();
+        bricks = EndBlocks.defineBlock(name + "_bricks", LitBaseBlock::new)
+                           .replacePropertiesWithCopy(source)
+                           .addTrait(ClientBlockTraits.MODEL.with(
+                                   (key, block, generator) -> LitBaseBlock.provideBlockModel(generator, block)
+                           ))
+                           .buildAndRegister();
+        brick_stairs = EndBlocks.defineBlock(name + "_bricks_stairs", p -> new StairBlock(bricks.defaultBlockState(), p))
+                                 .replacePropertiesWithCopy(bricks)
+                                 .buildAndRegister();
+        brick_slab = EndBlocks.defineBlock(name + "_bricks_slab", SlabBlock::new)
+                               .replacePropertiesWithCopy(bricks)
+                               .buildAndRegister();
+        brick_wall = EndBlocks.defineBlock(name + "_bricks_wall", WallBlock::new)
+                               .replacePropertiesWithCopy(bricks)
+                               .buildAndRegister();
 
 
         MaterialManager.register(this);

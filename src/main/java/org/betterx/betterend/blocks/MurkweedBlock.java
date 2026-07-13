@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
 import org.betterx.betterend.interfaces.survives.SurvivesOnShadowGrass;
 
@@ -13,18 +12,16 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public class MurkweedBlock extends EndPlantBlock implements SurvivesOnShadowGrass {
-    public MurkweedBlock() {
-        super(
-                BehaviourBuilders.createPlant(MapColor.COLOR_BLACK).ignitedByLava()
-        );
+    public MurkweedBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -39,7 +36,7 @@ public class MurkweedBlock extends EndPlantBlock implements SurvivesOnShadowGras
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier insideBlockEffectApplier) {
         if (entity instanceof LivingEntity && !((LivingEntity) entity).hasEffect(MobEffects.BLINDNESS)) {
             ((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 50));
         }

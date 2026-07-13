@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.level.ItemLike;
 
+import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,8 +33,8 @@ public class ToolsWithHeadsSet extends EquipmentSet {
     public final Item swordHandle;
     public final Item hammerHead;
 
-    public final SmithingTemplateItem handleTemplate;
-    public final SmithingTemplateItem swordHandleTemplate;
+    public final Supplier<SmithingTemplateItem> handleTemplate;
+    public final Supplier<SmithingTemplateItem> swordHandleTemplate;
 
     protected final boolean withNuggets;
 
@@ -42,11 +43,11 @@ public class ToolsWithHeadsSet extends EquipmentSet {
             @NotNull ToolTier toolTier,
             @NotNull ArmorTier armorTier,
             @NotNull ItemLike handleItem,
-            @NotNull SmithingTemplateItem handleTemplate,
-            @NotNull SmithingTemplateItem swordHandleTemplate,
+            @NotNull Supplier<SmithingTemplateItem> handleTemplate,
+            @NotNull Supplier<SmithingTemplateItem> swordHandleTemplate,
             boolean withNuggets,
             TagKey<Item> anvilTools,
-            @Nullable EquipmentSet templateBaseSet
+            @Nullable Supplier<EquipmentSet> templateBaseSet
     ) {
         super(BetterEnd.C, baseName, toolTier, armorTier, handleItem, templateBaseSet);
         this.anvilTools = anvilTools;
@@ -94,7 +95,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
                                 .smithing(key.location(), item)
-                                .template(handleTemplate)
+                                .template(handleTemplate.get())
                                 .base(pickaxeHead)
                                 .addon(handleItem)
                                 .build(context)
@@ -105,7 +106,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
                                 .smithing(key.location(), item)
-                                .template(handleTemplate)
+                                .template(handleTemplate.get())
                                 .base(axeHead)
                                 .addon(handleItem)
                                 .build(context)
@@ -116,7 +117,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
                                 .smithing(key.location(), item)
-                                .template(handleTemplate)
+                                .template(handleTemplate.get())
                                 .base(shovelHead)
                                 .addon(handleItem)
                                 .build(context)
@@ -127,7 +128,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
                                 .smithing(key.location(), item)
-                                .template(handleTemplate)
+                                .template(handleTemplate.get())
                                 .base(hoeHead)
                                 .addon(handleItem)
                                 .build(context)
@@ -137,7 +138,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ToolSlot.HAMMER_SLOT,
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder.smithing(key.location(), item)
-                                                             .template(handleTemplate)
+                                                             .template(handleTemplate.get())
                                                              .base(hammerHead)
                                                              .addon(handleItem)
                                                              .build(context)
@@ -148,7 +149,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
                                 .smithing(key.location(), item)
-                                .template(swordHandleTemplate)
+                                .template(swordHandleTemplate.get())
                                 .base(swordBlade)
                                 .addon(swordHandle)
                                 .build(context)

@@ -1,8 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourWaterPlant;
-import org.betterx.bclib.interfaces.tools.AddMineableShears;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.basis.EndUnderwaterPlantBlock;
 import org.betterx.betterend.interfaces.survives.SurvivesOnEndStone;
@@ -17,10 +15,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -35,29 +34,29 @@ import com.google.common.collect.Lists;
 
 import java.util.Collections;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
-public class EndLilyBlock extends EndUnderwaterPlantBlock implements BehaviourWaterPlant, AddMineableShears, SurvivesOnEndStone {
+public class EndLilyBlock extends EndUnderwaterPlantBlock implements BehaviourWaterPlant, SurvivesOnEndStone {
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     private static final VoxelShape SHAPE_BOTTOM = Block.box(4, 0, 4, 12, 16, 12);
     private static final VoxelShape SHAPE_TOP = Block.box(2, 0, 2, 14, 6, 14);
 
-    public EndLilyBlock() {
-        super(BehaviourBuilders
-                .createWaterPlant()
-                .lightLevel((state) -> state.getValue(SHAPE) == TripleShape.TOP ? 13 : 0)
-        );
+    public EndLilyBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
-    public BlockState updateShape(
+    protected @NotNull BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader level,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction neighborDirection,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
     ) {
-        if (!canSurvive(state, world, pos)) {
+        if (!canSurvive(state, level, pos)) {
             return state.getValue(SHAPE) == TripleShape.TOP
                     ? Blocks.AIR.defaultBlockState()
                     : Blocks.WATER.defaultBlockState();
@@ -68,7 +67,7 @@ public class EndLilyBlock extends EndUnderwaterPlantBlock implements BehaviourWa
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext ePos) {
-        Vec3 vec3d = state.getOffset(view, pos);
+        Vec3 vec3d = state.getOffset(pos);
         VoxelShape shape = state.getValue(SHAPE) == TripleShape.TOP ? SHAPE_TOP : SHAPE_BOTTOM;
         return shape.move(vec3d.x, vec3d.y, vec3d.z);
     }
@@ -109,7 +108,7 @@ public class EndLilyBlock extends EndUnderwaterPlantBlock implements BehaviourWa
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
         return new ItemStack(EndBlocks.END_LILY_SEED);
     }
 

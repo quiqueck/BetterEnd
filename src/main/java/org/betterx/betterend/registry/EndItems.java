@@ -14,6 +14,7 @@ import org.betterx.betterend.trait.item.HammerTraitBuilder;
 import org.betterx.betterend.util.DebugHelpers;
 import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
 import org.betterx.wover.complex.api.equipment.ArmorSlot;
+import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.complex.api.equipment.ToolTiers;
 import org.betterx.wover.item.api.DefaultItemDefinition;
 import org.betterx.wover.item.api.ItemRegistry;
@@ -213,7 +214,10 @@ public class EndItems {
     }
 
     public static Item registerEndDisc(String name, ResourceKey<JukeboxSong> sound) {
-        Item item = BaseDiscItem.create(sound, BehaviourBuilders.createDisc());
+        Item item = BaseDiscItem.create(
+                sound,
+                BehaviourBuilders.createDisc().setId(getItemRegistry().key(name))
+        );
         RecordItemModelProvider.add(item);
         getItemRegistry().register(name, item, CommonItemTags.MUSIC_DISCS);
         return item;
@@ -273,7 +277,7 @@ public class EndItems {
     @ApiStatus.Internal
     public static void ensureStaticallyLoaded() {
         GuideBookItem.ensureStaticallyLoaded();
-        if (BCLib.isDevEnvironment()) {
+        if (BCLib.isDevEnvironment() && !ModCore.isDatagen()) {
             DebugHelpers.generateDebugItems();
         }
     }

@@ -1,9 +1,7 @@
 package org.betterx.betterend.entity.model;
 
-import org.betterx.betterend.entity.EndFishEntity;
+import org.betterx.betterend.entity.render.state.EndFishRenderState;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
@@ -14,7 +12,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
-public class EndFishEntityModel extends EntityModel<EndFishEntity> {
+public class EndFishEntityModel extends EntityModel<EndFishRenderState> {
     private final ModelPart model;
     private final ModelPart fin_top;
     private final ModelPart fin_bottom;
@@ -66,7 +64,7 @@ public class EndFishEntityModel extends EntityModel<EndFishEntity> {
     }
 
     public EndFishEntityModel(ModelPart modelPart) {
-        super(RenderType::entityCutout);
+        super(modelPart, RenderType::entityCutout);
 
         model = modelPart.getChild(PartNames.BODY);
         fin_top = model.getChild(PartNames.TOP_FIN);
@@ -77,31 +75,13 @@ public class EndFishEntityModel extends EntityModel<EndFishEntity> {
     }
 
     @Override
-    public void setupAnim(
-            EndFishEntity entity,
-            float limbAngle,
-            float limbDistance,
-            float animationProgress,
-            float headYaw,
-            float headPitch
-    ) {
-        float s1 = (float) Math.sin(animationProgress * 0.1);
-        float s2 = (float) Math.sin(animationProgress * 0.05);
+    public void setupAnim(EndFishRenderState state) {
+        float s1 = (float) Math.sin(state.ageInTicks * 0.1);
+        float s2 = (float) Math.sin(state.ageInTicks * 0.05);
         flipper.yRot = s1 * 0.3F;
         fin_top.xRot = s2 * 0.02F - 0.6981F;
         fin_bottom.xRot = 0.6981F - s2 * 0.02F;
         fin_left.yRot = s1 * 0.3F - 0.7854F;
         fin_right.yRot = 0.7854F - s1 * 0.3F;
-    }
-
-    @Override
-    public void renderToBuffer(
-            PoseStack matrices,
-            VertexConsumer vertices,
-            int light,
-            int overlay,
-            int color
-    ) {
-        model.render(matrices, vertices, light, overlay);
     }
 }

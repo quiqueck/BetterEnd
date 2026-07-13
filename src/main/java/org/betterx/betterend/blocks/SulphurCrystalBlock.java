@@ -3,14 +3,11 @@ package org.betterx.betterend.blocks;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.betterend.interfaces.survives.SurvivesOnBrimstone;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.loot.api.BlockLootProvider;
 import org.betterx.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -51,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements SimpleWaterloggedBlock, LiquidBlockContainer, SurvivesOnBrimstone, BlockLootProvider {
+public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements SimpleWaterloggedBlock, LiquidBlockContainer, SurvivesOnBrimstone {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 2);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -67,47 +64,46 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Simp
         stateManager.add(AGE, WATERLOGGED);
     }
 
-    private LootItemConditionalFunction.@NotNull Builder<?> applyAgeBonus(@NotNull LootLookupProvider provider, int i) {
+    private static LootItemConditionalFunction.@NotNull Builder<?> applyAgeBonus(
+            Block block,
+            @NotNull LootLookupProvider provider,
+            int i
+    ) {
         return ApplyBonusCount
                 .addUniformBonusCount(provider.fortune(), i)
-                .when(ageCondition(i));
+                .when(ageCondition(block, i));
     }
 
-    private LootItemBlockStatePropertyCondition.@NotNull Builder ageCondition(int i) {
+    private static LootItemBlockStatePropertyCondition.@NotNull Builder ageCondition(Block block, int i) {
         return LootItemBlockStatePropertyCondition
-                .hasBlockStateProperties(this)
+                .hasBlockStateProperties(block)
                 .setProperties(StatePropertiesPredicate.Builder
                         .properties()
                         .hasProperty(AGE, i));
     }
 
-    @Override
-    public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
-            @NotNull LootLookupProvider provider,
-            @NotNull ResourceKey<LootTable> tableKey
-    ) {
+    public static LootTable.Builder buildLoot(Block block, @NotNull LootLookupProvider provider) {
         return LootTable
                 .lootTable()
                 .withPool(
                         LootPool.lootPool()
                                 .when(provider.hasSilkTouch())
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(this)
+                                .add(LootItem.lootTableItem(block)
                                              .apply(SetItemCountFunction
                                                      .setCount(UniformGenerator.between(1, 3))
-                                                     .when(ageCondition(3))
+                                                     .when(ageCondition(block, 3))
                                              )
                                              .apply(SetItemCountFunction
                                                      .setCount(ConstantValue.exactly(1))
-                                                     .when(InvertedLootItemCondition.invert(ageCondition(3)))
+                                                     .when(InvertedLootItemCondition.invert(ageCondition(block, 3)))
                                              )
                                              .apply(ApplyBonusCount
                                                      .addOreBonusCount(provider.fortune())
-                                                     .when(ageCondition(3))
+                                                     .when(ageCondition(block, 3))
                                              )
-                                             .apply(applyAgeBonus(provider, 2))
-                                             .apply(applyAgeBonus(provider, 1))
+                                             .apply(applyAgeBonus(block, provider, 2))
+                                             .apply(applyAgeBonus(block, provider, 1))
                                              .apply(ApplyExplosionDecay.explosionDecay())
                                 )
                 )
@@ -115,7 +111,7 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Simp
                         LootPool.lootPool()
                                 .when(AllOfCondition.allOf(
                                         InvertedLootItemCondition.invert(provider.hasSilkTouch()),
-                                        ageCondition(3)
+                                        ageCondition(block, 3)
                                 ))
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(EndItems.CRYSTALLINE_SULPHUR)

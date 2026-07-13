@@ -1,19 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "group": "composter",
-  "key": {
-    "#": {
-      "item": "betterend:end_lotus_slab"
-    }
-  },
-  "pattern": [
-    "# #",
-    "# #",
-    "###"
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    "betterend:end_lotus_slab"
   ],
   "result": {
-    "count": 1,
+    "count": 4,
     "id": "betterend:end_lotus_composter"
   }
 }

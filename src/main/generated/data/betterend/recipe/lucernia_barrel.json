@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:lucernia_planks"
-    },
-    "S": {
-      "item": "betterend:lucernia_slab"
-    }
+    "#": "betterend:lucernia_planks",
+    "S": "betterend:lucernia_slab"
   },
   "pattern": [
     "#S#",

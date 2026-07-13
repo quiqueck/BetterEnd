@@ -107,7 +107,7 @@ public class CommandRegistry {
         final CommandSourceStack source = ctx.getSource();
         final var biomeIterator = WorldState
                 .registryAccess()
-                .registry(Registries.BIOME)
+                .lookup(Registries.BIOME)
                 .orElseThrow()
                 .getTagOrEmpty(BiomeTags.IS_END);
         final List<Holder<Biome>> biomes = new LinkedList<>();
@@ -152,13 +152,13 @@ public class CommandRegistry {
                 target = new BlockPos(biomePosition.getX(), (int) yPos, biomePosition.getZ());
                 state = player.level().getBlockState(target);
                 yPos--;
-                if (yPos <= player.level().getMinBuildHeight() + 1) {
+                if (yPos <= player.level().getMinY() + 1) {
                     if (didWrap) break;
                     yPos = 127;
                     didWrap = true;
                 }
-            } while (!state.isAir() && yPos > player.level().getMinBuildHeight() && yPos < player.level()
-                                                                                                 .getMaxBuildHeight());
+            } while (!state.isAir() && yPos > player.level().getMinY() && yPos < player.level()
+                                                                                                 .getMaxY());
             Vector3d targetPlayerPos = new Vector3d(target.getX() + 0.5, target.getY() - 1, target.getZ() + 0.5);
 
             player.connection.teleport(
@@ -166,8 +166,7 @@ public class CommandRegistry {
                     targetPlayerPos.y,
                     targetPlayerPos.z,
                     0,
-                    0,
-                    Collections.EMPTY_SET
+                    0
             );
             ResourceOrTagKeyArgument.Result result = new ResourceOrTagKeyArgument.Result() {
                 @Override
@@ -194,8 +193,8 @@ public class CommandRegistry {
             if (WorldState.allStageRegistryAccess() != null) {
                 Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
                 Holder<Biome> h = WorldState.allStageRegistryAccess()
-                                            .registryOrThrow(Registries.BIOME)
-                                            .getHolder(a)
+                                            .lookupOrThrow(Registries.BIOME)
+                                            .get(a)
                                             .orElseThrow();
                 stopwatch.stop();
                 return LocateCommand.showLocateResult(

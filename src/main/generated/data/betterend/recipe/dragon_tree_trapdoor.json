@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
-  "group": "trapdoor",
+  "group": "wooden_trapdoor",
   "key": {
-    "#": {
-      "item": "betterend:dragon_tree_planks"
-    }
+    "#": "betterend:dragon_tree_planks"
   },
   "pattern": [
     "###",

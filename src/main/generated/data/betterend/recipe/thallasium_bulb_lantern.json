@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:glowing_bulb"
-    },
-    "C": {
-      "item": "betterend:thallasium_chain"
-    },
-    "I": {
-      "item": "betterend:thallasium_ingot"
-    }
+    "#": "betterend:glowing_bulb",
+    "C": "betterend:thallasium_chain",
+    "I": "betterend:thallasium_ingot"
   },
   "pattern": [
     "C",

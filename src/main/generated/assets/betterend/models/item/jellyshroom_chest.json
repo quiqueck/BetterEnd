@@ -1,6 +1,6 @@
 {
-  "parent": "bclib:block/chest_item",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "betterend:entity/chest/jellyshroom_chest"
+    "layer0": "betterend:item/jellyshroom_chest"
   }
 }

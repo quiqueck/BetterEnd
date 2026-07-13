@@ -1,8 +1,5 @@
 {
-  "carvers": {
-    "air": [],
-    "liquid": []
-  },
+  "carvers": [],
   "downfall": 0.5,
   "effects": {
     "fog_color": -2034178,
@@ -13,12 +10,18 @@
       "sound": "betterend:betterend.ambient.dust_wastelands",
       "tick_delay": 6000
     },
-    "music": {
-      "max_delay": 2400,
-      "min_delay": 600,
-      "replace_current_music": true,
-      "sound": "minecraft:music.end"
-    },
+    "music": [
+      {
+        "data": {
+          "max_delay": 2400,
+          "min_delay": 600,
+          "replace_current_music": true,
+          "sound": "minecraft:music.end"
+        },
+        "weight": 1
+      }
+    ],
+    "music_volume": 1.0,
     "particle": {
       "options": {
         "type": "betterend:snowflake"

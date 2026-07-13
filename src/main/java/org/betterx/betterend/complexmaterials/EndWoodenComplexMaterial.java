@@ -1,41 +1,43 @@
 package org.betterx.betterend.complexmaterials;
 
-import org.betterx.bclib.complexmaterials.WoodenComplexMaterial;
-import org.betterx.bclib.complexmaterials.entry.SlotMap;
-import org.betterx.bclib.complexmaterials.set.wood.WoodSlots;
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.betterend.registry.EndItems;
+import org.betterx.wover.block.api.BlockDefinition;
+import org.betterx.wover.recipe.api.RecipeBuilder;
+import org.betterx.wover.sets.api.blocks.SlotType;
+import org.betterx.wover.sets.api.blocks.WoodenBlockSet;
+import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
+import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
-public class EndWoodenComplexMaterial extends WoodenComplexMaterial {
+public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMaterial> implements MaterialManager.Material {
     private Block bark;
     private Block log;
 
-    public EndWoodenComplexMaterial(String name, MapColor woodColor, MapColor planksColor, Block furnitureCloth) {
-        super(BetterEnd.C, name, name, woodColor, planksColor);
-        this.setFurnitureCloth(furnitureCloth);
-    }
+    public EndWoodenComplexMaterial(String name, MapColor woodColor, MapColor planksColor) {
+        super(BetterEnd.C, name, woodColor);
+        setPlanksColor(planksColor);
 
-    public EndWoodenComplexMaterial init() {
-        return (EndWoodenComplexMaterial) super.init(
-                EndBlocks.getBlockRegistry(),
-                EndItems.getItemRegistry()
-        );
+        MaterialManager.register(this);
     }
 
     @Override
-    protected SlotMap<WoodenComplexMaterial> createMaterialSlots() {
-        return super.createMaterialSlots()
-                    .add(WoodSlots.HANGING_SIGN)
-                    .add(WoodSlots.TABURET)
-                    .add(WoodSlots.BAR_STOOL)
-                    .add(WoodSlots.CHAIR)
-                    .add(WoodSlots.WALL)
-                ;
+    protected void addCommonBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
+        super.addCommonBlockDefinitions(slot, blockDefinition);
+    }
+
+    @Override
+    public void registerRecipes(RecipeBuilder.Context context) {
+    }
+
+    @Override
+    public void registerBlockTags(TagBootstrapContext<Block> context) {
+    }
+
+    @Override
+    public void registerItemTags(ItemTagBootstrapContext context) {
     }
 
     public boolean isTreeLog(Block block) {
@@ -48,14 +50,14 @@ public class EndWoodenComplexMaterial extends WoodenComplexMaterial {
 
     public Block getLog() {
         if (log == null) {
-            log = getBlock("log");
+            log = getBlock(SlotType.LOG);
         }
         return log;
     }
 
     public Block getBark() {
         if (bark == null) {
-            bark = getBlock("bark");
+            bark = getBlock(SlotType.BARK);
         }
         return bark;
     }

@@ -3,15 +3,9 @@
   "category": "misc",
   "group": "sign",
   "key": {
-    "#": {
-      "item": "betterend:lucernia_stripped_log"
-    },
-    "I": {
-      "item": "minecraft:chain"
-    },
-    "o": {
-      "item": "betterend:jellyshroom_log"
-    }
+    "#": "betterend:lucernia_stripped_log",
+    "I": "minecraft:chain",
+    "o": "betterend:jellyshroom_log"
   },
   "pattern": [
     "I I",

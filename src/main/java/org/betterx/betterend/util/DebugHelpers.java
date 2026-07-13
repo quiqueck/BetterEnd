@@ -18,37 +18,37 @@ public class DebugHelpers {
         didCreateDebugItems = true;
         BetterEnd.LOGGER.warn("Generating Debug Helpers");
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/village_loot",
                 DebugDataItem.forLootTable(LootTableUtil.VILLAGE_LOOT, Items.IRON_INGOT)
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/village_bonus",
                 DebugDataItem.forLootTable(LootTableUtil.VILLAGE_BONUS_LOOT, Items.DIAMOND)
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/village_template",
                 DebugDataItem.forLootTable(LootTableUtil.VILLAGE_TEMPLATE_LOOT, Items.GOLD_INGOT)
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/biome_loot",
                 DebugDataItem.forLootTable(LootTableUtil.BIOME_CHEST, Items.OAK_LEAVES)
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/jigsaw_entrance",
                 DebugDataItem.forHouseEntranceJigSaw(BetterEnd.MOD_ID, null, Items.OAK_DOOR)
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/jigsaw_street_entrance",
                 DebugDataItem.forHouseEntranceJigSaw(BetterEnd.MOD_ID, VillagePools.HOUSES_KEY.key, Items.IRON_DOOR)
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/jigsaw_street",
                 DebugDataItem.forSteetJigSaw(
                         BetterEnd.MOD_ID,
@@ -57,7 +57,7 @@ public class DebugHelpers {
                 )
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/jigsaw_street_deco",
                 DebugDataItem.forStreetDecorationJigSaw(
                         BetterEnd.MOD_ID,
@@ -65,7 +65,7 @@ public class DebugHelpers {
                         Items.ENDER_EYE
                 )
         );
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/jigsaw_street_big_deco",
                 DebugDataItem.forDecorationJigSaw(
                         BetterEnd.MOD_ID,
@@ -74,7 +74,7 @@ public class DebugHelpers {
                 )
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/jigsaw_big_deco",
                 DebugDataItem.forDecorationJigSaw(
                         BetterEnd.MOD_ID,
@@ -83,7 +83,7 @@ public class DebugHelpers {
                 )
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/jigsaw_deco",
                 DebugDataItem.forStreetDecorationJigSaw(
                         BetterEnd.MOD_ID,
@@ -92,7 +92,7 @@ public class DebugHelpers {
                 )
         );
 
-        EndItems.registerEndItem(
+        EndItems.getItemRegistry().register(
                 "debug/fill_base_void",
                 new DebugDataItem((player, entity, useOnContext) -> DebugDataItem.fillStructureEntityBounds(
                         useOnContext, entity,
@@ -102,7 +102,7 @@ public class DebugHelpers {
                 ), false, BuiltInRegistries.ITEM.getKey(Items.WATER_BUCKET))
         );
 
-        Item item = EndItems.registerEndItem(
+        Item item = EndItems.getItemRegistry().register(
                 "debug/fill_air",
                 new DebugDataItem((player, entity, useOnContext) -> DebugDataItem.fillStructureEntityBounds(
                         useOnContext, entity,

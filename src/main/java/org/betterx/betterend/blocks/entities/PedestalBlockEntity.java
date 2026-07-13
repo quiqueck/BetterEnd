@@ -14,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -92,20 +94,17 @@ public class PedestalBlockEntity extends BlockEntity implements Container {
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
-        if (tag.contains("active_item")) {
-            CompoundTag itemTag = tag.getCompound("active_item");
-            activeItem = ItemStack.parse(provider, itemTag).orElse(ItemStack.EMPTY);
-        }
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        activeItem = input.read("active_item", ItemStack.CODEC).orElse(ItemStack.EMPTY);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+    protected void saveAdditional(ValueOutput output) {
         if (activeItem != ItemStack.EMPTY) {
-            tag.put("active_item", activeItem.save(provider, new CompoundTag()));
+            output.store("active_item", ItemStack.CODEC, activeItem);
         }
-        super.saveAdditional(tag, provider);
+        super.saveAdditional(output);
     }
 
     @Override

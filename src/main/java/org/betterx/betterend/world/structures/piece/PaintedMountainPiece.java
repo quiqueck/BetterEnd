@@ -58,11 +58,11 @@ public class PaintedMountainPiece extends MountainPiece {
     @Override
     protected void fromNbt(CompoundTag tag) {
         super.fromNbt(tag);
-        final HolderLookup<Block> blockLookup = BuiltInRegistries.BLOCK.asLookup();
-        ListTag slise = tag.getList("slises", 10);
+        final HolderLookup<Block> blockLookup = BuiltInRegistries.BLOCK;
+        ListTag slise = tag.getListOrEmpty("slises");
         slices = new BlockState[slise.size()];
         for (int i = 0; i < slices.length; i++) {
-            slices[i] = NbtUtils.readBlockState(blockLookup, slise.getCompound(i));
+            slices[i] = NbtUtils.readBlockState(blockLookup, slise.getCompoundOrEmpty(i));
         }
     }
 
@@ -115,7 +115,7 @@ public class PaintedMountainPiece extends MountainPiece {
                             for (int y = minY - 1; y < maxY; y++) {
                                 pos.setY(y);
                                 int index = MHelper.floor((y + offset) * 0.65F) % slices.length;
-                                chunk.setBlockState(pos, slices[index], false);
+                                chunk.setBlockState(pos, slices[index], 3);
                             }
                         }
                     }

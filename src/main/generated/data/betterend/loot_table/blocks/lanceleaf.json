@@ -34,7 +34,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "betterend:lanceleaf"
         }
       ],
       "rolls": 1.0

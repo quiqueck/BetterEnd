@@ -10,10 +10,15 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
 public class EndLilySeedBlock extends UnderwaterPlantWithAgeBlock implements BehaviourWaterPlantSeed {
+    public EndLilySeedBlock(BlockBehaviour.Properties properties) {
+        super(properties);
+    }
+
     @Override
     public void grow(WorldGenLevel world, RandomSource random, BlockPos pos) {
         if (canGrow(world, pos)) {

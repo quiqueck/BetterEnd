@@ -5,16 +5,13 @@ import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseWallPlantBlock;
 import org.betterx.betterend.interfaces.survives.SurvivesOnEndStone;
 
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
 public class EndWallPlantBlock extends BaseWallPlantBlock implements BehaviourPlant, SurvivesOnEndStone {
-    public EndWallPlantBlock(MapColor color) {
-        super(BehaviourBuilders.createPlant(color));
-    }
-
-    public EndWallPlantBlock(MapColor color, int light) {
-        super(BehaviourBuilders.createPlant(color).lightLevel((bs) -> light));
+    public EndWallPlantBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override

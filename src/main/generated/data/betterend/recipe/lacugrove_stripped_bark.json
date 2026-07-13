@@ -1,10 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "bark",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_stripped_log"
-    }
+    "#": "betterend:lacugrove_stripped_log"
   },
   "pattern": [
     "##",

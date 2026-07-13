@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_metal_ingots",
   "ingredients": [
-    {
-      "item": "betterend:terminite_block"
-    }
+    "betterend:terminite_block"
   ],
   "result": {
     "count": 9,

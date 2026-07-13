@@ -3,20 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    [
-      {
-        "item": "betterend:lacugrove_log"
-      },
-      {
-        "item": "betterend:lacugrove_bark"
-      },
-      {
-        "item": "betterend:lacugrove_stripped_log"
-      },
-      {
-        "item": "betterend:lacugrove_stripped_bark"
-      }
-    ]
+    "#betterend:lacugrove_logs"
   ],
   "result": {
     "count": 4,

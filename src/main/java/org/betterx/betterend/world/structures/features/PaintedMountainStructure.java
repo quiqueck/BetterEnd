@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.structures.features;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndStructures;
@@ -71,8 +73,8 @@ public class PaintedMountainStructure extends FeatureBaseStructure {
     static {
         VARIANTS = new BlockState[]{
                 Blocks.END_STONE.defaultBlockState(),
-                EndBlocks.FLAVOLITE.stone.defaultBlockState(),
-                EndBlocks.VIOLECITE.stone.defaultBlockState(),
+                EndBlocks.FLAVOLITE.getBlock(SlotType.SOURCE).defaultBlockState(),
+                EndBlocks.VIOLECITE.getBlock(SlotType.SOURCE).defaultBlockState(),
         };
     }
 }

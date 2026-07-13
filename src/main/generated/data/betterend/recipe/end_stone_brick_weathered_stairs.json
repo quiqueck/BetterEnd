@@ -3,9 +3,7 @@
   "category": "building",
   "group": "stairs",
   "key": {
-    "#": {
-      "item": "betterend:end_stone_brick_weathered"
-    }
+    "#": "betterend:end_stone_brick_weathered"
   },
   "pattern": [
     "#  ",

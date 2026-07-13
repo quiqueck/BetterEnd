@@ -26,8 +26,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.dimension.LevelStem;
 
-import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 public class EndBiomes {
     public static WoverBiomePicker CAVE_BIOMES = null;
@@ -82,26 +82,21 @@ public class EndBiomes {
             LevelStem levelStem,
             long seed
     ) {
-        final Registry<Biome> registry = WorldState.allStageRegistryAccess().registryOrThrow(Registries.BIOME);
+        final Registry<Biome> registry = WorldState.allStageRegistryAccess().lookupOrThrow(Registries.BIOME);
         var dataRegistry = WorldState
                 .allStageRegistryAccess()
-                .registry(BiomeDataRegistry.BIOME_DATA_REGISTRY)
+                .lookup(BiomeDataRegistry.BIOME_DATA_REGISTRY)
                 .orElseThrow();
 
 
         if (CAVE_BIOMES == null || CAVE_BIOMES.biomeRegistry != registry) {
             CAVE_BIOMES = new WoverBiomePicker(Biomes.END_HIGHLANDS);
-            registry.getTag(EndTags.IS_END_CAVE)
-                    .map(tag -> tag
-                            .stream()
-                            .map(Holder::unwrapKey)
-                            .filter(Optional::isPresent)
-                            .map(Optional::orElseThrow)
-                            .map(k -> dataRegistry.get(k.location()))
-                            .filter(Objects::nonNull)
-                    ).ifPresent(
-                            list -> list.forEach(data -> CAVE_BIOMES.addBiome(data))
-                    );
+            StreamSupport.stream(registry.getTagOrEmpty(EndTags.IS_END_CAVE).spliterator(), false)
+                         .map(Holder::unwrapKey)
+                         .flatMap(Optional::stream)
+                         .flatMap(k -> dataRegistry.get(k.location()).stream())
+                         .map(Holder::value)
+                         .forEach(data -> CAVE_BIOMES.addBiome(data));
 
             CAVE_BIOMES.rebuild();
             caveBiomeMap = null;

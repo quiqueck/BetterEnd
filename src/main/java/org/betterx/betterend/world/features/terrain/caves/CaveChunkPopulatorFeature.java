@@ -71,7 +71,7 @@ public class CaveChunkPopulatorFeature extends Feature<CaveChunkPopulatorFeature
                 mut.setZ(z);
                 mut2.setZ(z);
                 mut2.setY(0);
-                for (int y = 1; y < chunk.getMaxBuildHeight(); y++) {
+                for (int y = 1; y < chunk.getMaxY(); y++) {
                     mut.setY(y);
                     BlockState top = chunk.getBlockState(mut);
                     BlockState bottom = chunk.getBlockState(mut2);

@@ -1,8 +1,5 @@
 {
-  "carvers": {
-    "air": [],
-    "liquid": []
-  },
+  "carvers": [],
   "downfall": 0.5,
   "effects": {
     "ambient_sound": "betterend:betterend.ambient.blossoming_spires",
@@ -15,12 +12,18 @@
       "sound": "betterend:betterend.ambient.dust_wastelands",
       "tick_delay": 6000
     },
-    "music": {
-      "max_delay": 2400,
-      "min_delay": 600,
-      "replace_current_music": true,
-      "sound": "betterend:betterend.music.forest"
-    },
+    "music": [
+      {
+        "data": {
+          "max_delay": 2400,
+          "min_delay": 600,
+          "replace_current_music": true,
+          "sound": "betterend:betterend.music.forest"
+        },
+        "weight": 1
+      }
+    ],
+    "music_volume": 1.0,
     "sky_color": 0,
     "water_color": 4159204,
     "water_fog_color": 329011

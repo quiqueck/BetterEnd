@@ -13,11 +13,11 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -41,6 +41,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.EnumSet;
 import org.jetbrains.annotations.Nullable;
@@ -69,7 +71,7 @@ public class EndSlimeEntity extends Slime {
                         10,
                         true,
                         false,
-                        (livingEntity) -> Math.abs(livingEntity.getY() - this.getY()) <= 4.0D
+                        (livingEntity, level) -> Math.abs(livingEntity.getY() - this.getY()) <= 4.0D
                 )
         );
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
@@ -89,7 +91,7 @@ public class EndSlimeEntity extends Slime {
     public SpawnGroupData finalizeSpawn(
             ServerLevelAccessor world,
             DifficultyInstance difficulty,
-            MobSpawnType spawnReason,
+            EntitySpawnReason spawnReason,
             @Nullable SpawnGroupData entityData
     ) {
         SpawnGroupData data = super.finalizeSpawn(world, difficulty, spawnReason, entityData);
@@ -115,17 +117,15 @@ public class EndSlimeEntity extends Slime {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("Variant", getSlimeType());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("Variant", getSlimeType());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("Variant")) {
-            this.entityData.set(VARIANT, tag.getInt("Variant"));
-        }
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.entityData.set(VARIANT, input.getIntOr("Variant", this.entityData.get(VARIANT)));
     }
 
     @Override
@@ -147,7 +147,7 @@ public class EndSlimeEntity extends Slime {
             for (int l = 0; l < k; ++l) {
                 float g = ((float) (l % 2) - 0.5F) * f;
                 float h = ((float) (l / 2) - 0.5F) * f;
-                EndSlimeEntity slimeEntity = (EndSlimeEntity) this.getType().create(this.level());
+                EndSlimeEntity slimeEntity = (EndSlimeEntity) this.getType().create(this.level(), EntitySpawnReason.TRIGGERED);
                 if (this.isPersistenceRequired()) {
                     slimeEntity.setPersistenceRequired();
                 }
@@ -158,7 +158,7 @@ public class EndSlimeEntity extends Slime {
                 slimeEntity.setInvulnerable(this.isInvulnerable());
                 ((ISlime) slimeEntity).be_setSlimeSize(j, true);
                 slimeEntity.refreshDimensions();
-                slimeEntity.moveTo(
+                slimeEntity.snapTo(
                         this.getX() + (double) g,
                         this.getY() + 0.5D,
                         this.getZ() + (double) h,
@@ -173,17 +173,18 @@ public class EndSlimeEntity extends Slime {
     }
 
     @Override
-    protected void dropFromLootTable(DamageSource source, boolean causedByPlayer) {
+    protected void dropFromLootTable(ServerLevel serverLevel, DamageSource source, boolean causedByPlayer) {
         int maxCount = this.getSize();
         int minCount = maxCount >> 1;
         if (minCount < 1) {
             minCount = 1;
         }
-        if (causedByPlayer && this.lastHurtByPlayer != null) {
+        Player lastHurtByPlayer = this.getLastHurtByPlayer();
+        if (causedByPlayer && lastHurtByPlayer != null) {
             int looting = EnchantmentUtils.getItemEnchantmentLevel(
-                    this.lastHurtByPlayer.level(),
+                    lastHurtByPlayer.level(),
                     Enchantments.LOOTING,
-                    this.lastHurtByPlayer
+                    lastHurtByPlayer
             );
             minCount += looting;
         }

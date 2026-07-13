@@ -27,7 +27,7 @@ public class EndSpikeMixin {
             int z = getCenterZ();
             String pillarID = String.format("%d_%d", x, z);
             CompoundTag pillar = WorldConfig.getCompoundTag(BetterEnd.C, "pillars");
-            int minY = pillar.contains(pillarID) ? pillar.getInt(pillarID) : 65;
+            int minY = pillar.getInt(pillarID).orElse(65);
             int maxY = minY + height - 54;
             info.setReturnValue(maxY);
         }

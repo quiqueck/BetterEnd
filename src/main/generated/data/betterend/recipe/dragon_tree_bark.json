@@ -1,10 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "bark",
   "key": {
-    "#": {
-      "item": "betterend:dragon_tree_log"
-    }
+    "#": "betterend:dragon_tree_log"
   },
   "pattern": [
     "##",

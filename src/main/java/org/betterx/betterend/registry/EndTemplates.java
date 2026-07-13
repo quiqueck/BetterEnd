@@ -25,19 +25,11 @@ public class EndTemplates {
     static final ResourceLocation EMPTY_SLOT_ELYTRA = BetterEnd.C.mk("item/empty_slot_elytra");
 
 
-    public static final SmithingTemplateItem HANDLE_ATTACHMENT = EndItems
-            .getItemRegistry()
-            .registerSmithingTemplateItem(
-                    "handle_attachment",
-                    List.of(
-                            EMPTY_SLOT_HAMMER_HEAD,
-                            EMPTY_SLOT_PICKAXE_HEAD,
-                            EMPTY_SLOT_AXE_HEAD,
-                            EMPTY_SLOT_HOE_HEAD,
-                            EMPTY_SLOT_SHOVEL_HEAD
-                    ),
-                    List.of(EMPTY_SLOT_STICK)
-            );
+    // LEATHER_HANDLE_ATTACHMENT and TOOL_ASSEMBLY must be declared before HANDLE_ATTACHMENT:
+    // constructing EndItems.AETERNIUM_SET (an AeterniumSet) needs them, but HANDLE_ATTACHMENT's
+    // own initializer is what triggers EndItems' class loading in the first place (via
+    // EndItems.getItemRegistry()) - if they were declared after HANDLE_ATTACHMENT, that nested,
+    // same-thread re-entrant access would observe them as still-unassigned (null).
     public static final SmithingTemplateItem LEATHER_HANDLE_ATTACHMENT = EndItems
             .getItemRegistry()
             .registerSmithingTemplateItem(
@@ -58,6 +50,20 @@ public class EndTemplates {
                     "tool_assembly",
                     List.of(EMPTY_SLOT_SWORD_BLADE),
                     List.of(EMPTY_SLOT_SWORD_HANDLE)
+            );
+
+    public static final SmithingTemplateItem HANDLE_ATTACHMENT = EndItems
+            .getItemRegistry()
+            .registerSmithingTemplateItem(
+                    "handle_attachment",
+                    List.of(
+                            EMPTY_SLOT_HAMMER_HEAD,
+                            EMPTY_SLOT_PICKAXE_HEAD,
+                            EMPTY_SLOT_AXE_HEAD,
+                            EMPTY_SLOT_HOE_HEAD,
+                            EMPTY_SLOT_SHOVEL_HEAD
+                    ),
+                    List.of(EMPTY_SLOT_STICK)
             );
 
     public static final SmithingTemplateItem PLATE_UPGRADE = EndItems

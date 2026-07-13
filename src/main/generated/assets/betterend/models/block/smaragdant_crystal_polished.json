@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "betterend:block/cube_noshade",
   "textures": {
-    "all": "betterend:block/smaragdant_crystal_polished"
+    "texture": "betterend:block/smaragdant_crystal_polished"
   }
 }

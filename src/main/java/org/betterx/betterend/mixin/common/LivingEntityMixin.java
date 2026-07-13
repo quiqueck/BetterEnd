@@ -5,6 +5,7 @@ import org.betterx.betterend.interfaces.MobEffectApplier;
 import org.betterx.betterend.item.CrystaliteArmor;
 import org.betterx.betterend.registry.EndAttributes;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -39,7 +40,7 @@ public abstract class LivingEntityMixin extends Entity {
     public abstract AttributeMap getAttributes();
 
     @Shadow
-    public abstract Iterable<ItemStack> getArmorSlots();
+    public abstract ItemStack getItemBySlot(EquipmentSlot equipmentSlot);
 
     @Unique
     private Entity be_lastAttacker;
@@ -56,11 +57,13 @@ public abstract class LivingEntityMixin extends Entity {
             if (CrystaliteArmor.hasFullSet(owner)) {
                 CrystaliteArmor.applySetEffect(owner);
             }
-            getArmorSlots().forEach(itemStack -> {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (!slot.isArmor()) continue;
+                ItemStack itemStack = getItemBySlot(slot);
                 if (itemStack.getItem() instanceof MobEffectApplier) {
                     ((MobEffectApplier) itemStack.getItem()).applyEffect(owner);
                 }
-            });
+            }
         }
     }
 
@@ -75,12 +78,12 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
-    @Inject(method = "hurt", at = @At("HEAD"))
-    public void be_hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+    @Inject(method = "hurtServer", at = @At("HEAD"))
+    public void be_hurt(ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         this.be_lastAttacker = source.getEntity();
     }
 
-    @ModifyArg(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDD)V"), index = 0)
+    @ModifyArg(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDD)V"), index = 0)
     private double be_increaseKnockback(double value, double x, double z) {
         if (be_lastAttacker != null && be_lastAttacker instanceof LivingEntity) {
             LivingEntity attacker = (LivingEntity) be_lastAttacker;

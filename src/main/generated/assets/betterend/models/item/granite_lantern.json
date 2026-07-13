@@ -1,3 +1,6 @@
 {
-  "parent": "betterend:block/granite_lantern"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/granite_lantern"
+  }
 }

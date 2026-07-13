@@ -30,6 +30,7 @@ public class VanillaMetalSet extends BlockSet<VanillaMetalSet> {
         this.baseBlock = baseBlock;
         this.ingot = ingot;
         this.slotMap = slots.add(new SlotFromBlock(SlotType.SOURCE, baseBlock));
+        this.buildAndRegister();
     }
 
     @Override

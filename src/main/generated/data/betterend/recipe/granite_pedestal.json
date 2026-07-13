@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:polished_granite"
-    },
-    "S": {
-      "item": "minecraft:polished_granite_slab"
-    }
+    "#": "minecraft:polished_granite",
+    "S": "minecraft:polished_granite_slab"
   },
   "pattern": [
     "S",

@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.biome.land;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.*;
 import org.betterx.betterend.registry.features.EndLakeFeatures;
@@ -61,7 +63,7 @@ public class SulphurSpringsBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.FLAVOLITE.stone.defaultBlockState();
+                return EndBlocks.FLAVOLITE.getBlock(SlotType.SOURCE).defaultBlockState();
             }
 
             @Override

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "betterend:block/flavolite_bricks",
-    "side": "betterend:block/flavolite_bricks",
-    "top": "betterend:block/flavolite_bricks"
-  }
-}

@@ -3,12 +3,8 @@
   "category": "building",
   "group": "bookshelf",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_planks"
-    },
-    "P": {
-      "item": "minecraft:book"
-    }
+    "#": "betterend:lacugrove_planks",
+    "P": "minecraft:book"
   },
   "pattern": [
     "###",

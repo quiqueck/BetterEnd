@@ -1,14 +1,15 @@
 package org.betterx.datagen.betterend.recipes;
 
-import org.betterx.bclib.complexmaterials.WoodenComplexMaterial;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTemplates;
 import org.betterx.betterend.util.LootTableUtil;
 import org.betterx.wover.biome.api.BiomeKey;
+import org.betterx.wover.complex.api.equipment.ToolSlot;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverLootTableProvider;
+import org.betterx.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.Holder;
@@ -67,8 +68,8 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(ConstantValue.exactly(1))
-                .add(LootItem.lootTableItem(EndBlocks.TERMINITE.swordBlade))
-                .add(LootItem.lootTableItem(EndBlocks.TERMINITE.forgedPlate))
+                .add(LootItem.lootTableItem(EndBlocks.TERMINITE.equipment.swordBlade))
+                .add(LootItem.lootTableItem(EndBlocks.TERMINITE.equipment.forgedPlate))
                 .add(LootItem.lootTableItem(EndBlocks.MENGER_SPONGE))
                 .add(LootItem.lootTableItem(Items.BOW)
                              .apply(SetItemDamageFunction.setDamage(UniformGenerator.between(0.0F, 0.25F)))
@@ -84,7 +85,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.MOSSY_GLOWSHROOM.getBlock(WoodenComplexMaterial.BLOCK_PLANKS)))
+                .add(LootItem.lootTableItem(EndBlocks.MOSSY_GLOWSHROOM.getBlock(SlotType.PLANKS)))
                 .add(LootItem.lootTableItem(EndBlocks.MOSSY_GLOWSHROOM_SAPLING))
                 .add(LootItem.lootTableItem(EndBlocks.BLUE_VINE_SEED));
     }
@@ -93,7 +94,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.PYTHADENDRON.getBlock(WoodenComplexMaterial.BLOCK_PLANKS)))
+                .add(LootItem.lootTableItem(EndBlocks.PYTHADENDRON.getBlock(SlotType.PLANKS)))
                 .add(LootItem.lootTableItem(EndBlocks.PYTHADENDRON_SAPLING))
                 .add(LootItem.lootTableItem(EndBlocks.CHORUS_MUSHROOM))
                 .add(LootItem.lootTableItem(EndTemplates.HANDLE_ATTACHMENT));
@@ -103,7 +104,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.DRAGON_TREE.getBlock(WoodenComplexMaterial.BLOCK_PLANKS)))
+                .add(LootItem.lootTableItem(EndBlocks.DRAGON_TREE.getBlock(SlotType.PLANKS)))
                 .add(LootItem.lootTableItem(EndBlocks.DRAGON_TREE_SAPLING))
                 .add(LootItem.lootTableItem(EndBlocks.SHADOW_BERRY))
                 .add(LootItem.lootTableItem(EndItems.SHADOW_BERRY_RAW));
@@ -113,7 +114,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.LUCERNIA.getBlock(WoodenComplexMaterial.BLOCK_PLANKS)))
+                .add(LootItem.lootTableItem(EndBlocks.LUCERNIA.getBlock(SlotType.PLANKS)))
                 .add(LootItem.lootTableItem(EndBlocks.LUCERNIA_SAPLING))
                 .add(LootItem.lootTableItem(EndBlocks.BOLUX_MUSHROOM));
     }
@@ -122,7 +123,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.UMBRELLA_TREE.getBlock(WoodenComplexMaterial.BLOCK_PLANKS)))
+                .add(LootItem.lootTableItem(EndBlocks.UMBRELLA_TREE.getBlock(SlotType.PLANKS)))
                 .add(LootItem.lootTableItem(EndBlocks.UMBRELLA_TREE_SAPLING))
                 .add(LootItem.lootTableItem(EndBlocks.SMALL_JELLYSHROOM));
     }
@@ -197,7 +198,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                 .lootPool()
                 .setRolls(UniformGenerator.between(1, 2))
                 .add(LootItem
-                        .lootTableItem(EndItems.AETERNIUM_INGOT)
+                        .lootTableItem(EndItems.AETERNIUM_SET.ingot)
                         .setWeight(8)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))
                 )
@@ -259,7 +260,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))
                 )
                 .add(LootItem
-                        .lootTableItem(EndBlocks.THALLASIUM.shovelHead)
+                        .lootTableItem(EndBlocks.THALLASIUM.equipment.shovelHead)
                         .setWeight(2)
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                 )
@@ -306,21 +307,21 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
 
         builder = LootPool.lootPool();
         builder.setRolls(UniformGenerator.between(4, 8));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.ingot));
+        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.ingot));
         builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.rawOre));
         builder.add(LootItem.lootTableItem(Items.ENDER_PEARL));
         table.withPool(builder);
 
         builder = LootPool.lootPool();
         builder.setRolls(UniformGenerator.between(2, 4));
-        builder.add(LootItem.lootTableItem(EndBlocks.TERMINITE.ingot));
+        builder.add(LootItem.lootTableItem(EndBlocks.TERMINITE.equipment.ingot));
         builder.add(LootItem.lootTableItem(EndItems.ENDER_SHARD));
         builder.add(LootItem.lootTableItem(EndBlocks.AURORA_CRYSTAL));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.axe));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.pickaxe));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.hoe));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.sword));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.shovel));
+        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.AXE_SLOT)));
+        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.PICKAXE_SLOT)));
+        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.HOE_SLOT)));
+        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.SWORD_SLOT)));
+        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.SHOVEL_SLOT)));
         builder.add(LootItem.lootTableItem(Items.ENDER_EYE));
         builder.add(LootItem.lootTableItem(Blocks.OBSIDIAN));
         table.withPool(builder);
@@ -328,7 +329,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         builder = LootPool.lootPool();
         builder.setRolls(UniformGenerator.between(0, 4));
         builder.add(LootItem.lootTableItem(EndBlocks.FLAVOLITE_RUNED));
-        builder.add(LootItem.lootTableItem(EndItems.AETERNIUM_INGOT));
+        builder.add(LootItem.lootTableItem(EndItems.AETERNIUM_SET.ingot));
         builder.add(LootItem.lootTableItem(EndItems.AMBER_GEM));
         builder.add(LootItem.lootTableItem(Items.END_CRYSTAL));
         builder.add(LootItem.lootTableItem(Items.GHAST_TEAR));

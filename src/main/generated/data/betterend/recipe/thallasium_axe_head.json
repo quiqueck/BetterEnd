@@ -3,9 +3,7 @@
   "allowedTools": "betterend:anvil_tool/iron",
   "anvilLevel": 2,
   "damage": 2,
-  "input": {
-    "item": "betterend:thallasium_ingot"
-  },
+  "input": "betterend:thallasium_ingot",
   "inputCount": 3,
   "result": {
     "item": "betterend:thallasium_axe_head"

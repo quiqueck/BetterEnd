@@ -1,9 +1,7 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlock;
-import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.CustomColorProvider;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.particle.InfusionParticleType;
 import org.betterx.betterend.registry.EndBlocks;
@@ -13,7 +11,6 @@ import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -29,8 +26,10 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -48,16 +47,14 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorProvider, RenderLayerProvider {
+public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorProvider {
     private static final VoxelShape VOXEL_SHAPE_BOTTOM = Block.box(1, 0, 1, 15, 16, 15);
     private static final VoxelShape VOXEL_SHAPE_MIDDLE_TOP = Block.box(2, 0, 2, 14, 16, 14);
 
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
 
-    public RespawnObeliskBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.END_STONE).luminance((state) -> {
-            return (state.getValue(SHAPE) == TripleShape.BOTTOM) ? 0 : 15;
-        }));
+    public RespawnObeliskBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -100,11 +97,13 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     @SuppressWarnings("deprecation")
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
     ) {
         TripleShape shape = state.getValue(SHAPE);
         if (shape == TripleShape.BOTTOM) {
@@ -151,20 +150,8 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     }
 
     @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.TRANSLUCENT;
-    }
-
-    @Override
     public BlockColor getProvider() {
         return ((CustomColorProvider) EndBlocks.AURORA_CRYSTAL).getProvider();
-    }
-
-    @Override
-    public ItemColor getItemProvider() {
-        return (stack, tintIndex) -> {
-            return ColorUtil.color(255, 255, 255);
-        };
     }
 
     @Override

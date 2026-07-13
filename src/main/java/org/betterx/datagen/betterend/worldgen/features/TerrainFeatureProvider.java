@@ -1,5 +1,7 @@
 package org.betterx.datagen.betterend.worldgen.features;
 
+import org.betterx.wover.sets.api.blocks.SlotType;
+
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndFeatures;
 import org.betterx.betterend.registry.features.EndTerrainFeatures;
@@ -56,8 +58,8 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
         registerChanced(context, EndTerrainFeatures.OBSIDIAN_PILLAR_BASEMENT, EndFeatures.OBSIDIAN_PILLAR_FEATURE, FeatureConfiguration.NONE, 8);
         registerChanced(context, EndTerrainFeatures.OBSIDIAN_BOULDER, EndFeatures.OBSIDIAN_BOULDER_FEATURE, FeatureConfiguration.NONE, 10);
         registerChanced(context, EndTerrainFeatures.FALLEN_PILLAR, EndFeatures.FALLEN_PILLAR_FEATURE, FeatureConfiguration.NONE, 20);
-        registerChanced(context, EndTerrainFeatures.UMBRALITH_ARCH, EndFeatures.ARCH_FEATURE, new ArchFeatureConfig(EndBlocks.UMBRALITH.stone, ArchFeatureConfig.SurfaceFunction.UMBRA_VALLEY), 10);
-        registerChanced(context, EndTerrainFeatures.THIN_UMBRALITH_ARCH, EndFeatures.THIN_ARCH_FEATURE, new ThinArchFeatureConfig(EndBlocks.UMBRALITH.stone), 15);
+        registerChanced(context, EndTerrainFeatures.UMBRALITH_ARCH, EndFeatures.ARCH_FEATURE, new ArchFeatureConfig(EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE), ArchFeatureConfig.SurfaceFunction.UMBRA_VALLEY), 10);
+        registerChanced(context, EndTerrainFeatures.THIN_UMBRALITH_ARCH, EndFeatures.THIN_ARCH_FEATURE, new ThinArchFeatureConfig(EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE)), 15);
         registerChanced(context, EndTerrainFeatures.CRASHED_SHIP, EndFeatures.CRASHED_SHIP_FEATURE, new NBTFeatureConfig(EndBiome.Config.DEFAULT_MATERIAL.getTopMaterial()), 500);
         registerChanced(context, EndTerrainFeatures.SILK_MOTH_NEST, EndFeatures.SILK_MOTH_NEST_FEATURE, FeatureConfiguration.NONE, 2);
 

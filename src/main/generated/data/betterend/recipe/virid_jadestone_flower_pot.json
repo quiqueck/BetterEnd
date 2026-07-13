@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_pots",
   "key": {
-    "#": {
-      "item": "betterend:virid_jadestone_bricks"
-    }
+    "#": "betterend:virid_jadestone_brick"
   },
   "pattern": [
     "# #",

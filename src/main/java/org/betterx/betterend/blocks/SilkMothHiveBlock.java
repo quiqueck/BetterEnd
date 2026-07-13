@@ -25,10 +25,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -37,15 +38,11 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class SilkMothHiveBlock extends BaseBlock.Wood {
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty FULLNESS = EndBlockProperties.FULLNESS;
 
-    public SilkMothHiveBlock() {
-        super(Properties.of().of()
-                        .strength(0.5F, 0.1f)
-                        .sound(SoundType.WOOL)
-                        .noOcclusion()
-                        .randomTicks());
+    public SilkMothHiveBlock(BlockBehaviour.Properties props) {
+        super(props);
         this.registerDefaultState(defaultBlockState().setValue(FULLNESS, 0));
     }
 
@@ -89,7 +86,7 @@ public class SilkMothHiveBlock extends BaseBlock.Wood {
             return;
         }
         SilkMothEntity moth = new SilkMothEntity(EndEntities.SILK_MOTH.type(), world);
-        moth.moveTo(spawn.getX() + 0.5, spawn.getY() + 0.5, spawn.getZ() + 0.5, dir.toYRot(), 0);
+        moth.snapTo(spawn.getX() + 0.5, spawn.getY() + 0.5, spawn.getZ() + 0.5, dir.toYRot(), 0);
         moth.setDeltaMovement(new Vec3(dir.getStepX() * 0.4, 0, dir.getStepZ() * 0.4));
         moth.setHive(world, pos);
         world.addFreshEntity(moth);

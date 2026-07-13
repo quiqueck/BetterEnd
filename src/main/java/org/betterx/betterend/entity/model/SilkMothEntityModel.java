@@ -1,9 +1,7 @@
 package org.betterx.betterend.entity.model;
 
-import org.betterx.betterend.entity.SilkMothEntity;
+import org.betterx.betterend.entity.render.state.SilkMothRenderState;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
@@ -15,7 +13,12 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 
-public class SilkMothEntityModel extends EntityModel<SilkMothEntity> {
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class SilkMothEntityModel extends EntityModel<SilkMothRenderState> {
+    private final ModelPart root;
     private final ModelPart legsL;
     private final ModelPart cube_r1;
     private final ModelPart cube_r2;
@@ -130,8 +133,9 @@ public class SilkMothEntityModel extends EntityModel<SilkMothEntity> {
     }
 
     public SilkMothEntityModel(ModelPart modelPart) {
-        super(RenderType::entityCutout);
+        super(buildRenderRoot(modelPart), RenderType::entityCutout);
 
+        root = this.root();
         legsL = modelPart.getChild(PartNames.LEFT_LEG);
         cube_r1 = legsL.getChild("cube_r1");
         cube_r2 = legsL.getChild("cube_r2");
@@ -149,44 +153,34 @@ public class SilkMothEntityModel extends EntityModel<SilkMothEntity> {
         abdomen_r1 = bb_main.getChild("abdomen_r1");
     }
 
-    @Override
-    public void setupAnim(
-            SilkMothEntity entity,
-            float limbAngle,
-            float limbDistance,
-            float animationProgress,
-            float headYaw,
-            float headPitch
-    ) {
-        wingR_r1.zRot = Mth.sin(animationProgress * 2F) * 0.4F + 0.3927F;
-        wingL_r1.zRot = -wingR_r1.zRot;
-        head_pivot.xRot = Mth.sin(animationProgress * 0.03F) * 0.1F;
-        tendril_r_r1.zRot = Mth.sin(animationProgress * 0.07F) * 0.2F + 0.3927F;
-        tendril_r_r2.zRot = -tendril_r_r1.zRot;
-        abdomen_r1.xRot = Mth.sin(animationProgress * 0.05F) * 0.1F - 0.3927F;
-        legsR.zRot = Mth.sin(animationProgress * 0.07F) * 0.1F - 0.6545F;
-        legsL.zRot = -legsR.zRot;
+    // Builds a synthetic root containing only bb_main, head_pivot, legsL and legsR,
+    // since only those (and their children) should be rendered.
+    private static ModelPart buildRenderRoot(ModelPart modelPart) {
+        Map<String, ModelPart> children = new LinkedHashMap<>();
+        children.put(PartNames.BODY, modelPart.getChild(PartNames.BODY));
+        children.put(PartNames.HEAD, modelPart.getChild(PartNames.HEAD));
+        children.put(PartNames.LEFT_LEG, modelPart.getChild(PartNames.LEFT_LEG));
+        children.put(PartNames.RIGHT_LEG, modelPart.getChild(PartNames.RIGHT_LEG));
+        return new ModelPart(List.of(), children);
     }
 
     @Override
-    public void renderToBuffer(
-            PoseStack matrices,
-            VertexConsumer vertices,
-            int light,
-            int overlay,
-            int color
-    ) {
-        if (this.young) {
-            matrices.pushPose();
-            matrices.scale(0.6f, 0.6f, 0.6f);
-            matrices.translate(0f, 0.5f, 0f);
-        }
-        bb_main.render(matrices, vertices, light, overlay);
-        head_pivot.render(matrices, vertices, light, overlay);
-        legsL.render(matrices, vertices, light, overlay);
-        legsR.render(matrices, vertices, light, overlay);
-        if (this.young) {
-            matrices.popPose();
+    public void setupAnim(SilkMothRenderState state) {
+        wingR_r1.zRot = Mth.sin(state.ageInTicks * 2F) * 0.4F + 0.3927F;
+        wingL_r1.zRot = -wingR_r1.zRot;
+        head_pivot.xRot = Mth.sin(state.ageInTicks * 0.03F) * 0.1F;
+        tendril_r_r1.zRot = Mth.sin(state.ageInTicks * 0.07F) * 0.2F + 0.3927F;
+        tendril_r_r2.zRot = -tendril_r_r1.zRot;
+        abdomen_r1.xRot = Mth.sin(state.ageInTicks * 0.05F) * 0.1F - 0.3927F;
+        legsR.zRot = Mth.sin(state.ageInTicks * 0.07F) * 0.1F - 0.6545F;
+        legsL.zRot = -legsR.zRot;
+
+        if (state.isBaby) {
+            root.xScale = root.yScale = root.zScale = 0.6F;
+            root.y = 8.0F;
+        } else {
+            root.xScale = root.yScale = root.zScale = 1.0F;
+            root.y = 0.0F;
         }
     }
 }

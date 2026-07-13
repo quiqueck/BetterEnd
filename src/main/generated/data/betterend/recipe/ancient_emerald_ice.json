@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:dense_emerald_ice"
-    }
+    "#": "betterend:dense_emerald_ice"
   },
   "pattern": [
     "###",

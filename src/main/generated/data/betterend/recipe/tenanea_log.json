@@ -1,10 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "log",
   "key": {
-    "#": {
-      "item": "betterend:tenanea_bark"
-    }
+    "#": "betterend:tenanea_bark"
   },
   "pattern": [
     "##",

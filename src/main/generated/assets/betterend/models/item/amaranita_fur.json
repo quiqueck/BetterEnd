@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:block/amaranita_fur"
+    "layer0": "betterend:item/amaranita_fur"
   }
 }

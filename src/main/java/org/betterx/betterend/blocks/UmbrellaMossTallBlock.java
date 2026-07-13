@@ -10,11 +10,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class UmbrellaMossTallBlock extends BaseDoublePlantBlock implements BehaviourPlant, SurvivesOnJungleMossOrMycelium {
-    public UmbrellaMossTallBlock() {
-        super(12);
+    public UmbrellaMossTallBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override

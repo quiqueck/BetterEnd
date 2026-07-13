@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
 import org.betterx.betterend.interfaces.survives.SurvicesOnPallidium;
@@ -8,16 +7,16 @@ import org.betterx.betterend.interfaces.survives.SurvicesOnPallidium;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class FlammalixBlock extends EndPlantBlock implements BehaviourPlant, SurvicesOnPallidium {
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 14, 14);
 
-    public FlammalixBlock() {
-        super(BehaviourBuilders.createPlant(MapColor.COLOR_ORANGE).lightLevel((bs) -> 12));
+    public FlammalixBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override

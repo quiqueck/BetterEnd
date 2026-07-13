@@ -7,9 +7,8 @@ import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTags;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
+import org.betterx.wover.recipe.api.RecipeBuilder;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
@@ -18,7 +17,8 @@ public class AlloyingRecipesProvider extends WoverRecipeProvider {
         super(modCore, "BetterEnd - Alloying Recipes");
     }
 
-    public void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
+    @Override
+    protected void bootstrap(RecipeBuilder.Context context) {
         BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_iron"), Items.IRON_INGOT)
                         .setInput(EndTags.ALLOYING_IRON, EndTags.ALLOYING_IRON)
                         .outputCount(3)
@@ -40,20 +40,20 @@ public class AlloyingRecipesProvider extends WoverRecipeProvider {
                         .setExperience(6F)
                         .setSmeltTime(1000)
                         .build(context);
-        BCLRecipeBuilder.alloying(BetterEnd.C.mk("terminite_ingot"), EndBlocks.TERMINITE.ingot)
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("terminite_ingot"), EndBlocks.TERMINITE.equipment.ingot)
                         .setInput(Items.IRON_INGOT, EndItems.ENDER_DUST)
                         .outputCount(1)
                         .setExperience(2.5F)
                         .setSmeltTime(450)
                         .build(context);
-        BCLRecipeBuilder.alloying(BetterEnd.C.mk("aeternium_ingot"), EndItems.AETERNIUM_INGOT)
-                        .setInput(EndBlocks.TERMINITE.ingot, Items.NETHERITE_INGOT)
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("aeternium_ingot"), EndItems.AETERNIUM_SET.ingot)
+                        .setInput(EndBlocks.TERMINITE.equipment.ingot, Items.NETHERITE_INGOT)
                         .outputCount(1)
                         .setExperience(4.5F)
                         .setSmeltTime(850)
                         .build(context);
-        BCLRecipeBuilder.alloying(BetterEnd.C.mk("terminite_ingot_thallasium"), EndBlocks.TERMINITE.ingot)
-                        .setInput(EndBlocks.THALLASIUM.ingot, EndItems.ENDER_DUST)
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("terminite_ingot_thallasium"), EndBlocks.TERMINITE.equipment.ingot)
+                        .setInput(EndBlocks.THALLASIUM.equipment.ingot, EndItems.ENDER_DUST)
                         .outputCount(1)
                         .setExperience(2.5F)
                         .setSmeltTime(450)

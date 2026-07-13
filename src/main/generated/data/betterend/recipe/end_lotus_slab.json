@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "slab",
+  "group": "wooden_slab",
   "key": {
-    "#": {
-      "item": "betterend:end_lotus_planks"
-    }
+    "#": "betterend:end_lotus_planks"
   },
   "pattern": [
     "###"

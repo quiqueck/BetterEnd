@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "stairs",
+  "group": "wooden_stairs",
   "key": {
-    "#": {
-      "item": "betterend:mossy_glowshroom_planks"
-    }
+    "#": "betterend:mossy_glowshroom_planks"
   },
   "pattern": [
     "#  ",

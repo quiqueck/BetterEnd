@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "end_metal_chain",
   "key": {
-    "#": {
-      "item": "betterend:thallasium_ingot"
-    },
-    "N": {
-      "item": "betterend:thallasium_nugget"
-    }
+    "#": "betterend:thallasium_ingot",
+    "N": "betterend:thallasium_nugget"
   },
   "pattern": [
     "N",

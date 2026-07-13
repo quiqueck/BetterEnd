@@ -3,20 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    [
-      {
-        "item": "betterend:jellyshroom_log"
-      },
-      {
-        "item": "betterend:jellyshroom_bark"
-      },
-      {
-        "item": "betterend:jellyshroom_stripped_log"
-      },
-      {
-        "item": "betterend:jellyshroom_stripped_bark"
-      }
-    ]
+    "#betterend:jellyshroom_logs"
   ],
   "result": {
     "count": 4,

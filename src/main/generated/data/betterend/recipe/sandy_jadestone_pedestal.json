@@ -1,13 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "end_stone_pedestal",
   "key": {
-    "#": {
-      "item": "betterend:sandy_jadestone_pillar"
-    },
-    "S": {
-      "item": "betterend:sandy_jadestone_slab"
-    }
+    "#": "betterend:sandy_jadestone_pillar",
+    "S": "betterend:sandy_jadestone_slab"
   },
   "pattern": [
     "S",

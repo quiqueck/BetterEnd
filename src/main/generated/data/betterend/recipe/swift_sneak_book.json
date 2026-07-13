@@ -1,60 +1,22 @@
 {
   "type": "betterend:infusion",
   "catalysts": {
-    "east": {
-      "item": {
-        "item": "minecraft:sculk_sensor"
-      }
-    },
-    "north": {
-      "item": {
-        "item": "betterend:eternal_crystal"
-      }
-    },
-    "north_east": {
-      "item": {
-        "item": "minecraft:sculk_vein"
-      }
-    },
-    "north_west": {
-      "item": {
-        "item": "minecraft:sculk_vein"
-      }
-    },
-    "south": {
-      "item": {
-        "item": "minecraft:sculk_catalyst"
-      }
-    },
-    "south_east": {
-      "item": {
-        "item": "betterend:enchanted_petal"
-      }
-    },
-    "south_west": {
-      "item": {
-        "item": "betterend:enchanted_petal"
-      }
-    },
-    "west": {
-      "item": {
-        "item": "minecraft:sculk_sensor"
-      }
-    }
+    "east": "minecraft:sculk_sensor",
+    "north": "betterend:eternal_crystal",
+    "north_east": "minecraft:sculk_vein",
+    "north_west": "minecraft:sculk_vein",
+    "south": "minecraft:sculk_catalyst",
+    "south_east": "betterend:enchanted_petal",
+    "south_west": "betterend:enchanted_petal",
+    "west": "minecraft:sculk_sensor"
   },
   "group": "enchantment",
-  "input": {
-    "item": {
-      "item": "minecraft:book"
-    }
-  },
+  "input": "minecraft:book",
   "result": {
     "item": "minecraft:enchanted_book",
     "nbt": {
       "minecraft:stored_enchantments": {
-        "levels": {
-          "minecraft:swift_sneak": 1
-        }
+        "minecraft:swift_sneak": 1
       }
     }
   },

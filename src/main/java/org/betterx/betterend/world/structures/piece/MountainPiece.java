@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -63,7 +62,7 @@ public abstract class MountainPiece extends BasePiece {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.put("center", NbtUtils.writeBlockPos(center));
+        tag.store("center", BlockPos.CODEC, center);
         tag.putFloat("radius", radius);
         tag.putFloat("height", height);
         tag.putString("biome", biomeID.location().toString());
@@ -73,13 +72,13 @@ public abstract class MountainPiece extends BasePiece {
 
     @Override
     protected void fromNbt(CompoundTag tag) {
-        center = NbtUtils.readBlockPos(tag, "center").orElse(BlockPos.ZERO);
-        radius = tag.getFloat("radius");
-        height = tag.getFloat("height");
-        biomeID = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(tag.getString("biome")));
+        center = tag.read("center", BlockPos.CODEC).orElse(BlockPos.ZERO);
+        radius = tag.getFloatOr("radius", 0);
+        height = tag.getFloatOr("height", 0);
+        biomeID = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(tag.getStringOr("biome", "")));
         r2 = radius * radius;
-        seed1 = tag.getInt("seed1");
-        seed2 = tag.getInt("seed2");
+        seed1 = tag.getIntOr("seed1", 0);
+        seed2 = tag.getIntOr("seed2", 0);
         noise1 = new OpenSimplexNoise(seed1);
         noise2 = new OpenSimplexNoise(seed2);
     }

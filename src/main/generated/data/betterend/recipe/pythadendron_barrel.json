@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:pythadendron_planks"
-    },
-    "S": {
-      "item": "betterend:pythadendron_slab"
-    }
+    "#": "betterend:pythadendron_planks",
+    "S": "betterend:pythadendron_slab"
   },
   "pattern": [
     "#S#",

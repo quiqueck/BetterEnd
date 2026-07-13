@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "betterend:aeternium_forged_plate"
-  },
-  "base": {
-    "item": "betterend:terminite_helmet"
-  },
+  "addition": "#betterend:aeterniumrepair/",
+  "base": "betterend:terminite_helmet",
   "result": {
-    "count": 1,
     "id": "betterend:aeternium_helmet"
   },
-  "template": {
-    "item": "betterend:plate_upgrade_smithing_template"
-  }
+  "template": "betterend:plate_upgrade_smithing_template"
 }

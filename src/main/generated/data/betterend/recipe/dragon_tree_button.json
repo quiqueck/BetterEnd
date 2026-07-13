@@ -1,11 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "redstone",
-  "group": "button",
+  "group": "wooden_button",
   "ingredients": [
-    {
-      "item": "betterend:dragon_tree_planks"
-    }
+    "betterend:dragon_tree_planks"
   ],
   "result": {
     "count": 1,

@@ -33,20 +33,14 @@
               "then_run": {
                 "type": "minecraft:block",
                 "result_state": {
-                  "Name": "betterend:cave_moss",
-                  "Properties": {
-                    "shape": "bottom"
-                  }
+                  "Name": "betterend:cave_moss"
                 }
               }
             },
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:cave_moss",
-                "Properties": {
-                  "shape": "bottom"
-                }
+                "Name": "betterend:cave_moss"
               }
             }
           ]

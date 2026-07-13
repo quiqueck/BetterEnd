@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "betterend:block/umbralith_bricks",
-    "side": "betterend:block/umbralith_bricks",
-    "top": "betterend:block/umbralith_bricks"
-  }
-}

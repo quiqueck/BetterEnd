@@ -3,7 +3,7 @@ package org.betterx.betterend.world.features.terrain;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -45,7 +45,7 @@ public class StalactiteFeatureConfig implements FeatureConfiguration {
         this(
                 ceiling,
                 new WeightedStateProvider(
-                        new SimpleWeightedRandomList.Builder<BlockState>()
+                        WeightedList.<BlockState>builder()
                                 .add(block.defaultBlockState(), weight)
                                 .add(block2.defaultBlockState(), weight2)
                                 .build()

@@ -5,11 +5,12 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChorusPlantBlock;
@@ -65,11 +66,13 @@ public abstract class ChorusPlantBlockMixin extends Block {
     @Inject(method = "updateShape", at = @At("RETURN"), cancellable = true)
     private void be_updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
+            Direction direction,
             BlockPos posFrom,
+            BlockState newState,
+            RandomSource randomSource,
             CallbackInfoReturnable<BlockState> info
     ) {
         BlockState plant = info.getReturnValue();

@@ -1,7 +1,0 @@
-{
-  "parent": "bclib:block/sided_trapdoor",
-  "textures": {
-    "side": "betterend:block/jellyshroom_door_side",
-    "texture": "betterend:block/jellyshroom_trapdoor"
-  }
-}

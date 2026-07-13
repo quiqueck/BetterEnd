@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.0,
-  "ingredient": {
-    "item": "betterend:menger_sponge_wet"
-  },
+  "ingredient": "betterend:menger_sponge_wet",
   "result": {
     "id": "betterend:menger_sponge"
   }

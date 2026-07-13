@@ -1,45 +1,25 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
-import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.CustomColorProvider;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.bclib.interfaces.tools.AddMineableHammer;
-import org.betterx.bclib.interfaces.tools.AddMineablePickaxe;
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.registry.EndItems;
 import org.betterx.ui.ColorUtil;
-import org.betterx.wover.loot.api.BlockLootProvider;
-import org.betterx.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.TransparentBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import org.jetbrains.annotations.NotNull;
-
-public class AuroraCrystalBlock extends TransparentBlock implements BlockLootProvider, RenderLayerProvider, CustomColorProvider, AddMineablePickaxe, AddMineableHammer {
+public class AuroraCrystalBlock extends TransparentBlock implements CustomColorProvider {
     public static final Vec3i[] COLORS;
-    private static final int MIN_DROP = 1;
-    private static final int MAX_DROP = 4;
 
-    public AuroraCrystalBlock() {
-        super(BehaviourBuilders
-                .createGlass()
-                .strength(1F)
-                .lightLevel((bs) -> 15)
-        );
+    public AuroraCrystalBlock(BlockBehaviour.Properties props) {
+        super(props);
     }
 
     @Override
@@ -76,27 +56,6 @@ public class AuroraCrystalBlock extends TransparentBlock implements BlockLootPro
 
             return ColorUtil.color(r, g, b);
         };
-    }
-
-    @Override
-    public ItemColor getItemProvider() {
-        return (stack, tintIndex) -> {
-            return ColorUtil.color(COLORS[3].getX(), COLORS[3].getY(), COLORS[3].getZ());
-        };
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.TRANSLUCENT;
-    }
-
-    @Override
-    public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
-            @NotNull LootLookupProvider provider,
-            @NotNull ResourceKey<LootTable> tableKey
-    ) {
-        return provider.dropOre(this, EndItems.CRYSTAL_SHARDS, UniformGenerator.between(MIN_DROP, MAX_DROP));
     }
 
     static {

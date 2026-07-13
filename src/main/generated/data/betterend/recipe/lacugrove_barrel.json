@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "barrel",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_planks"
-    },
-    "S": {
-      "item": "betterend:lacugrove_slab"
-    }
+    "#": "betterend:lacugrove_planks",
+    "S": "betterend:lacugrove_slab"
   },
   "pattern": [
     "#S#",

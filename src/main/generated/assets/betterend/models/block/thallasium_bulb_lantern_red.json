@@ -1,7 +1,6 @@
 {
-  "parent": "bclib:block/bulb_lantern_ceil",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "glow": "betterend:block/bulb_vine_lantern_bulb",
-    "metal": "betterend:block/thallasium_bulb_vine_lantern_metal"
+    "all": "betterend:block/thallasium_bulb_lantern_red"
   }
 }

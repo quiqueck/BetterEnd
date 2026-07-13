@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_end_lily_leaf": {
+    "has_item.betterend.end_lily_leaf": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_end_lily_leaf"
+      "has_item.betterend.end_lily_leaf"
     ]
   ],
   "rewards": {

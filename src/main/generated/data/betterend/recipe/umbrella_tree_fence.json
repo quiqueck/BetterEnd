@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "fence",
   "key": {
-    "#": {
-      "item": "betterend:umbrella_tree_planks"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:umbrella_tree_planks",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "#I#",

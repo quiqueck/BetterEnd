@@ -17,14 +17,14 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_violecite_violecite_bricks_violecite_t": {
+    "has_violecite_violecite_brick_violecite_tiles": {
       "conditions": {
         "items": [
           {
             "items": "betterend:violecite"
           },
           {
-            "items": "betterend:violecite_bricks"
+            "items": "betterend:violecite_brick"
           },
           {
             "items": "betterend:violecite_tiles"
@@ -37,7 +37,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_violecite_violecite_bricks_violecite_t",
+      "has_violecite_violecite_brick_violecite_tiles",
       "has_purpur_block"
     ]
   ],

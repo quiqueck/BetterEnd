@@ -1,6 +1,6 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": "#betterend:aeterniumrepair/",
+  "addition": "#betterend:aeternium/repair",
   "base": "betterend:terminite_boots",
   "result": {
     "id": "betterend:aeternium_boots"

@@ -4,7 +4,7 @@
 def allowLocalLibUse = true
 
 //When true, the local libraries is also used in commandline builds
-def allowLocalLibInConsoleMode = false
+def allowLocalLibInConsoleMode = true
 
 //The path were to look for the local libraries
 def BCLibPath = '../BCLib'

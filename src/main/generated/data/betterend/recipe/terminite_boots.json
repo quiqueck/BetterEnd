@@ -3,7 +3,7 @@
   "category": "equipment",
   "group": "boots",
   "key": {
-    "#": "#betterend:terminiterepair/"
+    "#": "#betterend:terminite/repair"
   },
   "pattern": [
     "# #",

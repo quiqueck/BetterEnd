@@ -14,6 +14,9 @@ import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
 
 import net.minecraft.world.level.block.IronBarsBlock;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,9 +61,22 @@ public class Bars extends SlotFromDefinition {
 
     @Override
     protected BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientBlockTraits.MODEL.with(
-                (key, block, generator) -> {
-                    generator.createBars(block);
-                });
+        return ClientModel.build();
+    }
+
+    /**
+     * Kept in a separate class file: Bars itself is always loaded on the server (it's
+     * instantiated for the block-set registration), and a lambda body's synthetic method does
+     * not inherit an @Environment(CLIENT) annotation from its enclosing method, so leaving it
+     * here would strand a client-only type reference in a class file the server has to verify.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class ClientModel {
+        private static BlockModelTrait build() {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> {
+                        generator.createBars(block);
+                    });
+        }
     }
 }

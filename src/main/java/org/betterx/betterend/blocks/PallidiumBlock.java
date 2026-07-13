@@ -26,10 +26,6 @@ public class PallidiumBlock extends EndTerrainBlock {
         this.nextLevel = nextLevel;
     }
 
-    public boolean canBePotted() {
-        return this == EndBlocks.PALLIDIUM_FULL;
-    }
-
     @Override
     public Block getBaseBlock() {
         return EndBlocks.UMBRALITH.getBaseBlock();

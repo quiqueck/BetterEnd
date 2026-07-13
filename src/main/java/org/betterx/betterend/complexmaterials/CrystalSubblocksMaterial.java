@@ -6,7 +6,9 @@ import org.betterx.betterend.blocks.basis.LitBaseBlock;
 import org.betterx.betterend.blocks.basis.LitPillarBlock;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.datagen.betterend.recipes.EndCraftingRecipesProvider;
+import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
+import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.recipe.api.CraftingRecipeBuilder;
 import org.betterx.wover.recipe.api.RecipeBuilder;
 import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
@@ -18,6 +20,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class CrystalSubblocksMaterial implements MaterialManager.Material {
     public final Block polished;
@@ -40,15 +45,11 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
 
         polished = EndBlocks.defineBlock(name + "_polished", LitBaseBlock::new)
                              .replacePropertiesWithCopy(source)
-                             .addTrait(ClientBlockTraits.MODEL.with(
-                                     (key, block, generator) -> LitBaseBlock.provideBlockModel(generator, block)
-                             ))
+                             .addTrait(ModCore.isDatagen() ? ClientModel.build() : null)
                              .buildAndRegister();
         tiles = EndBlocks.defineBlock(name + "_tiles", LitBaseBlock::new)
                           .replacePropertiesWithCopy(source)
-                          .addTrait(ClientBlockTraits.MODEL.with(
-                                  (key, block, generator) -> LitBaseBlock.provideBlockModel(generator, block)
-                          ))
+                          .addTrait(ModCore.isDatagen() ? ClientModel.build() : null)
                           .buildAndRegister();
         pillar = EndBlocks.defineBlock(name + "_pillar", LitPillarBlock::new)
                            .replacePropertiesWithCopy(source)
@@ -67,9 +68,7 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                              .buildAndRegister();
         bricks = EndBlocks.defineBlock(name + "_bricks", LitBaseBlock::new)
                            .replacePropertiesWithCopy(source)
-                           .addTrait(ClientBlockTraits.MODEL.with(
-                                   (key, block, generator) -> LitBaseBlock.provideBlockModel(generator, block)
-                           ))
+                           .addTrait(ModCore.isDatagen() ? ClientModel.build() : null)
                            .buildAndRegister();
         brick_stairs = EndBlocks.defineBlock(name + "_bricks_stairs", p -> new StairBlock(bricks.defaultBlockState(), p))
                                  .replacePropertiesWithCopy(bricks)
@@ -186,5 +185,21 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                              .build(context);
 
         EndCraftingRecipesProvider.registerPedestal(context, name + "_pedestal", pedestal, slab, pillar);
+    }
+
+    /**
+     * Kept in a separate class file (not just an @Environment(CLIENT)-guarded expression):
+     * merely creating this lambda - even without ever invoking it - requires resolving the
+     * client-only WoverBlockModelGenerators parameter type at the invokedynamic bootstrap site,
+     * which throws immediately on a dedicated server. Gating with ModCore.isDatagen() keeps that
+     * bootstrap instruction from ever executing there. See PathBlockTrait for the same pattern.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class ClientModel {
+        private static BlockModelTrait build() {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> LitBaseBlock.provideBlockModel(generator, block)
+            );
+        }
     }
 }

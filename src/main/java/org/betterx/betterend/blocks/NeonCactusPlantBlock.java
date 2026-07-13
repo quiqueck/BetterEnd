@@ -4,7 +4,6 @@ import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.EndBlockProperties.CactusBottom;
-import org.betterx.betterend.interfaces.PottablePlant;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -31,8 +30,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import com.google.common.collect.Lists;
@@ -42,7 +39,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWaterloggedBlock, PottablePlant {
+public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWaterloggedBlock {
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     public static final EnumProperty<CactusBottom> CACTUS_BOTTOM = EndBlockProperties.CACTUS_BOTTOM;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -412,16 +409,5 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
         SMALL_SHAPES_OPEN.put(Direction.SOUTH, Block.box(4, 4, 0, 12, 12, 12));
         SMALL_SHAPES_OPEN.put(Direction.WEST, Block.box(4, 4, 4, 16, 12, 12));
         SMALL_SHAPES_OPEN.put(Direction.EAST, Block.box(0, 4, 4, 12, 12, 12));
-    }
-
-    @Override
-    public boolean canPlantOn(Block block) {
-        return true;
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public String getPottedState() {
-        return "bottom=moss,shape=top,facing=up";
     }
 }

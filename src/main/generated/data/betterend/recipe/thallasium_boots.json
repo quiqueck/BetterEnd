@@ -3,7 +3,7 @@
   "category": "equipment",
   "group": "boots",
   "key": {
-    "#": "#betterend:thallasiumrepair/"
+    "#": "#betterend:thallasium/repair"
   },
   "pattern": [
     "# #",

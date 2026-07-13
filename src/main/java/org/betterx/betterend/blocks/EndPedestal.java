@@ -34,12 +34,25 @@ public class EndPedestal extends PedestalBlock {
     }
 
 
-    @Environment(EnvType.CLIENT)
+    /**
+     * Kept in a separate class file (not just an @Environment(CLIENT) method) since this Block is
+     * always loaded on the server; a lambda body's synthetic method does not inherit the
+     * annotation from its enclosing method, so leaving it here would strand vanilla client-only
+     * type references (TextureMapping via createTextureMapping's return type) in a class file the
+     * server actually has to verify.
+     */
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientBlockTraits.MODEL.with(
-                (key, block, generator) -> {
-                    provideBlockModel(generator, createTextureMapping(set.getBaseBlock()), block);
-                }
-        );
+        return ClientModel.build(set);
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static class ClientModel {
+        private static BlockModelTrait build(BlockSet<?> set) {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> {
+                        provideBlockModel(generator, createTextureMapping(set.getBaseBlock()), block);
+                    }
+            );
+        }
     }
 }

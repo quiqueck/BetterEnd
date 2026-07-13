@@ -49,73 +49,85 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal {
         return BOUNDING_SHAPES.get(state.getValue(FACING));
     }
 
-    @Environment(EnvType.CLIENT)
+    /**
+     * Kept in a separate class file (not just an @Environment(CLIENT) method) since this Block is
+     * always loaded on the server; a lambda body's synthetic method does not inherit the
+     * annotation from its enclosing method, so leaving it here would strand vanilla client-only
+     * type references in a class file the server actually has to verify.
+     */
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientBlockTraits.MODEL.with(
-                (key, block, generator) -> {
-                    final var baseTexture = TextureMapping.getBlockTexture(block);
-                    final var mapping = new TextureMapping()
-                            .put(EndModels.WALL, baseTexture.withSuffix("_wall"))
-                            .put(EndModels.FLOOR, baseTexture.withSuffix("_floor"))
-                            .put(EndModels.CEIL, baseTexture.withSuffix("_ceil"));
+        return ClientModel.build();
+    }
 
-                    final var modelCeil = EndModels.CHANDELIER_CEIL.createWithSuffix(
-                            block,
-                            "_ceil",
-                            mapping,
-                            generator.vanillaGenerator.modelOutput
-                    );
-                    final var modelWall = EndModels.CHANDELIER_WALL.createWithSuffix(
-                            block,
-                            "_wall",
-                            mapping,
-                            generator.vanillaGenerator.modelOutput
-                    );
-                    final var modelFloor = EndModels.CHANDELIER_FLOOR.createWithSuffix(
-                            block,
-                            "_floor",
-                            mapping,
-                            generator.vanillaGenerator.modelOutput
-                    );
+    @Environment(EnvType.CLIENT)
+    private static class ClientModel {
+        private static BlockModelTrait build() {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> {
+                        final var baseTexture = TextureMapping.getBlockTexture(block);
+                        final var mapping = new TextureMapping()
+                                .put(EndModels.WALL, baseTexture.withSuffix("_wall"))
+                                .put(EndModels.FLOOR, baseTexture.withSuffix("_floor"))
+                                .put(EndModels.CEIL, baseTexture.withSuffix("_ceil"));
 
-                    final var facingDispatch = PropertyDispatch
-                            .modify(BaseAttachedBlock.FACING)
-                            .select(
-                                    Direction.DOWN,
-                                    (variant) -> BlockModelGenerators.plainModel(modelCeil)
-                            )
-                            .select(
-                                    Direction.UP,
-                                    (variant) -> BlockModelGenerators.plainModel(modelFloor)
-                            )
-                            .select(
-                                    Direction.EAST,
-                                    (variant) -> BlockModelGenerators.Y_ROT_270.apply(
-                                            BlockModelGenerators.plainModel(modelWall))
-                            )
-                            .select(
-                                    Direction.SOUTH,
-                                    (variant) -> BlockModelGenerators.plainModel(modelWall)
-                            )
-                            .select(
-                                    Direction.WEST,
-                                    (variant) -> BlockModelGenerators.Y_ROT_90.apply(
-                                            BlockModelGenerators.plainModel(modelWall))
-                            )
-                            .select(
-                                    Direction.NORTH,
-                                    (variant) -> BlockModelGenerators.Y_ROT_180.apply(
-                                            BlockModelGenerators.plainModel(modelWall))
-                            );
+                        final var modelCeil = EndModels.CHANDELIER_CEIL.createWithSuffix(
+                                block,
+                                "_ceil",
+                                mapping,
+                                generator.vanillaGenerator.modelOutput
+                        );
+                        final var modelWall = EndModels.CHANDELIER_WALL.createWithSuffix(
+                                block,
+                                "_wall",
+                                mapping,
+                                generator.vanillaGenerator.modelOutput
+                        );
+                        final var modelFloor = EndModels.CHANDELIER_FLOOR.createWithSuffix(
+                                block,
+                                "_floor",
+                                mapping,
+                                generator.vanillaGenerator.modelOutput
+                        );
+
+                        final var facingDispatch = PropertyDispatch
+                                .modify(BaseAttachedBlock.FACING)
+                                .select(
+                                        Direction.DOWN,
+                                        (variant) -> BlockModelGenerators.plainModel(modelCeil)
+                                )
+                                .select(
+                                        Direction.UP,
+                                        (variant) -> BlockModelGenerators.plainModel(modelFloor)
+                                )
+                                .select(
+                                        Direction.EAST,
+                                        (variant) -> BlockModelGenerators.Y_ROT_270.apply(
+                                                BlockModelGenerators.plainModel(modelWall))
+                                )
+                                .select(
+                                        Direction.SOUTH,
+                                        (variant) -> BlockModelGenerators.plainModel(modelWall)
+                                )
+                                .select(
+                                        Direction.WEST,
+                                        (variant) -> BlockModelGenerators.Y_ROT_90.apply(
+                                                BlockModelGenerators.plainModel(modelWall))
+                                )
+                                .select(
+                                        Direction.NORTH,
+                                        (variant) -> BlockModelGenerators.Y_ROT_180.apply(
+                                                BlockModelGenerators.plainModel(modelWall))
+                                );
 
 
-                    generator.acceptBlockState(
-                            MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(modelCeil))
-                                                 .with(facingDispatch)
-                    );
+                        generator.acceptBlockState(
+                                MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(modelCeil))
+                                                     .with(facingDispatch)
+                        );
 
-                    generator.delegateItemModel(block, modelCeil);
-                });
+                        generator.delegateItemModel(block, modelCeil);
+                    });
+        }
     }
 
     static {

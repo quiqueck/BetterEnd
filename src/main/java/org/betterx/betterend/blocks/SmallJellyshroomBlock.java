@@ -4,7 +4,6 @@ import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.betterend.interfaces.PottablePlant;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
@@ -26,14 +25,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import com.google.common.collect.Maps;
 
 import java.util.EnumMap;
 
-public class SmallJellyshroomBlock extends BaseAttachedBlock implements BonemealableBlock, PottablePlant, BehaviourPlant {
+public class SmallJellyshroomBlock extends BaseAttachedBlock implements BonemealableBlock, BehaviourPlant {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
 
     public SmallJellyshroomBlock(BlockBehaviour.Properties props) {
@@ -79,16 +75,5 @@ public class SmallJellyshroomBlock extends BaseAttachedBlock implements Bonemeal
         BlocksHelper.setWithUpdate(world, pos, Blocks.AIR);
         EndConfiguredVegetation
                 .JELLYSHROOM.placeInWorld(world, pos, random);
-    }
-
-    @Override
-    public boolean canPlantOn(Block block) {
-        return true;
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public String getPottedState() {
-        return "facing=up";
     }
 }

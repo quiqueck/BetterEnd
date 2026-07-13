@@ -98,14 +98,23 @@ public class InfusionPedestal extends PedestalBlock implements BehaviourStone {
         return InfusionPedestalEntity::tickEntity;
     }
 
-    private static final Map<EndBlockProperties.PedestalState, ModelTemplate> PEDESTAL_MODELS = Map.of(
-            EndBlockProperties.PedestalState.DEFAULT, EndModels.INFUSION_PEDESTAL_DEFAULT,
-            EndBlockProperties.PedestalState.PEDESTAL_TOP, EndModels.INFUSION_PEDESTAL_TOP,
-            EndBlockProperties.PedestalState.COLUMN_TOP, EndModels.PEDESTAL_COLUMN_TOP,
-            EndBlockProperties.PedestalState.COLUMN, EndModels.PEDESTAL_COLUMN,
-            EndBlockProperties.PedestalState.BOTTOM, EndModels.PEDESTAL_BOTTOM,
-            EndBlockProperties.PedestalState.PILLAR, EndModels.PEDESTAL_PILLAR
-    );
+    /**
+     * Fabric strips @Environment(CLIENT)-annotated fields on the server by simply removing the
+     * field declaration, without patching the surviving <clinit> bytecode that assigns it - so a
+     * field with a non-trivial initializer must live in its own lazily-loaded class instead of
+     * being a direct field of a class (like this Block) that's always loaded on the server.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class Models {
+        private static final Map<EndBlockProperties.PedestalState, ModelTemplate> PEDESTAL_MODELS = Map.of(
+                EndBlockProperties.PedestalState.DEFAULT, EndModels.INFUSION_PEDESTAL_DEFAULT,
+                EndBlockProperties.PedestalState.PEDESTAL_TOP, EndModels.INFUSION_PEDESTAL_TOP,
+                EndBlockProperties.PedestalState.COLUMN_TOP, EndModels.PEDESTAL_COLUMN_TOP,
+                EndBlockProperties.PedestalState.COLUMN, EndModels.PEDESTAL_COLUMN,
+                EndBlockProperties.PedestalState.BOTTOM, EndModels.PEDESTAL_BOTTOM,
+                EndBlockProperties.PedestalState.PILLAR, EndModels.PEDESTAL_PILLAR
+        );
+    }
 
     @Environment(EnvType.CLIENT)
     protected TextureMapping createTextureMapping() {
@@ -119,7 +128,7 @@ public class InfusionPedestal extends PedestalBlock implements BehaviourStone {
 
     @Environment(EnvType.CLIENT)
     public void provideBlockModelsInstance(WoverBlockModelGenerators generator) {
-        provideBlockModel(generator, createTextureMapping(), this, PEDESTAL_MODELS);
+        provideBlockModel(generator, createTextureMapping(), this, Models.PEDESTAL_MODELS);
     }
 
     static {

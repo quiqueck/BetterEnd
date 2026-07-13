@@ -16,6 +16,8 @@ import org.betterx.datagen.betterend.worldgen.features.*;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.PackBuilder;
 import org.betterx.wover.datagen.api.WoverDataGenEntryPoint;
+import org.betterx.wover.pottable.api.datagen.WoverPottablePlantRegistryProvider;
+import org.betterx.wover.pottable.api.datagen.WoverPottableSoilRegistryProvider;
 
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.worldgen.features.EndFeatures;
@@ -35,6 +37,8 @@ public class BetterEndDatagen extends WoverDataGenEntryPoint {
         globalPack.addProvider(ItemTagProvider::new);
         globalPack.addProvider(BiomeTagProvider::new);
         globalPack.addRegistryProvider(JukeboxRegistryProvider::new);
+        globalPack.addRegistryProvider(WoverPottablePlantRegistryProvider::new);
+        globalPack.addRegistryProvider(WoverPottableSoilRegistryProvider::new);
         globalPack.addMultiProvider(StructureDataProvider::new);
         globalPack.addMultiProvider(VegetationFeaturesProvider::new);
         globalPack.addMultiProvider(OreFeatureProvider::new);

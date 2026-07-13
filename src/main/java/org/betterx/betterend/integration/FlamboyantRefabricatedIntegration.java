@@ -6,9 +6,14 @@ import org.betterx.betterend.blocks.HydraluxPetalColoredBlock;
 import org.betterx.betterend.complexmaterials.ColoredMaterial;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.ui.ColorUtil;
+import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
+import org.betterx.wover.core.api.ModCore;
 
 import net.minecraft.world.level.ItemLike;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import com.google.common.collect.Maps;
 
@@ -48,9 +53,7 @@ public class FlamboyantRefabricatedIntegration extends ModIntegration {
                 colors,
                 dyes,
                 true,
-                (def) -> def.addTrait(ClientBlockTraits.MODEL.with(
-                        (key, block, generator) -> HydraluxPetalColoredBlock.provideBlockModel(generator, block)
-                ))
+                (def) -> def.addTrait(ModCore.isDatagen() ? ClientModel.build() : null)
         );
     }
 
@@ -60,5 +63,21 @@ public class FlamboyantRefabricatedIntegration extends ModIntegration {
         dyes.put(color, getItem(name + "_dye"));
 
         System.out.println(name + " " + color + " " + new Color(color));
+    }
+
+    /**
+     * Kept in a separate class file (not just an @Environment(CLIENT)-guarded expression):
+     * merely creating this lambda - even without ever invoking it - requires resolving the
+     * client-only WoverBlockModelGenerators parameter type at the invokedynamic bootstrap site,
+     * which throws immediately on a dedicated server. Gating with ModCore.isDatagen() keeps that
+     * bootstrap instruction from ever executing there. See PathBlockTrait for the same pattern.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class ClientModel {
+        private static BlockModelTrait build() {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> HydraluxPetalColoredBlock.provideBlockModel(generator, block)
+            );
+        }
     }
 }

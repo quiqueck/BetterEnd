@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_tag_betterend_thallasiumrepair/": {
+    "has_tag_betterend_thallasium/repair": {
       "conditions": {
         "items": [
           {
-            "items": "#betterend:thallasiumrepair/"
+            "items": "#betterend:thallasium/repair"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_tag_betterend_thallasiumrepair/"
+      "has_tag_betterend_thallasium/repair"
     ]
   ],
   "rewards": {

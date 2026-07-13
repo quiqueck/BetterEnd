@@ -44,12 +44,6 @@ public class FlamaeaBlock extends EndPlantBlock implements CustomBlockItemProvid
     }
 
     @Override
-    public boolean canBePotted() {
-        return false;
-    }
-
-
-    @Override
     public BlockItem getCustomBlockItem(ResourceLocation blockID, Item.Properties settings) {
         return new PlaceOnWaterBlockItem(this, settings);
     }

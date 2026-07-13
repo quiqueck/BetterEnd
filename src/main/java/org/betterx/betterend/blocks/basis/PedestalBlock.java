@@ -396,14 +396,23 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
         return state.getValue(HAS_ITEM) ? 15 : 0;
     }
 
-    private static final Map<PedestalState, ModelTemplate> PEDESTAL_MODELS = Map.of(
-            PedestalState.DEFAULT, EndModels.PEDESTAL_DEFAULT,
-            PedestalState.PEDESTAL_TOP, EndModels.PEDESTAL_TOP,
-            PedestalState.COLUMN_TOP, EndModels.PEDESTAL_COLUMN_TOP,
-            PedestalState.COLUMN, EndModels.PEDESTAL_COLUMN,
-            PedestalState.BOTTOM, EndModels.PEDESTAL_BOTTOM,
-            PedestalState.PILLAR, EndModels.PEDESTAL_PILLAR
-    );
+    /**
+     * Fabric strips @Environment(CLIENT)-annotated fields on the server by simply removing the
+     * field declaration, without patching the surviving <clinit> bytecode that assigns it - so a
+     * field with a non-trivial initializer must live in its own lazily-loaded class instead of
+     * being a direct field of a class (like this Block) that's always loaded on the server.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class Models {
+        private static final Map<PedestalState, ModelTemplate> PEDESTAL_MODELS = Map.of(
+                PedestalState.DEFAULT, EndModels.PEDESTAL_DEFAULT,
+                PedestalState.PEDESTAL_TOP, EndModels.PEDESTAL_TOP,
+                PedestalState.COLUMN_TOP, EndModels.PEDESTAL_COLUMN_TOP,
+                PedestalState.COLUMN, EndModels.PEDESTAL_COLUMN,
+                PedestalState.BOTTOM, EndModels.PEDESTAL_BOTTOM,
+                PedestalState.PILLAR, EndModels.PEDESTAL_PILLAR
+        );
+    }
 
 
     @Environment(EnvType.CLIENT)
@@ -412,7 +421,7 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
             TextureMapping mapping,
             Block pedestalBlock
     ) {
-        provideBlockModel(generator, mapping, pedestalBlock, PEDESTAL_MODELS);
+        provideBlockModel(generator, mapping, pedestalBlock, Models.PEDESTAL_MODELS);
     }
 
     @Environment(EnvType.CLIENT)
@@ -456,13 +465,19 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
                 .put(EndModels.PILLAR, parentTexture.withSuffix("_pillar"));
     }
 
-    @Environment(EnvType.CLIENT)
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientBlockTraits.MODEL.with(
-                (key, block, generator) -> {
-                    provideBlockModel(generator, createTextureMapping(set.getBaseBlock()), block);
-                }
-        );
+        return ClientModelBuilder.build(set);
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static class ClientModelBuilder {
+        private static BlockModelTrait build(BlockSet<?> set) {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> {
+                        provideBlockModel(generator, createTextureMapping(set.getBaseBlock()), block);
+                    }
+            );
+        }
     }
 
 

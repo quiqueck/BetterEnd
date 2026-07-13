@@ -47,38 +47,53 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
         return state.getValue(IS_FLOOR) ? SHAPE_FLOOR : SHAPE_CEIL;
     }
 
-    @Environment(EnvType.CLIENT)
+    /**
+     * The lambda below must not live directly in this method: annotations like
+     * @Environment(CLIENT) on an enclosing method are not applied to the synthetic method javac
+     * generates for the lambda body, so Fabric's stripper leaves that synthetic method (and its
+     * references to vanilla client-only datagen types) behind in this class file. Since
+     * StoneLanternBlock itself is always loaded on the server (it's instantiated for real blocks),
+     * verifying that orphaned method would crash server startup. Keeping the lambda in a separate,
+     * never-unconditionally-loaded class file avoids that.
+     */
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientBlockTraits.MODEL.with(
-                (key, block, generator) -> {
-                    //get id of this block from registry
-                    final boolean isVanilla = key.location().getNamespace().equals("minecraft");
-                    final var mapping = new TextureMapping()
-                            .put(BCLModels.GLASS, TextureMapping.getBlockTexture(EndBlocks.AURORA_CRYSTAL))
-                            .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
-                            .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
-                            .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));
+        return ClientModel.build();
+    }
 
-                    final var floorModel = BCLModels.STONE_LANTERN_FLOOR.createWithSuffix(
-                            block,
-                            "_floor",
-                            mapping,
-                            generator.vanillaGenerator.modelOutput
-                    );
-                    final var ceilModel = BCLModels.STONE_LANTERN_CEIL.create(
-                            block,
-                            mapping,
-                            generator.vanillaGenerator.modelOutput
-                    );
+    @Environment(EnvType.CLIENT)
+    private static class ClientModel {
+        private static BlockModelTrait build() {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> {
+                        //get id of this block from registry
+                        final boolean isVanilla = key.location().getNamespace().equals("minecraft");
+                        final var mapping = new TextureMapping()
+                                .put(BCLModels.GLASS, TextureMapping.getBlockTexture(EndBlocks.AURORA_CRYSTAL))
+                                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
+                                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
+                                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));
 
-                    final var floorCeilDispatch = PropertyDispatch
-                            .modify(IS_FLOOR)
-                            .select(true, (variant) -> BlockModelGenerators.plainModel(floorModel))
-                            .select(false, (variant) -> BlockModelGenerators.plainModel(ceilModel));
+                        final var floorModel = BCLModels.STONE_LANTERN_FLOOR.createWithSuffix(
+                                block,
+                                "_floor",
+                                mapping,
+                                generator.vanillaGenerator.modelOutput
+                        );
+                        final var ceilModel = BCLModels.STONE_LANTERN_CEIL.create(
+                                block,
+                                mapping,
+                                generator.vanillaGenerator.modelOutput
+                        );
 
-                    generator.acceptBlockState(MultiVariantGenerator
-                            .dispatch(block, BlockModelGenerators.plainVariant(ceilModel))
-                            .with(floorCeilDispatch));
-                });
+                        final var floorCeilDispatch = PropertyDispatch
+                                .modify(IS_FLOOR)
+                                .select(true, (variant) -> BlockModelGenerators.plainModel(floorModel))
+                                .select(false, (variant) -> BlockModelGenerators.plainModel(ceilModel));
+
+                        generator.acceptBlockState(MultiVariantGenerator
+                                .dispatch(block, BlockModelGenerators.plainVariant(ceilModel))
+                                .with(floorCeilDispatch));
+                    });
+        }
     }
 }

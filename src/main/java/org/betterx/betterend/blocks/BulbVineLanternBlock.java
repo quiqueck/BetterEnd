@@ -60,43 +60,56 @@ public class BulbVineLanternBlock extends EndLanternBlock implements BehaviourMe
         return "bulb_vine_lantern_bulb";
     }
 
-    @Environment(EnvType.CLIENT)
+    /**
+     * Kept in a separate class file (not just an @Environment(CLIENT) method) since this Block is
+     * always loaded on the server; a lambda body's synthetic method does not inherit the
+     * annotation from its enclosing method, so leaving it here would strand vanilla client-only
+     * type references in a class file the server actually has to verify. See PathBlockTrait/
+     * StoneLanternBlock for the same fix applied elsewhere.
+     */
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientBlockTraits.MODEL.with(
-                (key, block, generator) -> {
-                    //get id of this block from registry
-                    final var id = BuiltInRegistries.BLOCK.getKey(block);
+        return ClientModel.build();
+    }
 
-                    final var mapping = new TextureMapping()
-                            .put(BCLModels.GLOW, BetterEnd.C.mk("bulb_vine_lantern_bulb").withPrefix("block/"))
-                            .put(BCLModels.METAL, BetterEnd.C.mk(getMetalTexture(id)).withPrefix("block/"));
+    @Environment(EnvType.CLIENT)
+    private static class ClientModel {
+        private static BlockModelTrait build() {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> {
+                        //get id of this block from registry
+                        final var id = BuiltInRegistries.BLOCK.getKey(block);
 
-                    final var floorModel = BCLModels.BULB_LANTERN_FLOOR.createWithSuffix(
-                            block,
-                            "_floor",
-                            mapping,
-                            generator.vanillaGenerator.modelOutput
-                    );
-                    final var ceilModel = BCLModels.BULB_LANTERN_CEIL.create(
-                            block,
-                            mapping,
-                            generator.vanillaGenerator.modelOutput
-                    );
+                        final var mapping = new TextureMapping()
+                                .put(BCLModels.GLOW, BetterEnd.C.mk("bulb_vine_lantern_bulb").withPrefix("block/"))
+                                .put(BCLModels.METAL, BetterEnd.C.mk(getMetalTexture(id)).withPrefix("block/"));
 
-                    final var floorCeilDispatch = PropertyDispatch
-                            .modify(IS_FLOOR)
-                            .select(
-                                    true,
-                                    (variant) -> BlockModelGenerators.plainModel(floorModel)
-                            )
-                            .select(
-                                    false,
-                                    (variant) -> BlockModelGenerators.plainModel(ceilModel)
-                            );
+                        final var floorModel = BCLModels.BULB_LANTERN_FLOOR.createWithSuffix(
+                                block,
+                                "_floor",
+                                mapping,
+                                generator.vanillaGenerator.modelOutput
+                        );
+                        final var ceilModel = BCLModels.BULB_LANTERN_CEIL.create(
+                                block,
+                                mapping,
+                                generator.vanillaGenerator.modelOutput
+                        );
 
-                    generator.acceptBlockState(MultiVariantGenerator
-                            .dispatch(block, BlockModelGenerators.plainVariant(ceilModel))
-                            .with(floorCeilDispatch));
-                });
+                        final var floorCeilDispatch = PropertyDispatch
+                                .modify(IS_FLOOR)
+                                .select(
+                                        true,
+                                        (variant) -> BlockModelGenerators.plainModel(floorModel)
+                                )
+                                .select(
+                                        false,
+                                        (variant) -> BlockModelGenerators.plainModel(ceilModel)
+                                );
+
+                        generator.acceptBlockState(MultiVariantGenerator
+                                .dispatch(block, BlockModelGenerators.plainVariant(ceilModel))
+                                .with(floorCeilDispatch));
+                    });
+        }
     }
 }

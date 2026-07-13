@@ -3,7 +3,7 @@
   "category": "equipment",
   "group": "chestplate",
   "key": {
-    "#": "#betterend:terminiterepair/"
+    "#": "#betterend:terminite/repair"
   },
   "pattern": [
     "# #",

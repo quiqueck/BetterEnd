@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_tag_betterend_terminiterepair/": {
+    "has_tag_betterend_terminite/repair": {
       "conditions": {
         "items": [
           {
-            "items": "#betterend:terminiterepair/"
+            "items": "#betterend:terminite/repair"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_tag_betterend_terminiterepair/"
+      "has_tag_betterend_terminite/repair"
     ]
   ],
   "rewards": {

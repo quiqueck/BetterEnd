@@ -23,8 +23,11 @@ import org.betterx.wover.block.api.BlockRegistry;
 import org.betterx.wover.block.api.DefaultBlockDefinition;
 import org.betterx.wover.block.api.VanillaBlockDefinition;
 import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
+import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 import org.betterx.wover.block.api.trait.BlockTraits;
+import org.betterx.wover.pottable.api.trait.PottablePlantBlockTrait;
+import org.betterx.wover.pottable.api.trait.PottableSoilBlockTrait;
 import org.betterx.wover.recipe.api.RecipeMaterial;
 import org.betterx.wover.recipe.api.RecipeTraitLibrary;
 import org.betterx.wover.sets.api.blocks.SlotMap;
@@ -331,6 +334,7 @@ public class EndBlocks {
             MossyGlowshroomSaplingBlock::new
     ).addTrait(SaplingBlockTrait.withLight(7))
      .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM))
+     .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM))
      .buildAndRegister();
 
     public static final Block MOSSY_GLOWSHROOM_CAP = defineBlock("mossy_glowshroom_cap", MossyGlowshroomCapBlock::new)
@@ -342,10 +346,10 @@ public class EndBlocks {
             "mossy_glowshroom_hymenophore",
             GlowingHymenophoreBlock::new
     ).addTrait(BlockTraits.MINEABLE_WITH.needsAxe())
-     .addTrait(ClientBlockTraits.MODEL.with(
+     .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
              (key, block, generator) ->
                      GlowingHymenophoreBlock.provideUnshadedCubeModel(generator, block)
-     ))
+     ) : null)
      .addTrait(BlockTraits.LOOT_TABLE)
      .lightLevel((_s) -> 15)
      .sound(SoundType.WART_BLOCK)
@@ -364,10 +368,12 @@ public class EndBlocks {
     public static final Block PYTHADENDRON_SAPLING = defineBlock("pythadendron_sapling", PythadendronSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_PURPLE))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
             .buildAndRegister();
 
     public static final Block PYTHADENDRON_LEAVES = defineBlock("pythadendron_leaves", PottableLeavesBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_MAGENTA, 0, false, PYTHADENDRON_SAPLING))
+            .addTrait(PottablePlantBlockTrait.any())
             .buildAndRegister();
 
     public static final EndWoodenComplexMaterial PYTHADENDRON = new EndWoodenComplexMaterial(
@@ -412,10 +418,12 @@ public class EndBlocks {
 
     public static final Block LACUGROVE_SAPLING = defineBlock("lacugrove_sapling", LacugroveSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_CYAN))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_MOSS_OR_DUST))
             .buildAndRegister();
 
     public static final Block LACUGROVE_LEAVES = defineBlock("lacugrove_leaves", PottableLeavesBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_CYAN, 0, false, LACUGROVE_SAPLING))
+            .addTrait(PottablePlantBlockTrait.any())
             .buildAndRegister();
 
     public static final EndWoodenComplexMaterial LACUGROVE = new EndWoodenComplexMaterial(
@@ -426,10 +434,12 @@ public class EndBlocks {
 
     public static final Block DRAGON_TREE_SAPLING = defineBlock("dragon_tree_sapling", DragonTreeSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_MAGENTA))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_SHADOW_GRASS))
             .buildAndRegister();
 
     public static final Block DRAGON_TREE_LEAVES = defineBlock("dragon_tree_leaves", PottableLeavesBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_MAGENTA, 0, false, DRAGON_TREE_SAPLING))
+            .addTrait(PottablePlantBlockTrait.any())
             .buildAndRegister();
 
     public static final EndWoodenComplexMaterial DRAGON_TREE = new EndWoodenComplexMaterial(
@@ -441,10 +451,12 @@ public class EndBlocks {
     public static final Block TENANEA_SAPLING = defineBlock("tenanea_sapling", TenaneaSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_PINK))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_PINK_MOSS))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_PINK_MOSS))
             .buildAndRegister();
 
     public static final Block TENANEA_LEAVES = defineBlock("tenanea_leaves", PottableLeavesBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_PINK, 0, false, TENANEA_SAPLING))
+            .addTrait(PottablePlantBlockTrait.any())
             .buildAndRegister();
 
     public static final Block TENANEA_FLOWERS = defineBlock("tenanea_flowers", TenaneaFlowersBlock::new)
@@ -464,6 +476,7 @@ public class EndBlocks {
     public static final Block HELIX_TREE_SAPLING = defineBlock("helix_tree_sapling", HelixTreeSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_ORANGE))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_AMBER_MOSS))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_AMBER_MOSS))
             .buildAndRegister();
 
     public static final Block HELIX_TREE_LEAVES = defineBlock("helix_tree_leaves", HelixTreeLeavesBlock::new)
@@ -482,6 +495,7 @@ public class EndBlocks {
             UmbrellaTreeSaplingBlock::new
     ).addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_BLUE))
      .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS))
+     .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_JUNGLE_MOSS))
      .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
      .buildAndRegister();
 
@@ -530,9 +544,9 @@ public class EndBlocks {
      .mapColor(MapColor.COLOR_PURPLE)
      .addTrait(BlockTraits.LOOT_TABLE)
      .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
-     .addTrait(ClientBlockTraits.MODEL.with(
+     .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
              (key, block, generator) -> JellyshroomCapBlock.provideBlockModel(generator, block)
-     ))
+     ) : null)
      .buildAndRegister();
 
     public static final EndWoodenComplexMaterial JELLYSHROOM = new EndWoodenComplexMaterial(
@@ -544,10 +558,12 @@ public class EndBlocks {
     public static final Block LUCERNIA_SAPLING = defineBlock("lucernia_sapling", LucerniaSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_ORANGE))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_RUTISCUS))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_RUTISCUS))
             .buildAndRegister();
 
     public static final Block LUCERNIA_LEAVES = defineBlock("lucernia_leaves", PottableLeavesBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_ORANGE, 0, false, LUCERNIA_SAPLING))
+            .addTrait(PottablePlantBlockTrait.any())
             .buildAndRegister();
 
     public static final Block LUCERNIA_OUTER_LEAVES = defineBlock("lucernia_outer_leaves", FurBlock::new)
@@ -565,6 +581,7 @@ public class EndBlocks {
     public static final Block UMBRELLA_MOSS = defineBlock("umbrella_moss", UmbrellaMossBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, true))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
             .lightLevel(state -> 11)
             .buildAndRegister();
 
@@ -577,11 +594,13 @@ public class EndBlocks {
     public static final Block CREEPING_MOSS = defineBlock("creeping_moss", GlowingMossBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_LIGHT_BLUE, false, true))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM))
             .lightLevel(state -> 11)
             .buildAndRegister();
     public static final Block CHORUS_GRASS = defineBlock("chorus_grass", ChorusGrassBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PURPLE, false, false))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -589,6 +608,7 @@ public class EndBlocks {
     public static final Block CAVE_GRASS = defineBlock("cave_grass", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(CAVE_MOSS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -596,6 +616,7 @@ public class EndBlocks {
     public static final Block CRYSTAL_GRASS = defineBlock("crystal_grass", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(CRYSTAL_MOSS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -603,6 +624,7 @@ public class EndBlocks {
     public static final Block SHADOW_PLANT = defineBlock("shadow_plant", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(SHADOW_GRASS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -610,6 +632,7 @@ public class EndBlocks {
     public static final Block BUSHY_GRASS = defineBlock("bushy_grass", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(PINK_MOSS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -617,6 +640,7 @@ public class EndBlocks {
     public static final Block AMBER_GRASS = defineBlock("amber_grass", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(AMBER_MOSS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -626,6 +650,7 @@ public class EndBlocks {
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_BLUE, false, false))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
             .lightLevel(state -> 12)
             .buildAndRegister();
 
@@ -635,17 +660,18 @@ public class EndBlocks {
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_BLUE, false, false))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
-            .addTrait(ClientBlockTraits.MODEL.with(
+            .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> generator.createCubeModelWithFlatItem(
                             block, BetterEnd.C.mk("item/twisted_umbrella_moss_large")
                     )
-            ))
+            ) : null)
             .lightLevel(state -> 12)
             .buildAndRegister();
 
     public static final Block JUNGLE_GRASS = defineBlock("jungle_grass", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(JUNGLE_MOSS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(BlockBehaviour.OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -653,6 +679,7 @@ public class EndBlocks {
     public static final Block BLOOMING_COOKSONIA = defineBlock("blooming_cooksonia", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -660,6 +687,7 @@ public class EndBlocks {
     public static final Block SALTEAGO = defineBlock("salteago", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -667,6 +695,7 @@ public class EndBlocks {
     public static final Block VAIOLUSH_FERN = defineBlock("vaiolush_fern", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -674,12 +703,14 @@ public class EndBlocks {
     public static final Block FRACTURN = defineBlock("fracturn", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
     public static final Block CLAWFERN = defineBlock("clawfern", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(SANGNUM, MOSSY_OBSIDIAN, MOSSY_DRAGON_BONE))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -687,6 +718,7 @@ public class EndBlocks {
     public static final Block GLOBULAGUS = defineBlock("globulagus", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(SANGNUM, MOSSY_OBSIDIAN, MOSSY_DRAGON_BONE))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -694,6 +726,7 @@ public class EndBlocks {
     public static final Block ORANGO = defineBlock("orango", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -701,6 +734,7 @@ public class EndBlocks {
     public static final Block AERIDIUM = defineBlock("aeridium", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -708,6 +742,7 @@ public class EndBlocks {
     public static final Block LUTEBUS = defineBlock("lutebus", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -715,6 +750,7 @@ public class EndBlocks {
     public static final Block LAMELLARIUM = defineBlock("lamellarium", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -722,12 +758,14 @@ public class EndBlocks {
     public static final Block INFLEXIA = defineBlock("inflexia", TerrainPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(PALLIDIUM_FULL, PALLIDIUM_HEAVY, PALLIDIUM_THIN, PALLIDIUM_TINY))
+            .addTrait(PottablePlantBlockTrait.any())
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
     public static final Block FLAMMALIX = defineBlock("flammalix", FlammalixBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_PALLIDIUM))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_PALLIDIUM))
             .lightLevel(state -> 12)
             .buildAndRegister();
 
@@ -754,9 +792,9 @@ public class EndBlocks {
 
     public static final Block BLUE_VINE_LANTERN = defineBlock("blue_vine_lantern", BlueVineLanternBlock::new)
             .addTrait(BlockTraits.WOOD_BLOCK.withDefault())
-            .addTrait(ClientBlockTraits.MODEL.with(
+            .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> BlueVineLanternBlock.provideBlockModel(generator, block)
-            ))
+            ) : null)
             .lightLevel(state -> 15)
             .sound(SoundType.WART_BLOCK)
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
@@ -773,6 +811,7 @@ public class EndBlocks {
 
     public static final Block LANCELEAF = defineBlock("lanceleaf", LanceleafBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_BROWN, false, false))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_AMBER_MOSS))
             .offsetType(OffsetType.XZ)
             .buildAndRegister();
 
@@ -800,10 +839,10 @@ public class EndBlocks {
     )
             .addTrait(BlockTraits.METAL_BLOCK)
             .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
-            .addTrait(ClientBlockTraits.MODEL.with(
+            .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) ->
                             GlowingHymenophoreBlock.provideUnshadedCubeModel(generator, block)
-            ))
+            ) : null)
             .mapColor(MapColor.COLOR_ORANGE)
             .strength(0.2F)
             .lightLevel(state -> 15)
@@ -819,6 +858,7 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_LIGHT_BLUE, false, false))
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
             .addTrait(BlockTraits.LOOT_TABLE.dropWithSilktouch())
+            .addTrait(PottablePlantBlockTrait.any())
             .lightLevel(s -> 13)
             .sound(SoundType.NETHER_WART)
             .offsetType(BlockBehaviour.OffsetType.NONE)
@@ -827,6 +867,7 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
             .lightLevel(bs -> 10)
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_RUTISCUS))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_RUTISCUS))
             .buildAndRegister();
 
     public static final Block LUMECORN_SEED = defineBlock("lumecorn_seed", LumecornSeedBlock::new)
@@ -848,6 +889,7 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_RED, false, false))
             .offsetType(BlockBehaviour.OffsetType.XZ)
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_BONE))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_END_BONE))
             .buildAndRegister();
     public static final Block LARGE_AMARANITA_MUSHROOM = defineBlock(
             "large_amaranita_mushroom",
@@ -858,6 +900,7 @@ public class EndBlocks {
                     ? 15
                     : 0)
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_BONE))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_END_BONE))
             .buildAndRegister();
     public static final Block AMARANITA_STEM = defineBlock("amaranita_stem", AmaranitaStemBlock::new)
             .addTrait(BlockTraits.WOOD_BLOCK)
@@ -878,10 +921,10 @@ public class EndBlocks {
             .buildAndRegister();
     public static final Block AMARANITA_LANTERN = defineBlock("amaranita_lantern", GlowingHymenophoreBlock::new)
             .addTrait(BlockTraits.WOOD_BLOCK)
-            .addTrait(ClientBlockTraits.MODEL.with(
+            .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) ->
                             GlowingHymenophoreBlock.provideUnshadedCubeModel(generator, block)
-            ))
+            ) : null)
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .buildAndRegister();
     public static final Block AMARANITA_FUR = defineBlock("amaranita_fur", FurBlock::new)
@@ -898,6 +941,7 @@ public class EndBlocks {
             .randomTicks()
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            .addTrait(PottablePlantBlockTrait.any())
             .buildAndRegister();
     public static final Block NEON_CACTUS_BLOCK = defineBlock("neon_cactus_block", NeonCactusBlock::new)
             .lightLevel(bs -> 15)
@@ -934,24 +978,28 @@ public class EndBlocks {
     // Crops
     public static final Block SHADOW_BERRY = defineBlock("shadow_berry", ShadowBerryBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_BLACK, false, false))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_SHADOW_GRASS))
             .buildAndRegister();
     public static final Block BLOSSOM_BERRY = defineBlock(
             "blossom_berry_seed",
             p -> new PottableCropBlock(p, EndItems.BLOSSOM_BERRY, PINK_MOSS)
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PINK, false, false))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_PINK_MOSS))
             .buildAndRegister();
     public static final Block AMBER_ROOT = defineBlock(
             "amber_root_seed",
             p -> new PottableCropBlock(p, EndItems.AMBER_ROOT_RAW, AMBER_MOSS)
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_AMBER_MOSS))
             .buildAndRegister();
     public static final Block CHORUS_MUSHROOM = defineBlock(
             "chorus_mushroom_seed",
             p -> new PottableCropBlock(p, EndItems.CHORUS_MUSHROOM_RAW, CHORUS_NYLIUM)
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PURPLE, false, false))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
             .buildAndRegister();
     //public static final Block PEARLBERRY = registerBlock("pearlberry_seed", new PottableCropBlock(EndItems.BLOSSOM_BERRY, END_MOSS, END_MYCELIUM));
     public static final Block CAVE_PUMPKIN_SEED = defineBlock("cave_pumpkin_seed", CavePumpkinVineBlock::new)
@@ -1028,17 +1076,17 @@ public class EndBlocks {
             HydraluxPetalColoredBlock::new,
             HYDRALUX_PETAL_BLOCK,
             true,
-            (def) -> def.addTrait(ClientBlockTraits.MODEL.with(
+            (def) -> def.addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> HydraluxPetalColoredBlock.provideBlockModel(generator, block)
-            ))
+            ) : null)
     );
 
     public static final Block POND_ANEMONE = defineBlock("pond_anemone", PondAnemoneBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_MAGENTA, false, false))
             .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
-            .addTrait(ClientBlockTraits.MODEL.with(
+            .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> generator.createCubeModelWithFlatItem(block)
-            ))
+            ) : null)
             .sound(SoundType.CORAL_BLOCK)
             .offsetType(BlockBehaviour.OffsetType.NONE)
             .lightLevel(state -> 13)
@@ -1057,6 +1105,7 @@ public class EndBlocks {
     public static final Block MURKWEED = defineBlock("murkweed", MurkweedBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_BLACK, false, false))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_SHADOW_GRASS))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_SHADOW_GRASS))
             .buildAndRegister();
     public static final Block NEEDLEGRASS = defineBlock("needlegrass", NeedlegrassBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_BLACK, false, false))
@@ -1065,22 +1114,23 @@ public class EndBlocks {
             ))
             .offsetType(BlockBehaviour.OffsetType.XZ)
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_SHADOW_GRASS))
+            .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_SHADOW_GRASS))
             .buildAndRegister();
 
     // Wall Plants //
     public static final Block PURPLE_POLYPORE = defineBlock("purple_polypore", EndWallMushroom::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PURPLE, false, false))
-            .addTrait(ClientBlockTraits.MODEL.with(
+            .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> generator.createCubeModelWithFlatItem(block)
-            ))
+            ) : null)
             .lightLevel(s -> 13)
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
             .buildAndRegister();
     public static final Block AURANT_POLYPORE = defineBlock("aurant_polypore", EndWallMushroom::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
-            .addTrait(ClientBlockTraits.MODEL.with(
+            .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> generator.createCubeModelWithFlatItem(block)
-            ))
+            ) : null)
             .lightLevel(s -> 13)
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
             .buildAndRegister();
@@ -1304,17 +1354,17 @@ public class EndBlocks {
     public static final Block ETERNAL_PEDESTAL = getBlockRegistry()
             .defineDefaultBlock("eternal_pedestal", def -> new EternalPedestal(def.blockKey))
             .addTrait(BlockTraits.STONE_BLOCK)
-            .addTrait(ClientBlockTraits.MODEL.with(
+            .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> ((EternalPedestal) block).provideBlockModelsInstance(generator)
-            ))
+            ) : null)
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .buildAndRegister();
     public static final Block INFUSION_PEDESTAL = getBlockRegistry()
             .defineDefaultBlock("infusion_pedestal", def -> new InfusionPedestal(def.blockKey))
             .addTrait(BlockTraits.STONE_BLOCK)
-            .addTrait(ClientBlockTraits.MODEL.with(
+            .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> ((InfusionPedestal) block).provideBlockModelsInstance(generator)
-            ))
+            ) : null)
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .buildAndRegister();
     public static final Block AETERNIUM_ANVIL = defineBlock("aeternium_anvil", AeterniumAnvil::new)
@@ -1391,6 +1441,7 @@ public class EndBlocks {
         return (T) defineBlock(name, blockF)
                 .mapColor(color)
                 .addTrait(TerrainBlockTrait.DEFAULT)
+                .addTrait(PottableSoilBlockTrait.DEFAULT)
                 .addTags(tags)
                 .buildAndRegister();
     }

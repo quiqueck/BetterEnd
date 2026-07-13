@@ -2,6 +2,7 @@ package org.betterx.betterend.registry;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.EndStoneSmelter;
+import org.betterx.betterend.blocks.FlowerPotBlock;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.entities.*;
 
@@ -34,6 +35,10 @@ public class EndBlockEntities {
             "hydrother_malvent",
             FabricBlockEntityTypeBuilder.create(BlockEntityHydrothermalVent::new, EndBlocks.HYDROTHERMAL_VENT)
     );
+    public final static BlockEntityType<FlowerPotBlockEntity> FLOWER_POT = registerBlockEntity(
+            "flower_pot",
+            FabricBlockEntityTypeBuilder.create(FlowerPotBlockEntity::new, getFlowerPots())
+    );
 
     public static <T extends BlockEntity> BlockEntityType<T> registerBlockEntity(
             String id,
@@ -51,6 +56,13 @@ public class EndBlockEntities {
         return EndBlocks.getModBlocks()
                         .stream()
                         .filter(block -> block instanceof PedestalBlock && !((PedestalBlock) block).hasUniqueEntity())
+                        .toArray(Block[]::new);
+    }
+
+    static Block[] getFlowerPots() {
+        return EndBlocks.getModBlocks()
+                        .stream()
+                        .filter(block -> block instanceof FlowerPotBlock)
                         .toArray(Block[]::new);
     }
 }

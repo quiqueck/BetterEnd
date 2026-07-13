@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/violecite_brick_wall"
+    "model": "betterend:block/violecite_bricks_wall_post"
   }
 }

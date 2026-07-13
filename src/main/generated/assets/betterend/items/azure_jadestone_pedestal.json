@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/azure_jadestone_pedestal"
+    "model": "betterend:block/azure_jadestone_pedestal_default"
   }
 }

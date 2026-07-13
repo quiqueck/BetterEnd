@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/iron_chandelier"
+    "model": "betterend:block/iron_chandelier_ceil"
   }
 }

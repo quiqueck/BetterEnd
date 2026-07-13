@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/jellyshroom_stairs"
+    "model": "betterend:block/jellyshroom_stairs"
   }
 }

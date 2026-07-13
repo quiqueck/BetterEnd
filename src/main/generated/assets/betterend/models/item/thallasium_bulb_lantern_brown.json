@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:item/thallasium_bulb_lantern_brown"
+    "layer0": "betterend:block/thallasium_bulb_lantern_brown"
   }
 }

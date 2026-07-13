@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:item/ancient_emerald_ice"
+    "layer0": "betterend:block/ancient_emerald_ice"
   }
 }

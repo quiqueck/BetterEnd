@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/virid_jadestone_pillar"
+    "model": "betterend:block/virid_jadestone_pillar"
   }
 }

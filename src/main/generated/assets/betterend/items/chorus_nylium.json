@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/chorus_nylium"
+    "model": "betterend:block/chorus_nylium"
   }
 }

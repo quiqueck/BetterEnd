@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "betterend:item/budding_smaragdant_crystal"
-  }
-}

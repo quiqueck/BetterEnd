@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/lacugrove_log"
+    "model": "betterend:block/lacugrove_log"
   }
 }

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/flavolite_tiles"
+    "model": "betterend:block/flavolite_tiles"
   }
 }

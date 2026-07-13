@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/mossy_obsidian"
+    "model": "betterend:block/mossy_obsidian"
   }
 }

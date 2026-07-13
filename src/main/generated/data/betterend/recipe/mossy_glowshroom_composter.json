@@ -1,12 +1,17 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "building",
-  "group": "planks",
-  "ingredients": [
-    "betterend:mossy_glowshroom_slab"
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "composter",
+  "key": {
+    "#": "betterend:mossy_glowshroom_slab"
+  },
+  "pattern": [
+    "# #",
+    "# #",
+    "###"
   ],
   "result": {
-    "count": 4,
+    "count": 1,
     "id": "betterend:mossy_glowshroom_composter"
   }
 }

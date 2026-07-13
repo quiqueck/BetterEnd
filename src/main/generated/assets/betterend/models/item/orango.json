@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:item/orango"
+    "layer0": "betterend:block/orango"
   }
 }

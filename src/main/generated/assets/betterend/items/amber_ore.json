@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/amber_ore"
+    "model": "betterend:block/amber_ore"
   }
 }

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/crystal_moss"
+    "model": "betterend:block/crystal_moss"
   }
 }

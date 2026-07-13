@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/terminite_block"
+    "model": "betterend:block/terminite_block"
   }
 }

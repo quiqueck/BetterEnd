@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/flavolite_pedestal"
+    "model": "betterend:block/flavolite_pedestal_default"
   }
 }

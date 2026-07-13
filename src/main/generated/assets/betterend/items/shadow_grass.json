@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/shadow_grass"
+    "model": "betterend:block/shadow_grass"
   }
 }

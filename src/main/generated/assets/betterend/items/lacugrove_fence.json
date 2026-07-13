@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/lacugrove_fence"
+    "model": "betterend:block/lacugrove_fence_inventory"
   }
 }

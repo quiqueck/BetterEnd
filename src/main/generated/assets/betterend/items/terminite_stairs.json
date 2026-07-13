@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/terminite_stairs"
+    "model": "betterend:block/terminite_stairs"
   }
 }

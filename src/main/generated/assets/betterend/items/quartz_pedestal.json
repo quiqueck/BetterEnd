@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/quartz_pedestal"
+    "model": "betterend:block/quartz_pedestal_default"
   }
 }

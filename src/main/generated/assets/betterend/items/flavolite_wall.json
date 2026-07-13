@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/flavolite_wall"
+    "model": "betterend:block/flavolite_wall_inventory"
   }
 }

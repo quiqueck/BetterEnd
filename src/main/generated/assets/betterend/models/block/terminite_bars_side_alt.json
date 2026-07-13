@@ -1,0 +1,148 @@
+{
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "east": {
+          "texture": "#bars",
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#bars",
+          "uv": [
+            8,
+            0,
+            0,
+            16
+          ]
+        }
+      },
+      "from": [
+        8,
+        0,
+        8
+      ],
+      "to": [
+        8,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#edge",
+          "uv": [
+            9,
+            9,
+            7,
+            16
+          ]
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#edge",
+          "uv": [
+            7,
+            0,
+            9,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#edge",
+          "uv": [
+            7,
+            9,
+            9,
+            16
+          ]
+        }
+      },
+      "from": [
+        7,
+        0,
+        9
+      ],
+      "to": [
+        9,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#edge",
+          "uv": [
+            9,
+            9,
+            7,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#edge",
+          "uv": [
+            7,
+            9,
+            9,
+            16
+          ]
+        }
+      },
+      "from": [
+        7,
+        0.001,
+        9
+      ],
+      "to": [
+        9,
+        0.001,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#edge",
+          "uv": [
+            9,
+            9,
+            7,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#edge",
+          "uv": [
+            7,
+            9,
+            9,
+            16
+          ]
+        }
+      },
+      "from": [
+        7,
+        15.999,
+        9
+      ],
+      "to": [
+        9,
+        15.999,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "bars": "betterend:block/terminite_bars",
+    "edge": "betterend:block/terminite_bars",
+    "particle": "betterend:block/terminite_bars"
+  }
+}

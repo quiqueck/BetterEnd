@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/lacugrove_trapdoor"
+    "model": "betterend:block/lacugrove_trapdoor_bottom"
   }
 }

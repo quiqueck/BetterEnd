@@ -1,0 +1,73 @@
+{
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#edge",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        },
+        "up": {
+          "texture": "#edge",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        }
+      },
+      "from": [
+        7,
+        0.001,
+        7
+      ],
+      "to": [
+        9,
+        0.001,
+        9
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#edge",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        },
+        "up": {
+          "texture": "#edge",
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ]
+        }
+      },
+      "from": [
+        7,
+        15.999,
+        7
+      ],
+      "to": [
+        9,
+        15.999,
+        9
+      ]
+    }
+  ],
+  "textures": {
+    "edge": "betterend:block/terminite_bars",
+    "particle": "betterend:block/terminite_bars"
+  }
+}

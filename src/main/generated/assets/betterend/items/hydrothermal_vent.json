@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/hydrothermal_vent"
+    "model": "betterend:block/hydrothermal_vent"
   }
 }

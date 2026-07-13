@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/pythadendron_fence"
+    "model": "betterend:block/pythadendron_fence_inventory"
   }
 }

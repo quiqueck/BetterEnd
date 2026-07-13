@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/eternal_pedestal"
+    "model": "betterend:block/eternal_pedestal_default_1"
   }
 }

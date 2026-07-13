@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/neon_cactus_block"
+    "model": "betterend:block/neon_cactus_block"
   }
 }

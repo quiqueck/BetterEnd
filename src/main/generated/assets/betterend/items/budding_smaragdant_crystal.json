@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/budding_smaragdant_crystal"
+    "model": "betterend:block/budding_smaragdant_crystal"
   }
 }

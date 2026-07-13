@@ -1,0 +1,73 @@
+{
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "east": {
+          "texture": "#bars",
+          "uv": [
+            9,
+            0,
+            7,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#bars",
+          "uv": [
+            7,
+            0,
+            9,
+            16
+          ]
+        }
+      },
+      "from": [
+        8,
+        0,
+        7
+      ],
+      "to": [
+        8,
+        16,
+        9
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#bars",
+          "uv": [
+            7,
+            0,
+            9,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#bars",
+          "uv": [
+            9,
+            0,
+            7,
+            16
+          ]
+        }
+      },
+      "from": [
+        7,
+        0,
+        8
+      ],
+      "to": [
+        9,
+        16,
+        8
+      ]
+    }
+  ],
+  "textures": {
+    "bars": "betterend:block/terminite_bars",
+    "particle": "betterend:block/terminite_bars"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/sulphuric_rock_tiles"
+    "model": "betterend:block/sulphuric_rock_tiles"
   }
 }

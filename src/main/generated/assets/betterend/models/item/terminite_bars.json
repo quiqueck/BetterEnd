@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:item/terminite_bars"
+    "layer0": "betterend:block/terminite_bars"
   }
 }

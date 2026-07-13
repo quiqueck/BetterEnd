@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/pythadendron_stripped_log"
+    "model": "betterend:block/pythadendron_stripped_log"
   }
 }

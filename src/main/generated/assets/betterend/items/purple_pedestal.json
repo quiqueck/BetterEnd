@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/purple_pedestal"
+    "model": "betterend:block/purple_pedestal_default"
   }
 }

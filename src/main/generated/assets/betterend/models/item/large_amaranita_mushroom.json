@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:item/large_amaranita_mushroom"
+    "layer0": "betterend:block/large_amaranita_mushroom"
   }
 }

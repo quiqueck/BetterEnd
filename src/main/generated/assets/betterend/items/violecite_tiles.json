@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/violecite_tiles"
+    "model": "betterend:block/violecite_tiles"
   }
 }

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/umbralith_brick_wall"
+    "model": "betterend:block/umbralith_brick_wall_inventory"
   }
 }

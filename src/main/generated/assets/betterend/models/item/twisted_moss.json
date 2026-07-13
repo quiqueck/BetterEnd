@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:item/twisted_moss"
+    "layer0": "betterend:block/twisted_moss"
   }
 }

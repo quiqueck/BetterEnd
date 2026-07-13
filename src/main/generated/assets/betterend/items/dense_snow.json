@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/dense_snow"
+    "model": "betterend:block/dense_snow"
   }
 }

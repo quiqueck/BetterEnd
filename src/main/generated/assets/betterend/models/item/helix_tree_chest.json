@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "minecraft:item/template_chest",
   "textures": {
-    "layer0": "betterend:item/helix_tree_chest"
+    "particle": "betterend:block/helix_tree_planks"
   }
 }

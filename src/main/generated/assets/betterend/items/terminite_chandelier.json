@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/terminite_chandelier"
+    "model": "betterend:block/terminite_chandelier_ceil"
   }
 }

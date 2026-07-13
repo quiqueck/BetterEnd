@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/gold_chandelier"
+    "model": "betterend:block/gold_chandelier_ceil"
   }
 }

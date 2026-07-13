@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/lacugrove_stripped_bark"
+    "model": "betterend:block/lacugrove_stripped_bark"
   }
 }

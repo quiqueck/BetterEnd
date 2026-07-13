@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/cave_pumpkin"
+    "model": "betterend:block/cave_pumpkin"
   }
 }

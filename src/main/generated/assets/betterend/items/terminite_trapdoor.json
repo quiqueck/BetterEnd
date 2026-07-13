@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/terminite_trapdoor"
+    "model": "betterend:block/terminite_trapdoor_bottom"
   }
 }

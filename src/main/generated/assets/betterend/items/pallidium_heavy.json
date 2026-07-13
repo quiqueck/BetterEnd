@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/pallidium_heavy"
+    "model": "betterend:block/pallidium_heavy"
   }
 }

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/sulphuric_rock_brick_wall"
+    "model": "betterend:block/sulphuric_rock_brick_wall_inventory"
   }
 }

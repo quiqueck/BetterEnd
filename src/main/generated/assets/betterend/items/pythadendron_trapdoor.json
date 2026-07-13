@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/pythadendron_trapdoor"
+    "model": "betterend:block/pythadendron_trapdoor_bottom"
   }
 }

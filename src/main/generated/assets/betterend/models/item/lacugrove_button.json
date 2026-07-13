@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "minecraft:block/button_inventory",
   "textures": {
-    "layer0": "betterend:item/lacugrove_button"
+    "texture": "betterend:block/lacugrove_planks"
   }
 }

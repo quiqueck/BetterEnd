@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:item/filalux_lantern"
+    "layer0": "betterend:block/filalux_lantern"
   }
 }

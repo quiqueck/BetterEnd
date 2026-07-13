@@ -1,12 +1,17 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "building",
-  "group": "planks",
-  "ingredients": [
-    "betterend:jellyshroom_slab"
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "composter",
+  "key": {
+    "#": "betterend:jellyshroom_slab"
+  },
+  "pattern": [
+    "# #",
+    "# #",
+    "###"
   ],
   "result": {
-    "count": 4,
+    "count": 1,
     "id": "betterend:jellyshroom_composter"
   }
 }

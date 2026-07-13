@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/dragon_bone_block"
+    "model": "betterend:block/dragon_bone_block"
   }
 }

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/jellyshroom_log"
+    "model": "betterend:block/jellyshroom_log"
   }
 }

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/lucernia_trapdoor"
+    "model": "betterend:block/lucernia_trapdoor_bottom"
   }
 }

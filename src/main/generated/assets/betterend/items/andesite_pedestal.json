@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/andesite_pedestal"
+    "model": "betterend:block/andesite_pedestal_default"
   }
 }

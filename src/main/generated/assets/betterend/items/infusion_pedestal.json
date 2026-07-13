@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/infusion_pedestal"
+    "model": "betterend:block/infusion_pedestal_default"
   }
 }

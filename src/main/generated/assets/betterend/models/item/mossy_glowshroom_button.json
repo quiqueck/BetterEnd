@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "minecraft:block/button_inventory",
   "textures": {
-    "layer0": "betterend:item/mossy_glowshroom_button"
+    "texture": "betterend:block/mossy_glowshroom_planks"
   }
 }

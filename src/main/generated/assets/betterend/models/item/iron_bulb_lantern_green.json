@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:item/iron_bulb_lantern_green"
+    "layer0": "betterend:block/iron_bulb_lantern_green"
   }
 }

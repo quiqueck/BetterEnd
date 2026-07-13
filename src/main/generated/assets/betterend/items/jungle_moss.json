@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/jungle_moss"
+    "model": "betterend:block/jungle_moss"
   }
 }

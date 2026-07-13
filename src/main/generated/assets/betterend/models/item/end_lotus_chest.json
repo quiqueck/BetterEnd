@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "minecraft:item/template_chest",
   "textures": {
-    "layer0": "betterend:item/end_lotus_chest"
+    "particle": "betterend:block/end_lotus_planks"
   }
 }

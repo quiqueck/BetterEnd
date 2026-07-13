@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/sulphuric_rock_pedestal"
+    "model": "betterend:block/sulphuric_rock_pedestal_default"
   }
 }

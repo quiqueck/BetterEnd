@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item.betterend.azure_jadestone_brick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:azure_jadestone_brick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:stonecutter_azure_jadestone_brick_stairs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_item.betterend.azure_jadestone_brick"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:stonecutter_azure_jadestone_brick_stairs"
+    ]
+  }
+}

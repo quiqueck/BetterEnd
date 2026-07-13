@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/smaragdant_crystal_bricks_stairs"
+  }
+}

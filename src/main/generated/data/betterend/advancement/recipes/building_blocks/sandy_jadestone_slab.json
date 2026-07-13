@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sandy_jadestone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:sandy_jadestone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:sandy_jadestone_slab"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sandy_jadestone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:sandy_jadestone_slab"
+    ]
+  }
+}

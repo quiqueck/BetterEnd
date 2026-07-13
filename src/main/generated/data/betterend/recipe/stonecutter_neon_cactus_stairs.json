@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:stonecutting",
+  "group": "stairs",
+  "ingredient": "betterend:neon_cactus_block",
+  "result": {
+    "count": 1,
+    "id": "betterend:neon_cactus_stairs"
+  }
+}

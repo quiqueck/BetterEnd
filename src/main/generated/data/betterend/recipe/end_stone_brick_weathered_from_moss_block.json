@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "mossy",
+  "ingredients": [
+    "minecraft:end_stone_bricks",
+    "minecraft:moss_block"
+  ],
+  "result": {
+    "count": 1,
+    "id": "betterend:end_stone_brick_weathered"
+  }
+}

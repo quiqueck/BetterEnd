@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:stonecutting",
+  "group": "stairs",
+  "ingredient": "betterend:violecite",
+  "result": {
+    "count": 1,
+    "id": "betterend:violecite_stairs"
+  }
+}

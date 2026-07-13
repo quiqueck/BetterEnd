@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "betterend:block/tenanea_log_top",
+    "side": "betterend:block/tenanea_log_side"
+  }
+}

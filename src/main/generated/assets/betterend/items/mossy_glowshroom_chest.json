@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "betterend:item/mossy_glowshroom_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "betterend:mossy_glowshroom_chest"
+    }
+  }
+}

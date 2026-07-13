@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "betterend:umbralith",
+  "result": {
+    "count": 1,
+    "id": "betterend:umbralith_pillar"
+  }
+}

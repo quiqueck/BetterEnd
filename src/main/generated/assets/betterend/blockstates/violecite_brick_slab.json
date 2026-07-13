@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "betterend:block/violecite_brick_slab"
+    },
+    "type=double": {
+      "model": "betterend:block/violecite_brick"
+    },
+    "type=top": {
+      "model": "betterend:block/violecite_brick_slab_top"
+    }
+  }
+}

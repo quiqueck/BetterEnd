@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "betterend:block/sandy_jadestone_brick",
+    "side": "betterend:block/sandy_jadestone_brick",
+    "top": "betterend:block/sandy_jadestone_brick"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:stonecutting",
+  "group": "cracked",
+  "ingredient": "betterend:umbralith",
+  "result": {
+    "count": 1,
+    "id": "betterend:umbralith_polished"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "betterend:item/umbrella_tree_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "betterend:umbrella_tree_chest"
+    }
+  }
+}

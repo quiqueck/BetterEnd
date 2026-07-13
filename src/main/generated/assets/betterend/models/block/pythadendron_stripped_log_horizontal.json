@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "betterend:block/pythadendron_stripped_log_top",
+    "side": "betterend:block/pythadendron_stripped_log_side"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "is_floor=false": {
+      "model": "betterend:block/purple_lantern"
+    },
+    "is_floor=true": {
+      "model": "betterend:block/purple_lantern_floor"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "betterend:item/jellyshroom_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "betterend:jellyshroom_chest"
+    }
+  }
+}

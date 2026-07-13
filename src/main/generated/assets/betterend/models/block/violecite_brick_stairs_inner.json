@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "betterend:block/violecite_brick",
+    "side": "betterend:block/violecite_brick",
+    "top": "betterend:block/violecite_brick"
+  }
+}

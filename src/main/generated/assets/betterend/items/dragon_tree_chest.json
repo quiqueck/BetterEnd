@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "betterend:item/dragon_tree_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "betterend:dragon_tree_chest"
+    }
+  }
+}

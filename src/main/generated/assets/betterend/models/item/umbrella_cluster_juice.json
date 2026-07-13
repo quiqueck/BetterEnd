@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/umbrella_cluster_juice"
+  }
+}

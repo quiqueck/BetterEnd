@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "brick",
+  "key": {
+    "*": "betterend:umbralith"
+  },
+  "pattern": [
+    "**",
+    "**"
+  ],
+  "result": {
+    "count": 4,
+    "id": "betterend:umbralith_brick"
+  }
+}

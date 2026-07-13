@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "betterend:item/pythadendron_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "betterend:pythadendron_chest"
+    }
+  }
+}

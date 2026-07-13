@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item.betterend.flavolite_brick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:flavolite_brick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:stonecutter_flavolite_brick_slab"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_item.betterend.flavolite_brick"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:stonecutter_flavolite_brick_slab"
+    ]
+  }
+}

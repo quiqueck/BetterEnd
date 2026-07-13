@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/azure_jadestone_flower_pot"
+  }
+}

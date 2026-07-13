@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "wover:block/air_particles"
+    }
+  }
+}

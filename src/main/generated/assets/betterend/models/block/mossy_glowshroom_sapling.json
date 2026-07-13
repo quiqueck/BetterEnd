@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross_emissive",
+  "textures": {
+    "cross": "betterend:block/mossy_glowshroom_sapling",
+    "cross_emissive": "betterend:block/mossy_glowshroom_sapling_emissive"
+  }
+}

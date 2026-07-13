@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:stonecutting",
+  "group": "wall",
+  "ingredient": "betterend:violecite_brick",
+  "result": {
+    "count": 1,
+    "id": "betterend:violecite_brick_wall"
+  }
+}

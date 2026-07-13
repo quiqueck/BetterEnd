@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_flavolite": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:flavolite"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:flavolite_stairs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_flavolite"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:flavolite_stairs"
+    ]
+  }
+}

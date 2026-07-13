@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "betterend:block/sulphuric_rock_brick",
+    "side": "betterend:block/sulphuric_rock_brick",
+    "top": "betterend:block/sulphuric_rock_brick"
+  }
+}

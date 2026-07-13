@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "betterend:item/elytra_armored"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "betterend:item/elytra_armored_broken"
+    },
+    "property": "minecraft:broken"
+  }
+}

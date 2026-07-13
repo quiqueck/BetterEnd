@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "betterend:block/umbrella_tree_sapling"
+  }
+}

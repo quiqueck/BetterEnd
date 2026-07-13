@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lacugrove_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:lacugrove_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_tag_c_chests": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:chests"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:lacugrove_chest_boat"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tag_c_chests",
+      "has_lacugrove_boat"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:lacugrove_chest_boat"
+    ]
+  }
+}

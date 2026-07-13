@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "betterend:item/lacugrove_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "betterend:lacugrove_chest"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_mossy_glowshroom_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:mossy_glowshroom_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:mossy_glowshroom_composter"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_mossy_glowshroom_slab"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:mossy_glowshroom_composter"
+    ]
+  }
+}

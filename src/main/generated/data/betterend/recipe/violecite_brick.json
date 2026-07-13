@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "brick",
+  "key": {
+    "*": "betterend:violecite"
+  },
+  "pattern": [
+    "**",
+    "**"
+  ],
+  "result": {
+    "count": 4,
+    "id": "betterend:violecite_brick"
+  }
+}

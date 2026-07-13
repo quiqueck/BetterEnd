@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:violecite_button"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_violecite": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:violecite"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_violecite"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:violecite_button"
+    ]
+  }
+}

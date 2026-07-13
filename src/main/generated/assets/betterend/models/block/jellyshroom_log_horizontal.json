@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "betterend:block/jellyshroom_log_top",
+    "side": "betterend:block/jellyshroom_log_side"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "betterend:item/helix_tree_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "betterend:helix_tree_chest"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sulphuric_rock": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:sulphuric_rock"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:sulphuric_rock_button"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sulphuric_rock"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:sulphuric_rock_button"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "brick",
+  "key": {
+    "*": "betterend:sulphuric_rock"
+  },
+  "pattern": [
+    "**",
+    "**"
+  ],
+  "result": {
+    "count": 4,
+    "id": "betterend:sulphuric_rock_brick"
+  }
+}

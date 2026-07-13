@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_azure_jadestone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:azure_jadestone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:azure_jadestone_slab"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_azure_jadestone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:azure_jadestone_slab"
+    ]
+  }
+}

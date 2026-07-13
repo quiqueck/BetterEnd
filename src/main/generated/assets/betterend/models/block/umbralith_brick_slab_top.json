@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "betterend:block/umbralith_brick",
+    "side": "betterend:block/umbralith_brick",
+    "top": "betterend:block/umbralith_brick"
+  }
+}

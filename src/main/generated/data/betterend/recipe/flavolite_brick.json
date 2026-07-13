@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "brick",
+  "key": {
+    "*": "betterend:flavolite"
+  },
+  "pattern": [
+    "**",
+    "**"
+  ],
+  "result": {
+    "count": 4,
+    "id": "betterend:flavolite_brick"
+  }
+}

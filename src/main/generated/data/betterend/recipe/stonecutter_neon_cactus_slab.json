@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:stonecutting",
+  "group": "slab",
+  "ingredient": "betterend:neon_cactus_block",
+  "result": {
+    "count": 2,
+    "id": "betterend:neon_cactus_slab"
+  }
+}

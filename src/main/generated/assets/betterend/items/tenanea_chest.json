@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "betterend:item/tenanea_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "betterend:tenanea_chest"
+    }
+  }
+}

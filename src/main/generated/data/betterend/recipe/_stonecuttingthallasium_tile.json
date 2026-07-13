@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:stonecutting",
+  "group": "end_metal_tiles",
+  "ingredient": "betterend:thallasium_block",
+  "result": {
+    "count": 1,
+    "id": "betterend:thallasium_tile"
+  }
+}

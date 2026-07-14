@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:aeternium_upgrade_smithing_template"
+            "items": "betterend:aeternium_upgrade"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:handle_attachment_smithing_template"
+            "items": "betterend:handle_attachment"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:leather_handle_attachment_smithing_template"
+            "items": "betterend:leather_handle_attachment"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:netherite_upgrade_smithing_template"
+            "items": "betterend:netherite_upgrade"
           }
         ]
       },
@@ -45,7 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:plate_upgrade_smithing_template"
+            "items": "betterend:plate_upgrade"
           }
         ]
       },
@@ -55,7 +55,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:terminite_upgrade_smithing_template"
+            "items": "betterend:terminite_upgrade"
           }
         ]
       },
@@ -65,7 +65,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:thallasium_upgrade_smithing_template"
+            "items": "betterend:thallasium_upgrade"
           }
         ]
       },
@@ -75,7 +75,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:tool_assembly_smithing_template"
+            "items": "betterend:tool_assembly"
           }
         ]
       },
@@ -89,7 +89,7 @@
     "frame": "challenge",
     "icon": {
       "count": 1,
-      "id": "betterend:tool_assembly_smithing_template"
+      "id": "betterend:tool_assembly"
     },
     "title": {
       "translate": "advancements.betterend.all_the_templates.title"

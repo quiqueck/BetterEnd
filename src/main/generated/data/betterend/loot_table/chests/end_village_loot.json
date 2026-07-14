@@ -120,7 +120,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:plate_upgrade_smithing_template"
+          "name": "betterend:plate_upgrade"
         }
       ],
       "rolls": 1.0

@@ -5,5 +5,5 @@
   "result": {
     "id": "betterend:thallasium_axe"
   },
-  "template": "betterend:handle_attachment_smithing_template"
+  "template": "betterend:handle_attachment"
 }

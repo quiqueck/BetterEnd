@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:plate_upgrade_smithing_template"
+            "items": "betterend:plate_upgrade"
           }
         ]
       },

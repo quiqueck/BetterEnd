@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:terminite_upgrade_smithing_template"
+            "items": "betterend:terminite_upgrade"
           }
         ]
       },

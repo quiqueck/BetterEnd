@@ -1,6 +1,7 @@
 package org.betterx.betterend.registry;
 
 import org.betterx.betterend.BetterEnd;
+import org.betterx.wover.item.api.SmithingTemplateDefinition;
 import org.betterx.wover.item.api.smithing.SmithingTemplates;
 
 import net.minecraft.resources.ResourceLocation;
@@ -32,80 +33,72 @@ public class EndTemplates {
     // same-thread re-entrant access would observe them as still-unassigned (null).
     public static final SmithingTemplateItem LEATHER_HANDLE_ATTACHMENT = EndItems
             .getItemRegistry()
-            .registerSmithingTemplateItem(
-                    "leather_handle_attachment",
-                    List.of(
-                            EMPTY_SLOT_HAMMER_HEAD,
-                            EMPTY_SLOT_PICKAXE_HEAD,
-                            EMPTY_SLOT_AXE_HEAD,
-                            EMPTY_SLOT_HOE_HEAD,
-                            EMPTY_SLOT_SHOVEL_HEAD
-                    ),
-                    List.of(EMPTY_SLOT_HANDLE)
-            );
+            .defineSmithingTemplate("leather_handle_attachment", SmithingTemplateDefinition::createSmithingTemplate)
+            .baseSlotEmptyIcons(List.of(
+                    EMPTY_SLOT_HAMMER_HEAD,
+                    EMPTY_SLOT_PICKAXE_HEAD,
+                    EMPTY_SLOT_AXE_HEAD,
+                    EMPTY_SLOT_HOE_HEAD,
+                    EMPTY_SLOT_SHOVEL_HEAD
+            ))
+            .additionalSlotEmptyIcons(List.of(EMPTY_SLOT_HANDLE))
+            .buildAndRegister();
 
     public static final SmithingTemplateItem TOOL_ASSEMBLY = EndItems
             .getItemRegistry()
-            .registerSmithingTemplateItem(
-                    "tool_assembly",
-                    List.of(EMPTY_SLOT_SWORD_BLADE),
-                    List.of(EMPTY_SLOT_SWORD_HANDLE)
-            );
+            .defineSmithingTemplate("tool_assembly", SmithingTemplateDefinition::createSmithingTemplate)
+            .baseSlotEmptyIcons(List.of(EMPTY_SLOT_SWORD_BLADE))
+            .additionalSlotEmptyIcons(List.of(EMPTY_SLOT_SWORD_HANDLE))
+            .buildAndRegister();
 
     public static final SmithingTemplateItem HANDLE_ATTACHMENT = EndItems
             .getItemRegistry()
-            .registerSmithingTemplateItem(
-                    "handle_attachment",
-                    List.of(
-                            EMPTY_SLOT_HAMMER_HEAD,
-                            EMPTY_SLOT_PICKAXE_HEAD,
-                            EMPTY_SLOT_AXE_HEAD,
-                            EMPTY_SLOT_HOE_HEAD,
-                            EMPTY_SLOT_SHOVEL_HEAD
-                    ),
-                    List.of(EMPTY_SLOT_STICK)
-            );
+            .defineSmithingTemplate("handle_attachment", SmithingTemplateDefinition::createSmithingTemplate)
+            .baseSlotEmptyIcons(List.of(
+                    EMPTY_SLOT_HAMMER_HEAD,
+                    EMPTY_SLOT_PICKAXE_HEAD,
+                    EMPTY_SLOT_AXE_HEAD,
+                    EMPTY_SLOT_HOE_HEAD,
+                    EMPTY_SLOT_SHOVEL_HEAD
+            ))
+            .additionalSlotEmptyIcons(List.of(EMPTY_SLOT_STICK))
+            .buildAndRegister();
 
     public static final SmithingTemplateItem PLATE_UPGRADE = EndItems
             .getItemRegistry()
-            .registerSmithingTemplateItem(
-                    "plate_upgrade",
-                    SmithingTemplates.ARMOR,
-                    List.of(EMPTY_SLOT_PLATE)
-            );
+            .defineSmithingTemplate("plate_upgrade", SmithingTemplateDefinition::createSmithingTemplate)
+            .baseSlotEmptyIcons(SmithingTemplates.ARMOR)
+            .additionalSlotEmptyIcons(List.of(EMPTY_SLOT_PLATE))
+            .buildAndRegister();
 
     public static final SmithingTemplateItem THALLASIUM_UPGRADE = EndItems
             .getItemRegistry()
-            .registerSmithingTemplateItem(
-                    "thallasium_upgrade",
-                    List.of(EMPTY_SLOT_STICK),
-                    List.of(SmithingTemplates.EMPTY_SLOT_INGOT)
-            );
+            .defineSmithingTemplate("thallasium_upgrade", SmithingTemplateDefinition::createSmithingTemplate)
+            .baseSlotEmptyIcons(List.of(EMPTY_SLOT_STICK))
+            .additionalSlotEmptyIcons(List.of(SmithingTemplates.EMPTY_SLOT_INGOT))
+            .buildAndRegister();
 
     public static final SmithingTemplateItem TERMINITE_UPGRADE = EndItems
             .getItemRegistry()
-            .registerSmithingTemplateItem(
-                    "terminite_upgrade",
-                    List.of(EMPTY_SLOT_ANVIL, EMPTY_SLOT_STICK),
-                    List.of(SmithingTemplates.EMPTY_SLOT_INGOT)
-            );
+            .defineSmithingTemplate("terminite_upgrade", SmithingTemplateDefinition::createSmithingTemplate)
+            .baseSlotEmptyIcons(List.of(EMPTY_SLOT_ANVIL, EMPTY_SLOT_STICK))
+            .additionalSlotEmptyIcons(List.of(SmithingTemplates.EMPTY_SLOT_INGOT))
+            .buildAndRegister();
 
     public static final SmithingTemplateItem AETERNIUM_UPGRADE = EndItems
             .getItemRegistry()
-            .registerSmithingTemplateItem(
-                    "aeternium_upgrade",
-                    List.of(EMPTY_SLOT_ANVIL, EMPTY_SLOT_ELYTRA),
-                    List.of(SmithingTemplates.EMPTY_SLOT_INGOT)
-            );
+            .defineSmithingTemplate("aeternium_upgrade", SmithingTemplateDefinition::createSmithingTemplate)
+            .baseSlotEmptyIcons(List.of(EMPTY_SLOT_ANVIL, EMPTY_SLOT_ELYTRA))
+            .additionalSlotEmptyIcons(List.of(SmithingTemplates.EMPTY_SLOT_INGOT))
+            .buildAndRegister();
 
 
     public static final SmithingTemplateItem NETHERITE_UPGRADE = EndItems
             .getItemRegistry()
-            .registerSmithingTemplateItem(
-                    "netherite_upgrade",
-                    List.of(EMPTY_SLOT_HAMMER),
-                    List.of(SmithingTemplates.EMPTY_SLOT_INGOT)
-            );
+            .defineSmithingTemplate("netherite_upgrade", SmithingTemplateDefinition::createSmithingTemplate)
+            .baseSlotEmptyIcons(List.of(EMPTY_SLOT_HAMMER))
+            .additionalSlotEmptyIcons(List.of(SmithingTemplates.EMPTY_SLOT_INGOT))
+            .buildAndRegister();
 
     public static void ensureStaticallyLoaded() {
     }

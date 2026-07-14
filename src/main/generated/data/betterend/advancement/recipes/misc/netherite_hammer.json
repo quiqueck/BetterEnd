@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:netherite_upgrade_smithing_template"
+            "items": "betterend:netherite_upgrade"
           }
         ]
       },

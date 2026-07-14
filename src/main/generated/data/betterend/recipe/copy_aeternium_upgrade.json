@@ -4,7 +4,7 @@
   "key": {
     "#": "minecraft:diamond",
     "C": "minecraft:lapis_block",
-    "S": "betterend:aeternium_upgrade_smithing_template"
+    "S": "betterend:aeternium_upgrade"
   },
   "pattern": [
     "#S#",
@@ -13,6 +13,6 @@
   ],
   "result": {
     "count": 2,
-    "id": "betterend:aeternium_upgrade_smithing_template"
+    "id": "betterend:aeternium_upgrade"
   }
 }

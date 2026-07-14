@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:tool_assembly_smithing_template"
+            "items": "betterend:tool_assembly"
           }
         ]
       },

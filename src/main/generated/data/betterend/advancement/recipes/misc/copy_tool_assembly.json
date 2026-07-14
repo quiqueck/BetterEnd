@@ -27,11 +27,11 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_tool_assembly_smithing_template": {
+    "has_tool_assembly": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:tool_assembly_smithing_template"
+            "items": "betterend:tool_assembly"
           }
         ]
       },
@@ -42,7 +42,7 @@
     [
       "has_the_recipe",
       "has_stick",
-      "has_tool_assembly_smithing_template",
+      "has_tool_assembly",
       "has_iron_block"
     ]
   ],

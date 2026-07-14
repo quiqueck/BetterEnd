@@ -11,11 +11,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_netherite_upgrade_smithing_template": {
+    "has_netherite_upgrade": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:netherite_upgrade_smithing_template"
+            "items": "betterend:netherite_upgrade"
           }
         ]
       },
@@ -41,7 +41,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_netherite_upgrade_smithing_template",
+      "has_netherite_upgrade",
       "has_netherrack",
       "has_diamond"
     ]

@@ -5,5 +5,5 @@
   "result": {
     "id": "betterend:aeternium_anvil"
   },
-  "template": "betterend:aeternium_upgrade_smithing_template"
+  "template": "betterend:aeternium_upgrade"
 }

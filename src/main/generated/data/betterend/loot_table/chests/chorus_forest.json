@@ -146,7 +146,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "betterend:handle_attachment_smithing_template"
+          "name": "betterend:handle_attachment"
         }
       ],
       "rolls": {

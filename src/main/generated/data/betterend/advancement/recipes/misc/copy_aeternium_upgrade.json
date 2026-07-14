@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_aeternium_upgrade_smithing_template": {
+    "has_aeternium_upgrade": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:aeternium_upgrade_smithing_template"
+            "items": "betterend:aeternium_upgrade"
           }
         ]
       },
@@ -41,7 +41,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_aeternium_upgrade_smithing_template",
+      "has_aeternium_upgrade",
       "has_lapis_block",
       "has_diamond"
     ]

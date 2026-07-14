@@ -4,7 +4,7 @@
   "key": {
     "#": "minecraft:stick",
     "C": "betterend:thallasium_ingot",
-    "S": "betterend:thallasium_upgrade_smithing_template"
+    "S": "betterend:thallasium_upgrade"
   },
   "pattern": [
     "#S#",
@@ -13,6 +13,6 @@
   ],
   "result": {
     "count": 2,
-    "id": "betterend:thallasium_upgrade_smithing_template"
+    "id": "betterend:thallasium_upgrade"
   }
 }

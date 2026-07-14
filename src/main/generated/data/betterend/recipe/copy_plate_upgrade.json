@@ -4,7 +4,7 @@
   "key": {
     "#": "minecraft:diamond",
     "C": "minecraft:iron_ingot",
-    "S": "betterend:plate_upgrade_smithing_template"
+    "S": "betterend:plate_upgrade"
   },
   "pattern": [
     "#S#",
@@ -13,6 +13,6 @@
   ],
   "result": {
     "count": 2,
-    "id": "betterend:plate_upgrade_smithing_template"
+    "id": "betterend:plate_upgrade"
   }
 }

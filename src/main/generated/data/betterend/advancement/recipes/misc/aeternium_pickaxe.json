@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "betterend:leather_handle_attachment_smithing_template"
+            "items": "betterend:leather_handle_attachment"
           }
         ]
       },

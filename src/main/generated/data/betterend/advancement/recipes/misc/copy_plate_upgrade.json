@@ -21,11 +21,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_plate_upgrade_smithing_template": {
+    "has_plate_upgrade": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:plate_upgrade_smithing_template"
+            "items": "betterend:plate_upgrade"
           }
         ]
       },
@@ -41,9 +41,9 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_plate_upgrade_smithing_template",
       "has_iron_ingot",
-      "has_diamond"
+      "has_diamond",
+      "has_plate_upgrade"
     ]
   ],
   "rewards": {

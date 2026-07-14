@@ -114,7 +114,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:handle_attachment_smithing_template",
+          "name": "betterend:handle_attachment",
           "weight": 8
         },
         {
@@ -126,7 +126,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:tool_assembly_smithing_template",
+          "name": "betterend:tool_assembly",
           "weight": 2
         }
       ],
@@ -150,7 +150,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:leather_handle_attachment_smithing_template"
+          "name": "betterend:leather_handle_attachment"
         }
       ],
       "rolls": 1.0
@@ -177,7 +177,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:plate_upgrade_smithing_template"
+          "name": "betterend:plate_upgrade"
         }
       ],
       "rolls": 1.0
@@ -194,7 +194,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:thallasium_upgrade_smithing_template",
+          "name": "betterend:thallasium_upgrade",
           "weight": 8
         },
         {
@@ -206,7 +206,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:terminite_upgrade_smithing_template",
+          "name": "betterend:terminite_upgrade",
           "weight": 4
         },
         {
@@ -218,7 +218,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:aeternium_upgrade_smithing_template",
+          "name": "betterend:aeternium_upgrade",
           "weight": 2
         },
         {
@@ -230,7 +230,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:netherite_upgrade_smithing_template",
+          "name": "betterend:netherite_upgrade",
           "weight": 8
         }
       ],

@@ -1,27 +1,16 @@
 package org.betterx.betterend.blocks.basis;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
-import org.betterx.bclib.blocks.BaseLeavesBlock;
-import org.betterx.bclib.interfaces.SurvivesOnBlocks;
-
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.TintedParticleLeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
 
-import java.util.List;
-
-public class PottableLeavesBlock extends BaseLeavesBlock implements SurvivesOnBlocks {
+/**
+ * Thin BetterEnd leaves base over vanilla {@link TintedParticleLeavesBlock} (fixing the leaf-particle
+ * chance to the historic {@code 0.01}). All leaves behaviour - decay, mineable, compost, render layer,
+ * loot and tags - comes from {@code LeavesBlockTrait} at registration. Leaves have no ground survival
+ * check, so the old {@code SurvivesOnBlocks} implementation (which returned an empty list) is dropped.
+ */
+public class PottableLeavesBlock extends TintedParticleLeavesBlock {
     public PottableLeavesBlock(BlockBehaviour.Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public List<Block> getSurvivableBlocks() {
-        return List.of();
-    }
-
-    @Override
-    public String prefixComponent() {
-        return "tooltip.bclib.pottable_on";
+        super(0.01F, properties);
     }
 }

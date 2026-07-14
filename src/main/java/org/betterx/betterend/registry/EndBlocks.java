@@ -1171,8 +1171,11 @@ public class EndBlocks {
 
     public static final Block END_LILY = defineBlockOnly("end_lily", EndLilyBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.WATER, false, false))
+            .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
             .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
-            .addTrait(noLootTableTrait())
+            // No block item; the top segment drops lily leaves + seeds via this table.
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> EndLilyBlock.buildLoot(block, provider)))
             .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
             .buildAndRegister();
     public static final Block END_LILY_SEED = defineBlock("end_lily_seed", EndLilySeedBlock::new)
@@ -1189,7 +1192,9 @@ public class EndBlocks {
     public static final Block HYDRALUX = defineBlockOnly("hydralux", HydraluxBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_LIGHT_BLUE, false, false))
             .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
-            .addTrait(noLootTableTrait())
+            // No block item; the flower/roots segments drop petals/saplings via this table.
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> HydraluxBlock.buildLoot(block, provider)))
             .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
             .buildAndRegister();
     public static final Block HYDRALUX_PETAL_BLOCK = defineBlock("hydralux_petal_block", HydraluxPetalBlock::new)

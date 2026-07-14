@@ -1247,13 +1247,13 @@ public class EndBlocks {
             .buildAndRegister();
 
     // Wall Plants //
-    public static final Block PURPLE_POLYPORE = defineBlock("purple_polypore", EndWallMushroom::new)
+    public static final Block PURPLE_POLYPORE = defineBlock("purple_polypore", EndWallPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PURPLE, false, false))
             .addTrait(ModelTraitLibrary.externalModel())
             .lightLevel(s -> 13)
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
             .buildAndRegister();
-    public static final Block AURANT_POLYPORE = defineBlock("aurant_polypore", EndWallMushroom::new)
+    public static final Block AURANT_POLYPORE = defineBlock("aurant_polypore", EndWallPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
             .addTrait(ModelTraitLibrary.externalModel())
             .lightLevel(s -> 13)

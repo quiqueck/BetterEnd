@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "is_floor=false": {
       "model": "betterend:block/terminite_bulb_lantern_red"
+    },
+    "is_floor=true": {
+      "model": "betterend:block/terminite_bulb_lantern_red_floor"
     }
   }
 }

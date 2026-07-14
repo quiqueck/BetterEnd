@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/mossy_glowshroom_barrel"
+    "model": "betterend:block/mossy_glowshroom_barrel"
   }
 }

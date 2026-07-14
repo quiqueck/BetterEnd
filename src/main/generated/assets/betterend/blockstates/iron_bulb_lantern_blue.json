@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "is_floor=false": {
       "model": "betterend:block/iron_bulb_lantern_blue"
+    },
+    "is_floor=true": {
+      "model": "betterend:block/iron_bulb_lantern_blue_floor"
     }
   }
 }

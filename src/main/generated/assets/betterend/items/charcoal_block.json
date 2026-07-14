@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/charcoal_block"
+    "model": "betterend:block/charcoal_block"
   }
 }

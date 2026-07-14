@@ -109,6 +109,7 @@ public class BulbVineLanternBlock extends EndLanternBlock implements BehaviourMe
                         generator.acceptBlockState(MultiVariantGenerator
                                 .dispatch(block, BlockModelGenerators.plainVariant(ceilModel))
                                 .with(floorCeilDispatch));
+                        generator.delegateItemModel(block, floorModel);
                     });
         }
     }

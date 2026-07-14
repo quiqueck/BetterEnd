@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/smaragdant_crystal_bricks"
+    "model": "betterend:block/smaragdant_crystal_bricks"
   }
 }

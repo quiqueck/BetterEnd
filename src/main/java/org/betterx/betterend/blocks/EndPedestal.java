@@ -5,12 +5,15 @@ import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
+import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import org.betterx.wover.block.api.trait.BlockTraitLookup;
 import org.betterx.wover.sets.api.blocks.BlockSet;
 
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import net.fabricmc.api.EnvType;
@@ -21,11 +24,43 @@ public class EndPedestal extends PedestalBlock {
         super(props);
     }
 
-
+    /**
+     * Builds the pedestal texture mapping for a material's base block. BetterEnd stone materials follow the
+     * {@code <material>_polished} / {@code <material>_pillar_side} convention, but the vanilla-backed sets
+     * reuse a Minecraft block as their source and ship differently-named textures - so quartz, purpur and the
+     * plain vanilla stones (andesite/diorite/granite) each redefine the texture keys to the textures they
+     * actually have. This is the trait-side replacement for the old per-block pedestal model overrides.
+     */
     @Environment(EnvType.CLIENT)
-    protected static TextureMapping createTextureMapping(Block parent) {
-        final var parentTexture = BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent));
-        final var polishedTexture = BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent, "_polished"));
+    public static TextureMapping createTextureMapping(Block parent) {
+        if (parent == Blocks.QUARTZ_BLOCK) {
+            return new TextureMapping()
+                    .put(TextureSlot.TOP, WoverBlockModelGenerators.vanilla("quartz_pillar_top"))
+                    .put(TextureSlot.BOTTOM, WoverBlockModelGenerators.vanilla("quartz_block_bottom"))
+                    .put(EndModels.BASE, WoverBlockModelGenerators.vanilla("quartz_block_side"))
+                    .put(EndModels.PILLAR, WoverBlockModelGenerators.vanilla("quartz_pillar"));
+        }
+        if (parent == Blocks.PURPUR_BLOCK) {
+            return new TextureMapping()
+                    .put(TextureSlot.TOP, WoverBlockModelGenerators.vanilla("purpur_pillar_top"))
+                    .put(TextureSlot.BOTTOM, WoverBlockModelGenerators.vanilla("purpur_block"))
+                    .put(EndModels.BASE, WoverBlockModelGenerators.vanilla("purpur_block"))
+                    .put(EndModels.PILLAR, WoverBlockModelGenerators.vanilla("purpur_pillar"));
+        }
+
+        final var id = BuiltInRegistries.BLOCK.getKey(parent);
+        if (id.getNamespace().equals("minecraft")) {
+            // andesite / diorite / granite: vanilla "polished_<name>" faces + BetterEnd "<name>_pillar" column
+            final var polished = WoverBlockModelGenerators.vanilla("polished_" + id.getPath());
+            return new TextureMapping()
+                    .put(TextureSlot.TOP, polished)
+                    .put(TextureSlot.BOTTOM, polished)
+                    .put(EndModels.BASE, polished)
+                    .put(EndModels.PILLAR, BetterEnd.C.mk("block/" + id.getPath() + "_pillar"));
+        }
+
+        final var parentTexture = TextureMapping.getBlockTexture(parent);
+        final var polishedTexture = TextureMapping.getBlockTexture(parent, "_polished");
         return new TextureMapping()
                 .put(TextureSlot.TOP, polishedTexture)
                 .put(TextureSlot.BOTTOM, polishedTexture)

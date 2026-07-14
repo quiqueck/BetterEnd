@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/helix_tree_composter"
+    "model": "betterend:block/helix_tree_composter"
   }
 }

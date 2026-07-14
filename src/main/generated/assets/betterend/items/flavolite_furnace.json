@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/flavolite_furnace"
+    "model": "betterend:block/flavolite_furnace"
   }
 }

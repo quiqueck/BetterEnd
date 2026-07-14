@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/pink_moss_path"
+    "model": "betterend:block/pink_moss_path"
   }
 }

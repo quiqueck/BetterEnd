@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "is_floor=false": {
       "model": "betterend:block/thallasium_bulb_lantern_light_blue"
+    },
+    "is_floor=true": {
+      "model": "betterend:block/thallasium_bulb_lantern_light_blue_floor"
     }
   }
 }

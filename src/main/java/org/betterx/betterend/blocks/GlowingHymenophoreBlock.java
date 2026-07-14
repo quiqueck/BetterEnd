@@ -16,10 +16,11 @@ public class GlowingHymenophoreBlock extends BaseBlock.Wood {
             WoverBlockModelGenerators generator,
             Block glowingHymenophoreBlock
     ) {
-        generator.createSimpleTemplatedBlock(
+        final var location = generator.createSimpleTemplatedBlock(
                 glowingHymenophoreBlock,
                 EndModels.CUBE_NO_SHADE,
                 TextureMapping.defaultTexture(glowingHymenophoreBlock)
         );
+        generator.delegateItemModel(glowingHymenophoreBlock, location);
     }
 }

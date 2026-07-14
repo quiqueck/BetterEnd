@@ -52,11 +52,12 @@ public class JellyshroomCapBlock extends SlimeBlock implements CustomColorProvid
 
     @Environment(EnvType.CLIENT)
     public static void provideBlockModel(WoverBlockModelGenerators generator, Block block) {
-        generator.createSimpleTemplatedBlock(
+        final var location = generator.createSimpleTemplatedBlock(
                 block,
                 EndModels.PETAL_COLORED,
                 new TextureMapping().put(TextureSlot.TEXTURE, BetterEnd.C.mk("block/jellyshroom_cap"))
         );
+        generator.delegateItemModel(block, location);
     }
 
     @Override

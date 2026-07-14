@@ -6,6 +6,7 @@ import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
+import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import org.betterx.wover.block.api.trait.BlockTraitLookup;
 import org.betterx.wover.sets.api.blocks.BlockSet;
 
@@ -17,6 +18,7 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -61,38 +63,46 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
     }
 
     @Environment(EnvType.CLIENT)
+    public static void provideBlockModel(
+            WoverBlockModelGenerators generator,
+            TextureMapping mapping,
+            Block block
+    ) {
+        final var floorModel = BCLModels.STONE_LANTERN_FLOOR.createWithSuffix(
+                block,
+                "_floor",
+                mapping,
+                generator.vanillaGenerator.modelOutput
+        );
+        final var ceilModel = BCLModels.STONE_LANTERN_CEIL.create(
+                block,
+                mapping,
+                generator.vanillaGenerator.modelOutput
+        );
+
+        final var floorCeilDispatch = PropertyDispatch
+                .modify(IS_FLOOR)
+                .select(true, (variant) -> BlockModelGenerators.plainModel(floorModel))
+                .select(false, (variant) -> BlockModelGenerators.plainModel(ceilModel));
+
+        generator.acceptBlockState(MultiVariantGenerator
+                .dispatch(block, BlockModelGenerators.plainVariant(ceilModel))
+                .with(floorCeilDispatch));
+        generator.delegateItemModel(block, ceilModel);
+    }
+
+    @Environment(EnvType.CLIENT)
     private static class ClientModel {
         private static BlockModelTrait build() {
             return ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> {
-                        //get id of this block from registry
-                        final boolean isVanilla = key.location().getNamespace().equals("minecraft");
                         final var mapping = new TextureMapping()
                                 .put(BCLModels.GLASS, TextureMapping.getBlockTexture(EndBlocks.AURORA_CRYSTAL))
                                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
                                 .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
                                 .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));
 
-                        final var floorModel = BCLModels.STONE_LANTERN_FLOOR.createWithSuffix(
-                                block,
-                                "_floor",
-                                mapping,
-                                generator.vanillaGenerator.modelOutput
-                        );
-                        final var ceilModel = BCLModels.STONE_LANTERN_CEIL.create(
-                                block,
-                                mapping,
-                                generator.vanillaGenerator.modelOutput
-                        );
-
-                        final var floorCeilDispatch = PropertyDispatch
-                                .modify(IS_FLOOR)
-                                .select(true, (variant) -> BlockModelGenerators.plainModel(floorModel))
-                                .select(false, (variant) -> BlockModelGenerators.plainModel(ceilModel));
-
-                        generator.acceptBlockState(MultiVariantGenerator
-                                .dispatch(block, BlockModelGenerators.plainVariant(ceilModel))
-                                .with(floorCeilDispatch));
+                        provideBlockModel(generator, mapping, block);
                     });
         }
     }

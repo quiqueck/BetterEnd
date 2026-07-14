@@ -2,6 +2,7 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.betterend.blocks.entities.FlowerPotBlockEntity;
+import org.betterx.betterend.client.models.EndModels;
 import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 import org.betterx.wover.pottable.api.PottablePlant;
@@ -9,9 +10,15 @@ import org.betterx.wover.pottable.api.PottablePlantRegistry;
 import org.betterx.wover.pottable.api.PottableSoil;
 import org.betterx.wover.pottable.api.PottableSoilRegistry;
 
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -201,7 +208,23 @@ public class FlowerPotBlock extends BaseBlockNotFull implements EntityBlock {
     public static BlockModelTrait buildModel() {
         return ClientBlockTraits.MODEL.with(
                 (key, block, generator) -> {
-
+                    final ResourceLocation texture = TextureMapping.getBlockTexture(block);
+                    final ResourceLocation location = EndModels.FLOWER_POT.create(
+                            block,
+                            new TextureMapping().put(TextureSlot.TEXTURE, texture),
+                            generator.modelOutput()
+                    );
+                    final var variant = BlockModelGenerators.plainVariant(location);
+                    generator.acceptBlockState(
+                            MultiVariantGenerator
+                                    .dispatch(block)
+                                    .with(PropertyDispatch.initial(POT_LIGHT)
+                                                           .select(0, variant)
+                                                           .select(1, variant)
+                                                           .select(2, variant)
+                                                           .select(3, variant))
+                    );
+                    generator.delegateItemModel(block, location);
                 });
     }
 

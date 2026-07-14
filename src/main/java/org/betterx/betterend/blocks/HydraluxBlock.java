@@ -8,9 +8,12 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.EndBlockProperties.HydraluxShape;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
+import org.betterx.wover.loot.api.LootLookupProvider;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,6 +24,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+
+import org.jetbrains.annotations.NotNull;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -92,5 +98,17 @@ public class HydraluxBlock extends UnderwaterPlantBlock implements BehaviourWate
             ));
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public LootTable.Builder registerBlockLoot(
+            @NotNull ResourceLocation location,
+            @NotNull LootLookupProvider provider,
+            @NotNull ResourceKey<LootTable> tableKey
+    ) {
+        // Has no item (block-only) and drops are already fully handled by the getDrops()
+        // override above - the base class's dropWithSilkTouch(this) assumes an item exists,
+        // which no longer holds here.
+        return LootTable.lootTable();
     }
 }

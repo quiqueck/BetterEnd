@@ -1,21 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_polished_andesite": {
+    "has_andesite": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:polished_andesite"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_polished_andesite_slab": {
-      "conditions": {
-        "items": [
-          {
-            "items": "minecraft:polished_andesite_slab"
+            "items": "minecraft:andesite"
           }
         ]
       },
@@ -31,8 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_polished_andesite_slab",
-      "has_polished_andesite"
+      "has_andesite"
     ]
   ],
   "rewards": {

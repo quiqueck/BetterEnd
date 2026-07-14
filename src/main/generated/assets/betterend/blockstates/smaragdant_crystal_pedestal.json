@@ -1,7 +1,22 @@
 {
   "variants": {
-    "": {
-      "model": "betterend:block/smaragdant_crystal_pedestal"
+    "state=bottom": {
+      "model": "betterend:block/smaragdant_crystal_pedestal_bottom"
+    },
+    "state=column": {
+      "model": "betterend:block/smaragdant_crystal_pedestal_column"
+    },
+    "state=column_top": {
+      "model": "betterend:block/smaragdant_crystal_pedestal_column_top"
+    },
+    "state=default": {
+      "model": "betterend:block/smaragdant_crystal_pedestal_default"
+    },
+    "state=pedestal_top": {
+      "model": "betterend:block/smaragdant_crystal_pedestal_pedestal_top"
+    },
+    "state=pillar": {
+      "model": "betterend:block/smaragdant_crystal_pedestal_pillar"
     }
   }
 }

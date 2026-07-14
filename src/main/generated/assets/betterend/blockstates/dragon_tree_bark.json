@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "betterend:block/dragon_tree_bark",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "betterend:block/dragon_tree_bark"
+    },
+    "axis=z": {
+      "model": "betterend:block/dragon_tree_bark",
+      "x": 90
+    }
+  }
+}

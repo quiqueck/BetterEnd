@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/end_lotus_plate"
+    "model": "betterend:block/end_lotus_plate"
   }
 }

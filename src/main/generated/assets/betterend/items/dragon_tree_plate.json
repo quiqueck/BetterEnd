@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/dragon_tree_plate"
+    "model": "betterend:block/dragon_tree_plate"
   }
 }

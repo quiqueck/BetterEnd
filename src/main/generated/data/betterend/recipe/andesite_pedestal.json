@@ -1,9 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "end_stone_pedestal",
   "key": {
-    "#": "minecraft:polished_andesite",
-    "S": "minecraft:polished_andesite_slab"
+    "#": "minecraft:andesite",
+    "S": "minecraft:andesite"
   },
   "pattern": [
     "S",

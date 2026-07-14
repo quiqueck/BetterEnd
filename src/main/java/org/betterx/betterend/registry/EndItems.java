@@ -18,9 +18,13 @@ import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.complex.api.equipment.ToolTiers;
 import org.betterx.wover.item.api.DefaultItemDefinition;
 import org.betterx.wover.item.api.ItemRegistry;
+import org.betterx.wover.item.api.client.trait.ClientItemTraits;
+import org.betterx.wover.item.api.client.trait.ItemModelTrait;
 import org.betterx.wover.item.api.trait.ItemTraits;
 import org.betterx.wover.tag.api.predefined.CommonItemTags;
 
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -33,6 +37,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.JukeboxSong;
 import net.minecraft.world.item.Rarity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import java.util.List;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +51,12 @@ public class EndItems {
     public final static Item ENDER_DUST = registerEndItem("ender_dust");
     public final static Item ENDER_SHARD = registerEndItem("ender_shard");
 
-    public final static Item END_LILY_LEAF = registerEndItem("end_lily_leaf");
+    // Model is hand-authored (uses the "_small" leaf texture, not the plain item-name convention the
+    // generic flat-item fallback assumes) - point the item definition at the existing hand-authored
+    // model instead of letting the fallback regenerate (and overwrite) it.
+    public final static Item END_LILY_LEAF = defineEndItem("end_lily_leaf")
+            .addTrait(ModCore.isDatagen() ? ExternalItemModel.build() : null)
+            .buildAndRegister();
     public final static Item END_LILY_LEAF_DRIED = registerEndItem("end_lily_leaf_dried");
     public final static Item CRYSTAL_SHARDS = registerEndItem("crystal_shards");
     public final static Item RAW_AMBER = registerEndItem("raw_amber");
@@ -173,9 +185,21 @@ public class EndItems {
 
 
     // Food //
-    public final static Item SHADOW_BERRY_RAW = registerEndFood("shadow_berry_raw", 4, 0.5F);
+    // Models are hand-authored (reusing the "shadow_berry"/"end_fish" base texture, not the "_raw"
+    // item-name convention the generic flat-item fallback assumes) - point the item definition at the
+    // existing hand-authored model instead of letting the fallback regenerate (and overwrite) it.
+    public final static Item SHADOW_BERRY_RAW = getItemRegistry()
+            .defineFoodItem("shadow_berry_raw", def -> new ModelProviderItem(def.getProperties()))
+            .nutrition(4)
+            .saturationModifier(0.5F)
+            .addTrait(ModCore.isDatagen() ? ExternalItemModel.build() : null)
+            .buildAndRegister();
     public final static Item SHADOW_BERRY_COOKED = registerEndFood("shadow_berry_cooked", 6, 0.7F);
-    public final static Item END_FISH_RAW = registerEndFood("end_fish_raw", Foods.SALMON);
+    public final static Item END_FISH_RAW = getItemRegistry()
+            .defineFoodItem("end_fish_raw", def -> new ModelProviderItem(def.getProperties()))
+            .food(Foods.SALMON)
+            .addTrait(ModCore.isDatagen() ? ExternalItemModel.build() : null)
+            .buildAndRegister();
     public final static Item END_FISH_COOKED = registerEndFood("end_fish_cooked", Foods.COOKED_SALMON);
     public final static Item BUCKET_END_FISH = ITEMS_REGISTRY
             .defineToolItem(
@@ -284,5 +308,21 @@ public class EndItems {
 
     public static Item.Properties defaultSettings() {
         return new Item.Properties();
+    }
+
+    /**
+     * Kept in a separate class file (not just an @Environment(CLIENT) method) since EndItems is
+     * always loaded on the server; a lambda body's synthetic method does not inherit the
+     * annotation from its enclosing method, so leaving it here would strand vanilla client-only
+     * type references in a class file the server actually has to verify.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class ExternalItemModel {
+        private static ItemModelTrait build() {
+            return ClientItemTraits.MODEL.with((key, item, generator) -> generator.itemModelOutput.accept(
+                    item,
+                    ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item))
+            ));
+        }
     }
 }

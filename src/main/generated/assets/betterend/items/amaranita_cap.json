@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/amaranita_cap"
+    "model": "betterend:block/amaranita_cap"
   }
 }

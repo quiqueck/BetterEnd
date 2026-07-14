@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/diorite_lantern"
+    "model": "betterend:block/diorite_lantern"
   }
 }

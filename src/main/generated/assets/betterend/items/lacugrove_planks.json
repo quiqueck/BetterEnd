@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/lacugrove_planks"
+    "model": "betterend:block/lacugrove_planks"
   }
 }

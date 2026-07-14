@@ -11,7 +11,6 @@ import org.betterx.betterend.world.biome.EndBiomeKey;
 import org.betterx.wover.biome.api.BiomeKey;
 import org.betterx.wover.biome.api.data.BiomeData;
 import org.betterx.wover.biome.api.data.BiomeGenerationDataContainer;
-import org.betterx.wover.block.api.BlockProperties;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -84,8 +83,7 @@ public class LushAuroraCaveBiome extends EndCaveBiome.Config<LushAuroraCaveBiome
 
         @Override
         public BlockState getCeil(BlockPos pos) {
-            return EndBlocks.CAVE_MOSS.defaultBlockState()
-                                      .setValue(BlockProperties.TRIPLE_SHAPE, BlockProperties.TripleShape.TOP);
+            return EndBlocks.CAVE_MOSS.defaultBlockState();
         }
     }
 

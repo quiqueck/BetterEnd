@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/sandy_jadestone_plate"
+    "model": "betterend:block/sandy_jadestone_plate"
   }
 }

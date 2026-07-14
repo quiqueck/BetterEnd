@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "betterend:block/umbrella_tree_cluster"
+  }
+}

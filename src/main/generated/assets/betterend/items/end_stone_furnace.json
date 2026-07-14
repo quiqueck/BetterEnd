@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/end_stone_furnace"
+    "model": "betterend:block/end_stone_furnace"
   }
 }

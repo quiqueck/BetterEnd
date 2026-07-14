@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/lucernia_barrel"
+    "model": "betterend:block/lucernia_barrel"
   }
 }

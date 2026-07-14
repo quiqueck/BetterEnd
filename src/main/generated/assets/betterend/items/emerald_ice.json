@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/emerald_ice"
+    "model": "betterend:block/emerald_ice"
   }
 }

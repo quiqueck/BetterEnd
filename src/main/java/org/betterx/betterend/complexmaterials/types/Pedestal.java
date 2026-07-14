@@ -56,8 +56,8 @@ public class Pedestal extends SlotFromDefinition {
                     RecipeBuilder
                             .crafting(key.location(), block)
                             .shape("S", "#", "S")
-                            .addMaterial('S', set.recipeMaterial(SlotType.SLAB))
-                            .addMaterial('#', set.recipeMaterial(SlotType.PILLAR))
+                            .addMaterial('S', set.recipeMaterialWithFallback(SlotType.SLAB))
+                            .addMaterial('#', set.recipeMaterialWithFallback(SlotType.PILLAR))
                             .outputCount(2)
                             .group("end_stone_pedestal")
                             .build(context);

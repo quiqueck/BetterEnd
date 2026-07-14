@@ -4,8 +4,11 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.EndPedestal;
 import org.betterx.betterend.blocks.basis.LitBaseBlock;
 import org.betterx.betterend.blocks.basis.LitPillarBlock;
+import org.betterx.betterend.blocks.basis.PedestalBlock;
+import org.betterx.betterend.client.models.EndModelTraits;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.datagen.betterend.recipes.EndCraftingRecipesProvider;
+import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
 import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 import org.betterx.wover.core.api.ModCore;
@@ -53,18 +56,23 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                           .buildAndRegister();
         pillar = EndBlocks.defineBlock(name + "_pillar", LitPillarBlock::new)
                            .replacePropertiesWithCopy(source)
+                           .addTrait(ModelTraitLibrary.pillar())
                            .buildAndRegister();
         stairs = EndBlocks.defineBlock(name + "_stairs", p -> new StairBlock(source.defaultBlockState(), p))
                            .replacePropertiesWithCopy(source)
+                           .addTrait(ModelTraitLibrary.externalModel())
                            .buildAndRegister();
         slab = EndBlocks.defineBlock(name + "_slab", SlabBlock::new)
                          .replacePropertiesWithCopy(source)
+                         .addTrait(EndModelTraits.slabFrom(() -> source, () -> BetterEnd.C.mk("block/" + name)))
                          .buildAndRegister();
         wall = EndBlocks.defineBlock(name + "_wall", WallBlock::new)
                          .replacePropertiesWithCopy(source)
+                         .addTrait(ModelTraitLibrary.externalModel())
                          .buildAndRegister();
         pedestal = EndBlocks.defineBlock(name + "_pedestal", EndPedestal::new)
                              .replacePropertiesWithCopy(source)
+                             .addTrait(ModCore.isDatagen() ? ClientModel.buildPedestal(source) : null)
                              .buildAndRegister();
         bricks = EndBlocks.defineBlock(name + "_bricks", LitBaseBlock::new)
                            .replacePropertiesWithCopy(source)
@@ -72,12 +80,15 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                            .buildAndRegister();
         brick_stairs = EndBlocks.defineBlock(name + "_bricks_stairs", p -> new StairBlock(bricks.defaultBlockState(), p))
                                  .replacePropertiesWithCopy(bricks)
+                                 .addTrait(ModelTraitLibrary.externalModel())
                                  .buildAndRegister();
         brick_slab = EndBlocks.defineBlock(name + "_bricks_slab", SlabBlock::new)
                                .replacePropertiesWithCopy(bricks)
+                               .addTrait(ModCore.isDatagen() ? ClientModel.buildSlab(bricks) : null)
                                .buildAndRegister();
         brick_wall = EndBlocks.defineBlock(name + "_bricks_wall", WallBlock::new)
                                .replacePropertiesWithCopy(bricks)
+                               .addTrait(ModelTraitLibrary.externalModel())
                                .buildAndRegister();
 
 
@@ -199,6 +210,22 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
         private static BlockModelTrait build() {
             return ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> LitBaseBlock.provideBlockModel(generator, block)
+            );
+        }
+
+        private static BlockModelTrait buildSlab(Block baseBlock) {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> generator.createSlab(block, baseBlock)
+            );
+        }
+
+        private static BlockModelTrait buildPedestal(Block source) {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> PedestalBlock.provideBlockModel(
+                            generator,
+                            EndPedestal.createTextureMapping(source),
+                            block
+                    )
             );
         }
     }

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/tenanea_crafting_table"
+    "model": "betterend:block/tenanea_crafting_table"
   }
 }

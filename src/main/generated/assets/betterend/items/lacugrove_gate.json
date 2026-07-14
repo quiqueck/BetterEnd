@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/lacugrove_gate"
+    "model": "betterend:block/lacugrove_gate"
   }
 }

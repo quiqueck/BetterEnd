@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "wover:block/air_particles"
+      "model": "betterend:block/lucernia_stripped_log_particles"
     }
   }
 }

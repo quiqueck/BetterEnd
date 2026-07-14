@@ -2,6 +2,7 @@ package org.betterx.betterend.complexmaterials;
 
 import org.betterx.bclib.recipes.BCLRecipeBuilder;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.blocks.BulbVineLanternBlock;
 import org.betterx.betterend.blocks.BulbVineLanternColoredBlock;
 import org.betterx.betterend.complexmaterials.types.*;
 import org.betterx.betterend.item.material.ToolsWithHeadsSet;
@@ -11,6 +12,7 @@ import org.betterx.wover.block.api.BlockDefinition;
 import org.betterx.wover.block.api.trait.BlockTraits;
 import org.betterx.wover.complex.api.equipment.ArmorTier;
 import org.betterx.wover.complex.api.equipment.ToolTier;
+import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.recipe.api.RecipeBuilder;
 import org.betterx.wover.sets.api.blocks.BlockSet;
 import org.betterx.wover.sets.api.blocks.SlotFactory;
@@ -186,7 +188,12 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
     public MetalMaterial buildAndRegister() {
         super.buildAndRegister();
 
-        bulb_lantern_colored = new ColoredMaterial(BulbVineLanternColoredBlock::new, getBlock(BULB_LANTERN), false);
+        bulb_lantern_colored = new ColoredMaterial(
+                BulbVineLanternColoredBlock::new,
+                getBlock(BULB_LANTERN),
+                false,
+                def -> def.addTrait(ModCore.isDatagen() ? BulbVineLanternBlock.buildModel(null, null) : null)
+        );
 
         return this;
     }

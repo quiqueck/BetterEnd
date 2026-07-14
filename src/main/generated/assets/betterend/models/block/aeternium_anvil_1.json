@@ -1,0 +1,10 @@
+{
+  "parent": "bclib:block/anvil",
+  "textures": {
+    "back": "betterend:block/aeternium_anvil_back",
+    "bottom": "betterend:block/aeternium_anvil_bottom",
+    "front": "betterend:block/aeternium_anvil_front",
+    "panel": "betterend:block/aeternium_anvil_panel",
+    "top": "betterend:block/aeternium_anvil_top_1"
+  }
+}

@@ -1,9 +1,9 @@
 {
   "parent": "betterend:block/pedestal_default",
   "textures": {
-    "base": "betterend:block/diorite_polished",
-    "bottom": "betterend:block/diorite_polished",
-    "pillar": "betterend:block/diorite_pillar_side",
-    "top": "betterend:block/diorite_polished"
+    "base": "minecraft:block/polished_diorite",
+    "bottom": "minecraft:block/polished_diorite",
+    "pillar": "betterend:block/diorite_pillar",
+    "top": "minecraft:block/polished_diorite"
   }
 }

@@ -11,11 +11,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_end_stone_brick_slab": {
+    "has_end_stone": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:end_stone_brick_slab"
+            "items": "minecraft:end_stone"
           }
         ]
       },
@@ -31,7 +31,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_end_stone_brick_slab",
+      "has_end_stone",
       "has_crystal_shards"
     ]
   ],

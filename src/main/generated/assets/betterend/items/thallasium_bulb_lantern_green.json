@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/thallasium_bulb_lantern_green"
+    "model": "betterend:block/thallasium_bulb_lantern_green_floor"
   }
 }

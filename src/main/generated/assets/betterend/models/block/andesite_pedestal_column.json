@@ -1,8 +1,8 @@
 {
   "parent": "betterend:block/pedestal_column",
   "textures": {
-    "base": "betterend:block/andesite_polished",
-    "bottom": "betterend:block/andesite_polished",
-    "pillar": "betterend:block/andesite_pillar_side"
+    "base": "minecraft:block/polished_andesite",
+    "bottom": "minecraft:block/polished_andesite",
+    "pillar": "betterend:block/andesite_pillar"
   }
 }

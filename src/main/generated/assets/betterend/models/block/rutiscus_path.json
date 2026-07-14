@@ -1,7 +1,7 @@
 {
   "parent": "bclib:block/path",
   "textures": {
-    "bottom": "betterend:block/rutiscus",
+    "bottom": "minecraft:block/end_stone",
     "side": "betterend:block/rutiscus_side",
     "top": "betterend:block/rutiscus_path_top"
   }

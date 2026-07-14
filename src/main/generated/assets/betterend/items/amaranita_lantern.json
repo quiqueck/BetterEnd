@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/amaranita_lantern"
+    "model": "betterend:block/amaranita_lantern"
   }
 }

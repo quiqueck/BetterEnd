@@ -1,7 +1,7 @@
 {
   "parent": "bclib:block/path",
   "textures": {
-    "bottom": "betterend:block/shadow_grass",
+    "bottom": "minecraft:block/end_stone",
     "side": "betterend:block/shadow_grass_side",
     "top": "betterend:block/shadow_grass_path_top"
   }

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "betterend:block/terminite_bulb_lantern_light_blue"
-  }
-}

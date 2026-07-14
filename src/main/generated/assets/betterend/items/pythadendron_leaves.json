@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/pythadendron_leaves"
+    "model": "betterend:block/pythadendron_leaves"
   }
 }

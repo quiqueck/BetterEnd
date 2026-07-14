@@ -1,0 +1,6 @@
+{
+  "parent": "betterend:block/flower_pot",
+  "textures": {
+    "texture": "betterend:block/end_stone_flower_pot"
+  }
+}

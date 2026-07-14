@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/flavolite_flower_pot"
+    "model": "betterend:block/flavolite_flower_pot"
   }
 }

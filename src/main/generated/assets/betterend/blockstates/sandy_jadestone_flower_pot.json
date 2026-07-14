@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "pot_light=0": {
+      "model": "betterend:block/sandy_jadestone_flower_pot"
+    },
+    "pot_light=1": {
+      "model": "betterend:block/sandy_jadestone_flower_pot"
+    },
+    "pot_light=2": {
+      "model": "betterend:block/sandy_jadestone_flower_pot"
+    },
+    "pot_light=3": {
+      "model": "betterend:block/sandy_jadestone_flower_pot"
+    }
+  }
+}

@@ -11,11 +11,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_granite_slab": {
+    "has_granite": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:granite_slab"
+            "items": "minecraft:granite"
           }
         ]
       },
@@ -31,7 +31,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_granite_slab",
+      "has_granite",
       "has_crystal_shards"
     ]
   ],

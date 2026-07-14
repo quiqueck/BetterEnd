@@ -50,7 +50,7 @@ public class StoneLantern extends SlotFromDefinition {
                             .crafting(key.location(), block)
                             .shape("S", "#", "S")
                             .addMaterial('#', EndItems.CRYSTAL_SHARDS)
-                            .addMaterial('S', set.recipeMaterial(SlotType.SLAB))
+                            .addMaterial('S', set.recipeMaterialWithFallback(SlotType.SLAB))
                             .group("end_stone_lanterns")
                             .build(context);
                 });

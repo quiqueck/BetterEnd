@@ -1,0 +1,6 @@
+{
+  "parent": "betterend:block/flower_pot",
+  "textures": {
+    "texture": "betterend:block/sulphuric_rock_flower_pot"
+  }
+}

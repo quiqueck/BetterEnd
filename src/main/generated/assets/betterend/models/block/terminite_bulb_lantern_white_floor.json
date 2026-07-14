@@ -1,0 +1,7 @@
+{
+  "parent": "bclib:block/bulb_lantern_floor",
+  "textures": {
+    "glow": "betterend:block/bulb_vine_lantern_bulb",
+    "metal": "betterend:block/terminite_bulb_vine_lantern_metal"
+  }
+}

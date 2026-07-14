@@ -64,7 +64,7 @@ public class FlowerPot extends SlotFromDefinition {
 
     @Override
     protected BlockRecipeTrait buildRecipe(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return recipe(set.recipeMaterial(SlotType.BRICK));
+        return recipe(set.recipeMaterialWithFallback(SlotType.BRICK));
     }
 
     @Override

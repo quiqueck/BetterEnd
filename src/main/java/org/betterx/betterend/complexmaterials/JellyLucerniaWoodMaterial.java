@@ -48,6 +48,10 @@ public class JellyLucerniaWoodMaterial extends EndWoodenComplexMaterial {
     @Override
     public @Nullable Block getBlock(@NotNull SlotType type) {
         if (type == SlotType.PLANKS || type == SlotType.SLAB) return EndBlocks.LUCERNIA.getBlock(SlotType.PLANKS);
+        // This material only defines a hanging-sign slot (no log of its own) - the hanging sign's
+        // model needs a stripped-log texture for its chain/particle model, so reuse Lucernia's, matching
+        // the material already used for this sign's crafting recipe above.
+        if (type == SlotType.STRIPPED_LOG) return EndBlocks.LUCERNIA.getBlock(WoodSlots.STRIPPED_LOG);
         return super.getBlock(type);
     }
 }

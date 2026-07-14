@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/aeternium_anvil"
+    "model": "betterend:block/aeternium_anvil_0"
   }
 }

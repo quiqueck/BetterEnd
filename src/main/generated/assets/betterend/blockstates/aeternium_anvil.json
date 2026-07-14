@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "destruction=0,facing=east": {
+      "model": "betterend:block/aeternium_anvil_0",
+      "y": 90
+    },
+    "destruction=0,facing=north": {
+      "model": "betterend:block/aeternium_anvil_0"
+    },
+    "destruction=0,facing=south": {
+      "model": "betterend:block/aeternium_anvil_0",
+      "y": 180
+    },
+    "destruction=0,facing=west": {
+      "model": "betterend:block/aeternium_anvil_0",
+      "y": 270
+    },
+    "destruction=1,facing=east": {
+      "model": "betterend:block/aeternium_anvil_1",
+      "y": 90
+    },
+    "destruction=1,facing=north": {
+      "model": "betterend:block/aeternium_anvil_1"
+    },
+    "destruction=1,facing=south": {
+      "model": "betterend:block/aeternium_anvil_1",
+      "y": 180
+    },
+    "destruction=1,facing=west": {
+      "model": "betterend:block/aeternium_anvil_1",
+      "y": 270
+    },
+    "destruction=2,facing=east": {
+      "model": "betterend:block/aeternium_anvil_2",
+      "y": 90
+    },
+    "destruction=2,facing=north": {
+      "model": "betterend:block/aeternium_anvil_2"
+    },
+    "destruction=2,facing=south": {
+      "model": "betterend:block/aeternium_anvil_2",
+      "y": 180
+    },
+    "destruction=2,facing=west": {
+      "model": "betterend:block/aeternium_anvil_2",
+      "y": 270
+    }
+  }
+}

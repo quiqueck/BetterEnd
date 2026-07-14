@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "end_stone_lanterns",
+  "key": {
+    "#": "betterend:crystal_shards",
+    "S": "minecraft:purpur_block"
+  },
+  "pattern": [
+    "S",
+    "#",
+    "S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "betterend:purple_lantern"
+  }
+}

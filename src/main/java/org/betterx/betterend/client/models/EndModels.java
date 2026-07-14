@@ -37,6 +37,11 @@ public class EndModels {
             Optional.empty(),
             TextureSlot.TEXTURE
     );
+    public static final ModelTemplate FLOWER_POT = new ModelTemplate(
+            Optional.of(BetterEnd.C.mk("block/flower_pot")),
+            Optional.empty(),
+            TextureSlot.TEXTURE
+    );
 
     public static final ModelTemplate PEDESTAL_PILLAR = new ModelTemplate(
             Optional.of(BetterEnd.C.mk("block/pedestal_pillar")), Optional.empty(), PILLAR);

@@ -67,7 +67,8 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
                 .add(Attributes.MAX_HEALTH, 2.0D)
                 .add(Attributes.FOLLOW_RANGE, 16.0D)
                 .add(Attributes.FLYING_SPEED, 0.4D)
-                .add(Attributes.MOVEMENT_SPEED, 0.1D);
+                .add(Attributes.MOVEMENT_SPEED, 0.1D)
+                .add(Attributes.TEMPT_RANGE);
     }
 
     public void setHive(Level world, BlockPos hive) {

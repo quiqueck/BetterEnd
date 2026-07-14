@@ -96,12 +96,12 @@ public class PedestalBlockEntity extends BlockEntity implements Container {
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        activeItem = input.read("active_item", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+        activeItem = input.read("active_item", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
     }
 
     @Override
     protected void saveAdditional(ValueOutput output) {
-        if (activeItem != ItemStack.EMPTY) {
+        if (!activeItem.isEmpty()) {
             output.store("active_item", ItemStack.CODEC, activeItem);
         }
         super.saveAdditional(output);

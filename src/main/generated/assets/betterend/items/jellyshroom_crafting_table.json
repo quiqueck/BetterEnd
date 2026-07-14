@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/jellyshroom_crafting_table"
+    "model": "betterend:block/jellyshroom_crafting_table"
   }
 }

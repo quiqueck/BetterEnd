@@ -1,9 +1,7 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
-import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
+import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnEndBone;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
 
@@ -22,7 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class LargeAmaranitaBlock extends EndPlantBlock implements BehaviourPlant, SurvivesOnEndBone {
+public class LargeAmaranitaBlock extends EndPlantBlock {
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     private static final VoxelShape SHAPE_BOTTOM = Block.box(4, 0, 4, 12, 14, 12);
     private static final VoxelShape SHAPE_TOP = Shapes.or(Block.box(1, 3, 1, 15, 16, 15), SHAPE_BOTTOM);
@@ -45,7 +43,8 @@ public class LargeAmaranitaBlock extends EndPlantBlock implements BehaviourPlant
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         TripleShape shape = state.getValue(SHAPE);
         if (shape == TripleShape.BOTTOM) {
-            return isTerrain(world.getBlockState(pos.below())) && world.getBlockState(pos.above()).is(this);
+            return SurvivesOnBlockTrait.survivesOn(this, world.getBlockState(pos.below()))
+                    && world.getBlockState(pos.above()).is(this);
         } else if (shape == TripleShape.TOP) {
             return world.getBlockState(pos.below()).is(this);
         } else {
@@ -61,10 +60,5 @@ public class LargeAmaranitaBlock extends EndPlantBlock implements BehaviourPlant
     @Override
     public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
         return false;
-    }
-
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnEndBone.super.isTerrain(state);
     }
 }

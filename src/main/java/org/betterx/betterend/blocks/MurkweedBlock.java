@@ -1,7 +1,6 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnShadowGrass;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class MurkweedBlock extends EndPlantBlock implements SurvivesOnShadowGrass {
+public class MurkweedBlock extends EndPlantBlock {
     public MurkweedBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -45,10 +44,5 @@ public class MurkweedBlock extends EndPlantBlock implements SurvivesOnShadowGras
     @Override
     protected boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
         return false;
-    }
-
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnShadowGrass.super.isTerrain(state);
     }
 }

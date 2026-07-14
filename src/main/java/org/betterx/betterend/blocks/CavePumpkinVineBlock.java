@@ -1,8 +1,7 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
+import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnEndStone;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 
@@ -22,7 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jetbrains.annotations.NotNull;
 
-public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements SurvivesOnEndStone, BehaviourPlant {
+public class CavePumpkinVineBlock extends EndPlantWithAgeBlock {
     public CavePumpkinVineBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -31,7 +30,7 @@ public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements Surviv
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        return canSurviveOnBottom(world, pos);
+        return SurvivesOnBlockTrait.survivesOn(this, world.getBlockState(pos.above()));
     }
 
     @Override
@@ -92,8 +91,4 @@ public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements Surviv
         return SHAPE;
     }
 
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnEndStone.super.isTerrain(state);
-    }
 }

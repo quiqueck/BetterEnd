@@ -1,11 +1,9 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourSeed;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
 import org.betterx.betterend.blocks.basis.FurBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnMossOrMycelium;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 
@@ -16,7 +14,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlueVineSeedBlock extends EndPlantWithAgeBlock implements SurvivesOnMossOrMycelium, BehaviourSeed {
+public class BlueVineSeedBlock extends EndPlantWithAgeBlock {
     public BlueVineSeedBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -76,8 +74,4 @@ public class BlueVineSeedBlock extends EndPlantWithAgeBlock implements SurvivesO
         }
     }
 
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnMossOrMycelium.super.isTerrain(state);
-    }
 }

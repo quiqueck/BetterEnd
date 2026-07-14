@@ -1,10 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourSeed;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnAmberMoss;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.PentaShape;
@@ -17,7 +15,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class LanceleafSeedBlock extends EndPlantWithAgeBlock implements SurvivesOnAmberMoss, BehaviourSeed {
+public class LanceleafSeedBlock extends EndPlantWithAgeBlock {
     public LanceleafSeedBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -57,8 +55,4 @@ public class LanceleafSeedBlock extends EndPlantWithAgeBlock implements Survives
         );
     }
 
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnAmberMoss.super.isTerrain(state);
-    }
 }

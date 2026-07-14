@@ -1,10 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseDoublePlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnJungleMossOrMycelium;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -18,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class UmbrellaMossBlock extends EndPlantBlock implements BehaviourPlant, SurvivesOnJungleMossOrMycelium {
+public class UmbrellaMossBlock extends EndPlantBlock {
     public UmbrellaMossBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -44,10 +42,5 @@ public class UmbrellaMossBlock extends EndPlantBlock implements BehaviourPlant, 
         BlockState bs = EndBlocks.UMBRELLA_MOSS_TALL.defaultBlockState().setValue(BaseDoublePlantBlock.ROTATION, rot);
         BlocksHelper.setWithoutUpdate(world, pos, bs);
         BlocksHelper.setWithoutUpdate(world, pos.above(), bs.setValue(BaseDoublePlantBlock.TOP, true));
-    }
-
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnJungleMossOrMycelium.super.isTerrain(state);
     }
 }

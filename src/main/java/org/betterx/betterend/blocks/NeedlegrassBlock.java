@@ -1,8 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnShadowGrass;
 import org.betterx.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.core.BlockPos;
@@ -13,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -22,7 +19,7 @@ import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-public class NeedlegrassBlock extends EndPlantBlock implements SurvivesOnShadowGrass {
+public class NeedlegrassBlock extends EndPlantBlock {
     public NeedlegrassBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -54,10 +51,5 @@ public class NeedlegrassBlock extends EndPlantBlock implements SurvivesOnShadowG
     @Override
     protected boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
         return false;
-    }
-
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnShadowGrass.super.isTerrain(state);
     }
 }

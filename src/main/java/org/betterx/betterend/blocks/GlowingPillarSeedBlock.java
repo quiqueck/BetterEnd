@@ -1,10 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourSeed;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnAmberMoss;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -19,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock implements SurvivesOnAmberMoss, BehaviourSeed {
+public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock {
     public GlowingPillarSeedBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -68,8 +66,4 @@ public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock implements Surv
         }
     }
 
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnAmberMoss.super.isTerrain(state);
-    }
 }

@@ -1,10 +1,7 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
-import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnEndBone;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
 
 import net.minecraft.core.BlockPos;
@@ -21,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class SmallAmaranitaBlock extends EndPlantBlock implements SurvivesOnEndBone, BehaviourPlant {
+public class SmallAmaranitaBlock extends EndPlantBlock {
     public SmallAmaranitaBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -82,10 +79,5 @@ public class SmallAmaranitaBlock extends EndPlantBlock implements SurvivesOnEndB
     @Override
     public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
         return random.nextInt(8) == 0;
-    }
-
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnEndBone.super.isTerrain(state);
     }
 }

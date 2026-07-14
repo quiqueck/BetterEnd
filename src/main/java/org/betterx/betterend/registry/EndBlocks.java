@@ -429,9 +429,14 @@ public class EndBlocks {
 
     public static final Block END_LOTUS_FLOWER = defineBlockOnly("end_lotus_flower", EndLotusFlowerBlock::new)
             .addTrait(PlantBlockTrait.withColor(MapColor.COLOR_PINK, true))
+            .addTrait(SurvivesOnBlockTrait.withBlocks(END_LOTUS_STEM))
             .addTrait(CompostableBlockTrait.withDefault())
             .addTrait(BlockTraits.FLAMMABLE.withDefault())
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
+            // No block item exists, so it drops lotus seeds (1-2) via an explicit loot table rather than
+            // dropping itself.
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> EndLotusFlowerBlock.buildLoot(block, provider)))
             .addTrait(ModelTraitLibrary.externalModel())
             .lightLevel((bs) -> 15)
             .buildAndRegister();
@@ -444,6 +449,7 @@ public class EndBlocks {
 
     public static final Block LACUGROVE_SAPLING = defineBlock("lacugrove_sapling", LacugroveSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_CYAN))
+            .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_MOSS_OR_DUST))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_MOSS_OR_DUST))
             .buildAndRegister();
 
@@ -461,6 +467,7 @@ public class EndBlocks {
 
     public static final Block DRAGON_TREE_SAPLING = defineBlock("dragon_tree_sapling", DragonTreeSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_MAGENTA))
+            .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_SHADOW_GRASS))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_SHADOW_GRASS))
             .buildAndRegister();
 
@@ -638,7 +645,7 @@ public class EndBlocks {
             .addTrait(ModelTraitLibrary.externalModel())
             .lightLevel(state -> 11)
             .buildAndRegister();
-    public static final Block CHORUS_GRASS = defineBlock("chorus_grass", ChorusGrassBlock::new)
+    public static final Block CHORUS_GRASS = defineBlock("chorus_grass", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PURPLE, false, false))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
@@ -647,7 +654,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block CAVE_GRASS = defineBlock("cave_grass", TerrainPlantBlock::new)
+    public static final Block CAVE_GRASS = defineBlock("cave_grass", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(CAVE_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -656,7 +663,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block CRYSTAL_GRASS = defineBlock("crystal_grass", TerrainPlantBlock::new)
+    public static final Block CRYSTAL_GRASS = defineBlock("crystal_grass", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(CRYSTAL_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -665,7 +672,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block SHADOW_PLANT = defineBlock("shadow_plant", TerrainPlantBlock::new)
+    public static final Block SHADOW_PLANT = defineBlock("shadow_plant", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(SHADOW_GRASS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -674,7 +681,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block BUSHY_GRASS = defineBlock("bushy_grass", TerrainPlantBlock::new)
+    public static final Block BUSHY_GRASS = defineBlock("bushy_grass", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(PINK_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -683,7 +690,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block AMBER_GRASS = defineBlock("amber_grass", TerrainPlantBlock::new)
+    public static final Block AMBER_GRASS = defineBlock("amber_grass", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(AMBER_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -716,7 +723,7 @@ public class EndBlocks {
             .lightLevel(state -> 12)
             .buildAndRegister();
 
-    public static final Block JUNGLE_GRASS = defineBlock("jungle_grass", TerrainPlantBlock::new)
+    public static final Block JUNGLE_GRASS = defineBlock("jungle_grass", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(JUNGLE_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -725,7 +732,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block BLOOMING_COOKSONIA = defineBlock("blooming_cooksonia", TerrainPlantBlock::new)
+    public static final Block BLOOMING_COOKSONIA = defineBlock("blooming_cooksonia", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -734,7 +741,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block SALTEAGO = defineBlock("salteago", TerrainPlantBlock::new)
+    public static final Block SALTEAGO = defineBlock("salteago", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -743,7 +750,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block VAIOLUSH_FERN = defineBlock("vaiolush_fern", TerrainPlantBlock::new)
+    public static final Block VAIOLUSH_FERN = defineBlock("vaiolush_fern", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -752,7 +759,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block FRACTURN = defineBlock("fracturn", TerrainPlantBlock::new)
+    public static final Block FRACTURN = defineBlock("fracturn", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -760,7 +767,7 @@ public class EndBlocks {
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
-    public static final Block CLAWFERN = defineBlock("clawfern", TerrainPlantBlock::new)
+    public static final Block CLAWFERN = defineBlock("clawfern", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(SANGNUM, MOSSY_OBSIDIAN, MOSSY_DRAGON_BONE))
             .addTrait(PottablePlantBlockTrait.any())
@@ -769,7 +776,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block GLOBULAGUS = defineBlock("globulagus", TerrainPlantBlock::new)
+    public static final Block GLOBULAGUS = defineBlock("globulagus", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(SANGNUM, MOSSY_OBSIDIAN, MOSSY_DRAGON_BONE))
             .addTrait(PottablePlantBlockTrait.any())
@@ -778,7 +785,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block ORANGO = defineBlock("orango", TerrainPlantBlock::new)
+    public static final Block ORANGO = defineBlock("orango", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -787,7 +794,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block AERIDIUM = defineBlock("aeridium", TerrainPlantBlock::new)
+    public static final Block AERIDIUM = defineBlock("aeridium", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -796,7 +803,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block LUTEBUS = defineBlock("lutebus", TerrainPlantBlock::new)
+    public static final Block LUTEBUS = defineBlock("lutebus", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -805,7 +812,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block LAMELLARIUM = defineBlock("lamellarium", TerrainPlantBlock::new)
+    public static final Block LAMELLARIUM = defineBlock("lamellarium", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
             .addTrait(PottablePlantBlockTrait.any())
@@ -814,7 +821,7 @@ public class EndBlocks {
             .replaceable()
             .buildAndRegister();
 
-    public static final Block INFLEXIA = defineBlock("inflexia", TerrainPlantBlock::new)
+    public static final Block INFLEXIA = defineBlock("inflexia", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(SurvivesOnBlockTrait.withBlocks(PALLIDIUM_FULL, PALLIDIUM_HEAVY, PALLIDIUM_THIN, PALLIDIUM_TINY))
             .addTrait(PottablePlantBlockTrait.any())
@@ -880,7 +887,12 @@ public class EndBlocks {
 
     public static final Block LANCELEAF = defineBlock("lanceleaf", LanceleafBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_BROWN, false, false))
+            .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_AMBER_MOSS))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_AMBER_MOSS))
+            // Drops lanceleaf seeds (guaranteed from the bottom segment, 50% from the others) instead of
+            // itself; overrides the dropSelf() bundled by compostableWithColor above.
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> LanceleafBlock.buildLoot(block, provider)))
             // No dedicated item icon exists (multi-segment plant, block texture is per-segment, not a
             // single "lanceleaf" sprite) - reuse the top segment's own model as the item's, like other
             // multi-part plants in this file (e.g. large_amaranita_mushroom's cap).
@@ -1207,6 +1219,7 @@ public class EndBlocks {
 
     public static final Block FLAMAEA = defineBlock("flamaea", FlamaeaBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
+            .addTrait(SurvivesOnBlockTrait.withBlocks(Blocks.WATER))
             .addTrait(ModelTraitLibrary.externalModel())
             .sound(SoundType.WET_GRASS)
             .buildAndRegister();

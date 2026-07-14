@@ -1,17 +1,16 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.PentaShape;
-import org.betterx.bclib.util.MHelper;
+import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnAmberMoss;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.loot.api.LootLookupProvider;
 
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
@@ -21,13 +20,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-import java.util.Collections;
-import java.util.List;
-
-public class LanceleafBlock extends EndPlantBlock implements SurvivesOnAmberMoss, BehaviourPlant {
+public class LanceleafBlock extends EndPlantBlock {
 
     public static final EnumProperty<PentaShape> SHAPE = BlockProperties.PENTA_SHAPE;
     public static final IntegerProperty ROTATION = BlockProperties.ROTATION;
@@ -47,7 +48,8 @@ public class LanceleafBlock extends EndPlantBlock implements SurvivesOnAmberMoss
         if (shape == PentaShape.TOP) {
             return world.getBlockState(pos.below()).is(this);
         } else if (shape == PentaShape.BOTTOM) {
-            return canSurviveOnTop(world, pos) && world.getBlockState(pos.above()).is(this);
+            return SurvivesOnBlockTrait.survivesOn(this, world.getBlockState(pos.below()))
+                    && world.getBlockState(pos.above()).is(this);
         } else {
             return world.getBlockState(pos.below()).is(this) && world.getBlockState(pos.above()).is(this);
         }
@@ -71,17 +73,27 @@ public class LanceleafBlock extends EndPlantBlock implements SurvivesOnAmberMoss
         }
     }
 
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        if (state.getValue(SHAPE) == PentaShape.BOTTOM) {
-            return Collections.singletonList(new ItemStack(EndBlocks.LANCELEAF_SEED));
-        }
-        return MHelper.RANDOM.nextBoolean() ? Collections.emptyList() : Collections.singletonList(new ItemStack(
-                EndBlocks.LANCELEAF_SEED));
+    private static LootItemBlockStatePropertyCondition.Builder isBottom(Block block) {
+        return LootItemBlockStatePropertyCondition
+                .hasBlockStateProperties(block)
+                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SHAPE, PentaShape.BOTTOM));
     }
 
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnAmberMoss.super.isTerrain(state);
+    /**
+     * The bottom segment always drops one seed; every other segment drops one seed with a 50% chance -
+     * replacing the block class's former {@code getDrops} override with a data-driven loot table.
+     */
+    public static LootTable.Builder buildLoot(Block block, LootLookupProvider provider) {
+        return LootTable
+                .lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .when(isBottom(block))
+                        .add(LootItem.lootTableItem(EndBlocks.LANCELEAF_SEED)))
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .when(InvertedLootItemCondition.invert(isBottom(block)))
+                        .when(LootItemRandomChanceCondition.randomChance(0.5F))
+                        .add(LootItem.lootTableItem(EndBlocks.LANCELEAF_SEED)));
     }
 }

@@ -1,9 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourSeed;
+import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnEndStoneOrTrees;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -15,14 +14,14 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BulbVineSeedBlock extends EndPlantWithAgeBlock implements BehaviourSeed, SurvivesOnEndStoneOrTrees {
+public class BulbVineSeedBlock extends EndPlantWithAgeBlock {
     public BulbVineSeedBlock(BlockBehaviour.Properties props) {
         super(props);
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        return canSurviveOnBottom(world, pos);
+        return SurvivesOnBlockTrait.survivesOn(this, world.getBlockState(pos.above()));
     }
 
     @Override
@@ -50,8 +49,4 @@ public class BulbVineSeedBlock extends EndPlantWithAgeBlock implements Behaviour
         }
     }
 
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnEndStoneOrTrees.super.isTerrain(state);
-    }
 }

@@ -39,6 +39,7 @@ public class BulbLantern extends SlotFromDefinition {
     protected void addSlotSpecificDefinitions(BlockSet<?> set, BlockDefinition<?, ?> def) {
         super.addSlotSpecificDefinitions(set, def);
         def.addTrait(ClientBlockTraits.RENDER_LAYER.cutout());
+        def.addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe());
         def.getProperties()
            .destroyTime(1)
            .explosionResistance(1)

@@ -193,6 +193,7 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 getBlock(BULB_LANTERN),
                 false,
                 def -> def.addTrait(ModCore.isDatagen() ? BulbVineLanternBlock.buildModel(null, null) : null)
+                          .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
         );
 
         return this;

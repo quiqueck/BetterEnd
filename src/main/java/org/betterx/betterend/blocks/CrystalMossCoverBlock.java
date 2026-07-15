@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourShearablePlant;
 import org.betterx.betterend.registry.EndBlocks;
 
 import com.mojang.serialization.MapCodec;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
-public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements BonemealableBlock, BehaviourShearablePlant {
+public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements BonemealableBlock {
     public static final MapCodec<CrystalMossCoverBlock> CODEC = simpleCodec(CrystalMossCoverBlock::new);
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 

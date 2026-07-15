@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks.basis;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourShearablePlant;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 
 import net.minecraft.core.BlockPos;
@@ -17,7 +16,7 @@ import com.google.common.collect.Maps;
 import java.util.EnumMap;
 import org.jetbrains.annotations.NotNull;
 
-public class FurBlock extends BaseAttachedBlock implements BehaviourShearablePlant {
+public class FurBlock extends BaseAttachedBlock {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
 
     public FurBlock(BlockBehaviour.Properties properties) {

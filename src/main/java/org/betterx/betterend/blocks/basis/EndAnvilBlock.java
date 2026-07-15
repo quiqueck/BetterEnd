@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks.basis;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourMetal;
 import org.betterx.bclib.blocks.LeveledAnvilBlock;
 import org.betterx.betterend.complexmaterials.MetalMaterial;
 
@@ -9,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
-public class EndAnvilBlock extends LeveledAnvilBlock implements BehaviourMetal {
+public class EndAnvilBlock extends LeveledAnvilBlock {
     protected MetalMaterial metalMaterial;
 
     public EndAnvilBlock(BlockBehaviour.Properties props, MapColor color, int level) {

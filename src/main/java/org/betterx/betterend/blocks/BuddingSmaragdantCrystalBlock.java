@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourGlass;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.LitPillarBlock;
 import org.betterx.betterend.registry.EndBlocks;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import java.util.Collections;
 import java.util.List;
 
-public class BuddingSmaragdantCrystalBlock extends LitPillarBlock implements BehaviourGlass {
+public class BuddingSmaragdantCrystalBlock extends LitPillarBlock {
     public BuddingSmaragdantCrystalBlock(BlockBehaviour.Properties props) {
         super(props);
     }

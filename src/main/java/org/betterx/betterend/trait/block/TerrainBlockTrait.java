@@ -7,6 +7,7 @@ import org.betterx.wover.block.api.trait.BlockTraitKey;
 import org.betterx.wover.block.api.trait.GenericBlockTrait;
 import org.betterx.wover.block.impl.trait.BlockTraitImpl;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import org.betterx.wover.tag.api.predefined.MineableTags;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -29,7 +30,7 @@ public class TerrainBlockTrait extends BlockTraitImpl<Block, GenericBlockTrait> 
         super.configure(definition);
 
         definition
-                .addTags(CommonBlockTags.END_STONES)
+                .addTags(CommonBlockTags.END_STONES, MineableTags.PICKAXE)
                 .instrument(NoteBlockInstrument.BASEDRUM)
                 .requiresCorrectToolForDrops()
                 .strength(3.0F, 9.0F)

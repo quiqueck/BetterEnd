@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 
 import net.minecraft.core.BlockPos;
@@ -16,7 +15,7 @@ import com.google.common.collect.Maps;
 
 import java.util.EnumMap;
 
-public class FilaluxWingsBlock extends BaseAttachedBlock implements BehaviourPlant {
+public class FilaluxWingsBlock extends BaseAttachedBlock {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
 
     public FilaluxWingsBlock(BlockBehaviour.Properties props) {

@@ -2,7 +2,6 @@ package org.betterx.betterend.blocks;
 
 import de.ambertation.wunderlib.math.Float3;
 import de.ambertation.wunderlib.ui.ColorHelper;
-import org.betterx.bclib.behaviours.interfaces.BehaviourStone;
 import org.betterx.bclib.interfaces.ClientLevelAccess;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
@@ -57,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
-public class EternalPedestal extends PedestalBlock implements BehaviourStone {
+public class EternalPedestal extends PedestalBlock {
     public static final BooleanProperty ACTIVATED = EndBlockProperties.ACTIVE;
 
     public EternalPedestal(ResourceKey<Block> blockKey) {

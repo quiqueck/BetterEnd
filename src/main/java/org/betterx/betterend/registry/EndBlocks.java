@@ -221,6 +221,7 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block SULPHUR_CRYSTAL = defineBlock("sulphur_crystal", SulphurCrystalBlock::new)
+            .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_BRIMSTONE))
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> SulphurCrystalBlock.buildLoot(block, provider)
@@ -1552,6 +1553,7 @@ public class EndBlocks {
             .strength(1F)
             .noOcclusion()
             .sound(SoundType.AMETHYST)
+            .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(EndModelTraits.rotatedPillar(() -> BetterEnd.C.mk("block/smaragdant_crystal")))
             .buildAndRegister();
     public static final CrystalSubblocksMaterial SMARAGDANT_SUBBLOCKS = new CrystalSubblocksMaterial(
@@ -1568,6 +1570,7 @@ public class EndBlocks {
             .sound(SoundType.AMETHYST)
             .randomTicks()
             .pushReaction(PushReaction.DESTROY)
+            .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTags(CommonBlockTags.BUDDING_BLOCKS)
             .addTrait(EndModelTraits.rotatedPillar(() -> BetterEnd.C.mk("block/budding_smaragdant_crystal")))
             .buildAndRegister();

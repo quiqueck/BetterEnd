@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourStone;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.client.models.EndModels;
@@ -15,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class PedestalVanilla extends PedestalBlock implements BehaviourStone {
+public class PedestalVanilla extends PedestalBlock {
     protected final Block parent;
 
     public PedestalVanilla(BlockBehaviour.Properties props, Block parent) {

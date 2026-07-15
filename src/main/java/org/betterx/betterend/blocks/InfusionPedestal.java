@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourStone;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.entities.InfusionPedestalEntity;
 import org.betterx.betterend.client.models.EndModels;
@@ -33,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class InfusionPedestal extends PedestalBlock implements BehaviourStone {
+public class InfusionPedestal extends PedestalBlock {
     private static final VoxelShape SHAPE_DEFAULT;
     private static final VoxelShape SHAPE_PEDESTAL_TOP;
 

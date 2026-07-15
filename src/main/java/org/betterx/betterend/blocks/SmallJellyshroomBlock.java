@@ -1,7 +1,6 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.behaviours.BehaviourBuilders;
-import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
@@ -29,7 +28,7 @@ import com.google.common.collect.Maps;
 
 import java.util.EnumMap;
 
-public class SmallJellyshroomBlock extends BaseAttachedBlock implements BonemealableBlock, BehaviourPlant {
+public class SmallJellyshroomBlock extends BaseAttachedBlock implements BonemealableBlock {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
 
     public SmallJellyshroomBlock(BlockBehaviour.Properties props) {

@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourIce;
 import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
@@ -17,7 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AncientEmeraldIceBlock extends BaseBlock implements BehaviourIce {
+public class AncientEmeraldIceBlock extends BaseBlock {
     public AncientEmeraldIceBlock(BlockBehaviour.Properties props) {
         super(props);
     }

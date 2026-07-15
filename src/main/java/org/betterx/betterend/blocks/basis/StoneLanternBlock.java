@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks.basis;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourStone;
 import org.betterx.bclib.client.models.BCLModels;
 import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.betterend.registry.EndBlocks;
@@ -29,7 +28,7 @@ import net.fabricmc.api.Environment;
 
 import org.jetbrains.annotations.NotNull;
 
-public class StoneLanternBlock extends EndLanternBlock implements CustomColorProvider, BehaviourStone {
+public class StoneLanternBlock extends EndLanternBlock implements CustomColorProvider {
     private static final VoxelShape SHAPE_CEIL = box(3, 1, 3, 13, 16, 13);
     private static final VoxelShape SHAPE_FLOOR = box(3, 0, 3, 13, 15, 13);
 

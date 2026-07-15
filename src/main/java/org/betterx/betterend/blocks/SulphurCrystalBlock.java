@@ -1,7 +1,7 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseAttachedBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnBrimstone;
+import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.loot.api.LootLookupProvider;
 
@@ -48,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements SimpleWaterloggedBlock, LiquidBlockContainer, SurvivesOnBrimstone {
+public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements SimpleWaterloggedBlock, LiquidBlockContainer {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 2);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -165,7 +165,7 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Simp
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         Direction direction = state.getValue(FACING);
         BlockPos blockPos = pos.relative(direction.getOpposite());
-        return isTerrain(world.getBlockState(blockPos));
+        return SurvivesOnBlockTrait.survivesOn(this, world.getBlockState(blockPos));
     }
 
     static {

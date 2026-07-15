@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourSand;
 import org.betterx.ui.ColorUtil;
 import org.betterx.wover.block.api.BlockTagProvider;
 import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
@@ -18,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class EndstoneDustBlock extends FallingBlock implements BlockTagProvider, BehaviourSand {
+public class EndstoneDustBlock extends FallingBlock implements BlockTagProvider {
     private static final int COLOR = ColorUtil.color(226, 239, 168);
 
     public static final MapCodec<EndstoneDustBlock> CODEC = simpleCodec(EndstoneDustBlock::new);

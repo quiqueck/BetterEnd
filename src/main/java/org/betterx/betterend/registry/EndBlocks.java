@@ -633,6 +633,8 @@ public class EndBlocks {
 
     public static final Block UMBRELLA_MOSS_TALL = defineBlock("umbrella_moss_tall", UmbrellaMossTallBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, true))
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> EndDoublePlantBlock.buildLoot(block, provider)))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
             .addTrait(ModelTraitLibrary.externalModelFlatItem(() -> BetterEnd.C.mk("item/umbrella_moss_large")))
             .lightLevel(state -> 12)
@@ -714,6 +716,8 @@ public class EndBlocks {
             TwistedUmbrellaMossTallBlock::new
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_BLUE, false, false))
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> EndDoublePlantBlock.buildLoot(block, provider)))
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
             // Blockstate/models are hand-authored (top/rotation variants) - the generic cube-model
             // generator doesn't know about them and was overwriting them with a broken single-texture

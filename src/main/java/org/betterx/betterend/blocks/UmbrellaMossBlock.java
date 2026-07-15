@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseDoublePlantBlock;
+import org.betterx.betterend.blocks.basis.EndDoublePlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
@@ -39,8 +39,8 @@ public class UmbrellaMossBlock extends EndPlantBlock {
     @Override
     public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
         int rot = world.random.nextInt(4);
-        BlockState bs = EndBlocks.UMBRELLA_MOSS_TALL.defaultBlockState().setValue(BaseDoublePlantBlock.ROTATION, rot);
+        BlockState bs = EndBlocks.UMBRELLA_MOSS_TALL.defaultBlockState().setValue(EndDoublePlantBlock.ROTATION, rot);
         BlocksHelper.setWithoutUpdate(world, pos, bs);
-        BlocksHelper.setWithoutUpdate(world, pos.above(), bs.setValue(BaseDoublePlantBlock.TOP, true));
+        BlocksHelper.setWithoutUpdate(world, pos.above(), bs.setValue(EndDoublePlantBlock.TOP, true));
     }
 }

@@ -1,7 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourWaterPlantSeed;
-import org.betterx.bclib.blocks.UnderwaterPlantWithAgeBlock;
+import org.betterx.betterend.blocks.basis.EndUnderwaterPlantWithAgeBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -15,7 +14,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
-public class EndLotusSeedBlock extends UnderwaterPlantWithAgeBlock implements BehaviourWaterPlantSeed {
+public class EndLotusSeedBlock extends EndUnderwaterPlantWithAgeBlock {
     public EndLotusSeedBlock(Properties properties) {
         super(properties);
     }
@@ -137,7 +136,7 @@ public class EndLotusSeedBlock extends UnderwaterPlantWithAgeBlock implements Be
     }
 
     @Override
-    protected boolean isTerrain(BlockState state) {
+    protected boolean isValidGround(BlockState state) {
         return state.is(CommonBlockTags.END_STONES);
     }
 }

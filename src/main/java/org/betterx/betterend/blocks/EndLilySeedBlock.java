@@ -1,8 +1,7 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourWaterPlantSeed;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
-import org.betterx.bclib.blocks.UnderwaterPlantWithAgeBlock;
+import org.betterx.betterend.blocks.basis.EndUnderwaterPlantWithAgeBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
@@ -14,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
-public class EndLilySeedBlock extends UnderwaterPlantWithAgeBlock implements BehaviourWaterPlantSeed {
+public class EndLilySeedBlock extends EndUnderwaterPlantWithAgeBlock {
     public EndLilySeedBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
@@ -53,7 +52,7 @@ public class EndLilySeedBlock extends UnderwaterPlantWithAgeBlock implements Beh
     }
 
     @Override
-    protected boolean isTerrain(BlockState state) {
+    protected boolean isValidGround(BlockState state) {
         return state.is(CommonBlockTags.END_STONES);
     }
 }

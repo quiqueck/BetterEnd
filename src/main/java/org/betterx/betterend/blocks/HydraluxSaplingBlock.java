@@ -1,11 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.interfaces.BehaviourWaterPlantSapling;
-import org.betterx.bclib.blocks.UnderwaterPlantWithAgeBlock;
-import org.betterx.bclib.interfaces.SurvivesOnSpecialGround;
+import org.betterx.betterend.blocks.basis.EndUnderwaterPlantWithAgeBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.interfaces.survives.SurvivesOnSulphuricRock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -22,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public class HydraluxSaplingBlock extends UnderwaterPlantWithAgeBlock implements BehaviourWaterPlantSapling, SurvivesOnSulphuricRock {
+public class HydraluxSaplingBlock extends EndUnderwaterPlantWithAgeBlock {
     public HydraluxSaplingBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -81,8 +78,4 @@ public class HydraluxSaplingBlock extends UnderwaterPlantWithAgeBlock implements
         );
     }
 
-    @Override
-    public boolean isTerrain(BlockState state) {
-        return SurvivesOnSulphuricRock.super.isTerrain(state);
-    }
 }

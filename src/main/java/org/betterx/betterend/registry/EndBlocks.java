@@ -1082,6 +1082,8 @@ public class EndBlocks {
     // Crops
     public static final Block SHADOW_BERRY = defineBlock("shadow_berry", ShadowBerryBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_BLACK, false, false))
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_SHADOW_GRASS))
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
@@ -1090,6 +1092,8 @@ public class EndBlocks {
             p -> new PottableCropBlock(p, EndItems.BLOSSOM_BERRY, PINK_MOSS)
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PINK, false, false))
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_PINK_MOSS))
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
@@ -1098,6 +1102,8 @@ public class EndBlocks {
             p -> new PottableCropBlock(p, EndItems.AMBER_ROOT_RAW, AMBER_MOSS)
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_AMBER_MOSS))
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
@@ -1106,6 +1112,8 @@ public class EndBlocks {
             p -> new PottableCropBlock(p, EndItems.CHORUS_MUSHROOM_RAW, CHORUS_NYLIUM)
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PURPLE, false, false))
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();

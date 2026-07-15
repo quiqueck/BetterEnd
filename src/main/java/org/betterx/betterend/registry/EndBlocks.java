@@ -1055,11 +1055,13 @@ public class EndBlocks {
             .buildAndRegister();
     public static final Block AMARANITA_STEM = defineBlock("amaranita_stem", AmaranitaStemBlock::new)
             .addTrait(BlockTraits.WOOD_BLOCK)
+            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .addTrait(ModelTraitLibrary.externalModel())
             .mapColor(MapColor.COLOR_LIGHT_GREEN)
             .buildAndRegister();
     public static final Block AMARANITA_HYPHAE = defineBlock("amaranita_hyphae", AmaranitaStemBlock::new)
             .addTrait(BlockTraits.WOOD_BLOCK)
+            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .addTrait(ModelTraitLibrary.pillar())
             .mapColor(MapColor.COLOR_LIGHT_GREEN)
             .buildAndRegister();
@@ -1103,6 +1105,7 @@ public class EndBlocks {
             .buildAndRegister();
     public static final Block NEON_CACTUS_BLOCK = defineBlock("neon_cactus_block", NeonCactusBlock::new)
             .lightLevel(bs -> 15)
+            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .addTrait(ModelTraitLibrary.pillar())
             .buildAndRegister();
     public static final Block NEON_CACTUS_BLOCK_STAIRS = defineBlock(
@@ -1570,6 +1573,7 @@ public class EndBlocks {
             .noOcclusion()
             .sound(SoundType.AMETHYST)
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
+            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .addTrait(EndModelTraits.rotatedPillar(() -> BetterEnd.C.mk("block/smaragdant_crystal")))
             .buildAndRegister();
     public static final CrystalSubblocksMaterial SMARAGDANT_SUBBLOCKS = new CrystalSubblocksMaterial(
@@ -1587,6 +1591,7 @@ public class EndBlocks {
             .randomTicks()
             .pushReaction(PushReaction.DESTROY)
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
+            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .addTags(CommonBlockTags.BUDDING_BLOCKS)
             .addTrait(EndModelTraits.rotatedPillar(() -> BetterEnd.C.mk("block/budding_smaragdant_crystal")))
             .buildAndRegister();

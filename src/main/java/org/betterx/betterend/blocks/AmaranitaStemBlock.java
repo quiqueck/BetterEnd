@@ -1,10 +1,10 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseRotatedPillarBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class AmaranitaStemBlock extends BaseRotatedPillarBlock {
+public class AmaranitaStemBlock extends RotatedPillarBlock {
     public AmaranitaStemBlock(BlockBehaviour.Properties props) {
         super(props);
     }

@@ -9,6 +9,7 @@ import org.betterx.betterend.client.models.EndModelTraits;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.datagen.betterend.recipes.EndCraftingRecipesProvider;
 import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
+import org.betterx.wover.block.api.trait.BlockTraits;
 import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 import org.betterx.wover.core.api.ModCore;
@@ -56,6 +57,7 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                           .buildAndRegister();
         pillar = EndBlocks.defineBlock(name + "_pillar", LitPillarBlock::new)
                            .replacePropertiesWithCopy(source)
+                           .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
                            .addTrait(ModelTraitLibrary.pillar())
                            .buildAndRegister();
         stairs = EndBlocks.defineBlock(name + "_stairs", p -> new StairBlock(source.defaultBlockState(), p))

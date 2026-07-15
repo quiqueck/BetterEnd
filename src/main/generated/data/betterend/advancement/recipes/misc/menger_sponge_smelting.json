@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item.betterend.menger_sponge_wet": {
+    "has_block.betterend.menger_sponge_wet": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_item.betterend.menger_sponge_wet"
+      "has_block.betterend.menger_sponge_wet"
     ]
   ],
   "rewards": {

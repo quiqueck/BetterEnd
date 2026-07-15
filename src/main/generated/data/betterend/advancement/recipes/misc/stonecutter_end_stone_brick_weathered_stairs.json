@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item.betterend.end_stone_brick_weathered": {
+    "has_block.betterend.end_stone_brick_weathered": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_item.betterend.end_stone_brick_weathered"
+      "has_block.betterend.end_stone_brick_weathered"
     ]
   ],
   "rewards": {

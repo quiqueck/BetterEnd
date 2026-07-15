@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item.betterend.virid_jadestone": {
+    "has_block.betterend.virid_jadestone": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_item.betterend.virid_jadestone"
+      "has_block.betterend.virid_jadestone"
     ]
   ],
   "rewards": {

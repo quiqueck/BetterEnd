@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.wover.block.api.BlockProperties;
 
@@ -17,7 +16,7 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-public class RunedFlavolite extends BaseBlock.Stone {
+public class RunedFlavolite extends Block {
     public static final BooleanProperty ACTIVATED = BlockProperties.ACTIVE;
 
     public RunedFlavolite(BlockBehaviour.Properties props) {

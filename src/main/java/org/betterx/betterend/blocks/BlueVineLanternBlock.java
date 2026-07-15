@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
@@ -20,7 +19,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class BlueVineLanternBlock extends BaseBlock.Wood {
+public class BlueVineLanternBlock extends Block {
     public static final BooleanProperty NATURAL = BlockProperties.NATURAL;
 
     public BlueVineLanternBlock(BlockBehaviour.Properties props) {

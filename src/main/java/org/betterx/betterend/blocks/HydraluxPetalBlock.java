@@ -1,7 +1,7 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.behaviours.BehaviourBuilders;
-import org.betterx.bclib.blocks.BaseBlock;
+import net.minecraft.world.level.block.Block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.material.MapColor;
 
 import org.jetbrains.annotations.NotNull;
 
-public class HydraluxPetalBlock extends BaseBlock.Wood {
+public class HydraluxPetalBlock extends Block {
     public HydraluxPetalBlock(Properties settings) {
         super(settings);
     }

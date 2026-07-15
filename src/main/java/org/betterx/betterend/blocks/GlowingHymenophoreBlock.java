@@ -1,13 +1,12 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.world.level.block.Block;
 
-public class GlowingHymenophoreBlock extends BaseBlock.Wood {
+public class GlowingHymenophoreBlock extends Block {
     public GlowingHymenophoreBlock(Properties props) {
         super(props);
     }

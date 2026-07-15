@@ -290,6 +290,7 @@ public class EndBlocks {
             .replacePropertiesWithCopy(EndBlocks.FLAVOLITE.getBlock(SlotType.POLISHED))
             .strength(1, Blocks.OBSIDIAN.getExplosionResistance())
             .lightLevel(state -> state.getValue(RunedFlavolite.ACTIVATED) ? 8 : 0)
+            .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(ModelTraitLibrary.externalModel())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .buildAndRegister();
@@ -298,6 +299,7 @@ public class EndBlocks {
             .replacePropertiesWithCopy(EndBlocks.FLAVOLITE.getBlock(SlotType.POLISHED))
             .strength(-11, Blocks.BEDROCK.getExplosionResistance())
             .lightLevel(state -> state.getValue(RunedFlavolite.ACTIVATED) ? 8 : 0)
+            .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(ModelTraitLibrary.externalModel())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .buildAndRegister();
@@ -1278,6 +1280,7 @@ public class EndBlocks {
     public static final Block HYDRALUX_PETAL_BLOCK = defineBlock("hydralux_petal_block", HydraluxPetalBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PODZOL, true, false))
             .addTrait(VegetationTagTrait.plant())
+            .addTrait(BlockTraits.MINEABLE_WITH.needsAxe())
             .addTrait(ModelTraitLibrary.cube())
             .strength(1.0f, 1.0f)
             .sound(SoundType.WART_BLOCK)
@@ -1288,7 +1291,7 @@ public class EndBlocks {
             true,
             (def) -> def.addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> HydraluxPetalColoredBlock.provideBlockModel(generator, block)
-            ) : null)
+            ) : null).addTrait(BlockTraits.MINEABLE_WITH.needsAxe())
     );
 
     public static final Block POND_ANEMONE = defineBlock("pond_anemone", PondAnemoneBlock::new)
@@ -1473,6 +1476,7 @@ public class EndBlocks {
             .sound(SoundType.WOOL)
             .noOcclusion()
             .randomTicks()
+            .addTrait(BlockTraits.MINEABLE_WITH.needsAxe())
             .addTrait(ModelTraitLibrary.externalModelDelegatedItem())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .buildAndRegister();
@@ -1505,6 +1509,7 @@ public class EndBlocks {
 
     public static final Block AETERNIUM_BLOCK = defineBlock("aeternium_block", AeterniumBlock::new)
             .addTrait(BlockTraits.METAL_BLOCK)
+            .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(ModelTraitLibrary.cube())
             .mapColor(MapColor.COLOR_GRAY)
             .strength(65F, 1200F)

@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlockNotFull;
+import org.betterx.betterend.blocks.basis.EndBlockNotFull;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class LumecornBlock extends BaseBlockNotFull.Wood {
+public class LumecornBlock extends EndBlockNotFull {
     public static final EnumProperty<EndBlockProperties.LumecornShape> SHAPE = EnumProperty.create(
             "shape",
             EndBlockProperties.LumecornShape.class

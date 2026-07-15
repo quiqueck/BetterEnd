@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlockNotFull;
+import org.betterx.betterend.blocks.basis.EndBlockNotFull;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -29,7 +29,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 @SuppressWarnings("deprecation")
-public class MengerSpongeWetBlock extends BaseBlockNotFull {
+public class MengerSpongeWetBlock extends EndBlockNotFull {
     public MengerSpongeWetBlock(BlockBehaviour.Properties props) {
         super(props);
     }

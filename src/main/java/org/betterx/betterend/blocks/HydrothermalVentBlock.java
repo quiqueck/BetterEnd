@@ -2,7 +2,7 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.wover.sets.api.blocks.SlotType;
 
-import org.betterx.bclib.blocks.BaseBlockNotFull;
+import org.betterx.betterend.blocks.basis.EndBlockNotFull;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.entities.BlockEntityHydrothermalVent;
 import org.betterx.betterend.registry.EndBlocks;
@@ -42,7 +42,7 @@ import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class HydrothermalVentBlock extends BaseBlockNotFull.Stone implements EntityBlock, LiquidBlockContainer, SimpleWaterloggedBlock {
+public class HydrothermalVentBlock extends EndBlockNotFull implements EntityBlock, LiquidBlockContainer, SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty ACTIVATED = BlockProperties.ACTIVE;
     private static final VoxelShape SHAPE = Block.box(1, 1, 1, 15, 16, 15);

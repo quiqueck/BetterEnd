@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlockNotFull;
+import org.betterx.betterend.blocks.basis.EndBlockNotFull;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.Collections;
 import java.util.List;
 
-public class CavePumpkinBlock extends BaseBlockNotFull {
+public class CavePumpkinBlock extends EndBlockNotFull {
     public static final BooleanProperty SMALL = BlockProperties.SMALL;
     private static final VoxelShape SHAPE_SMALL;
     private static final VoxelShape SHAPE_BIG;

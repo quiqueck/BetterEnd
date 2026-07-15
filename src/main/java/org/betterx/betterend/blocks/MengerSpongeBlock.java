@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlockNotFull;
+import org.betterx.betterend.blocks.basis.EndBlockNotFull;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
@@ -32,7 +32,7 @@ import java.util.Queue;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class MengerSpongeBlock extends BaseBlockNotFull {
+public class MengerSpongeBlock extends EndBlockNotFull {
     public static final VoxelShape SHAPE;
 
     public MengerSpongeBlock(BlockBehaviour.Properties props) {

@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlockNotFull;
+import org.betterx.betterend.blocks.basis.EndBlockNotFull;
 import org.betterx.betterend.blocks.entities.FlowerPotBlockEntity;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.wover.block.api.client.trait.BlockModelTrait;
@@ -52,7 +52,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 
-public class FlowerPotBlock extends BaseBlockNotFull implements EntityBlock {
+public class FlowerPotBlock extends EndBlockNotFull implements EntityBlock {
     public static final IntegerProperty POT_LIGHT = EndBlockProperties.POT_LIGHT;
     private static final VoxelShape SHAPE_EMPTY;
     private static final VoxelShape SHAPE_FULL;

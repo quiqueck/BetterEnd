@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks.basis;
 
-import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.betterend.blocks.EndBlockProperties;
 import org.betterx.betterend.blocks.EndBlockProperties.PedestalState;
 import org.betterx.betterend.blocks.InfusionPedestal;
@@ -64,7 +63,7 @@ import java.util.function.ToIntFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, BlockTagProvider {
+public class PedestalBlock extends EndBlockNotFull implements EntityBlock, BlockTagProvider {
     public final static EnumProperty<PedestalState> STATE = EndBlockProperties.PEDESTAL_STATE;
     public static final BooleanProperty HAS_ITEM = EndBlockProperties.HAS_ITEM;
     public static final BooleanProperty HAS_LIGHT = BlockProperties.HAS_LIGHT;

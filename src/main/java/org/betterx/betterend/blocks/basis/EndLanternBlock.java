@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks.basis;
 
-import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.wover.block.api.BlockProperties;
 
 import net.minecraft.core.BlockPos;
@@ -28,7 +27,7 @@ import net.minecraft.world.level.material.Fluids;
 
 import org.jetbrains.annotations.Nullable;
 
-public abstract class EndLanternBlock extends BaseBlockNotFull implements SimpleWaterloggedBlock, LiquidBlockContainer {
+public abstract class EndLanternBlock extends EndBlockNotFull implements SimpleWaterloggedBlock, LiquidBlockContainer {
     public static final BooleanProperty IS_FLOOR = BlockProperties.IS_FLOOR;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 

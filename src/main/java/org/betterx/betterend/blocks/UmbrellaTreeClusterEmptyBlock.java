@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -14,7 +13,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 import org.jetbrains.annotations.NotNull;
 
-public class UmbrellaTreeClusterEmptyBlock extends BaseBlock {
+public class UmbrellaTreeClusterEmptyBlock extends Block {
     public static final BooleanProperty NATURAL = EndBlockProperties.NATURAL;
 
     public UmbrellaTreeClusterEmptyBlock(Properties props) {

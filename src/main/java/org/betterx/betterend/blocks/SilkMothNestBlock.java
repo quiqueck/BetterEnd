@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
+import net.minecraft.world.level.block.Block;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.LootUtil;
 import org.betterx.bclib.util.MHelper;
@@ -44,7 +44,7 @@ import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
-public class SilkMothNestBlock extends BaseBlock {
+public class SilkMothNestBlock extends Block {
     public static final BooleanProperty ACTIVE = EndBlockProperties.ACTIVE;
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty FULLNESS = EndBlockProperties.FULLNESS;

@@ -1,10 +1,10 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
+import net.minecraft.world.level.block.Block;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class AmberBlock extends BaseBlock {
+public class AmberBlock extends Block {
     public AmberBlock(BlockBehaviour.Properties props) {
         super(props);
     }

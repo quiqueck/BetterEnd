@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
+import net.minecraft.world.level.block.Block;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AncientEmeraldIceBlock extends BaseBlock {
+public class AncientEmeraldIceBlock extends Block {
     public AncientEmeraldIceBlock(BlockBehaviour.Properties props) {
         super(props);
     }

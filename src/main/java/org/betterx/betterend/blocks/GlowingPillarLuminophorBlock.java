@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -16,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-public class GlowingPillarLuminophorBlock extends BaseBlock {
+public class GlowingPillarLuminophorBlock extends Block {
     public static final BooleanProperty NATURAL = EndBlockProperties.NATURAL;
 
     public GlowingPillarLuminophorBlock(BlockBehaviour.Properties props) {

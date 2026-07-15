@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -31,7 +30,7 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
-public class EndLotusStemBlock extends BaseBlock implements SimpleWaterloggedBlock {
+public class EndLotusStemBlock extends Block implements SimpleWaterloggedBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty LEAF = BooleanProperty.create("leaf");

@@ -62,6 +62,7 @@ public class EndBlocks {
     public static final Block ENDSTONE_DUST = defineBlock("endstone_dust", EndstoneDustBlock::new)
             .replacePropertiesWithCopy(Blocks.SAND)
             .mapColor(Blocks.END_STONE.defaultMapColor())
+            .addTrait(BlockTraits.MINEABLE_WITH.needsShovel())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
@@ -375,6 +376,7 @@ public class EndBlocks {
 
     public static final Block MOSSY_GLOWSHROOM_FUR = defineBlock("mossy_glowshroom_fur", FurBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_LIGHT_BLUE, 15, true, 16, MOSSY_GLOWSHROOM_SAPLING, false))
+            .addTrait(VegetationTagTrait.plant())
             .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
             .buildAndRegister();
 
@@ -424,6 +426,8 @@ public class EndBlocks {
     // without a loot table trait instead, so they simply drop nothing when broken.
     public static final Block END_LOTUS_LEAF = defineBlockOnly("end_lotus_leaf", EndLotusLeafBlock::new)
             .addTrait(PlantBlockTrait.withColor(MapColor.COLOR_PINK, true))
+            .addTrait(VegetationTagTrait.plant())
+            .addTrait(BlockTraits.MINEABLE_WITH.needsHoe())
             .addTrait(CompostableBlockTrait.withDefault())
             .addTrait(BlockTraits.FLAMMABLE.withDefault())
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
@@ -433,6 +437,7 @@ public class EndBlocks {
     public static final Block END_LOTUS_FLOWER = defineBlockOnly("end_lotus_flower", EndLotusFlowerBlock::new)
             .addTrait(PlantBlockTrait.withColor(MapColor.COLOR_PINK, true))
             .addTrait(VegetationTagTrait.plant())
+            .addTrait(BlockTraits.MINEABLE_WITH.needsHoe())
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_LOTUS_STEM))
             .addTrait(CompostableBlockTrait.withDefault())
             .addTrait(BlockTraits.FLAMMABLE.withDefault())
@@ -506,6 +511,7 @@ public class EndBlocks {
 
     public static final Block TENANEA_OUTER_LEAVES = defineBlockOnly("tenanea_outer_leaves", FurBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_PINK, 0, false, 32, TENANEA_SAPLING, false))
+            .addTrait(VegetationTagTrait.plant())
             .addTrait(noLootTableTrait())
             .addTrait(ModelTraitLibrary.externalModelDelegatedItem())
             .buildAndRegister();
@@ -615,6 +621,7 @@ public class EndBlocks {
 
     public static final Block LUCERNIA_OUTER_LEAVES = defineBlockOnly("lucernia_outer_leaves", FurBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_RED, 0, false, 32, LUCERNIA_SAPLING, false))
+            .addTrait(VegetationTagTrait.plant())
             .addTrait(noLootTableTrait())
             .addTrait(ModelTraitLibrary.externalModelDelegatedItem(() -> BetterEnd.C.mk("block/lucernia_outer_leaves_1")))
             .buildAndRegister();
@@ -879,7 +886,7 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PINK, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
-            .addTrait(BlockTraits.MINEABLE_WITH.needsHoe())
+            .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .addTrait(ModelTraitLibrary.externalModel())
             .lightLevel(GlowLichenBlock.emission(7))
@@ -910,6 +917,7 @@ public class EndBlocks {
 
     public static final Block BLUE_VINE_FUR = defineBlock("blue_vine_fur", FurBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, 15, BLUE_VINE_SEED, false))
+            .addTrait(VegetationTagTrait.plant())
             .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
             .buildAndRegister();
 
@@ -978,6 +986,7 @@ public class EndBlocks {
 
     public static final Block GLOWING_PILLAR_LEAVES = defineBlock("glowing_pillar_leaves", FurBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_ORANGE, 0, false, 15, GLOWING_PILLAR_SEED, false))
+            .addTrait(VegetationTagTrait.plant())
             .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
             .buildAndRegister();
 
@@ -1072,6 +1081,7 @@ public class EndBlocks {
             .buildAndRegister();
     public static final Block AMARANITA_FUR = defineBlock("amaranita_fur", FurBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_CYAN, 0, false, 15, SMALL_AMARANITA_MUSHROOM, false))
+            .addTrait(VegetationTagTrait.plant())
             .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
             .buildAndRegister();
     public static final Block AMARANITA_CAP = defineBlock("amaranita_cap", AmaranitaCapBlock::new)
@@ -1295,6 +1305,7 @@ public class EndBlocks {
     public static final Block FLAMAEA = defineBlock("flamaea", FlamaeaBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
             .addTrait(VegetationTagTrait.plant())
+            .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
             .addTrait(SurvivesOnBlockTrait.withBlocks(Blocks.WATER))
             .addTrait(ModelTraitLibrary.externalModel())
             .sound(SoundType.WET_GRASS)
@@ -1591,6 +1602,7 @@ public class EndBlocks {
             IRON_SET.getBlock(MetalMaterial.BULB_LANTERN),
             false,
             def -> def.addTrait(ModCore.isDatagen() ? BulbVineLanternBlock.buildModel(null, null) : null)
+                      .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
     );
 
 

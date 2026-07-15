@@ -1,6 +1,6 @@
 package org.betterx.betterend.world.features;
 
-import org.betterx.bclib.blocks.BaseDoublePlantBlock;
+import org.betterx.betterend.blocks.basis.EndDoublePlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 
@@ -41,11 +41,11 @@ public class DoublePlantFeature extends ScatterFeature<DoublePlantFeatureConfig>
             RandomSource random,
             BlockPos blockPos
     ) {
-        if (plant.getBlock() instanceof BaseDoublePlantBlock dpb) {
+        if (plant.getBlock() instanceof EndDoublePlantBlock dpb) {
             int rot = random.nextInt(4);
-            BlockState state = plant.setValue(BaseDoublePlantBlock.ROTATION, rot);
+            BlockState state = plant.setValue(EndDoublePlantBlock.ROTATION, rot);
             BlocksHelper.setWithoutUpdate(world, blockPos, state);
-            BlocksHelper.setWithoutUpdate(world, blockPos.above(), state.setValue(BaseDoublePlantBlock.TOP, true));
+            BlocksHelper.setWithoutUpdate(world, blockPos.above(), state.setValue(EndDoublePlantBlock.TOP, true));
         } else {
             BlocksHelper.setWithoutUpdate(world, blockPos, plant);
         }

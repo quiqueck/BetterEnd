@@ -1,6 +1,6 @@
 package org.betterx.betterend.util;
 
-import org.betterx.bclib.blocks.BaseDoublePlantBlock;
+import org.betterx.betterend.blocks.basis.EndDoublePlantBlock;
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.bclib.blocks.StalactiteBlock;
 import org.betterx.bclib.util.BlocksHelper;
@@ -198,7 +198,7 @@ public class BlockFixer {
                             }
                         }
                         // Double plants
-                        if (state.getBlock() instanceof BaseDoublePlantBlock) {
+                        if (state.getBlock() instanceof EndDoublePlantBlock) {
                             setWithoutUpdate(level, POS, AIR);
                             POS.setY(POS.getY() + 1);
                             setWithoutUpdate(level, POS, AIR);

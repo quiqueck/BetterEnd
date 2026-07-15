@@ -1,6 +1,6 @@
 package org.betterx.betterend.world.features;
 
-import org.betterx.bclib.blocks.BaseDoublePlantBlock;
+import org.betterx.betterend.blocks.basis.EndDoublePlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
 
 import net.minecraft.core.BlockPos;
@@ -32,11 +32,11 @@ public class UnderwaterPlantFeature extends UnderwaterPlantScatter<SinglePlantFe
 
     @Override
     public void generate(SinglePlantFeatureConfig cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos) {
-        if (plant.getBlock() instanceof BaseDoublePlantBlock) {
+        if (plant.getBlock() instanceof EndDoublePlantBlock) {
             int rot = random.nextInt(4);
-            BlockState state = plant.setValue(BaseDoublePlantBlock.ROTATION, rot);
+            BlockState state = plant.setValue(EndDoublePlantBlock.ROTATION, rot);
             BlocksHelper.setWithoutUpdate(world, blockPos, state);
-            BlocksHelper.setWithoutUpdate(world, blockPos.above(), state.setValue(BaseDoublePlantBlock.TOP, true));
+            BlocksHelper.setWithoutUpdate(world, blockPos.above(), state.setValue(EndDoublePlantBlock.TOP, true));
         } else {
             BlocksHelper.setWithoutUpdate(world, blockPos, plant);
         }

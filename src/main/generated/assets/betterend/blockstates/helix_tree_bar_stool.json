@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "betterend:block/helix_tree_bar_stool"
+    },
+    "facing=north": {
+      "model": "betterend:block/helix_tree_bar_stool",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "betterend:block/helix_tree_bar_stool",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "betterend:block/helix_tree_bar_stool",
+      "y": 180
+    }
+  }
+}

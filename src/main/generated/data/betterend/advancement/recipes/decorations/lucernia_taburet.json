@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lucernia_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:lucernia_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_stick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:stick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:lucernia_taburet"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lucernia_slab",
+      "has_stick"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:lucernia_taburet"
+    ]
+  }
+}

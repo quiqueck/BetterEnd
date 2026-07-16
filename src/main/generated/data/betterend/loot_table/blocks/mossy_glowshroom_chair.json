@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "betterend:mossy_glowshroom_chair",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "top": "false"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "betterend:mossy_glowshroom_chair"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

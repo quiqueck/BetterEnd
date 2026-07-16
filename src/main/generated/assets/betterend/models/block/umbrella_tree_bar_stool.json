@@ -1,0 +1,7 @@
+{
+  "parent": "bclib:block/bar_stool",
+  "textures": {
+    "cloth": "minecraft:block/magenta_wool",
+    "texture": "betterend:block/umbrella_tree_planks"
+  }
+}

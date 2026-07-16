@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "taburet",
+  "key": {
+    "#": "betterend:umbrella_tree_slab",
+    "I": "minecraft:stick"
+  },
+  "pattern": [
+    "##",
+    "II"
+  ],
+  "result": {
+    "count": 1,
+    "id": "betterend:umbrella_tree_taburet"
+  }
+}

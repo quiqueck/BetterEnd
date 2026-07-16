@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "taburet",
+  "key": {
+    "#": "betterend:end_lotus_slab",
+    "I": "minecraft:stick"
+  },
+  "pattern": [
+    "##",
+    "II"
+  ],
+  "result": {
+    "count": 1,
+    "id": "betterend:end_lotus_taburet"
+  }
+}

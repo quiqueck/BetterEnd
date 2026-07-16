@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "betterend:lucernia_chair",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "top": "false"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "betterend:lucernia_chair"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

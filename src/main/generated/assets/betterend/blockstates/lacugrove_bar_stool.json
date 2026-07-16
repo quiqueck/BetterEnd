@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "betterend:block/lacugrove_bar_stool"
+    },
+    "facing=north": {
+      "model": "betterend:block/lacugrove_bar_stool",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "betterend:block/lacugrove_bar_stool",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "betterend:block/lacugrove_bar_stool",
+      "y": 180
+    }
+  }
+}

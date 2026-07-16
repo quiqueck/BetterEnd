@@ -386,7 +386,8 @@ public class EndBlocks {
             "mossy_glowshroom",
             MapColor.COLOR_GRAY,
             MapColor.WOOD
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.GRAY_WOOL)
+     .buildAndRegister();
 
     public static final Block PYTHADENDRON_SAPLING = defineBlock("pythadendron_sapling", PythadendronSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_PURPLE))
@@ -407,7 +408,8 @@ public class EndBlocks {
             "pythadendron",
             MapColor.COLOR_MAGENTA,
             MapColor.COLOR_PURPLE
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.BLACK_WOOL)
+     .buildAndRegister();
 
     public static final Block END_LOTUS_SEED = defineBlock("end_lotus_seed", EndLotusSeedBlock::new)
             .addTrait(WaterSeedBlockTrait.withColor(MapColor.COLOR_CYAN, 0, false))
@@ -456,7 +458,8 @@ public class EndBlocks {
             "end_lotus",
             MapColor.COLOR_LIGHT_BLUE,
             MapColor.COLOR_CYAN
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.LIGHT_BLUE_WOOL)
+     .buildAndRegister();
 
     public static final Block LACUGROVE_SAPLING = defineBlock("lacugrove_sapling", LacugroveSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_CYAN))
@@ -474,7 +477,8 @@ public class EndBlocks {
             "lacugrove",
             MapColor.COLOR_BROWN,
             MapColor.COLOR_YELLOW
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.CYAN_WOOL)
+     .buildAndRegister();
 
     public static final Block DRAGON_TREE_SAPLING = defineBlock("dragon_tree_sapling", DragonTreeSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_MAGENTA))
@@ -492,7 +496,8 @@ public class EndBlocks {
             "dragon_tree",
             MapColor.COLOR_BLACK,
             MapColor.COLOR_MAGENTA
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.BLACK_WOOL)
+     .buildAndRegister();
 
     public static final Block TENANEA_SAPLING = defineBlock("tenanea_sapling", TenaneaSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_PINK))
@@ -522,7 +527,8 @@ public class EndBlocks {
             "tenanea",
             MapColor.COLOR_BROWN,
             MapColor.COLOR_PINK
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.PINK_WOOL)
+     .buildAndRegister();
 
     public static final Block HELIX_TREE_SAPLING = defineBlock("helix_tree_sapling", HelixTreeSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_ORANGE))
@@ -540,7 +546,8 @@ public class EndBlocks {
             "helix_tree",
             MapColor.COLOR_GRAY,
             MapColor.COLOR_ORANGE
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.GRAY_WOOL)
+     .buildAndRegister();
 
     public static final Block UMBRELLA_TREE_SAPLING = defineBlock(
             "umbrella_tree_sapling",
@@ -585,7 +592,8 @@ public class EndBlocks {
             "umbrella_tree",
             MapColor.COLOR_BLUE,
             MapColor.COLOR_GREEN
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.MAGENTA_WOOL)
+     .buildAndRegister();
 
     public static final Block JELLYSHROOM_CAP_PURPLE = defineBlock(
             "jellyshroom_cap_purple",
@@ -607,7 +615,8 @@ public class EndBlocks {
             "jellyshroom",
             MapColor.COLOR_PURPLE,
             MapColor.COLOR_LIGHT_BLUE
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.PURPLE_WOOL)
+     .buildAndRegister();
 
     public static final Block LUCERNIA_SAPLING = defineBlock("lucernia_sapling", LucerniaSaplingBlock::new)
             .addTrait(SaplingBlockTrait.withColor(MapColor.COLOR_ORANGE))
@@ -631,7 +640,8 @@ public class EndBlocks {
             "lucernia",
             MapColor.COLOR_ORANGE,
             MapColor.COLOR_ORANGE
-    ).buildAndRegister();
+    ).setFurnitureCloth(Blocks.WHITE_WOOL)
+     .buildAndRegister();
 
     public static final EndWoodenComplexMaterial LUCERNIA_JELLY = new JellyLucerniaWoodMaterial().buildAndRegister();
 

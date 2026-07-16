@@ -14,6 +14,8 @@ import org.betterx.wover.item.api.client.trait.ItemModelTrait;
 import org.betterx.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.world.item.BlockItem;
 
@@ -45,6 +47,18 @@ public class EndModelProvider extends WoverModelProvider {
             var item = entry.getValue();
             if (item instanceof BlockItem blockItem && generator.hasItemModel(blockItem.getBlock())) return;
             if (ClientItemTraits.MODEL.getRuntimeTraits(item) != null) return;
+
+            if (item instanceof BlockItem blockItem) {
+                // A block item whose block generated a block model but registered no item model for it - e.g.
+                // the wooden furniture, whose model trait only emits the block model. Delegate to that block
+                // model, which is what these shipped pre-migration; the flat fallback below would look for an
+                // item/<name> texture, which does not exist for a block.
+                itemModelGenerator.itemModelOutput.accept(
+                        item,
+                        ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(blockItem.getBlock()))
+                );
+                return;
+            }
             itemModelGenerator.generateFlatItem(item, ModelTemplates.FLAT_ITEM);
         });
     }

@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_jellyshroom_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:jellyshroom_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_stick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:stick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:jellyshroom_bar_stool"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_jellyshroom_slab",
+      "has_stick"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:jellyshroom_bar_stool"
+    ]
+  }
+}

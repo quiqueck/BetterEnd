@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:stick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_tenanea_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:tenanea_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:tenanea_bar_stool"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tenanea_slab",
+      "has_stick"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:tenanea_bar_stool"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "facing=east,top=false": {
+      "model": "betterend:block/pythadendron_chair",
+      "y": 90
+    },
+    "facing=east,top=true": {
+      "model": "betterend:block/pythadendron_planks_particles"
+    },
+    "facing=north,top=false": {
+      "model": "betterend:block/pythadendron_chair"
+    },
+    "facing=north,top=true": {
+      "model": "betterend:block/pythadendron_planks_particles"
+    },
+    "facing=south,top=false": {
+      "model": "betterend:block/pythadendron_chair",
+      "y": 180
+    },
+    "facing=south,top=true": {
+      "model": "betterend:block/pythadendron_planks_particles"
+    },
+    "facing=west,top=false": {
+      "model": "betterend:block/pythadendron_chair",
+      "y": 270
+    },
+    "facing=west,top=true": {
+      "model": "betterend:block/pythadendron_planks_particles"
+    }
+  }
+}

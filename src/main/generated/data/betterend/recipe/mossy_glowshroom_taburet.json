@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "taburet",
+  "key": {
+    "#": "betterend:mossy_glowshroom_slab",
+    "I": "minecraft:stick"
+  },
+  "pattern": [
+    "##",
+    "II"
+  ],
+  "result": {
+    "count": 1,
+    "id": "betterend:mossy_glowshroom_taburet"
+  }
+}

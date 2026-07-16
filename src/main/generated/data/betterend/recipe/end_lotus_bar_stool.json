@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "bar_stool",
+  "key": {
+    "#": "betterend:end_lotus_slab",
+    "I": "minecraft:stick"
+  },
+  "pattern": [
+    "##",
+    "II",
+    "II"
+  ],
+  "result": {
+    "count": 1,
+    "id": "betterend:end_lotus_bar_stool"
+  }
+}

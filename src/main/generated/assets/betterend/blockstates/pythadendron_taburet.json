@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "betterend:block/pythadendron_taburet"
+    },
+    "facing=north": {
+      "model": "betterend:block/pythadendron_taburet",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "betterend:block/pythadendron_taburet",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "betterend:block/pythadendron_taburet",
+      "y": 180
+    }
+  }
+}

@@ -204,28 +204,43 @@ public class FlowerPotBlock extends EndBlockNotFull implements EntityBlock {
         return SHAPE_EMPTY;
     }
 
-    @Environment(EnvType.CLIENT)
+    /**
+     * The lambda below must not live directly in this method: annotations like
+     * @Environment(CLIENT) on an enclosing method are not applied to the synthetic method javac
+     * generates for the lambda body, so Fabric's stripper leaves that synthetic method (and its
+     * references to vanilla client-only datagen types) behind in this class file. Since
+     * FlowerPotBlock itself is always loaded on the server (it's instantiated for real blocks),
+     * verifying that orphaned method would crash server startup. Keeping the lambda in a separate,
+     * never-unconditionally-loaded class file avoids that.
+     */
     public static BlockModelTrait buildModel() {
-        return ClientBlockTraits.MODEL.with(
-                (key, block, generator) -> {
-                    final ResourceLocation texture = TextureMapping.getBlockTexture(block);
-                    final ResourceLocation location = EndModels.FLOWER_POT.create(
-                            block,
-                            new TextureMapping().put(TextureSlot.TEXTURE, texture),
-                            generator.modelOutput()
-                    );
-                    final var variant = BlockModelGenerators.plainVariant(location);
-                    generator.acceptBlockState(
-                            MultiVariantGenerator
-                                    .dispatch(block)
-                                    .with(PropertyDispatch.initial(POT_LIGHT)
-                                                           .select(0, variant)
-                                                           .select(1, variant)
-                                                           .select(2, variant)
-                                                           .select(3, variant))
-                    );
-                    generator.delegateItemModel(block, location);
-                });
+        return ClientModel.build();
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static class ClientModel {
+        private static BlockModelTrait build() {
+            return ClientBlockTraits.MODEL.with(
+                    (key, block, generator) -> {
+                        final ResourceLocation texture = TextureMapping.getBlockTexture(block);
+                        final ResourceLocation location = EndModels.FLOWER_POT.create(
+                                block,
+                                new TextureMapping().put(TextureSlot.TEXTURE, texture),
+                                generator.modelOutput()
+                        );
+                        final var variant = BlockModelGenerators.plainVariant(location);
+                        generator.acceptBlockState(
+                                MultiVariantGenerator
+                                        .dispatch(block)
+                                        .with(PropertyDispatch.initial(POT_LIGHT)
+                                                              .select(0, variant)
+                                                              .select(1, variant)
+                                                              .select(2, variant)
+                                                              .select(3, variant))
+                        );
+                        generator.delegateItemModel(block, location);
+                    });
+        }
     }
 
     static {

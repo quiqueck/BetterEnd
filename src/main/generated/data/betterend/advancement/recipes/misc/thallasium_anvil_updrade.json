@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item.betterend.terminite_upgrade": {
+    "has_item.betterend.terminite_upgrade_smithing_template": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:terminite_upgrade"
+            "items": "betterend:terminite_upgrade_smithing_template"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_item.betterend.terminite_upgrade"
+      "has_item.betterend.terminite_upgrade_smithing_template"
     ]
   ],
   "rewards": {

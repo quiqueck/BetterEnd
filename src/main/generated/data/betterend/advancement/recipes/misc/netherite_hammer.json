@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item.betterend.netherite_upgrade": {
+    "has_item.betterend.netherite_upgrade_smithing_template": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:netherite_upgrade"
+            "items": "betterend:netherite_upgrade_smithing_template"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_item.betterend.netherite_upgrade"
+      "has_item.betterend.netherite_upgrade_smithing_template"
     ]
   ],
   "rewards": {

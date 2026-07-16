@@ -4,7 +4,7 @@
   "key": {
     "#": "minecraft:diamond",
     "C": "minecraft:leather",
-    "S": "betterend:leather_handle_attachment"
+    "S": "betterend:leather_handle_attachment_smithing_template"
   },
   "pattern": [
     "#S#",
@@ -13,6 +13,6 @@
   ],
   "result": {
     "count": 2,
-    "id": "betterend:leather_handle_attachment"
+    "id": "betterend:leather_handle_attachment_smithing_template"
   }
 }

@@ -21,11 +21,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_leather_handle_attachment": {
+    "has_leather_handle_attachment_smithing_tem": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:leather_handle_attachment"
+            "items": "betterend:leather_handle_attachment_smithing_template"
           }
         ]
       },
@@ -41,7 +41,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_leather_handle_attachment",
+      "has_leather_handle_attachment_smithing_tem",
       "has_leather",
       "has_diamond"
     ]

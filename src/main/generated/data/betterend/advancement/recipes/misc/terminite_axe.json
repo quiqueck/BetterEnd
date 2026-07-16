@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item.betterend.handle_attachment": {
+    "has_item.betterend.handle_attachment_smithing_template": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:handle_attachment"
+            "items": "betterend:handle_attachment_smithing_template"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_item.betterend.handle_attachment"
+      "has_item.betterend.handle_attachment_smithing_template"
     ]
   ],
   "rewards": {

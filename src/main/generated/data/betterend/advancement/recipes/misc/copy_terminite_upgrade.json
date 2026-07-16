@@ -21,11 +21,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_terminite_upgrade": {
+    "has_terminite_upgrade_smithing_template": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:terminite_upgrade"
+            "items": "betterend:terminite_upgrade_smithing_template"
           }
         ]
       },
@@ -41,9 +41,9 @@
   "requirements": [
     [
       "has_the_recipe",
+      "has_terminite_upgrade_smithing_template",
       "has_terminite_ingot",
-      "has_stick",
-      "has_terminite_upgrade"
+      "has_stick"
     ]
   ],
   "rewards": {

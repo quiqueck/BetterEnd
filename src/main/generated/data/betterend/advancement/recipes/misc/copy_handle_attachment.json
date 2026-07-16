@@ -11,11 +11,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_handle_attachment": {
+    "has_handle_attachment_smithing_template": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:handle_attachment"
+            "items": "betterend:handle_attachment_smithing_template"
           }
         ]
       },
@@ -41,8 +41,8 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_handle_attachment",
       "has_stick",
+      "has_handle_attachment_smithing_template",
       "has_diamond"
     ]
   ],

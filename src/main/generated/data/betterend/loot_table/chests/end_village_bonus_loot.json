@@ -19,7 +19,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:leather_handle_attachment"
+          "name": "betterend:leather_handle_attachment_smithing_template"
         }
       ],
       "rolls": 1.0
@@ -46,7 +46,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:plate_upgrade"
+          "name": "betterend:plate_upgrade_smithing_template"
         }
       ],
       "rolls": 1.0

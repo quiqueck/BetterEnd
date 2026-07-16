@@ -4,7 +4,7 @@
   "key": {
     "#": "minecraft:diamond",
     "C": "minecraft:netherrack",
-    "S": "betterend:netherite_upgrade"
+    "S": "betterend:netherite_upgrade_smithing_template"
   },
   "pattern": [
     "#S#",
@@ -13,6 +13,6 @@
   ],
   "result": {
     "count": 2,
-    "id": "betterend:netherite_upgrade"
+    "id": "betterend:netherite_upgrade_smithing_template"
   }
 }

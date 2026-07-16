@@ -643,7 +643,9 @@ public class EndBlocks {
     ).setFurnitureCloth(Blocks.WHITE_WOOL)
      .buildAndRegister();
 
-    public static final EndWoodenComplexMaterial LUCERNIA_JELLY = new JellyLucerniaWoodMaterial().buildAndRegister();
+    public static final EndWoodenComplexMaterial LUCERNIA_JELLY = new JellyLucerniaWoodMaterial()
+            .setFurnitureCloth(Blocks.BROWN_WOOL)
+            .buildAndRegister();
 
     // Small Plants //
     public static final Block UMBRELLA_MOSS = defineBlock("umbrella_moss", UmbrellaMossBlock::new)

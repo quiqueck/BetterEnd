@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "taburet",
+  "key": {
+    "#": "betterend:lucernia_planks",
+    "I": "minecraft:stick"
+  },
+  "pattern": [
+    "##",
+    "II"
+  ],
+  "result": {
+    "count": 1,
+    "id": "betterend:lucernia_jellyshroom_taburet"
+  }
+}

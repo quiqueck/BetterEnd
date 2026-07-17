@@ -36,8 +36,9 @@ public class Ore extends SlotFromDefinition {
     ) {
         // BaseOreBlock retired: a plain DropExperienceBlock whose ctor keeps the original 3/9 SAND STONE
         // properties (running last, it wins over MetalMaterial.addCommonBlockDefinitions' metal defaults),
-        // plus the ORE_BLOCK trait (c:ores + pickaxe tag) and the parameterized ore-loot trait that together
-        // reproduce what BaseOreBlock's BehaviourOre marker and BlockLootProvider used to supply.
+        // plus ORE_BLOCK.dropping(rawOre, 1, 3), which bundles the ORE_BLOCK classification (c:ores + pickaxe
+        // tag) with the parameterized ore-loot trait - together reproducing what BaseOreBlock's BehaviourOre
+        // marker and BlockLootProvider used to supply.
         return registry.defineDefaultBlock(
                 name,
                 (def) -> new DropExperienceBlock(
@@ -49,8 +50,7 @@ public class Ore extends SlotFromDefinition {
                                 .sound(SoundType.STONE)
                 )
         )
-                .addTrait(BlockTraits.ORE_BLOCK)
-                .addTrait(BlockTraits.LOOT_TABLE.dropOre(() -> metalMaterial.rawOre, 1, 3));
+                .addTrait(BlockTraits.ORE_BLOCK.dropping(() -> metalMaterial.rawOre, 1, 3));
     }
 
     @Override

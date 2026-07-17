@@ -1506,18 +1506,16 @@ public class EndBlocks {
             "ender_ore",
             p -> new DropExperienceBlock(UniformInt.of(1, 5), p)
     )
-            .addTrait(BlockTraits.ORE_BLOCK)
+            .addTrait(BlockTraits.ORE_BLOCK.dropping(() -> EndItems.ENDER_SHARD, 1, 3))
             .addTrait(ModelTraitLibrary.cube())
-            .addTrait(BlockTraits.LOOT_TABLE.dropOre(() -> EndItems.ENDER_SHARD, 1, 3))
             .strength(2, 6)
             .buildAndRegister();
     public static final Block AMBER_ORE = defineBlock(
             "amber_ore",
             p -> new DropExperienceBlock(UniformInt.of(1, 4), p)
     )
-            .addTrait(BlockTraits.ORE_BLOCK)
+            .addTrait(BlockTraits.ORE_BLOCK.dropping(() -> EndItems.RAW_AMBER, 1, 2))
             .addTrait(ModelTraitLibrary.cube())
-            .addTrait(BlockTraits.LOOT_TABLE.dropOre(() -> EndItems.RAW_AMBER, 1, 2))
             .strength(2, 6)
             .buildAndRegister();
 

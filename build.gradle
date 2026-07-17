@@ -135,6 +135,9 @@ repositories {
 }
 
 processResources {
+    // block_properties.txt is a committed property-audit snapshot (see BlockPropertiesProvider); it lives in
+    // the resources source set so git tracks it, but it is not a runtime asset - keep it out of the jar.
+    exclude 'block_properties.txt'
     println "Version: ${project.version}"
     inputs.property "version", project.version
     filesMatching("fabric.mod.json") {
@@ -155,6 +158,8 @@ tasks.withType(JavaCompile) {
 // If you remove this task, sources will not be generated.
 task sourcesJar(type: Jar, dependsOn: classes) {
     archiveClassifier = "sources"
+    // Same property-audit snapshot as processResources - committed, but not shipped in the sources jar.
+    exclude 'block_properties.txt'
     from sourceSets.main.allSource
 }
 

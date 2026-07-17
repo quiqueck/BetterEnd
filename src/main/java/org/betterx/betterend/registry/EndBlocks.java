@@ -2,7 +2,6 @@ package org.betterx.betterend.registry;
 
 import org.betterx.bclib.api.v3.tag.BCLBlockTags;
 import org.betterx.bclib.blocks.BaseAnvilBlock;
-import org.betterx.bclib.blocks.BaseOreBlock;
 import org.betterx.bclib.blocks.BaseTerrainBlock;
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.bclib.blocks.SimpleLeavesBlock;
@@ -41,6 +40,7 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -1497,19 +1497,28 @@ public class EndBlocks {
             .buildAndRegister();
 
     // Ores //
+    // ENDER_ORE / AMBER_ORE were BaseOreBlock + STONE_BLOCK: they took their 2/6 strength from
+    // STONE_BLOCK, not from BaseOreBlock's 3/9 ctor defaults. Reparent to a plain DropExperienceBlock +
+    // ORE_BLOCK (which supplies c:ores, the pickaxe tag and the ore loot trait) and chain strength(2,6)
+    // AFTER the trait so the original 2/6 wins (WorldWeaver 5dcd992 call-order rule). END_STONES and
+    // (for ender_ore) DRAGON_IMMUNE are added by BetterEnd's own BlockTagProvider, so they are unaffected.
     public static final Block ENDER_ORE = defineBlock(
             "ender_ore",
-            p -> new BaseOreBlock(p, () -> EndItems.ENDER_SHARD, 1, 3, 5)
+            p -> new DropExperienceBlock(UniformInt.of(1, 5), p)
     )
-            .addTrait(BlockTraits.STONE_BLOCK)
+            .addTrait(BlockTraits.ORE_BLOCK)
             .addTrait(ModelTraitLibrary.cube())
+            .addTrait(BlockTraits.LOOT_TABLE.dropOre(() -> EndItems.ENDER_SHARD, 1, 3))
+            .strength(2, 6)
             .buildAndRegister();
     public static final Block AMBER_ORE = defineBlock(
             "amber_ore",
-            p -> new BaseOreBlock(p, () -> EndItems.RAW_AMBER, 1, 2, 4)
+            p -> new DropExperienceBlock(UniformInt.of(1, 4), p)
     )
-            .addTrait(BlockTraits.STONE_BLOCK)
+            .addTrait(BlockTraits.ORE_BLOCK)
             .addTrait(ModelTraitLibrary.cube())
+            .addTrait(BlockTraits.LOOT_TABLE.dropOre(() -> EndItems.RAW_AMBER, 1, 2))
+            .strength(2, 6)
             .buildAndRegister();
 
     // Materials //

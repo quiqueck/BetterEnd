@@ -1,17 +1,19 @@
 package org.betterx.betterend.complexmaterials.types;
 
 import org.betterx.bclib.behaviours.BehaviourBuilders;
-import org.betterx.bclib.blocks.BaseOreBlock;
 import org.betterx.betterend.complexmaterials.MetalMaterial;
 import org.betterx.wover.block.api.BlockDefinition;
 import org.betterx.wover.block.api.BlockRegistry;
 import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
 import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.trait.BlockTraitLookup;
+import org.betterx.wover.block.api.trait.BlockTraits;
 import org.betterx.wover.sets.api.blocks.BlockSet;
 import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
 
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 
@@ -32,17 +34,23 @@ public class Ore extends SlotFromDefinition {
             @NotNull BlockSet<?> set,
             @NotNull String name
     ) {
+        // BaseOreBlock retired: a plain DropExperienceBlock whose ctor keeps the original 3/9 SAND STONE
+        // properties (running last, it wins over MetalMaterial.addCommonBlockDefinitions' metal defaults),
+        // plus the ORE_BLOCK trait (c:ores + pickaxe tag) and the parameterized ore-loot trait that together
+        // reproduce what BaseOreBlock's BehaviourOre marker and BlockLootProvider used to supply.
         return registry.defineDefaultBlock(
                 name,
-                (def) -> new BaseOreBlock(
+                (def) -> new DropExperienceBlock(
+                        UniformInt.of(1, 1),
                         BehaviourBuilders.createStone(def.getProperties(), MapColor.SAND)
                                 .requiresCorrectToolForDrops()
                                 .destroyTime(3F)
                                 .explosionResistance(9F)
-                                .sound(SoundType.STONE),
-                        () -> metalMaterial.rawOre, 1, 3, 1
+                                .sound(SoundType.STONE)
                 )
-        );
+        )
+                .addTrait(BlockTraits.ORE_BLOCK)
+                .addTrait(BlockTraits.LOOT_TABLE.dropOre(() -> metalMaterial.rawOre, 1, 3));
     }
 
     @Override

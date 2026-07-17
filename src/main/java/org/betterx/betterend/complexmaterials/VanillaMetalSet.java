@@ -1,6 +1,7 @@
 package org.betterx.betterend.complexmaterials;
 
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.trait.block.CopyPropertiesBlockTrait;
 import org.betterx.wover.block.api.BlockDefinition;
 import org.betterx.wover.block.api.trait.BlockTraits;
 import org.betterx.wover.sets.api.blocks.BlockSet;
@@ -34,14 +35,11 @@ public class VanillaMetalSet extends BlockSet<VanillaMetalSet> {
     }
 
     @Override
-    protected void addBaseBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
-        // Base-copy must be the chain-start; this hook runs before the slot's own configuration.
-        blockDefinition.replacePropertiesWithCopy(baseBlock);
-    }
-
-    @Override
     protected void addCommonBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
-        blockDefinition.addTrait(BlockTraits.METAL_BLOCK);
+        blockDefinition
+                // Base-copy as a trait (guard-exempt, runs during build()); METAL_BLOCK layers on top.
+                .addTrait(CopyPropertiesBlockTrait.of(baseBlock))
+                .addTrait(BlockTraits.METAL_BLOCK);
     }
 
     @Override

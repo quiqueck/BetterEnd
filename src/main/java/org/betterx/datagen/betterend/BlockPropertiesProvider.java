@@ -10,6 +10,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -17,11 +18,14 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,6 +54,42 @@ public class BlockPropertiesProvider implements WoverDataProvider<DataProvider> 
         } catch (NoSuchFieldException e) {
             throw new IllegalStateException("Could not resolve BlockBehaviour.hasCollision for the block audit", e);
         }
+    }
+
+    /**
+     * A stable name for every {@link SoundType} constant, resolved by reflecting over {@link SoundType}'s
+     * public static final fields and keying by identity. Lets the audit print e.g. {@code sound=METAL} /
+     * {@code sound=NETHERRACK} instead of an unstable {@code toString()}, so a change to a block's
+     * {@link SoundType} shows up as a reviewable diff.
+     */
+    private static final Map<SoundType, String> SOUND_TYPE_NAMES = resolveSoundTypeNames();
+
+    private static Map<SoundType, String> resolveSoundTypeNames() {
+        final Map<SoundType, String> map = new IdentityHashMap<>();
+        for (Field field : SoundType.class.getFields()) {
+            if (Modifier.isStatic(field.getModifiers())
+                    && Modifier.isFinal(field.getModifiers())
+                    && SoundType.class.equals(field.getType())) {
+                try {
+                    map.put((SoundType) field.get(null), field.getName());
+                } catch (IllegalAccessException e) {
+                    throw new IllegalStateException("Could not read SoundType." + field.getName(), e);
+                }
+            }
+        }
+        return map;
+    }
+
+    /**
+     * The stable name of the block's {@link SoundType} (e.g. {@code METAL}, {@code STONE}, {@code NETHERRACK}),
+     * or, for a {@link SoundType} that is not one of {@link SoundType}'s named constants (a modded or inline
+     * instance), a lowercase {@code path:<break-sound-path>} fallback so the value is still deterministic.
+     */
+    private static String soundName(Block block) {
+        final SoundType soundType = block.defaultBlockState().getSoundType();
+        final String name = SOUND_TYPE_NAMES.get(soundType);
+        if (name != null) return name;
+        return "path:" + soundType.getBreakSound().location().getPath();
     }
 
     protected final ModCore modCore;
@@ -88,6 +128,7 @@ public class BlockPropertiesProvider implements WoverDataProvider<DataProvider> 
                 + "  reqTool=" + state.requiresCorrectToolForDrops()
                 + "  mapColor=" + (mapColor == null ? -1 : mapColor.id)
                 + "  instrument=" + state.instrument().name()
+                + "  sound=" + soundName(block)
                 + "  friction=" + block.getFriction()
                 + "  speed=" + block.getSpeedFactor()
                 + "  jump=" + block.getJumpFactor()

@@ -213,15 +213,33 @@ public class ToolsWithHeadsSet extends EquipmentSet {
     }
 
 
-    private ItemRecipeTrait.RecipeFactory buildHeadRecipe(int inputCount) {
-        return (key, item, context) -> BCLRecipeBuilder
-                .anvil(key.location(), item)
-                .setPrimaryInput(ingot)
-                .setInputCount(inputCount)
-                .setAnvilLevel(toolTier.level)
-                .setAllowedTools(this.anvilTools)
-                .setDamage(toolTier.level)
-                .build(context);
+    /**
+     * Whether the head/blade anvil recipes are derived from the items' recipe traits.
+     * <p>
+     * A set whose head recipes are hand-written in a recipe provider must return {@code false} here: otherwise
+     * the trait and the provider both claim the same recipe path, and which file ships is decided by provider
+     * order rather than by design.
+     *
+     * @return {@code true} to derive the head recipes from the trait
+     */
+    protected boolean hasAutoHeadRecipes() {
+        return true;
+    }
 
+    private ItemRecipeTrait.RecipeFactory buildHeadRecipe(int inputCount) {
+        return (key, item, context) -> {
+            // Queried here rather than when the trait is created, so that the value is read once the set is
+            // fully constructed.
+            if (!hasAutoHeadRecipes()) return;
+
+            BCLRecipeBuilder
+                    .anvil(key.location(), item)
+                    .setPrimaryInput(ingot)
+                    .setInputCount(inputCount)
+                    .setAnvilLevel(toolTier.level)
+                    .setAllowedTools(this.anvilTools)
+                    .setDamage(toolTier.level)
+                    .build(context);
+        };
     }
 }

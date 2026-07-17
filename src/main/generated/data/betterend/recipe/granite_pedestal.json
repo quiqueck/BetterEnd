@@ -1,10 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "end_stone_pedestal",
   "key": {
-    "#": "minecraft:granite",
-    "S": "minecraft:granite"
+    "#": "minecraft:polished_granite",
+    "S": "minecraft:polished_granite_slab"
   },
   "pattern": [
     "S",

@@ -84,6 +84,14 @@ public class AeterniumSet extends ToolsWithHeadsSet {
         return super.commonToolProperties(properties).fireResistant();
     }
 
+    @Override
+    protected boolean hasAutoHeadRecipes() {
+        // Aeternium's head/blade recipes are hand-written in AnvilRecipesProvider: one ingot each, damage 6 and
+        // diamond-level tools for the sword blade. The generic trait would instead ask for up to three ingots,
+        // set the damage to the tool tier and allow netherite tools for the blade, so let the provider own them.
+        return false;
+    }
+
     public @NotNull Item pickaxe() {
         return this.get(ToolSlot.PICKAXE_SLOT);
     }

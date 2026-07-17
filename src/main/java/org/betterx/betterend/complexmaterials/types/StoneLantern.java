@@ -46,11 +46,17 @@ public class StoneLantern extends SlotFromDefinition {
     protected BlockRecipeTrait buildRecipe(BlockSet<?> set, BlockTraitLookup traitLookup) {
         return BlockTraits.RECIPE.with(
                 (key, block, context) -> {
+                    // Sets without a SLAB slot (the vanilla-backed stone sets) cannot name their matching vanilla
+                    // slab here; a fallback would silently resolve to the source block and make the lantern
+                    // craftable from full blocks. Those sets declare the recipe by hand instead
+                    // (EndCraftingRecipesProvider#registerLantern), so skip rather than emit a wrong recipe.
+                    if (set.getBlock(SlotType.SLAB) == null) return;
+
                     RecipeBuilder
                             .crafting(key.location(), block)
                             .shape("S", "#", "S")
                             .addMaterial('#', EndItems.CRYSTAL_SHARDS)
-                            .addMaterial('S', set.recipeMaterialWithFallback(SlotType.SLAB))
+                            .addMaterial('S', set.recipeMaterial(SlotType.SLAB))
                             .group("end_stone_lanterns")
                             .build(context);
                 });

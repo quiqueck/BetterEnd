@@ -5,36 +5,43 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:any_of",
-          "terms": [
-            {
-              "condition": "minecraft:match_tool",
-              "predicate": {
-                "items": "minecraft:shears"
-              }
-            },
-            {
-              "condition": "minecraft:match_tool",
-              "predicate": {
-                "predicates": {
-                  "minecraft:enchantments": [
-                    {
-                      "enchantments": "minecraft:silk_touch",
-                      "levels": {
-                        "min": 1
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          ]
+          "block": "betterend:lanceleaf",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "shape": "bottom"
+          }
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "betterend:lanceleaf"
+          "name": "betterend:lanceleaf_seed"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:inverted",
+          "term": {
+            "block": "betterend:lanceleaf",
+            "condition": "minecraft:block_state_property",
+            "properties": {
+              "shape": "bottom"
+            }
+          }
+        },
+        {
+          "chance": 0.5,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "betterend:lanceleaf_seed"
         }
       ],
       "rolls": 1.0

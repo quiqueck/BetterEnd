@@ -1,8 +1,6 @@
 package org.betterx.datagen.betterend.recipes;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.complexmaterials.MetalMaterial;
-import org.betterx.betterend.complexmaterials.types.Furnace;
 import org.betterx.betterend.complexmaterials.types.FlowerPot;
 import org.betterx.betterend.complexmaterials.types.Pedestal;
 import org.betterx.betterend.complexmaterials.types.StoneLantern;
@@ -249,15 +247,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .shapeless()
                                .addMaterial('#', EndBlocks.AMBER_BLOCK)
                                .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder53 = RecipeBuilder.crafting(
-                BetterEnd.C.mk("iron_bulb_lantern"),
-                EndBlocks.IRON_SET.getBlock(MetalMaterial.BULB_LANTERN)
-        );
-        craftingRecipeBuilder53.shape("C", "I", "#")
-                               .addMaterial('C', Items.CHAIN)
-                               .addMaterial('I', Items.IRON_INGOT)
-                               .addMaterial('#', EndItems.GLOWING_BULB)
-                               .build(context);
+        // iron_bulb_lantern is generated from the BULB_LANTERN slot's recipe trait (Auto Recipe Provider).
         RecipeBuilder.crafting(BetterEnd.C.mk("twisted_moss_dye"), Items.PINK_DYE)
                      .shapeless()
                      .addMaterial('#', EndBlocks.TWISTED_MOSS)
@@ -448,24 +438,8 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .addMaterial('P', Items.ENDER_PEARL)
                                .build(context);
 
-        CraftingRecipeBuilder craftingRecipeBuilder45 = RecipeBuilder.crafting(
-                BetterEnd.C.mk("iron_chandelier"),
-                EndBlocks.IRON_SET.getBlock(MetalMaterial.CHANDELIER)
-        );
-        CraftingRecipeBuilder craftingRecipeBuilder2 = craftingRecipeBuilder45.shape("I#I", " # ")
-                                                                              .addMaterial('#', Items.IRON_INGOT)
-                                                                              .addMaterial('I', EndItems.LUMECORN_ROD);
-        craftingRecipeBuilder2.group("end_metal_chandelier")
-                              .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder44 = RecipeBuilder.crafting(
-                BetterEnd.C.mk("gold_chandelier"),
-                EndBlocks.GOLD_SET.getBlock(MetalMaterial.CHANDELIER)
-        );
-        CraftingRecipeBuilder craftingRecipeBuilder1 = craftingRecipeBuilder44.shape("I#I", " # ")
-                                                                              .addMaterial('#', Items.GOLD_INGOT)
-                                                                              .addMaterial('I', EndItems.LUMECORN_ROD);
-        craftingRecipeBuilder1.group("end_metal_chandelier")
-                              .build(context);
+        // iron_chandelier/gold_chandelier are generated from the CHANDELIER slot's recipe trait
+        // (Auto Recipe Provider).
 
         CraftingRecipeBuilder craftingRecipeBuilder17 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("missing_tile"),
@@ -501,13 +475,8 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .shapeless()
                                .addMaterial('#', EndBlocks.CHARCOAL_BLOCK)
                                .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder41 = RecipeBuilder.crafting(
-                BetterEnd.C.mk("end_stone_furnace"),
-                EndBlocks.END_STONE_SET.getBlock(Furnace.SLOT)
-        );
-        craftingRecipeBuilder41.shape("###", "# #", "###")
-                               .addMaterial('#', Blocks.END_STONE)
-                               .build(context);
+        // end_stone_furnace is generated from the Furnace slot's recipe trait (Auto Recipe Provider), which
+        // builds the identical recipe off the set's base block and adds the "end_stone_furnaces" group.
         CraftingRecipeBuilder craftingRecipeBuilder40 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("filalux_lantern"),
                 EndBlocks.FILALUX_LANTERN
@@ -595,22 +564,9 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .addMaterial('#', Blocks.BONE_BLOCK)
                                .addMaterial('D', Items.DRAGON_BREATH)
                                .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder31 = RecipeBuilder.crafting(
-                BetterEnd.C.mk("dragon_bone_slab"),
-                EndBlocks.DRAGON_BONE_SLAB
-        );
-        CraftingRecipeBuilder craftingRecipeBuilder10 = craftingRecipeBuilder31.shape("###");
-        craftingRecipeBuilder10.outputCount(6)
-                               .addMaterial('#', EndBlocks.DRAGON_BONE_BLOCK)
-                               .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder30 = RecipeBuilder.crafting(
-                BetterEnd.C.mk("dragon_bone_stairs"),
-                EndBlocks.DRAGON_BONE_STAIRS
-        );
-        CraftingRecipeBuilder craftingRecipeBuilder9 = craftingRecipeBuilder30.shape("#  ", "## ", "###");
-        craftingRecipeBuilder9.outputCount(4)
-                              .addMaterial('#', EndBlocks.DRAGON_BONE_BLOCK)
-                              .build(context);
+        // dragon_bone_slab/dragon_bone_stairs are generated from the RecipeTraitLibrary.slab()/stairs() traits on
+        // the block definitions (Auto Recipe Provider), which build the identical shape/count and additionally
+        // emit the matching stonecutter recipes.
 
         CraftingRecipeBuilder craftingRecipeBuilder29 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("smaragdant_crystal"),

@@ -1,10 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "end_stone_pedestal",
   "key": {
-    "#": "minecraft:quartz_block",
-    "S": "minecraft:quartz_block"
+    "#": "minecraft:quartz_pillar",
+    "S": "minecraft:quartz_slab"
   },
   "pattern": [
     "S",

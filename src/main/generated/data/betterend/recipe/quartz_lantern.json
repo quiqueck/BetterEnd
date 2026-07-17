@@ -4,7 +4,7 @@
   "group": "end_stone_lanterns",
   "key": {
     "#": "betterend:crystal_shards",
-    "S": "minecraft:quartz_block"
+    "S": "minecraft:quartz_slab"
   },
   "pattern": [
     "S",

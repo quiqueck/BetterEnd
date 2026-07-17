@@ -53,11 +53,17 @@ public class Pedestal extends SlotFromDefinition {
     protected BlockRecipeTrait buildRecipe(BlockSet<?> set, BlockTraitLookup traitLookup) {
         return BlockTraits.RECIPE.with(
                 (key, block, context) -> {
+                    // Sets without SLAB/PILLAR slots (the vanilla-backed stone sets) cannot name their matching
+                    // vanilla polished slab/pillar here; a fallback would silently resolve both to the source block
+                    // and make the pedestal craftable from plain stone. Those sets declare the recipe by hand
+                    // instead (EndCraftingRecipesProvider#registerPedestal), so skip rather than emit a wrong recipe.
+                    if (set.getBlock(SlotType.SLAB) == null || set.getBlock(SlotType.PILLAR) == null) return;
+
                     RecipeBuilder
                             .crafting(key.location(), block)
                             .shape("S", "#", "S")
-                            .addMaterial('S', set.recipeMaterialWithFallback(SlotType.SLAB))
-                            .addMaterial('#', set.recipeMaterialWithFallback(SlotType.PILLAR))
+                            .addMaterial('S', set.recipeMaterial(SlotType.SLAB))
+                            .addMaterial('#', set.recipeMaterial(SlotType.PILLAR))
                             .outputCount(2)
                             .group("end_stone_pedestal")
                             .build(context);

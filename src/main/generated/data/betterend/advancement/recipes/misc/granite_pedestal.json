@@ -1,11 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_granite": {
+    "has_polished_granite": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:granite"
+            "items": "minecraft:polished_granite"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_polished_granite_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:polished_granite_slab"
           }
         ]
       },
@@ -21,7 +31,8 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_granite"
+      "has_polished_granite_slab",
+      "has_polished_granite"
     ]
   ],
   "rewards": {

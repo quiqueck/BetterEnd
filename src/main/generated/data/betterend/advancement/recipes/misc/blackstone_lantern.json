@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_blackstone": {
+    "has_blackstone_slab": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:blackstone"
+            "items": "minecraft:blackstone_slab"
           }
         ]
       },
@@ -31,7 +31,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_blackstone",
+      "has_blackstone_slab",
       "has_crystal_shards"
     ]
   ],

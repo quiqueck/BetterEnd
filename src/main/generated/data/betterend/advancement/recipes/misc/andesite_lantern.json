@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_andesite": {
+    "has_andesite_slab": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:andesite"
+            "items": "minecraft:andesite_slab"
           }
         ]
       },
@@ -31,7 +31,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_andesite",
+      "has_andesite_slab",
       "has_crystal_shards"
     ]
   ],

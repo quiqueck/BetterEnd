@@ -1,3 +1,77 @@
 {
-  "type": "minecraft:block"
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:any_of",
+          "terms": [
+            {
+              "block": "betterend:hydralux",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "shape": "flower_big_bottom"
+              }
+            },
+            {
+              "block": "betterend:hydralux",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "shape": "flower_small_bottom"
+              }
+            }
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "betterend:hydralux_petal"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "betterend:hydralux",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "shape": "roots"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "betterend:hydralux_sapling"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
 }

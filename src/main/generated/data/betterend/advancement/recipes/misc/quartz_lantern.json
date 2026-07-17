@@ -11,11 +11,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_quartz_block": {
+    "has_quartz_slab": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:quartz_block"
+            "items": "minecraft:quartz_slab"
           }
         ]
       },
@@ -31,7 +31,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_quartz_block",
+      "has_quartz_slab",
       "has_crystal_shards"
     ]
   ],

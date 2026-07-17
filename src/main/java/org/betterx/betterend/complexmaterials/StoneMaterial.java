@@ -39,10 +39,17 @@ public class StoneMaterial extends BlockSet<StoneMaterial> implements MaterialMa
     }
 
     @Override
+    protected void addBaseBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
+        // The base-copy must be the chain-start (it is the eager base). This hook runs before the slot's
+        // own configuration, so END_STONE's properties are the base that the slot trait + the classification
+        // below layer over - same result as before, but the copy is now genuinely the first operation.
+        blockDefinition.replacePropertiesWithCopy(Blocks.END_STONE);
+    }
+
+    @Override
     protected void addCommonBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
         super.addCommonBlockDefinitions(slot, blockDefinition);
         blockDefinition
-                .replacePropertiesWithCopy(Blocks.END_STONE)
                 .mapColor(color)
                 .addTags(BlockTags.DRAGON_IMMUNE)
                 .addTrait(BlockTraits.STONE_BLOCK);

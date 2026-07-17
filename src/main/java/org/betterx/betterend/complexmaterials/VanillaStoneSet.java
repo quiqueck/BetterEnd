@@ -28,10 +28,14 @@ public class VanillaStoneSet extends BlockSet<VanillaStoneSet> {
     }
 
     @Override
+    protected void addBaseBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
+        // Base-copy must be the chain-start; this hook runs before the slot's own configuration.
+        blockDefinition.replacePropertiesWithCopy(baseBlock);
+    }
+
+    @Override
     protected void addCommonBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
-        blockDefinition
-                .replacePropertiesWithCopy(baseBlock)
-                .addTrait(BlockTraits.STONE_BLOCK);
+        blockDefinition.addTrait(BlockTraits.STONE_BLOCK);
     }
 
     @Override

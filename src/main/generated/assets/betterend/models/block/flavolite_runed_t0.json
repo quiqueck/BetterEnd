@@ -1,0 +1,8 @@
+{
+  "parent": "betterend:block/flavolite_runed_1",
+  "textures": {
+    "rune_1": "betterend:block/flavolite_runed_4",
+    "rune_2": "betterend:block/flavolite_runed_5",
+    "rune_3": "betterend:block/flavolite_runed_6"
+  }
+}

@@ -349,7 +349,7 @@ public class EndBlocks {
             .strength(1, Blocks.OBSIDIAN.getExplosionResistance())
             .lightLevel(state -> state.getValue(RunedFlavolite.ACTIVATED) ? 8 : 0)
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(flavoliteRunedModelTrait())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .buildAndRegister();
 
@@ -358,9 +358,69 @@ public class EndBlocks {
             .strength(-11, Blocks.BEDROCK.getExplosionResistance())
             .lightLevel(state -> state.getValue(RunedFlavolite.ACTIVATED) ? 8 : 0)
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(flavoliteRunedModelTrait())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .buildAndRegister();
+
+    /**
+     * The runed-flavolite blockstate is a bespoke 39-entry weighted variant list per {@code active} value: three
+     * distinct texture-swap children of one hand-authored {@code block/cube} template ({@code flavolite_runed_1}
+     * for {@code active=false}, {@code flavolite_runed_active_1} for {@code active=true}), each placed at the same
+     * 13 uv-locked {@code x}/{@code y} orientations. The template stays hand-authored; the two sibling children
+     * per family, the blockstate and the item model are generated. Shared by both the runed and eternal blocks
+     * (identical blockstate; both items delegate to {@code block/flavolite_runed_1}).
+     */
+    private static java.util.List<WeightedTemplateModelTrait.Layer> flavoliteRunedVariants(
+            WeightedTemplateModelTrait.Layer template,
+            WeightedTemplateModelTrait.Layer child2,
+            WeightedTemplateModelTrait.Layer child3
+    ) {
+        // Local (not a static field) to avoid a static-init ordering trap: the FLAVOLITE_RUNED field initializer
+        // calls this method, and would run before a class-level constant declared after it.
+        final int[][] orientations = {
+                {0, 0}, {0, 90}, {0, 180}, {0, 270},
+                {90, 90}, {90, 180}, {90, 270},
+                {180, 90}, {180, 180}, {180, 270},
+                {270, 90}, {270, 180}, {270, 270}
+        };
+        final java.util.List<WeightedTemplateModelTrait.Layer> out = new java.util.ArrayList<>();
+        for (WeightedTemplateModelTrait.Layer base : List.of(template, child2, child3)) {
+            for (int[] r : orientations) {
+                out.add(base.rotated(r[0], r[1]).uvLocked());
+            }
+        }
+        return out;
+    }
+
+    private static BlockModelTrait flavoliteRunedModelTrait() {
+        final var tmplInactive = BetterEnd.C.mk("block/flavolite_runed_1");
+        final var tmplActive = BetterEnd.C.mk("block/flavolite_runed_active_1");
+        final var whenFalse = flavoliteRunedVariants(
+                WeightedTemplateModelTrait.model(tmplInactive),
+                WeightedTemplateModelTrait.child(tmplInactive, java.util.Map.of(
+                        "rune_1", BetterEnd.C.mk("block/flavolite_runed_4"),
+                        "rune_2", BetterEnd.C.mk("block/flavolite_runed_5"),
+                        "rune_3", BetterEnd.C.mk("block/flavolite_runed_6"))),
+                WeightedTemplateModelTrait.child(tmplInactive, java.util.Map.of(
+                        "rune_1", BetterEnd.C.mk("block/flavolite_runed_7"),
+                        "rune_2", BetterEnd.C.mk("block/flavolite_runed_8"),
+                        "rune_3", BetterEnd.C.mk("block/flavolite_runed_9")))
+        );
+        final var whenTrue = flavoliteRunedVariants(
+                WeightedTemplateModelTrait.model(tmplActive),
+                WeightedTemplateModelTrait.child(tmplActive, java.util.Map.of(
+                        "rune_1", BetterEnd.C.mk("block/flavolite_runed_active_4"),
+                        "rune_2", BetterEnd.C.mk("block/flavolite_runed_active_5"),
+                        "rune_3", BetterEnd.C.mk("block/flavolite_runed_active_6"))),
+                WeightedTemplateModelTrait.child(tmplActive, java.util.Map.of(
+                        "rune_1", BetterEnd.C.mk("block/flavolite_runed_active_7"),
+                        "rune_2", BetterEnd.C.mk("block/flavolite_runed_active_8"),
+                        "rune_3", BetterEnd.C.mk("block/flavolite_runed_active_9")))
+        );
+        return WeightedTemplateModelTrait.booleanDispatch(
+                RunedFlavolite.ACTIVATED, whenFalse, whenTrue,
+                WeightedTemplateModelTrait.Item.delegatedTo(BetterEnd.C.mk("block/flavolite_runed_1")));
+    }
 
     public static final Block HYDROTHERMAL_VENT = defineBlock("hydrothermal_vent", HydrothermalVentBlock::new)
             .addTrait(BlockTraits.STONE_BLOCK)

@@ -1,0 +1,7 @@
+{
+  "parent": "betterend:block/bulb_moss_01",
+  "textures": {
+    "texture": "betterend:block/ruscus",
+    "texture2": "betterend:block/ruscus"
+  }
+}

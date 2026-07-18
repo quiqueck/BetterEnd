@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "betterend:block/glowing_pillar_leaves_up",
+      "x": 180
+    },
+    "facing=east": [
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t0",
+        "y": 270
+      },
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t1",
+        "y": 270
+      },
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t2",
+        "y": 270
+      }
+    ],
+    "facing=north": [
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t0",
+        "y": 180
+      },
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t1",
+        "y": 180
+      },
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t2",
+        "y": 180
+      }
+    ],
+    "facing=south": [
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t0"
+      },
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t1"
+      },
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t2"
+      }
+    ],
+    "facing=up": {
+      "model": "betterend:block/glowing_pillar_leaves_up"
+    },
+    "facing=west": [
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t0",
+        "y": 90
+      },
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t1",
+        "y": 90
+      },
+      {
+        "model": "betterend:block/glowing_pillar_leaves_t2",
+        "y": 90
+      }
+    ]
+  }
+}

@@ -1345,8 +1345,52 @@ public class EndBlocks {
     public static final Block GLOWING_PILLAR_LEAVES = defineBlock("glowing_pillar_leaves", FurBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_ORANGE, 0, false, 15, GLOWING_PILLAR_SEED, false))
             .addTrait(VegetationTagTrait.plant())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(glowingPillarLeavesModelTrait())
             .buildAndRegister();
+
+    /**
+     * The {@code betterend:block/bulb_moss_01/_02/_03} meshes are the shared, hand-authored two-texture
+     * ({@code #texture}/{@code #texture2}) wall-plant template geometry reused by every single-texture moss/leaf
+     * family (ruscus, glowing_pillar_leaves, ...): each such family's {@code _1/_2/_3} member is that same mesh
+     * with both texture slots bound to its one texture. This builds the three weighted child variants of the
+     * bulb_moss template at the given {@code y} rotation.
+     */
+    private static java.util.List<WeightedTemplateModelTrait.Layer> bulbMossMeshMembers(
+            net.minecraft.resources.ResourceLocation texture, int y
+    ) {
+        final var swap = java.util.Map.of("texture", texture, "texture2", texture);
+        final java.util.List<WeightedTemplateModelTrait.Layer> out = new java.util.ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            out.add(WeightedTemplateModelTrait.child(BetterEnd.C.mk("block/bulb_moss_0" + i), swap).rotated(0, y));
+        }
+        return out;
+    }
+
+    /**
+     * glowing_pillar_leaves is a {@link FurBlock} dispatched over all six {@code facing} directions: the four
+     * horizontal faces each hold the three bulb_moss-mesh texture-swap children (generated) at the matching Y
+     * rotation, while {@code up}/{@code down} reference the kept, hand-authored {@code glowing_pillar_leaves_up}
+     * mesh directly ({@code down} at {@code x=180}). Item is the generated flat block-texture icon.
+     */
+    private static BlockModelTrait glowingPillarLeavesModelTrait() {
+        final var tex = BetterEnd.C.mk("block/glowing_pillar_leaves");
+        final var up = BetterEnd.C.mk("block/glowing_pillar_leaves_up");
+        return WeightedTemplateModelTrait.propertyDispatch(
+                FurBlock.FACING,
+                java.util.List.of(
+                        WeightedTemplateModelTrait.Case.of(Direction.NORTH, bulbMossMeshMembers(tex, 180)),
+                        WeightedTemplateModelTrait.Case.of(Direction.SOUTH, bulbMossMeshMembers(tex, 0)),
+                        WeightedTemplateModelTrait.Case.of(Direction.EAST, bulbMossMeshMembers(tex, 270)),
+                        WeightedTemplateModelTrait.Case.of(Direction.WEST, bulbMossMeshMembers(tex, 90)),
+                        WeightedTemplateModelTrait.Case.of(
+                                Direction.UP,
+                                java.util.List.of(WeightedTemplateModelTrait.model(up))),
+                        WeightedTemplateModelTrait.Case.of(
+                                Direction.DOWN,
+                                java.util.List.of(WeightedTemplateModelTrait.model(up).rotated(180, 0)))
+                ),
+                WeightedTemplateModelTrait.Item.flat(null));
+    }
 
     public static final Block SMALL_JELLYSHROOM = defineBlock("small_jellyshroom", SmallJellyshroomBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_LIGHT_BLUE, false, false))
@@ -1881,8 +1925,26 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_RED, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(ruscusModelTrait())
             .buildAndRegister();
+
+    /**
+     * ruscus is an {@link EndWallPlantBlock} dispatched over its four horizontal {@code facing} directions; each
+     * holds the three bulb_moss-mesh single-texture children (generated) at the matching Y rotation. The item
+     * keeps the hand-authored {@code item/ruscus} flat model (referenced via a delegated item definition).
+     */
+    private static BlockModelTrait ruscusModelTrait() {
+        final var tex = BetterEnd.C.mk("block/ruscus");
+        return WeightedTemplateModelTrait.propertyDispatch(
+                EndWallPlantBlock.FACING,
+                java.util.List.of(
+                        WeightedTemplateModelTrait.Case.of(Direction.NORTH, bulbMossMeshMembers(tex, 180)),
+                        WeightedTemplateModelTrait.Case.of(Direction.SOUTH, bulbMossMeshMembers(tex, 0)),
+                        WeightedTemplateModelTrait.Case.of(Direction.EAST, bulbMossMeshMembers(tex, 270)),
+                        WeightedTemplateModelTrait.Case.of(Direction.WEST, bulbMossMeshMembers(tex, 90))
+                ),
+                WeightedTemplateModelTrait.Item.delegatedTo(BetterEnd.C.mk("item/ruscus")));
+    }
 
     // Vines //
     public static final Block DENSE_VINE = defineBlock("dense_vine", BaseVineBlock::new)

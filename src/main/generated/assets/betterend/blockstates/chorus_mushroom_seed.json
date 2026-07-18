@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "age=0": [
+      {
+        "model": "betterend:block/chorus_mushroom_seed_0_0"
+      },
+      {
+        "model": "betterend:block/chorus_mushroom_seed_0_1"
+      }
+    ],
+    "age=1": [
+      {
+        "model": "betterend:block/chorus_mushroom_seed_1_0"
+      },
+      {
+        "model": "betterend:block/chorus_mushroom_seed_1_1"
+      }
+    ],
+    "age=2": [
+      {
+        "model": "betterend:block/chorus_mushroom_seed_2_0"
+      },
+      {
+        "model": "betterend:block/chorus_mushroom_seed_2_1"
+      }
+    ],
+    "age=3": [
+      {
+        "model": "betterend:block/chorus_mushroom_seed_3_0"
+      },
+      {
+        "model": "betterend:block/chorus_mushroom_seed_3_1"
+      }
+    ]
+  }
+}

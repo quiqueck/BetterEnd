@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/lutebus_0"
+      },
+      {
+        "model": "betterend:block/lutebus_1"
+      }
+    ]
+  }
+}

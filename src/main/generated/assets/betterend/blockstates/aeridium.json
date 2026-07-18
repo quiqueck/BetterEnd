@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/aeridium_0"
+      },
+      {
+        "model": "betterend:block/aeridium_1"
+      }
+    ]
+  }
+}

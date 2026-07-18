@@ -1,0 +1,42 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/jungle_grass_0"
+      },
+      {
+        "model": "betterend:block/jungle_grass_1"
+      },
+      {
+        "model": "betterend:block/jungle_grass_2"
+      },
+      {
+        "model": "betterend:block/jungle_grass_3"
+      },
+      {
+        "model": "betterend:block/jungle_grass_4"
+      },
+      {
+        "model": "betterend:block/jungle_grass_5"
+      },
+      {
+        "model": "betterend:block/jungle_grass_6"
+      },
+      {
+        "model": "betterend:block/jungle_grass_7"
+      },
+      {
+        "model": "betterend:block/jungle_grass_8"
+      },
+      {
+        "model": "betterend:block/jungle_grass_9"
+      },
+      {
+        "model": "betterend:block/jungle_grass_10"
+      },
+      {
+        "model": "betterend:block/jungle_grass_11"
+      }
+    ]
+  }
+}

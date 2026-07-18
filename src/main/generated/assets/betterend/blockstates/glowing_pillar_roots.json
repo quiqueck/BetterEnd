@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "shape=bottom": {
+      "model": "betterend:block/glowing_pillar_roots_bottom"
+    },
+    "shape=middle": {
+      "model": "betterend:block/glowing_pillar_roots_middle"
+    },
+    "shape=top": {
+      "model": "betterend:block/glowing_pillar_roots_top"
+    }
+  }
+}

@@ -3,7 +3,9 @@ package org.betterx.betterend.registry;
 import org.betterx.bclib.api.v3.tag.BCLBlockTags;
 import org.betterx.bclib.blocks.BaseAnvilBlock;
 import org.betterx.bclib.blocks.BaseTerrainBlock;
+import net.minecraft.core.Direction;
 import org.betterx.bclib.blocks.BaseVineBlock;
+import org.betterx.bclib.trait.block.WeightedCrossModelTrait;
 import org.betterx.bclib.blocks.SimpleLeavesBlock;
 import org.betterx.bclib.blocks.StalactiteBlock;
 import org.betterx.bclib.trait.block.*;
@@ -227,7 +229,63 @@ public class EndBlocks {
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> SulphurCrystalBlock.buildLoot(block, provider)
             ))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.property2Dispatch(SulphurCrystalBlock.AGE, SulphurCrystalBlock.FACING, List.of(
+                            WeightedCrossModelTrait.Case2.of(0, Direction.UP, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_0"))
+                    )),
+                            WeightedCrossModelTrait.Case2.of(0, Direction.DOWN, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_0")).rotated(180, 0)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(0, Direction.NORTH, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_0")).rotated(90, 0)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(0, Direction.SOUTH, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_0")).rotated(90, 180)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(0, Direction.EAST, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_0")).rotated(90, 90)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(0, Direction.WEST, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_0")).rotated(90, 270)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(1, Direction.UP, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_1"))
+                    )),
+                            WeightedCrossModelTrait.Case2.of(1, Direction.DOWN, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_1")).rotated(180, 0)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(1, Direction.NORTH, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_1")).rotated(90, 0)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(1, Direction.SOUTH, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_1")).rotated(90, 180)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(1, Direction.EAST, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_1")).rotated(90, 90)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(1, Direction.WEST, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_1")).rotated(90, 270)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(2, Direction.UP, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_2"))
+                    )),
+                            WeightedCrossModelTrait.Case2.of(2, Direction.DOWN, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_2")).rotated(180, 0)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(2, Direction.NORTH, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_2")).rotated(90, 0)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(2, Direction.SOUTH, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_2")).rotated(90, 180)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(2, Direction.EAST, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_2")).rotated(90, 90)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(2, Direction.WEST, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/sulphur_crystal_2")).rotated(90, 270)
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/sulphur_crystal_2"))))
             .mapColor(MapColor.COLOR_YELLOW)
             .sound(SoundType.GLASS)
             .requiresCorrectToolForDrops()
@@ -418,7 +476,21 @@ public class EndBlocks {
             .addTrait(WaterSeedBlockTrait.withColor(MapColor.COLOR_CYAN, 0, false))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(VegetationTagTrait.waterPlant())
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(EndLotusSeedBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/end_lotus_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/end_lotus_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/end_lotus_3"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/end_lotus_4"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/end_lotus_seed"))))
             .buildAndRegister();
 
     public static final Block END_LOTUS_STEM = defineBlock("end_lotus_stem", EndLotusStemBlock::new)
@@ -438,7 +510,45 @@ public class EndBlocks {
             .addTrait(CompostableBlockTrait.withDefault())
             .addTrait(BlockTraits.FLAMMABLE.withDefault())
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.property2Dispatch(EndLotusLeafBlock.SHAPE, EndLotusLeafBlock.HORIZONTAL_FACING, List.of(
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.BOTTOM, Direction.NORTH, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_center"))
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.BOTTOM, Direction.SOUTH, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_center"))
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.BOTTOM, Direction.EAST, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_center"))
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.BOTTOM, Direction.WEST, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_center"))
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.MIDDLE, Direction.NORTH, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_side"))
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.MIDDLE, Direction.SOUTH, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_side")).rotated(0, 180)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.MIDDLE, Direction.EAST, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_side")).rotated(0, 90)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.MIDDLE, Direction.WEST, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_side")).rotated(0, 270)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.TOP, Direction.NORTH, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_corner"))
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.TOP, Direction.SOUTH, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_corner")).rotated(0, 180)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.TOP, Direction.EAST, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_corner")).rotated(0, 90)
+                    )),
+                            WeightedCrossModelTrait.Case2.of(BlockProperties.TripleShape.TOP, Direction.WEST, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/end_lotus_leaf_corner")).rotated(0, 270)
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.delegated()))
             .buildAndRegister();
 
     public static final Block END_LOTUS_FLOWER = defineBlockOnly("end_lotus_flower", EndLotusFlowerBlock::new)
@@ -691,7 +801,17 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/chorus_grass_01")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/chorus_grass_02")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/chorus_grass_03")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/chorus_grass_04")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/chorus_grass_01")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/chorus_grass_02")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/chorus_grass_03")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/chorus_grass_04"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/chorus_grass_01"))))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -701,7 +821,17 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(CAVE_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/cave_grass_1")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/cave_grass_2")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/cave_grass_1")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/cave_grass_2")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/cave_grass_1")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/cave_grass_2")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/cave_grass_1")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/cave_grass_2"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/cave_grass_1"))))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -721,7 +851,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(SHADOW_GRASS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/shadow_plant")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/shadow_plant")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/shadow_plant")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/shadow_plant"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -731,7 +867,17 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(PINK_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/bushy_grass_1")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/bushy_grass_2")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/bushy_grass_1")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/bushy_grass_2")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/bushy_grass_1")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/bushy_grass_2")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/bushy_grass_1")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/bushy_grass_2"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/bushy_grass_2"))))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -741,7 +887,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(AMBER_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/amber_grass")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/amber_grass")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/amber_grass")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/amber_grass"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -779,7 +931,21 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(JUNGLE_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/jungle_grass")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/jungle_grass")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/jungle_grass")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/jungle_grass")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/jungle_grass_2")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/jungle_grass_2")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/jungle_grass_2")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/jungle_grass_2")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/twisted_umbrella_moss_small")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/twisted_umbrella_moss_small")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/twisted_umbrella_moss_small")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/twisted_umbrella_moss_small"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(BlockBehaviour.OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -789,7 +955,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/blooming_cooksonia")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/blooming_cooksonia")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/blooming_cooksonia")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/blooming_cooksonia"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -799,7 +971,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/salteago")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/salteago")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/salteago")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/salteago"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -809,7 +987,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/vaiolush_fern")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/vaiolush_fern")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/vaiolush_fern")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/vaiolush_fern"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -819,7 +1003,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(END_MOSS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/fracturn")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/fracturn")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/fracturn")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/fracturn"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -828,7 +1018,11 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(SANGNUM, MOSSY_OBSIDIAN, MOSSY_DRAGON_BONE))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/clawfern")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/clawfern"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -838,7 +1032,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(SANGNUM, MOSSY_OBSIDIAN, MOSSY_DRAGON_BONE))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/globulagus")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/globulagus")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/globulagus")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/globulagus"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -848,7 +1048,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/orango")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/orango")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/orango")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/orango"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -858,7 +1064,11 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/aeridium")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/aeridium"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -868,7 +1078,11 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/lutebus")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/lutebus"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -878,7 +1092,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withBlocks(RUTISCUS))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/lamellarium")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/lamellarium")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/lamellarium")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/lamellarium"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(null)))
             .offsetType(OffsetType.XZ)
             .replaceable()
             .buildAndRegister();
@@ -921,7 +1141,21 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_BLUE, false, true))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(BlueVineSeedBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/blue_vine_0"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/blue_vine_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/blue_vine_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/blue_vine_3"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/blue_vine_seed"))))
             .buildAndRegister();
 
     public static final Block BLUE_VINE = defineBlockOnly("blue_vine", BlueVineBlock::new)
@@ -950,7 +1184,21 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_BROWN, false, false))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_AMBER_MOSS))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(LanceleafSeedBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lanceleaf_seed_0"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lanceleaf_seed_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lanceleaf_seed_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lanceleaf_seed_3"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/lanceleaf_seed"))))
             .buildAndRegister();
 
     public static final Block LANCELEAF = defineBlock("lanceleaf", LanceleafBlock::new)
@@ -974,7 +1222,21 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_AMBER_MOSS))
             .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(GlowingPillarSeedBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/glowing_pillar_seed_0"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/glowing_pillar_seed_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/glowing_pillar_seed_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/glowing_pillar_seed_3"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/glowing_pillar_seed"))))
             .lightLevel(state -> state.getValue(EndPlantWithAgeBlock.AGE) * 3 + 3)
             .sound(SoundType.GRASS)
             .offsetType(OffsetType.XZ)
@@ -988,7 +1250,18 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(noLootTableTrait())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(GlowingPillarRootsBlock.SHAPE, List.of(
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.TOP, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/glowing_pillar_roots_top"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.MIDDLE, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/glowing_pillar_roots_both"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.BOTTOM, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/glowing_pillar_roots_bottom"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.delegated()))
             .lightLevel(state -> 15)
             .buildAndRegister();
 
@@ -1039,7 +1312,21 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_LIGHT_BLUE, false, false))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_MOSS))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(LumecornSeedBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lumecorn_0"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lumecorn_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lumecorn_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lumecorn_3"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/lumecorn_seed"))))
             .buildAndRegister();
 
     public static final Block LUMECORN = defineBlockOnly("lumecorn", LumecornBlock::new)
@@ -1189,7 +1476,25 @@ public class EndBlocks {
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_AMBER_MOSS))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(PottableCropBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/amber_root_0")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/amber_root_0"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/amber_root_1")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/amber_root_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/amber_root_2")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/amber_root_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/amber_root_3")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/amber_root_3"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/amber_root_seed"))))
             .buildAndRegister();
     public static final Block CHORUS_MUSHROOM = defineBlock(
             "chorus_mushroom_seed",
@@ -1200,14 +1505,50 @@ public class EndBlocks {
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(PottableCropBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/chorus_mushroom_0")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/chorus_mushroom_0"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/chorus_mushroom_1")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/chorus_mushroom_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/chorus_mushroom_2")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/chorus_mushroom_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/chorus_mushroom_3")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block_inverted"), BetterEnd.C.mk("block/chorus_mushroom_3"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/chorus_mushroom_seed"))))
             .buildAndRegister();
     //public static final Block PEARLBERRY = registerBlock("pearlberry_seed", new PottableCropBlock(EndItems.BLOSSOM_BERRY, END_MOSS, END_MYCELIUM));
     public static final Block CAVE_PUMPKIN_SEED = defineBlock("cave_pumpkin_seed", CavePumpkinVineBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_ORANGE, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(CavePumpkinVineBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/cave_pumpkin_stem_0")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/cave_pumpkin_stem_0"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/cave_pumpkin_stem_1")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/cave_pumpkin_stem_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/cave_pumpkin_stem_2")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/cave_pumpkin_stem_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/cave_pumpkin_stem_3")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/cave_pumpkin_stem_3"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/cave_pumpkin_seed"))))
             .buildAndRegister();
     public static final Block CAVE_PUMPKIN = defineBlock("cave_pumpkin", CavePumpkinBlock::new)
             .lightLevel(state -> state.getValue(BlockProperties.SMALL) ? 10 : 15)
@@ -1300,14 +1641,42 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.seed())
             .addTrait(VegetationTagTrait.waterPlant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(EndLilySeedBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/end_lily_0"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/end_lily_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/end_lily_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/end_lily_3"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/end_lily_seed"))))
             .buildAndRegister();
 
     public static final Block HYDRALUX_SAPLING = defineBlock("hydralux_sapling", HydraluxSaplingBlock::new)
             .addTrait(WaterSeedBlockTrait.withColor(MapColor.COLOR_LIGHT_BLUE, 0, false))
             .addTrait(VegetationTagTrait.waterPlant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_SULPHURIC_ROCK))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(HydraluxSaplingBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/hydralux_sapling_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/hydralux_sapling_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/hydralux_sapling_3"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/hydralux_sapling_4"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/hydralux_spore"))))
             .buildAndRegister();
     public static final Block HYDRALUX = defineBlockOnly("hydralux", HydraluxBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_LIGHT_BLUE, false, false))
@@ -1351,7 +1720,14 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
             .addTrait(SurvivesOnBlockTrait.withBlocks(Blocks.WATER))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/flamaea_1")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/flamaea_2")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/flamaea_3")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/flamaea_4")),
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/plane_bottom"), BetterEnd.C.mk("block/flamaea_5"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/flamaea_1"))))
             .sound(SoundType.WET_GRASS)
             .buildAndRegister();
 
@@ -1373,7 +1749,17 @@ public class EndBlocks {
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> NeedlegrassBlock.buildLoot(block, provider)
             ))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.simple(List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/needlegrass_01")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/needlegrass_02")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/needlegrass_03")),
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/needlegrass_04")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/needlegrass_01")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/needlegrass_02")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/needlegrass_03")),
+                            WeightedCrossModelTrait.crossParent(BetterEnd.C.mk("block/cross_inverted"), BetterEnd.C.mk("block/needlegrass_04"))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/needlegrass_01"))))
             .offsetType(BlockBehaviour.OffsetType.XZ)
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_SHADOW_GRASS))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_SHADOW_GRASS))
@@ -1453,7 +1839,21 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PURPLE, false, false))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE_OR_TREES))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(BulbVineSeedBlock.AGE, List.of(
+                            WeightedCrossModelTrait.Case.of(0, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/bulb_vine_seed_0"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(1, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/bulb_vine_seed_1"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(2, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/bulb_vine_seed_2"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(3, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/bulb_vine_seed_3"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("item/bulb_vine_seed"))))
             .buildAndRegister();
 
     public static final Block BULB_VINE = defineBlock("bulb_vine", BulbVineBlock::new)
@@ -1466,22 +1866,66 @@ public class EndBlocks {
 
     public static final Block JUNGLE_VINE = defineBlock("jungle_vine", BaseVineBlock::new)
             .addTrait(VineBlockTrait.withColor(MapColor.PLANT, 0, false, false))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(BaseVineBlock.SHAPE, List.of(
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.TOP, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/jungle_vine"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.MIDDLE, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/jungle_vine"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.BOTTOM, List.of(
+                            WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/jungle_vine_bottom"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/jungle_vine_bottom"))))
             .buildAndRegister();
 
     public static final Block RUBINEA = defineBlock("rubinea", BaseVineBlock::new)
             .addTrait(VineBlockTrait.withColor(MapColor.PLANT, 0, false, false))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(BaseVineBlock.SHAPE, List.of(
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.TOP, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/rubinea"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.MIDDLE, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/rubinea"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.BOTTOM, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/rubinea_bottom"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/rubinea_bottom"))))
             .buildAndRegister();
 
     public static final Block MAGNULA = defineBlock("magnula", BaseVineBlock::new)
             .addTrait(VineBlockTrait.withColor(MapColor.PLANT, 0, false, false))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(BaseVineBlock.SHAPE, List.of(
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.TOP, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/magnula"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.MIDDLE, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/magnula"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.BOTTOM, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/magnula_bottom"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/magnula_bottom"))))
             .buildAndRegister();
 
     public static final Block FILALUX = defineBlock("filalux", FilaluxBlock::new)
             .addTrait(VineBlockTrait.withColor(MapColor.PLANT, 15, false, false))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(BaseVineBlock.SHAPE, List.of(
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.TOP, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/filalux_middle"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.MIDDLE, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/filalux_middle"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.BOTTOM, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/filalux_bottom"))
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/filalux_bottom"))))
             .offsetType(OffsetType.NONE)
             .buildAndRegister();
 
@@ -1610,7 +2054,27 @@ public class EndBlocks {
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(WeightedCrossModelTrait.propertyDispatch(SmaragdantCrystalShardBlock.FACING, List.of(
+                            WeightedCrossModelTrait.Case.of(Direction.UP, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/smaragdant_crystal_shard"))
+                    )),
+                            WeightedCrossModelTrait.Case.of(Direction.DOWN, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/smaragdant_crystal_shard")).rotated(180, 0)
+                    )),
+                            WeightedCrossModelTrait.Case.of(Direction.NORTH, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/smaragdant_crystal_shard")).rotated(90, 0)
+                    )),
+                            WeightedCrossModelTrait.Case.of(Direction.SOUTH, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/smaragdant_crystal_shard")).rotated(90, 180)
+                    )),
+                            WeightedCrossModelTrait.Case.of(Direction.EAST, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/smaragdant_crystal_shard")).rotated(90, 90)
+                    )),
+                            WeightedCrossModelTrait.Case.of(Direction.WEST, List.of(
+                            WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/smaragdant_crystal_shard")).rotated(90, 270)
+                    ))
+                    ),
+                    WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/smaragdant_crystal_shard"))))
             .buildAndRegister();
     public static final Block SMARAGDANT_CRYSTAL = defineBlock("smaragdant_crystal", SmaragdantCrystalBlock::new)
             .lightLevel(bs -> 15)

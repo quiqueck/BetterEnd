@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "shape=bottom": {
+      "model": "betterend:block/rubinea_bottom"
+    },
+    "shape=middle": {
+      "model": "betterend:block/rubinea_middle"
+    },
+    "shape=top": {
+      "model": "betterend:block/rubinea_top"
+    }
+  }
+}

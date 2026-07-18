@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/vaiolush_fern_0"
+      },
+      {
+        "model": "betterend:block/vaiolush_fern_1"
+      },
+      {
+        "model": "betterend:block/vaiolush_fern_2"
+      },
+      {
+        "model": "betterend:block/vaiolush_fern_3"
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "variants": {
+    "facing=east,shape=bottom": {
+      "model": "betterend:block/end_lotus_leaf_bottom_east"
+    },
+    "facing=east,shape=middle": {
+      "model": "betterend:block/end_lotus_leaf_middle_east",
+      "y": 90
+    },
+    "facing=east,shape=top": {
+      "model": "betterend:block/end_lotus_leaf_top_east",
+      "y": 90
+    },
+    "facing=north,shape=bottom": {
+      "model": "betterend:block/end_lotus_leaf_bottom_north"
+    },
+    "facing=north,shape=middle": {
+      "model": "betterend:block/end_lotus_leaf_middle_north"
+    },
+    "facing=north,shape=top": {
+      "model": "betterend:block/end_lotus_leaf_top_north"
+    },
+    "facing=south,shape=bottom": {
+      "model": "betterend:block/end_lotus_leaf_bottom_south"
+    },
+    "facing=south,shape=middle": {
+      "model": "betterend:block/end_lotus_leaf_middle_south",
+      "y": 180
+    },
+    "facing=south,shape=top": {
+      "model": "betterend:block/end_lotus_leaf_top_south",
+      "y": 180
+    },
+    "facing=west,shape=bottom": {
+      "model": "betterend:block/end_lotus_leaf_bottom_west"
+    },
+    "facing=west,shape=middle": {
+      "model": "betterend:block/end_lotus_leaf_middle_west",
+      "y": 270
+    },
+    "facing=west,shape=top": {
+      "model": "betterend:block/end_lotus_leaf_top_west",
+      "y": 270
+    }
+  }
+}

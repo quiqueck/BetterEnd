@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "shape=bottom": {
+      "model": "betterend:block/jungle_vine_bottom"
+    },
+    "shape=middle": {
+      "model": "betterend:block/jungle_vine_middle"
+    },
+    "shape=top": {
+      "model": "betterend:block/jungle_vine_top"
+    }
+  }
+}

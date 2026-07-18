@@ -1,0 +1,82 @@
+{
+  "variants": {
+    "age=0,facing=down": {
+      "model": "betterend:block/sulphur_crystal_0_down",
+      "x": 180
+    },
+    "age=0,facing=east": {
+      "model": "betterend:block/sulphur_crystal_0_east",
+      "x": 90,
+      "y": 90
+    },
+    "age=0,facing=north": {
+      "model": "betterend:block/sulphur_crystal_0_north",
+      "x": 90
+    },
+    "age=0,facing=south": {
+      "model": "betterend:block/sulphur_crystal_0_south",
+      "x": 90,
+      "y": 180
+    },
+    "age=0,facing=up": {
+      "model": "betterend:block/sulphur_crystal_0_up"
+    },
+    "age=0,facing=west": {
+      "model": "betterend:block/sulphur_crystal_0_west",
+      "x": 90,
+      "y": 270
+    },
+    "age=1,facing=down": {
+      "model": "betterend:block/sulphur_crystal_1_down",
+      "x": 180
+    },
+    "age=1,facing=east": {
+      "model": "betterend:block/sulphur_crystal_1_east",
+      "x": 90,
+      "y": 90
+    },
+    "age=1,facing=north": {
+      "model": "betterend:block/sulphur_crystal_1_north",
+      "x": 90
+    },
+    "age=1,facing=south": {
+      "model": "betterend:block/sulphur_crystal_1_south",
+      "x": 90,
+      "y": 180
+    },
+    "age=1,facing=up": {
+      "model": "betterend:block/sulphur_crystal_1_up"
+    },
+    "age=1,facing=west": {
+      "model": "betterend:block/sulphur_crystal_1_west",
+      "x": 90,
+      "y": 270
+    },
+    "age=2,facing=down": {
+      "model": "betterend:block/sulphur_crystal_2_down",
+      "x": 180
+    },
+    "age=2,facing=east": {
+      "model": "betterend:block/sulphur_crystal_2_east",
+      "x": 90,
+      "y": 90
+    },
+    "age=2,facing=north": {
+      "model": "betterend:block/sulphur_crystal_2_north",
+      "x": 90
+    },
+    "age=2,facing=south": {
+      "model": "betterend:block/sulphur_crystal_2_south",
+      "x": 90,
+      "y": 180
+    },
+    "age=2,facing=up": {
+      "model": "betterend:block/sulphur_crystal_2_up"
+    },
+    "age=2,facing=west": {
+      "model": "betterend:block/sulphur_crystal_2_west",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

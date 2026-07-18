@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/globulagus_0"
+      },
+      {
+        "model": "betterend:block/globulagus_1"
+      },
+      {
+        "model": "betterend:block/globulagus_2"
+      },
+      {
+        "model": "betterend:block/globulagus_3"
+      }
+    ]
+  }
+}

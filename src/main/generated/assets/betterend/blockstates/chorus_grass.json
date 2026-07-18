@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/chorus_grass_0"
+      },
+      {
+        "model": "betterend:block/chorus_grass_1"
+      },
+      {
+        "model": "betterend:block/chorus_grass_2"
+      },
+      {
+        "model": "betterend:block/chorus_grass_3"
+      },
+      {
+        "model": "betterend:block/chorus_grass_4"
+      },
+      {
+        "model": "betterend:block/chorus_grass_5"
+      },
+      {
+        "model": "betterend:block/chorus_grass_6"
+      },
+      {
+        "model": "betterend:block/chorus_grass_7"
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/orango_0"
+      },
+      {
+        "model": "betterend:block/orango_1"
+      },
+      {
+        "model": "betterend:block/orango_2"
+      },
+      {
+        "model": "betterend:block/orango_3"
+      }
+    ]
+  }
+}

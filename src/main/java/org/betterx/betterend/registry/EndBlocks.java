@@ -700,7 +700,8 @@ public class EndBlocks {
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_PINK, 0, false, 32, TENANEA_SAPLING, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(noLootTableTrait())
-            .addTrait(ModelTraitLibrary.externalModelDelegatedItem())
+            .addTrait(upLeafModelTrait(BetterEnd.C.mk("block/tenanea_outer_leaves"),
+                    WeightedTemplateModelTrait.Item.none()))
             .buildAndRegister();
 
     public static final EndWoodenComplexMaterial TENANEA = new EndWoodenComplexMaterial(
@@ -816,7 +817,7 @@ public class EndBlocks {
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_RED, 0, false, 32, LUCERNIA_SAPLING, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(noLootTableTrait())
-            .addTrait(ModelTraitLibrary.externalModelDelegatedItem(() -> BetterEnd.C.mk("block/lucernia_outer_leaves_1")))
+            .addTrait(lucerniaOuterLeavesModelTrait())
             .buildAndRegister();
     public static final EndWoodenComplexMaterial LUCERNIA = new EndWoodenComplexMaterial(
             "lucernia",
@@ -836,7 +837,7 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(() -> BetterEnd.C.mk("item/umbrella_moss_small")))
+            .addTrait(umbrellaMossModelTrait())
             .lightLevel(state -> 11)
             .buildAndRegister();
 
@@ -855,7 +856,7 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(creepingMossModelTrait())
             .lightLevel(state -> 11)
             .buildAndRegister();
     public static final Block CHORUS_GRASS = defineBlock("chorus_grass", EndPlantBlock::new)
@@ -967,7 +968,7 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(() -> BetterEnd.C.mk("item/twisted_umbrella_moss_small")))
+            .addTrait(twistedUmbrellaMossModelTrait())
             .lightLevel(state -> 12)
             .buildAndRegister();
 
@@ -1239,7 +1240,8 @@ public class EndBlocks {
     public static final Block BLUE_VINE_FUR = defineBlock("blue_vine_fur", FurBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, 15, BLUE_VINE_SEED, false))
             .addTrait(VegetationTagTrait.plant())
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(upLeafModelTrait(BetterEnd.C.mk("block/blue_vine_fur"),
+                    WeightedTemplateModelTrait.Item.flat(null)))
             .buildAndRegister();
 
     public static final Block LANCELEAF_SEED = defineBlock("lanceleaf_seed", LanceleafSeedBlock::new)
@@ -1902,7 +1904,7 @@ public class EndBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_LIGHT_BLUE, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
-            .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            .addTrait(twistedMossModelTrait())
             .buildAndRegister();
     public static final Block TUBE_WORM = defineBlock("tube_worm", EndUnderwaterWallPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_BROWN, false, false))
@@ -1915,13 +1917,13 @@ public class EndBlocks {
             .addTrait(VegetationTagTrait.plant())
             .lightLevel(bs -> 12)
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(bulbMossModelTrait())
             .buildAndRegister();
     public static final Block JUNGLE_FERN = defineBlock("jungle_fern", EndWallPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_GREEN, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_STONE))
-            .addTrait(ModelTraitLibrary.externalModel())
+            .addTrait(jungleFernModelTrait())
             .buildAndRegister();
     public static final Block RUSCUS = defineBlock("ruscus", EndWallPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_RED, false, false))
@@ -1946,6 +1948,239 @@ public class EndBlocks {
                         WeightedTemplateModelTrait.Case.of(Direction.WEST, bulbMossMeshMembers(tex, 90))
                 ),
                 WeightedTemplateModelTrait.Item.delegatedTo(BetterEnd.C.mk("item/ruscus")));
+    }
+
+    /**
+     * Three weighted, Y-rotated children of the two-texture bulb_moss mesh template ({@code bulb_moss_01/_02/_03}),
+     * binding the {@code #texture}/{@code #texture2} slots to {@code texture}/{@code texture2}. This is the
+     * two-texture sibling of {@link #bulbMossMeshMembers} (used by the single-texture ruscus/glowing-pillar families).
+     */
+    private static java.util.List<WeightedTemplateModelTrait.Layer> bulbMossTwoTexMembers(
+            net.minecraft.resources.ResourceLocation texture,
+            net.minecraft.resources.ResourceLocation texture2,
+            int y
+    ) {
+        final var swap = java.util.Map.of("texture", texture, "texture2", texture2);
+        final java.util.List<WeightedTemplateModelTrait.Layer> out = new java.util.ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            out.add(WeightedTemplateModelTrait.child(BetterEnd.C.mk("block/bulb_moss_0" + i), swap).rotated(0, y));
+        }
+        return out;
+    }
+
+    /**
+     * twisted_moss is an {@link EndWallPlantBlock}: the three bulb_moss-mesh two-texture children ({@code
+     * #texture=block/twisted_moss}, {@code #texture2=block/twisted_moss_2}) at the matching Y rotation per
+     * horizontal facing. Item is the generated flat block-texture icon.
+     */
+    private static BlockModelTrait twistedMossModelTrait() {
+        final var t = BetterEnd.C.mk("block/twisted_moss");
+        final var t2 = BetterEnd.C.mk("block/twisted_moss_2");
+        return WeightedTemplateModelTrait.propertyDispatch(
+                EndWallPlantBlock.FACING,
+                java.util.List.of(
+                        WeightedTemplateModelTrait.Case.of(Direction.NORTH, bulbMossTwoTexMembers(t, t2, 180)),
+                        WeightedTemplateModelTrait.Case.of(Direction.SOUTH, bulbMossTwoTexMembers(t, t2, 0)),
+                        WeightedTemplateModelTrait.Case.of(Direction.EAST, bulbMossTwoTexMembers(t, t2, 270)),
+                        WeightedTemplateModelTrait.Case.of(Direction.WEST, bulbMossTwoTexMembers(t, t2, 90))
+                ),
+                WeightedTemplateModelTrait.Item.flat(null));
+    }
+
+    /**
+     * bulb_moss keeps its own three hand-authored two-texture meshes ({@code bulb_moss_01/_02/_03}) as the family
+     * template; this references them directly (no child generation) at the matching Y rotation per horizontal
+     * facing, and delegates the item to the hand-authored {@code item/bulb_moss} flat model.
+     */
+    private static java.util.List<WeightedTemplateModelTrait.Layer> bulbMossTemplateMembers(int y) {
+        final java.util.List<WeightedTemplateModelTrait.Layer> out = new java.util.ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            out.add(WeightedTemplateModelTrait.model(BetterEnd.C.mk("block/bulb_moss_0" + i)).rotated(0, y));
+        }
+        return out;
+    }
+
+    private static BlockModelTrait bulbMossModelTrait() {
+        return WeightedTemplateModelTrait.propertyDispatch(
+                EndWallPlantBlock.FACING,
+                java.util.List.of(
+                        WeightedTemplateModelTrait.Case.of(Direction.NORTH, bulbMossTemplateMembers(180)),
+                        WeightedTemplateModelTrait.Case.of(Direction.SOUTH, bulbMossTemplateMembers(0)),
+                        WeightedTemplateModelTrait.Case.of(Direction.EAST, bulbMossTemplateMembers(270)),
+                        WeightedTemplateModelTrait.Case.of(Direction.WEST, bulbMossTemplateMembers(90))
+                ),
+                WeightedTemplateModelTrait.Item.delegatedTo(BetterEnd.C.mk("item/bulb_moss")));
+    }
+
+    /**
+     * jungle_fern is an {@link EndWallPlantBlock} whose nine members are three hand-authored meshes ({@code
+     * jungle_fern_1/_2/_3}, the kept templates carrying the first texture set) crossed with three texture sets
+     * ({@code jungle_fern_leaf/_spore/_middle} with {@code ""}/{@code _2}/{@code _3} suffix). Members 4-9 are the
+     * generated texture-swap children of those three templates. Item delegates to {@code item/jungle_fern}.
+     */
+    private static java.util.List<WeightedTemplateModelTrait.Layer> jungleFernMembers(int y) {
+        final java.util.List<WeightedTemplateModelTrait.Layer> out = new java.util.ArrayList<>();
+        for (int i = 1; i <= 9; i++) {
+            final int mesh = ((i - 1) % 3) + 1;   // 1,2,3,1,2,3,1,2,3
+            final int tset = ((i - 1) / 3) + 1;   // 1,1,1,2,2,2,3,3,3
+            final var template = BetterEnd.C.mk("block/jungle_fern_" + mesh);
+            final WeightedTemplateModelTrait.Layer layer;
+            if (tset == 1) {
+                layer = WeightedTemplateModelTrait.model(template);
+            } else {
+                final String suf = "_" + tset;
+                final var leaf = BetterEnd.C.mk("block/jungle_fern_leaf" + suf);
+                final var spore = BetterEnd.C.mk("block/jungle_fern_spore" + suf);
+                final var middle = BetterEnd.C.mk("block/jungle_fern_middle" + suf);
+                layer = WeightedTemplateModelTrait.child(template, java.util.Map.of(
+                        "texture", leaf,
+                        "spore", spore,
+                        "texture1", middle,
+                        "particle", leaf));
+            }
+            out.add(layer.rotated(0, y));
+        }
+        return out;
+    }
+
+    private static BlockModelTrait jungleFernModelTrait() {
+        return WeightedTemplateModelTrait.propertyDispatch(
+                EndWallPlantBlock.FACING,
+                java.util.List.of(
+                        WeightedTemplateModelTrait.Case.of(Direction.NORTH, jungleFernMembers(180)),
+                        WeightedTemplateModelTrait.Case.of(Direction.SOUTH, jungleFernMembers(0)),
+                        WeightedTemplateModelTrait.Case.of(Direction.EAST, jungleFernMembers(270)),
+                        WeightedTemplateModelTrait.Case.of(Direction.WEST, jungleFernMembers(90))
+                ),
+                WeightedTemplateModelTrait.Item.delegatedTo(BetterEnd.C.mk("item/jungle_fern")));
+    }
+
+    /**
+     * creeping_moss is the kept hand-authored two-slot ({@code #texture}/{@code #spore}) "up-leaf" mesh template
+     * shared by blue_vine_fur, tenanea_outer_leaves and the lucernia up/down leaves. Its own blockstate references
+     * the template directly, weighted over the four Y rotations; item delegates to {@code item/creeping_moss}.
+     */
+    private static BlockModelTrait creepingMossModelTrait() {
+        final var m = BetterEnd.C.mk("block/creeping_moss");
+        return WeightedTemplateModelTrait.simple(
+                java.util.List.of(
+                        WeightedTemplateModelTrait.model(m),
+                        WeightedTemplateModelTrait.model(m).rotated(0, 90),
+                        WeightedTemplateModelTrait.model(m).rotated(0, 180),
+                        WeightedTemplateModelTrait.model(m).rotated(0, 270)
+                ),
+                WeightedTemplateModelTrait.Item.delegatedTo(BetterEnd.C.mk("item/creeping_moss")));
+    }
+
+    /** A texture-swap child of the creeping_moss "up-leaf" mesh template, binding all slots to {@code tex}. */
+    private static WeightedTemplateModelTrait.Layer upLeafChild(net.minecraft.resources.ResourceLocation tex) {
+        return WeightedTemplateModelTrait.child(BetterEnd.C.mk("block/creeping_moss"),
+                java.util.Map.of("texture", tex, "spore", tex, "particle", tex));
+    }
+
+    /**
+     * A {@link FurBlock} whose single "up-leaf" mesh child (a creeping_moss template texture-swap to {@code tex})
+     * is placed at the six standard fur facings (up unrotated, down {@code x=180}, the four horizontals at
+     * {@code x=90} with the matching Y).
+     */
+    private static BlockModelTrait upLeafModelTrait(
+            net.minecraft.resources.ResourceLocation tex,
+            WeightedTemplateModelTrait.Item item
+    ) {
+        final var child = upLeafChild(tex);
+        return WeightedTemplateModelTrait.propertyDispatch(
+                FurBlock.FACING,
+                java.util.List.of(
+                        WeightedTemplateModelTrait.Case.of(Direction.UP, java.util.List.of(child)),
+                        WeightedTemplateModelTrait.Case.of(Direction.DOWN, java.util.List.of(child.rotated(180, 0))),
+                        WeightedTemplateModelTrait.Case.of(Direction.NORTH, java.util.List.of(child.rotated(90, 0))),
+                        WeightedTemplateModelTrait.Case.of(Direction.SOUTH, java.util.List.of(child.rotated(90, 180))),
+                        WeightedTemplateModelTrait.Case.of(Direction.EAST, java.util.List.of(child.rotated(90, 90))),
+                        WeightedTemplateModelTrait.Case.of(Direction.WEST, java.util.List.of(child.rotated(90, 270)))
+                ),
+                item);
+    }
+
+    /**
+     * lucernia_outer_leaves is a {@link FurBlock}: the four horizontal facings each hold nine children of the
+     * two-texture bulb_moss mesh ({@code bulb_moss_01/_02/_03} crossed with the three single textures
+     * {@code lucernia_outer_leaves_1/_2/_3}, both slots bound to the same texture), while up/down reference two
+     * creeping_moss up-leaf children ({@code lucernia_outer_leaves_1/_2}). Block-only (no item).
+     */
+    private static java.util.List<WeightedTemplateModelTrait.Layer> lucerniaHorizontal(int y) {
+        final java.util.List<WeightedTemplateModelTrait.Layer> out = new java.util.ArrayList<>();
+        for (int i = 1; i <= 9; i++) {
+            final int mesh = ((i - 1) % 3) + 1;   // 1,2,3,1,2,3,1,2,3
+            final int tset = ((i - 1) / 3) + 1;   // 1,1,1,2,2,2,3,3,3
+            final var tex = BetterEnd.C.mk("block/lucernia_outer_leaves_" + tset);
+            out.add(WeightedTemplateModelTrait.child(BetterEnd.C.mk("block/bulb_moss_0" + mesh),
+                    java.util.Map.of("texture", tex, "texture2", tex)).rotated(0, y));
+        }
+        return out;
+    }
+
+    private static java.util.List<WeightedTemplateModelTrait.Layer> lucerniaUp(int x) {
+        return java.util.List.of(
+                upLeafChild(BetterEnd.C.mk("block/lucernia_outer_leaves_1")).rotated(x, 0),
+                upLeafChild(BetterEnd.C.mk("block/lucernia_outer_leaves_2")).rotated(x, 0));
+    }
+
+    private static BlockModelTrait lucerniaOuterLeavesModelTrait() {
+        return WeightedTemplateModelTrait.propertyDispatch(
+                FurBlock.FACING,
+                java.util.List.of(
+                        WeightedTemplateModelTrait.Case.of(Direction.NORTH, lucerniaHorizontal(180)),
+                        WeightedTemplateModelTrait.Case.of(Direction.SOUTH, lucerniaHorizontal(0)),
+                        WeightedTemplateModelTrait.Case.of(Direction.EAST, lucerniaHorizontal(270)),
+                        WeightedTemplateModelTrait.Case.of(Direction.WEST, lucerniaHorizontal(90)),
+                        WeightedTemplateModelTrait.Case.of(Direction.UP, lucerniaUp(0)),
+                        WeightedTemplateModelTrait.Case.of(Direction.DOWN, lucerniaUp(180))
+                ),
+                WeightedTemplateModelTrait.Item.none());
+    }
+
+    /**
+     * The four hand-authored "small" umbrella-moss meshes ({@code umbrella_moss_small}, {@code _2}, {@code _3},
+     * {@code _4}) are the kept family template shared by umbrella_moss and twisted_umbrella_moss. umbrella_moss
+     * references them directly; twisted_umbrella_moss is the texture-swap child (its {@code up}/{@code sporophyte}/
+     * {@code small}/{@code end} textures bound in). Each mesh is placed at the four Y rotations.
+     */
+    private static java.util.List<WeightedTemplateModelTrait.Layer> umbrellaMossSmallLayers() {
+        final java.util.List<WeightedTemplateModelTrait.Layer> out = new java.util.ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            final var m = WeightedTemplateModelTrait.model(
+                    BetterEnd.C.mk("block/umbrella_moss_small" + (i == 1 ? "" : "_" + i)));
+            for (int y : new int[]{0, 90, 180, 270}) {
+                out.add(m.rotated(0, y));
+            }
+        }
+        return out;
+    }
+
+    private static BlockModelTrait umbrellaMossModelTrait() {
+        return WeightedTemplateModelTrait.simple(
+                umbrellaMossSmallLayers(),
+                WeightedTemplateModelTrait.Item.flat(BetterEnd.C.mk("item/umbrella_moss_small")));
+    }
+
+    private static BlockModelTrait twistedUmbrellaMossModelTrait() {
+        final var swap = java.util.Map.of(
+                "texture", BetterEnd.C.mk("block/twisted_umbrella_moss_up"),
+                "particle", BetterEnd.C.mk("block/twisted_umbrella_moss_up"),
+                "spore", BetterEnd.C.mk("block/twisted_umbrella_moss_sporophyte"),
+                "small", BetterEnd.C.mk("block/twisted_umbrella_moss_small"),
+                "end", BetterEnd.C.mk("block/twisted_umbrella_moss_end"));
+        final java.util.List<WeightedTemplateModelTrait.Layer> out = new java.util.ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            final var c = WeightedTemplateModelTrait.child(
+                    BetterEnd.C.mk("block/umbrella_moss_small" + (i == 1 ? "" : "_" + i)), swap);
+            for (int y : new int[]{0, 90, 180, 270}) {
+                out.add(c.rotated(0, y));
+            }
+        }
+        return WeightedTemplateModelTrait.simple(
+                out,
+                WeightedTemplateModelTrait.Item.flat(BetterEnd.C.mk("item/twisted_umbrella_moss_small")));
     }
 
     // Vines //

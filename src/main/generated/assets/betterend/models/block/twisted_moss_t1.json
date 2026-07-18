@@ -1,0 +1,7 @@
+{
+  "parent": "betterend:block/bulb_moss_02",
+  "textures": {
+    "texture": "betterend:block/twisted_moss",
+    "texture2": "betterend:block/twisted_moss_2"
+  }
+}

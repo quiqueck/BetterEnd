@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "betterend:block/blue_vine_fur_t0",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "betterend:block/blue_vine_fur_t0",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "betterend:block/blue_vine_fur_t0",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "betterend:block/blue_vine_fur_t0",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "betterend:block/blue_vine_fur_t0"
+    },
+    "facing=west": {
+      "model": "betterend:block/blue_vine_fur_t0",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

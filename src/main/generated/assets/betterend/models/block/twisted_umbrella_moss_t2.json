@@ -1,0 +1,10 @@
+{
+  "parent": "betterend:block/umbrella_moss_small_3",
+  "textures": {
+    "end": "betterend:block/twisted_umbrella_moss_end",
+    "particle": "betterend:block/twisted_umbrella_moss_up",
+    "small": "betterend:block/twisted_umbrella_moss_small",
+    "spore": "betterend:block/twisted_umbrella_moss_sporophyte",
+    "texture": "betterend:block/twisted_umbrella_moss_up"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "betterend:block/creeping_moss",
+  "textures": {
+    "particle": "betterend:block/tenanea_outer_leaves",
+    "spore": "betterend:block/tenanea_outer_leaves",
+    "texture": "betterend:block/tenanea_outer_leaves"
+  }
+}

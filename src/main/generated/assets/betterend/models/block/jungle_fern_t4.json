@@ -1,0 +1,9 @@
+{
+  "parent": "betterend:block/jungle_fern_2",
+  "textures": {
+    "particle": "betterend:block/jungle_fern_leaf_3",
+    "spore": "betterend:block/jungle_fern_spore_3",
+    "texture": "betterend:block/jungle_fern_leaf_3",
+    "texture1": "betterend:block/jungle_fern_middle_3"
+  }
+}

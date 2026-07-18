@@ -1,0 +1,7 @@
+{
+  "parent": "betterend:block/bulb_moss_01",
+  "textures": {
+    "texture": "betterend:block/lucernia_outer_leaves_3",
+    "texture2": "betterend:block/lucernia_outer_leaves_3"
+  }
+}

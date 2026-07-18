@@ -1225,6 +1225,11 @@ public class EndBlocks {
             .addTrait(VineBlockTrait.withColor(MapColor.COLOR_BLUE, 15, false, false))
             .addTrait(noLootTableTrait())
             .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
+            // Replaces the c:plant tag the retired BehaviourPlant marker (via UpDownPlantBlock) used to
+            // contribute through the BCLAutoBlockTagProvider instanceof scan. The marker/mineable-hoe/
+            // compostable parts BehaviourPlant also implied are already covered by VineBlockTrait above, so
+            // PlantLikeBlockTrait.plant() is not used here to avoid re-adding those.
+            .addTrait(VegetationTagTrait.plant())
             .buildAndRegister();
 
     public static final Block BLUE_VINE_LANTERN = defineBlock("blue_vine_lantern", BlueVineLanternBlock::new)

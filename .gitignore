@@ -38,3 +38,4 @@ override/
 /CHANGES.md
 /modrinth.json
 /tools/
+.DS_Store

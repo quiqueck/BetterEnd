@@ -387,6 +387,8 @@ public class EndBlocks {
             MapColor.COLOR_GRAY,
             MapColor.WOOD
     ).setFurnitureCloth(Blocks.GRAY_WOOL)
+     .setLogVariants(1, 1, 1, 1, 1)
+     .setStrippedVariants(1, 1, 1, 1, 1)
      .buildAndRegister();
 
     public static final Block PYTHADENDRON_SAPLING = defineBlock("pythadendron_sapling", PythadendronSaplingBlock::new)
@@ -409,6 +411,7 @@ public class EndBlocks {
             MapColor.COLOR_MAGENTA,
             MapColor.COLOR_PURPLE
     ).setFurnitureCloth(Blocks.BLACK_WOOL)
+     .setLogVariants(1, 1, 1, 1)
      .buildAndRegister();
 
     public static final Block END_LOTUS_SEED = defineBlock("end_lotus_seed", EndLotusSeedBlock::new)
@@ -478,6 +481,7 @@ public class EndBlocks {
             MapColor.COLOR_BROWN,
             MapColor.COLOR_YELLOW
     ).setFurnitureCloth(Blocks.CYAN_WOOL)
+     .setLogVariants(1, 1, 1, 1)
      .buildAndRegister();
 
     public static final Block DRAGON_TREE_SAPLING = defineBlock("dragon_tree_sapling", DragonTreeSaplingBlock::new)
@@ -497,6 +501,7 @@ public class EndBlocks {
             MapColor.COLOR_BLACK,
             MapColor.COLOR_MAGENTA
     ).setFurnitureCloth(Blocks.BLACK_WOOL)
+     .setLogVariants(1, 1, 1, 1)
      .buildAndRegister();
 
     public static final Block TENANEA_SAPLING = defineBlock("tenanea_sapling", TenaneaSaplingBlock::new)
@@ -508,7 +513,10 @@ public class EndBlocks {
     public static final Block TENANEA_LEAVES = defineBlock("tenanea_leaves", PottableLeavesBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_PINK, 0, false, -1, TENANEA_SAPLING, false))
             .addTrait(PottablePlantBlockTrait.any())
-            .addTrait(ModelTraitLibrary.cube())
+            // Restores the pre-migration no-ambient-occlusion look: wover's ModelTraitLibrary.cube() parents
+            // minecraft:block/cube_all (AO on), which darkened the leaves' interior faces. cube_noshade has
+            // "shade": false on every face.
+            .addTrait(NoAmbientOcclusionCubeModelTrait.withParent(BetterEnd.C.mk("block/cube_noshade")))
             .buildAndRegister();
 
     public static final Block TENANEA_FLOWERS = defineBlock("tenanea_flowers", TenaneaFlowersBlock::new)
@@ -641,6 +649,7 @@ public class EndBlocks {
             MapColor.COLOR_ORANGE,
             MapColor.COLOR_ORANGE
     ).setFurnitureCloth(Blocks.WHITE_WOOL)
+     .setLogVariants(16, 1, 16, 1)
      .buildAndRegister();
 
     public static final EndWoodenComplexMaterial LUCERNIA_JELLY = new JellyLucerniaWoodMaterial()

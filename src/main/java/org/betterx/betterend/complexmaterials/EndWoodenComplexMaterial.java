@@ -3,6 +3,8 @@ package org.betterx.betterend.complexmaterials;
 import org.betterx.bclib.furniture.slots.BarStool;
 import org.betterx.bclib.furniture.slots.Chair;
 import org.betterx.bclib.furniture.slots.Taburet;
+import org.betterx.bclib.trait.block.WeightedBark;
+import org.betterx.bclib.trait.block.WeightedLog;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.wover.block.api.BlockDefinition;
 import org.betterx.wover.recipe.api.RecipeBuilder;
@@ -22,6 +24,8 @@ public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMat
     protected Block furnitureCloth = Blocks.WHITE_WOOL;
     private Block bark;
     private Block log;
+    private int[] logVariantWeights;
+    private int[] strippedVariantWeights;
 
     public EndWoodenComplexMaterial(String name, MapColor woodColor, MapColor planksColor) {
         super(BetterEnd.C, name, woodColor);
@@ -57,9 +61,42 @@ public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMat
                 .add(new BarStool(() -> furnitureCloth));
     }
 
+    /**
+     * Opts this set's {@code LOG}/{@code BARK} slots into the weighted, multi-variant log/bark model (restoring the
+     * randomized-log look lost in the wover migration). {@code weights.length} is the number of variants (base plus
+     * hand-authored {@code _2..._length} models); {@code weights[0]} weights the base model, {@code weights[i]}
+     * model {@code _<i+1>}. Must be called before {@link #buildAndRegister()}.
+     *
+     * @param weights the per-variant weights (e.g. {@code 1,1,1,1} for four equally-weighted variants, or
+     *                {@code 16,1,16,1} for lucernia's dominant/rare pairing)
+     */
+    public EndWoodenComplexMaterial setLogVariants(int... weights) {
+        this.logVariantWeights = weights;
+        return this;
+    }
+
+    /**
+     * Like {@link #setLogVariants}, but for the {@code STRIPPED_LOG}/{@code STRIPPED_BARK} slots.
+     *
+     * @param weights the per-variant weights for the stripped log/bark
+     */
+    public EndWoodenComplexMaterial setStrippedVariants(int... weights) {
+        this.strippedVariantWeights = weights;
+        return this;
+    }
+
     @Override
     protected SlotMap createDefaultDefinitions() {
-        return addFurniture(super.createDefaultDefinitions());
+        final SlotMap map = addFurniture(super.createDefaultDefinitions());
+        if (logVariantWeights != null) {
+            map.replace(new WeightedLog(true, logVariantWeights))
+               .replace(new WeightedBark(true, logVariantWeights));
+        }
+        if (strippedVariantWeights != null) {
+            map.replace(new WeightedLog(false, strippedVariantWeights))
+               .replace(new WeightedBark(false, strippedVariantWeights));
+        }
+        return map;
     }
 
     @Override

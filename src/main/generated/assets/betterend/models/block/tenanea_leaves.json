@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "betterend:block/cube_noshade",
   "textures": {
-    "all": "betterend:block/tenanea_leaves"
+    "texture": "betterend:block/tenanea_leaves"
   }
 }

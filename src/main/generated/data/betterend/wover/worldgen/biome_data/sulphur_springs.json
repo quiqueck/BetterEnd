@@ -8,7 +8,10 @@
   "has_caves": false,
   "surface": {
     "alt": {
-      "Name": "minecraft:end_stone"
+      "Name": "betterend:brimstone",
+      "Properties": {
+        "active": "false"
+      }
     },
     "floor_rule": false,
     "top": {

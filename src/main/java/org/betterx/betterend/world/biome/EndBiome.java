@@ -10,6 +10,7 @@ import org.betterx.wover.biome.api.data.BiomeGenerationDataContainer;
 import org.betterx.wover.generator.api.biomesource.WoverBiomeData;
 import org.betterx.wover.generator.api.biomesource.WoverBiomePicker;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
+import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -229,6 +230,26 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
                 .findSurfaceMaterialProvider(WoverBiomePicker.getBiomeAt(world, pos))
                 .map(SurfaceMaterialProvider::getTopMaterial)
                 .orElse(EndBiome.Config.DEFAULT_MATERIAL.getTopMaterial());
+    }
+
+    /**
+     * Preferred over {@link #findTopMaterial(WorldGenLevel, BlockPos)} for features that decorate a
+     * lake shore or similar spot: it samples the real surface block the surface rules already placed
+     * at {@code topSolidPos}, so noise-driven surfaces (e.g. the Sulphur Springs' sulphuric rock)
+     * are reflected instead of only a biome's single {@code getTopMaterial()}. Reading an
+     * already-placed block is always crash-safe — no biome/chunk-status dependency. Only falls back
+     * to the (often {@code DEFAULT_MATERIAL}) biome lookup when the sampled block is not a genuine
+     * surface material, i.e. plain {@link Blocks#END_STONE} or a block not tagged
+     * {@link CommonBlockTags#TERRAIN}.
+     *
+     * @param topSolidPos the top <em>solid</em> block of a column (the biome surface block)
+     */
+    public static BlockState sampleTopMaterial(WorldGenLevel world, BlockPos topSolidPos) {
+        final BlockState top = world.getBlockState(topSolidPos);
+        if (top.is(CommonBlockTags.TERRAIN) && !top.is(Blocks.END_STONE)) {
+            return top;
+        }
+        return findTopMaterial(world, topSolidPos);
     }
 
     public static BlockState findUnderMaterial(Holder<Biome> biome) {

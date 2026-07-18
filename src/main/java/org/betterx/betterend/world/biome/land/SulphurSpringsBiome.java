@@ -14,7 +14,6 @@ import org.betterx.wover.surface.api.SurfaceRuleBuilder;
 import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
@@ -68,7 +67,9 @@ public class SulphurSpringsBiome extends EndBiome.Config {
 
             @Override
             public BlockState getAltTopMaterial() {
-                return Blocks.END_STONE.defaultBlockState();
+                // The surface switch's "default" band (index 0). Brimstone rather than plain end
+                // stone, so the biome floor matches the brimstone rims of its sulphuric pools.
+                return EndBlocks.BRIMSTONE.defaultBlockState();
             }
 
             @Override

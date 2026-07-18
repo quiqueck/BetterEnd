@@ -25,7 +25,10 @@
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "minecraft:end_stone"
+                "Name": "betterend:brimstone",
+                "Properties": {
+                  "active": "false"
+                }
               }
             },
             {
@@ -71,7 +74,10 @@
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "minecraft:end_stone"
+                "Name": "betterend:brimstone",
+                "Properties": {
+                  "active": "false"
+                }
               }
             },
             {

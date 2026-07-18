@@ -632,6 +632,8 @@ public class EndBlocks {
             MapColor.COLOR_LIGHT_BLUE,
             MapColor.COLOR_CYAN
     ).setFurnitureCloth(Blocks.LIGHT_BLUE_WOOL)
+     // end_lotus is a plant, not wood - its boat is a raft (like vanilla's bamboo raft), not a real boat
+     .useRaft()
      .buildAndRegister();
 
     public static final Block LACUGROVE_SAPLING = defineBlock("lacugrove_sapling", LacugroveSaplingBlock::new)

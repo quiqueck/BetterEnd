@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:item/end_lotus_boat"
+    "layer0": "betterend:item/end_lotus_chest_raft"
   }
 }

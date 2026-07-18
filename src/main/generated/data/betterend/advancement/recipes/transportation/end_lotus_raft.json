@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_boat"
+        "recipe": "betterend:end_lotus_raft"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "betterend:end_lotus_boat"
+      "betterend:end_lotus_raft"
     ]
   }
 }

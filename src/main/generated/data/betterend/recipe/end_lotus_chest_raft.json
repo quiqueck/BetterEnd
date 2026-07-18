@@ -4,10 +4,10 @@
   "group": "chest_boat",
   "ingredients": [
     "#c:chests",
-    "betterend:end_lotus_boat"
+    "betterend:end_lotus_raft"
   ],
   "result": {
     "count": 1,
-    "id": "betterend:end_lotus_chest_boat"
+    "id": "betterend:end_lotus_chest_raft"
   }
 }

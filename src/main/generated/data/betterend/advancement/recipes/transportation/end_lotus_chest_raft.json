@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_end_lotus_boat": {
+    "has_end_lotus_raft": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:end_lotus_boat"
+            "items": "betterend:end_lotus_raft"
           }
         ]
       },
@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_chest_boat"
+        "recipe": "betterend:end_lotus_chest_raft"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -32,12 +32,12 @@
     [
       "has_the_recipe",
       "has_tag_c_chests",
-      "has_end_lotus_boat"
+      "has_end_lotus_raft"
     ]
   ],
   "rewards": {
     "recipes": [
-      "betterend:end_lotus_chest_boat"
+      "betterend:end_lotus_chest_raft"
     ]
   }
 }

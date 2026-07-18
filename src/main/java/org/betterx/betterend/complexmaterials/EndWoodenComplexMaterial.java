@@ -11,6 +11,7 @@ import org.betterx.wover.recipe.api.RecipeBuilder;
 import org.betterx.wover.sets.api.blocks.SlotMap;
 import org.betterx.wover.sets.api.blocks.SlotType;
 import org.betterx.wover.sets.api.blocks.WoodenBlockSet;
+import org.betterx.wover.sets.api.blocks.slots.WoodSlots;
 import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
 import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
@@ -26,6 +27,7 @@ public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMat
     private Block log;
     private int[] logVariantWeights;
     private int[] strippedVariantWeights;
+    private boolean isRaft = false;
 
     public EndWoodenComplexMaterial(String name, MapColor woodColor, MapColor planksColor) {
         super(BetterEnd.C, name, woodColor);
@@ -85,6 +87,16 @@ public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMat
         return this;
     }
 
+    /**
+     * Marks this set's boat as a raft (e.g. vanilla's bamboo raft): rendered with {@code RaftRenderer}/
+     * {@code RaftModel} and backed by a {@code Raft}/{@code ChestRaft} entity instead of {@code Boat}/
+     * {@code ChestBoat}. Must be called before {@link #buildAndRegister()}, since that is when the slots are built.
+     */
+    public EndWoodenComplexMaterial useRaft() {
+        this.isRaft = true;
+        return this;
+    }
+
     @Override
     protected SlotMap createDefaultDefinitions() {
         final SlotMap map = addFurniture(super.createDefaultDefinitions());
@@ -95,6 +107,12 @@ public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMat
         if (strippedVariantWeights != null) {
             map.replace(new WeightedLog(false, strippedVariantWeights))
                .replace(new WeightedBark(false, strippedVariantWeights));
+        }
+        if (isRaft) {
+            map.remove(SlotType.BOAT)
+               .remove(SlotType.CHEST_BOAT)
+               .add(WoodSlots.RAFT)
+               .add(WoodSlots.CHEST_RAFT);
         }
         return map;
     }

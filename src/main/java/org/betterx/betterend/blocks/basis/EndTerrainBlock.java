@@ -18,5 +18,7 @@ public class EndTerrainBlock extends BaseTerrainBlock implements BlockTagProvide
     @Override
     public void registerBlockTags(ResourceLocation location, TagBootstrapContext<Block> context) {
         context.add(CommonBlockTags.END_STONES, this);
+        // Mossy/mycelium/grass end terrain is plantable ground - small plants may grow on it.
+        context.add(CommonBlockTags.SOIL, this);
     }
 }

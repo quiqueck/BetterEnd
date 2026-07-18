@@ -835,7 +835,9 @@ public class EndBlocks {
     public static final Block UMBRELLA_MOSS = defineBlock("umbrella_moss", UmbrellaMossBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, true))
             .addTrait(VegetationTagTrait.plant())
-            .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
+            // Less restrictive on purpose: grows on any soil (see CommonBlockTags.SOIL) so it can be
+            // used freely in decorations and on lake shores, not just jungle moss/mycelium.
+            .addTrait(SurvivesOnBlockTrait.withTag(CommonBlockTags.SOIL))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM))
             .addTrait(umbrellaMossModelTrait())
             .lightLevel(state -> 11)
@@ -992,7 +994,9 @@ public class EndBlocks {
     public static final Block JUNGLE_GRASS = defineBlock("jungle_grass", EndPlantBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PLANT, false, true))
             .addTrait(VegetationTagTrait.plant())
-            .addTrait(SurvivesOnBlockTrait.withBlocks(JUNGLE_MOSS))
+            // Less restrictive on purpose: grows on any soil (see CommonBlockTags.SOIL) so it can be
+            // used freely in decorations and on lake shores, not just jungle moss.
+            .addTrait(SurvivesOnBlockTrait.withTag(CommonBlockTags.SOIL))
             .addTrait(PottablePlantBlockTrait.any())
             .addTrait(WeightedCrossModelTrait.simple(List.of(
                             WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/jungle_grass")),

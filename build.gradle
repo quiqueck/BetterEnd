@@ -172,12 +172,49 @@ jar {
     from "LICENSE.ASSETS"
 }
 
-//change duplicate strategy for processResources task
+// src/main/resources and src/main/generated are both in the resources source set, so a file present in
+// both is packed twice. The duplicatesStrategy below keeps that from breaking the build, but it must not
+// be the answer: which copy wins depends on source-dir ordering, and the copies are usually NOT the same
+// file - a datagen fallback that restates a hand-authored asset is generally the worse (or broken) one.
+// Duplicates are therefore a bug in the providers and get fixed there; checkDuplicateAssets makes them
+// visible (and fails the build) instead of letting a silent EXCLUDE decide.
+tasks.register("checkDuplicateAssets") {
+    description = "Fails if src/main/generated restates a file from src/main/resources."
+    group = "verification"
+
+    def handAuthored = file("src/main/resources")
+    def generated = file("src/main/generated")
+    inputs.dir(handAuthored).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir(generated).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.upToDateWhen { true }
+
+    doLast {
+        def relative = { root ->
+            fileTree(root).files.collect { root.toPath().relativize(it.toPath()).toString() } as Set
+        }
+        def dupes = new TreeSet<String>(relative(handAuthored))
+        dupes.retainAll(relative(generated))
+        dupes.remove(".DS_Store")
+
+        if (!dupes.isEmpty()) {
+            throw new GradleException(
+                    "${dupes.size()} generated asset(s) restate a hand-authored file in src/main/resources.\n" +
+                            "Fix the datagen provider so it stops emitting these, rather than relying on\n" +
+                            "processResources' duplicatesStrategy to pick a winner:\n" +
+                            dupes.collect { "  - $it" }.join("\n")
+            )
+        }
+    }
+}
+check.dependsOn("checkDuplicateAssets")
+
+// Safety net only - src/main/generated is appended after src/main/resources, so EXCLUDE keeps the first
+// (hand-authored) copy. Any duplicate that reaches this point is a bug; checkDuplicateAssets reports it.
 tasks.processResources {
-    duplicatesStrategy = DuplicatesStrategy.WARN
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 tasks.sourcesJar {
-    duplicatesStrategy = DuplicatesStrategy.WARN
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 configurations {

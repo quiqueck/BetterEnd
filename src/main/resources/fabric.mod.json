@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "betterend",
-  "version": "21.7.0",
+  "version": "21.8.0",
   "name": "Better End",
   "description": "More content for The End dimension, including new biomes, plants, mobs, mechanics, terrain generation and more.\nMade by:\n- paulevs (code & art)\n- Bulldog83 (code & art)\n- Edos (building)\n- Yuki (art)\n- Seaward (art)\n- Firel (music)\n",
   "authors": [
@@ -49,16 +49,17 @@
     "java": ">=21",
     "minecraft": [
       "1.21.6",
-      "1.21.7"
+      "1.21.7",
+      "1.21.8"
     ],
-    "bclib": "21.7.x",
-    "wover": "21.7.x",
-    "wunderlib": "21.7.x"
+    "bclib": "21.8.x",
+    "wover": "21.8.x",
+    "wunderlib": "21.8.x"
   },
   "breaks": {
-    "bclib": "<21.7.0",
-    "wover": "<21.7.0",
-    "wunderlib": "<21.7.0"
+    "bclib": "<21.8.0",
+    "wover": "<21.8.0",
+    "wunderlib": "<21.8.0"
   },
   "suggests": {
     "byg": ">=2.0.0",

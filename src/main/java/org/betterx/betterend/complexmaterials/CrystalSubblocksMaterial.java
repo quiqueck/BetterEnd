@@ -8,6 +8,7 @@ import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.client.models.EndModelTraits;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.datagen.betterend.recipes.EndCraftingRecipesProvider;
+import org.betterx.bclib.trait.block.TemplateModelTrait;
 import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
 import org.betterx.wover.block.api.trait.BlockTraits;
 import org.betterx.wover.block.api.client.trait.BlockModelTrait;
@@ -29,6 +30,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public class CrystalSubblocksMaterial implements MaterialManager.Material {
+    /** The shared, hand-authored emissive stair templates every lit-crystal stair child model parents from. */
+    private static final net.minecraft.resources.ResourceLocation LIT_STAIRS = BetterEnd.C.mk("block/lit_stairs");
+    private static final net.minecraft.resources.ResourceLocation LIT_STAIRS_INNER = BetterEnd.C.mk("block/lit_stairs_inner");
+    private static final net.minecraft.resources.ResourceLocation LIT_STAIRS_OUTER = BetterEnd.C.mk("block/lit_stairs_outer");
+    /** The shared, hand-authored emissive wall templates the lit-crystal bricks wall child models parent from. */
+    private static final net.minecraft.resources.ResourceLocation LIT_WALL_POST = BetterEnd.C.mk("block/lit_wall_post");
+    private static final net.minecraft.resources.ResourceLocation LIT_WALL_SIDE = BetterEnd.C.mk("block/lit_wall_side");
+    private static final net.minecraft.resources.ResourceLocation LIT_WALL_SIDE_TALL = BetterEnd.C.mk("block/lit_wall_side_tall");
+
     public final Block polished;
     public final Block tiles;
     public final Block pillar;
@@ -62,7 +72,11 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                            .buildAndRegister();
         stairs = EndBlocks.defineBlock(name + "_stairs", p -> new StairBlock(source.defaultBlockState(), p))
                            .replacePropertiesWithCopy(source)
-                           .addTrait(ModelTraitLibrary.externalModel())
+                           .addTrait(TemplateModelTrait.stairs(
+                                   LIT_STAIRS, LIT_STAIRS_INNER, LIT_STAIRS_OUTER,
+                                   BetterEnd.C.mk("block/" + name + "_top"),
+                                   BetterEnd.C.mk("block/" + name + "_top"),
+                                   BetterEnd.C.mk("block/" + name + "_side")))
                            .buildAndRegister();
         slab = EndBlocks.defineBlock(name + "_slab", SlabBlock::new)
                          .replacePropertiesWithCopy(source)
@@ -82,7 +96,11 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                            .buildAndRegister();
         brick_stairs = EndBlocks.defineBlock(name + "_bricks_stairs", p -> new StairBlock(bricks.defaultBlockState(), p))
                                  .replacePropertiesWithCopy(bricks)
-                                 .addTrait(ModelTraitLibrary.externalModel())
+                                 .addTrait(TemplateModelTrait.stairs(
+                                         LIT_STAIRS, LIT_STAIRS_INNER, LIT_STAIRS_OUTER,
+                                         BetterEnd.C.mk("block/" + name + "_bricks"),
+                                         BetterEnd.C.mk("block/" + name + "_bricks"),
+                                         BetterEnd.C.mk("block/" + name + "_bricks")))
                                  .buildAndRegister();
         brick_slab = EndBlocks.defineBlock(name + "_bricks_slab", SlabBlock::new)
                                .replacePropertiesWithCopy(bricks)
@@ -90,7 +108,9 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                                .buildAndRegister();
         brick_wall = EndBlocks.defineBlock(name + "_bricks_wall", WallBlock::new)
                                .replacePropertiesWithCopy(bricks)
-                               .addTrait(ModelTraitLibrary.externalModel())
+                               .addTrait(TemplateModelTrait.wall(
+                                       LIT_WALL_POST, LIT_WALL_SIDE, LIT_WALL_SIDE_TALL,
+                                       BetterEnd.C.mk("block/" + name + "_bricks")))
                                .buildAndRegister();
 
 

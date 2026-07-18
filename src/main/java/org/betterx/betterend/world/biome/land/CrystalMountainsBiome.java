@@ -9,12 +9,13 @@ import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.surface.SplitNoiseCondition;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
+import org.betterx.wover.surface.impl.BaseSurfaceRuleBuilder;
 import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
 import java.util.List;
 
@@ -44,16 +45,26 @@ public class CrystalMountainsBiome extends EndBiome.Config {
 
             @Override
             public SurfaceRuleBuilder surface() {
+                // A crystal-moss / end-moss split - no end stone, so nothing bare shows on the surface.
                 SurfaceRules.RuleSource surfaceBlockRule = new SwitchRuleSource(
                         new SplitNoiseCondition(),
                         List.of(
                                 SurfaceRules.state(EndBlocks.END_MOSS.defaultBlockState()),
-                                SurfaceRules.state(Blocks.END_STONE.defaultBlockState())
+                                SurfaceRules.state(EndBlocks.CRYSTAL_MOSS.defaultBlockState())
                         )
                 );
                 return super
                         .surface()
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), 1);
+                        // Paint the surface (a few blocks deep, varied via addSurfaceDepth) with the
+                        // moss mix so the mountain flanks are covered, not just the flat tops. Priority
+                        // must beat the FILLER (900) or the rule is dead - that was the old bug (1).
+                        .rule(SurfaceRules.ifTrue(
+                                SurfaceRules.stoneDepthCheck(1, true, CaveSurface.FLOOR),
+                                surfaceBlockRule
+                        ), BaseSurfaceRuleBuilder.SUB_SURFACE_PRIORITY)
+                        // Near-vertical faces aren't ON_FLOOR and the depth rule barely touches them,
+                        // so cover them explicitly with crystal moss instead of leaving bare end stone.
+                        .steep(EndBlocks.CRYSTAL_MOSS.defaultBlockState(), 3);
             }
         };
     }

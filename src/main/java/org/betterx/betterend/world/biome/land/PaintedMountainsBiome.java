@@ -14,7 +14,6 @@ import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 
@@ -47,12 +46,16 @@ public class PaintedMountainsBiome extends EndBiome.Config {
             }
 
             public SurfaceRuleBuilder surface() {
+                // A full rainbow of coloured end-stone, no plain end stone - so the painted bands
+                // actually read as colour instead of washing back into the default terrain.
                 SurfaceRules.RuleSource surfaceBlockRule = new SwitchRuleSource(
                         VerticalBandNoiseCondition.DEFAULT,
                         List.of(
-                                SurfaceRules.state(Blocks.END_STONE.defaultBlockState()),
                                 SurfaceRules.state(EndBlocks.FLAVOLITE.getBlock(SlotType.SOURCE).defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.VIOLECITE.getBlock(SlotType.SOURCE).defaultBlockState())
+                                SurfaceRules.state(EndBlocks.VIOLECITE.getBlock(SlotType.SOURCE).defaultBlockState()),
+                                SurfaceRules.state(EndBlocks.VIRID_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState()),
+                                SurfaceRules.state(EndBlocks.AZURE_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState()),
+                                SurfaceRules.state(EndBlocks.SANDY_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState())
                         )
                 );
                 return SurfaceRuleBuilder.start().rule(surfaceBlockRule, 9);

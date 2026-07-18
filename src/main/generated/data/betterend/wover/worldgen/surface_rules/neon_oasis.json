@@ -11,12 +11,59 @@
           "add_surface_depth": false,
           "offset": 0,
           "secondary_depth_range": 0,
+          "surface_type": "floor"
+        },
+        "then_run": {
+          "type": "wover:switch_rule",
+          "collection": [
+            {
+              "type": "minecraft:block",
+              "result_state": {
+                "Name": "betterend:endstone_dust"
+              }
+            },
+            {
+              "type": "minecraft:block",
+              "result_state": {
+                "Name": "betterend:end_moss"
+              }
+            }
+          ],
+          "selector": {
+            "type": "betterend:split_noise",
+            "split_noise": 0
+          }
+        }
+      },
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:stone_depth",
+          "add_surface_depth": false,
+          "offset": 0,
+          "secondary_depth_range": 0,
           "surface_type": "ceiling"
         },
         "then_run": {
           "type": "minecraft:block",
           "result_state": {
             "Name": "minecraft:end_stone"
+          }
+        }
+      },
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:stone_depth",
+          "add_surface_depth": true,
+          "offset": 2,
+          "secondary_depth_range": 0,
+          "surface_type": "floor"
+        },
+        "then_run": {
+          "type": "minecraft:block",
+          "result_state": {
+            "Name": "betterend:endstone_dust"
           }
         }
       },
@@ -40,53 +87,6 @@
         "type": "minecraft:block",
         "result_state": {
           "Name": "minecraft:end_stone"
-        }
-      },
-      {
-        "type": "minecraft:condition",
-        "if_true": {
-          "type": "minecraft:stone_depth",
-          "add_surface_depth": false,
-          "offset": 5,
-          "secondary_depth_range": 0,
-          "surface_type": "floor"
-        },
-        "then_run": {
-          "type": "minecraft:block",
-          "result_state": {
-            "Name": "betterend:endstone_dust"
-          }
-        }
-      },
-      {
-        "type": "minecraft:condition",
-        "if_true": {
-          "type": "minecraft:stone_depth",
-          "add_surface_depth": false,
-          "offset": 0,
-          "secondary_depth_range": 0,
-          "surface_type": "floor"
-        },
-        "then_run": {
-          "type": "wover:switch_rule",
-          "collection": [
-            {
-              "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:endstone_dust"
-              }
-            },
-            {
-              "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:end_moss"
-              }
-            }
-          ],
-          "selector": {
-            "type": "betterend:split_noise",
-            "split_noise": 0
-          }
         }
       }
     ]

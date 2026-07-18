@@ -11,6 +11,7 @@ import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.surface.SplitNoiseCondition;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
+import org.betterx.wover.surface.impl.BaseSurfaceRuleBuilder;
 import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.core.particles.ParticleTypes;
@@ -76,12 +77,21 @@ public class NeonOasisBiome extends EndBiome.Config {
                 );
                 return super
                         .surface()
+                        // Underside stays end stone so the (falling) sand can't hang off a ceiling.
                         .ceil(Blocks.END_STONE.defaultBlockState())
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), 1)
+                        // Top block: the dust/moss oasis mix.
+                        .rule(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule),
+                                BaseSurfaceRuleBuilder.TOP_SURFACE_PRIORITY
+                        )
+                        // Same sand-cover depth rules as the desert (DustWastelands): a randomized-
+                        // depth dust layer (addSurfaceDepth) sitting on the END_STONE filler below, so
+                        // the falling sand always has solid ground under it. Priority must beat the
+                        // FILLER (900) - the old 4 sorted after it and never ran.
                         .rule(SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
+                                SurfaceRules.stoneDepthCheck(2, true, CaveSurface.FLOOR),
                                 SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState())
-                        ), 4);
+                        ), BaseSurfaceRuleBuilder.SUB_SURFACE_PRIORITY);
             }
         };
     }

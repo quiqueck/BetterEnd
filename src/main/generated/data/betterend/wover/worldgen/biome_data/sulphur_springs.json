@@ -8,14 +8,14 @@
   "has_caves": false,
   "surface": {
     "alt": {
+      "Name": "betterend:sulphuric_rock"
+    },
+    "floor_rule": false,
+    "top": {
       "Name": "betterend:brimstone",
       "Properties": {
         "active": "false"
       }
-    },
-    "floor_rule": false,
-    "top": {
-      "Name": "betterend:flavolite"
     },
     "under": {
       "Name": "minecraft:end_stone"

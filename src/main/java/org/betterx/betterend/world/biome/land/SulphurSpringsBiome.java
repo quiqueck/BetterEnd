@@ -1,7 +1,5 @@
 package org.betterx.betterend.world.biome.land;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
-
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.*;
 import org.betterx.betterend.registry.features.EndLakeFeatures;
@@ -10,7 +8,9 @@ import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.surface.SulphuricSurfaceNoiseCondition;
+import org.betterx.wover.sets.api.blocks.SlotType;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
+import org.betterx.wover.surface.impl.BaseSurfaceRuleBuilder;
 import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.world.entity.EntityType;
@@ -62,14 +62,14 @@ public class SulphurSpringsBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.FLAVOLITE.getBlock(SlotType.SOURCE).defaultBlockState();
+                return EndBlocks.BRIMSTONE.defaultBlockState();
             }
 
             @Override
             public BlockState getAltTopMaterial() {
                 // The surface switch's "default" band (index 0). Brimstone rather than plain end
                 // stone, so the biome floor matches the brimstone rims of its sulphuric pools.
-                return EndBlocks.BRIMSTONE.defaultBlockState();
+                return EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE).defaultBlockState();
             }
 
             @Override
@@ -88,14 +88,21 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                                 BRIMSTONE
                         )
                 );
+                // The switch must out-prioritise super.surface()'s unconditional END_STONE filler
+                // (FILLER_PRIORITY = 900). PriorityLinkedList orders highest-priority-first and the
+                // sequence is first-match-wins, so a small number like 2 sorts AFTER the filler and
+                // never runs - which is why the surface was coming out as plain end stone.
                 return super
                         .surface()
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), 2)
+                        .rule(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule),
+                                BaseSurfaceRuleBuilder.TOP_SURFACE_PRIORITY
+                        )
                         .rule(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
                                         surfaceBlockRule
-                                ), 2
+                                ), BaseSurfaceRuleBuilder.SUB_SURFACE_PRIORITY
                         );
             }
         };

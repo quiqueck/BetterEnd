@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 public class VerticalBandNoiseCondition implements NumericProvider {
     public static final VerticalBandNoiseCondition DEFAULT = new VerticalBandNoiseCondition(
             Noises.CLAY_BANDS_OFFSET,
-            4.0,
-            4.0,
+            1.5,  // offsetScale: keep the bands mostly horizontal (was 4.0, which shuffled them into a speckle)
+            5.0,  // bandScale: chunkier ~5-block stripes (was 4.0)
             6.0,
             1.3
     );

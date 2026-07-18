@@ -5,12 +5,6 @@
     "type": "minecraft:sequence",
     "sequence": [
       {
-        "type": "minecraft:block",
-        "result_state": {
-          "Name": "minecraft:end_stone"
-        }
-      },
-      {
         "type": "minecraft:condition",
         "if_true": {
           "type": "minecraft:stone_depth",
@@ -25,16 +19,16 @@
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:brimstone",
-                "Properties": {
-                  "active": "false"
-                }
+                "Name": "betterend:sulphuric_rock"
               }
             },
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:flavolite"
+                "Name": "betterend:brimstone",
+                "Properties": {
+                  "active": "false"
+                }
               }
             },
             {
@@ -74,16 +68,16 @@
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:brimstone",
-                "Properties": {
-                  "active": "false"
-                }
+                "Name": "betterend:sulphuric_rock"
               }
             },
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:flavolite"
+                "Name": "betterend:brimstone",
+                "Properties": {
+                  "active": "false"
+                }
               }
             },
             {
@@ -106,6 +100,12 @@
             "type": "betterend:sulphuric_surf",
             "sulphuric_surf": 0
           }
+        }
+      },
+      {
+        "type": "minecraft:block",
+        "result_state": {
+          "Name": "minecraft:end_stone"
         }
       }
     ]

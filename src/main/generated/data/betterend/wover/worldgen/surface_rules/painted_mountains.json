@@ -7,12 +7,6 @@
       {
         "type": "minecraft:block",
         "result_state": {
-          "Name": "minecraft:end_stone"
-        }
-      },
-      {
-        "type": "minecraft:block",
-        "result_state": {
           "Name": "betterend:flavolite"
         }
       },
@@ -21,13 +15,31 @@
         "result_state": {
           "Name": "betterend:violecite"
         }
+      },
+      {
+        "type": "minecraft:block",
+        "result_state": {
+          "Name": "betterend:virid_jadestone"
+        }
+      },
+      {
+        "type": "minecraft:block",
+        "result_state": {
+          "Name": "betterend:azure_jadestone"
+        }
+      },
+      {
+        "type": "minecraft:block",
+        "result_state": {
+          "Name": "betterend:sandy_jadestone"
+        }
       }
     ],
     "selector": {
       "type": "betterend:vertical_band",
-      "band_scale": 4.0,
+      "band_scale": 5.0,
       "noise": "minecraft:clay_bands_offset",
-      "offset_scale": 4.0,
+      "offset_scale": 1.5,
       "xz_scale": 6.0,
       "y_scale": 1.3
     }

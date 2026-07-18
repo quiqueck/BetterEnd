@@ -546,7 +546,9 @@ public class EndBlocks {
 
     public static final Block HELIX_TREE_LEAVES = defineBlock("helix_tree_leaves", HelixTreeLeavesBlock::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_ORANGE, 0, false, 8, HELIX_TREE_SAPLING, false))
-            .addTrait(ModelTraitLibrary.externalModelDelegatedItem())
+            // Its model is a plain texture-swap child of the shared betterend:block/tint_cube (tinted full cube),
+            // single-variant, item delegated to the block model - generate it instead of hand-authoring.
+            .addTrait(TemplateModelTrait.cube(BetterEnd.C.mk("block/tint_cube"), false))
             .sound(SoundType.WART_BLOCK)
             .buildAndRegister();
 
@@ -1235,37 +1237,52 @@ public class EndBlocks {
             .noOcclusion()
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
-            .addTrait(ModelTraitLibrary.externalModelDelegatedItem())
+            // A pure texture swap of the bespoke menger_sponge fractal mesh: generate its child model
+            // (parent=menger_sponge, particle+texture from this block's texture), single-variant blockstate and
+            // delegated item from the kept template parent instead of hand-authoring them.
+            .addTrait(TemplateModelTrait.cube(BetterEnd.C.mk("block/menger_sponge"), true))
             .buildAndRegister();
     public static final Block CHARNIA_RED = defineBlock("charnia_red", CharniaBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_RED, false, false))
             .addTrait(VegetationTagTrait.waterPlant())
-            .addTrait(ModelTraitLibrary.externalModel())
+            // A texture-swap child of the shared betterend:block/charnia mesh, placed with a random
+            // 0/90/180/270 Y rotation; item stays the hand-authored static item/charnia_red icon.
+            .addTrait(TemplateModelTrait.randomYRotation(BetterEnd.C.mk("block/charnia")))
             .buildAndRegister();
     public static final Block CHARNIA_PURPLE = defineBlock("charnia_purple", CharniaBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PURPLE, false, false))
             .addTrait(VegetationTagTrait.waterPlant())
-            .addTrait(ModelTraitLibrary.externalModel())
+            // A texture-swap child of the shared betterend:block/charnia mesh, placed with a random
+            // 0/90/180/270 Y rotation; item stays the hand-authored static item/charnia_purple icon.
+            .addTrait(TemplateModelTrait.randomYRotation(BetterEnd.C.mk("block/charnia")))
             .buildAndRegister();
     public static final Block CHARNIA_ORANGE = defineBlock("charnia_orange", CharniaBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
             .addTrait(VegetationTagTrait.waterPlant())
-            .addTrait(ModelTraitLibrary.externalModel())
+            // A texture-swap child of the shared betterend:block/charnia mesh, placed with a random
+            // 0/90/180/270 Y rotation; item stays the hand-authored static item/charnia_orange icon.
+            .addTrait(TemplateModelTrait.randomYRotation(BetterEnd.C.mk("block/charnia")))
             .buildAndRegister();
     public static final Block CHARNIA_LIGHT_BLUE = defineBlock("charnia_light_blue", CharniaBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_LIGHT_BLUE, false, false))
             .addTrait(VegetationTagTrait.waterPlant())
-            .addTrait(ModelTraitLibrary.externalModel())
+            // A texture-swap child of the shared betterend:block/charnia mesh, placed with a random
+            // 0/90/180/270 Y rotation; item stays the hand-authored static item/charnia_light_blue icon.
+            .addTrait(TemplateModelTrait.randomYRotation(BetterEnd.C.mk("block/charnia")))
             .buildAndRegister();
     public static final Block CHARNIA_CYAN = defineBlock("charnia_cyan", CharniaBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_CYAN, false, false))
             .addTrait(VegetationTagTrait.waterPlant())
-            .addTrait(ModelTraitLibrary.externalModel())
+            // A texture-swap child of the shared betterend:block/charnia mesh, placed with a random
+            // 0/90/180/270 Y rotation; item stays the hand-authored static item/charnia_cyan icon.
+            .addTrait(TemplateModelTrait.randomYRotation(BetterEnd.C.mk("block/charnia")))
             .buildAndRegister();
     public static final Block CHARNIA_GREEN = defineBlock("charnia_green", CharniaBlock::new)
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_GREEN, false, false))
             .addTrait(VegetationTagTrait.waterPlant())
-            .addTrait(ModelTraitLibrary.externalModel())
+            // A texture-swap child of the shared betterend:block/charnia mesh, placed with a random
+            // 0/90/180/270 Y rotation; item stays the hand-authored static item/charnia_green icon.
+            .addTrait(TemplateModelTrait.randomYRotation(BetterEnd.C.mk("block/charnia")))
             .buildAndRegister();
 
     public static final Block END_LILY = defineBlockOnly("end_lily", EndLilyBlock::new)

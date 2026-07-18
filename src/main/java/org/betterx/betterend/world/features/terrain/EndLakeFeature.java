@@ -63,6 +63,10 @@ public class EndLakeFeature extends DefaultFeature {
         waterLevel = MHelper.min(pos.getY(), waterLevel);
         BlockState state;
 
+        // Sample the real biome surface block once, before any carving disturbs it, and use it for
+        // the whole shore. Reflects noise-driven surfaces and never crashes; see EndBiome.
+        final BlockState borderMaterial = EndBiome.sampleTopMaterial(world, blockPos.below());
+
         int minX = blockPos.getX() - dist2;
         int maxX = blockPos.getX() + dist2;
         int minZ = blockPos.getZ() - dist2;
@@ -129,7 +133,7 @@ public class EndLakeFeature extends DefaultFeature {
                                 }
                                 pos = POS.below();
                                 if (world.getBlockState(pos).is(CommonBlockTags.END_STONES)) {
-                                    state = EndBiome.findTopMaterial(world, pos);
+                                    state = borderMaterial;
                                     if (y > waterLevel + 1) BlocksHelper.setWithoutUpdate(world, pos, state);
                                     else if (y > waterLevel)
                                         BlocksHelper.setWithoutUpdate(
@@ -198,11 +202,7 @@ public class EndLakeFeature extends DefaultFeature {
                         // Make border
                         else if (y < waterLevel && y2 + x2 + z2 <= rb) {
                             if (world.isEmptyBlock(POS.above())) {
-                                state = EndBiome.findTopMaterial(world, pos);
-//								state = world.getBiome(POS)
-//											 .getGenerationSettings()
-//											 .getSurfaceBuilderConfig()
-//											 .getTopMaterial();
+                                state = borderMaterial;
                                 BlocksHelper.setWithoutUpdate(
                                         world,
                                         POS,

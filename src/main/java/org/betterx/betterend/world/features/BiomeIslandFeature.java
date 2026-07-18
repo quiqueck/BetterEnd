@@ -32,7 +32,10 @@ public class BiomeIslandFeature extends DefaultFeature {
         //Holder<Biome> biome = world.getBiome(pos);
         int dist = BlocksHelper.downRay(world, pos, 10) + 1;
         BlockPos surfacePos = new BlockPos(pos.getX(), pos.getY() - dist, pos.getZ());
-        BlockState topMaterial = EndBiome.findTopMaterial(world, surfacePos);
+        // Probe the real block at the surface below the island (surfacePos is one below it). Reading
+        // the placed block (rather than findTopMaterial, which never reports a fluid) lets the check
+        // below actually detect water and give the island a gravel/stone underside over it.
+        BlockState topMaterial = world.getBlockState(surfacePos.above());
 
         if (BlocksHelper.isFluid(topMaterial)) {
             topBlock = Blocks.GRAVEL.defaultBlockState();

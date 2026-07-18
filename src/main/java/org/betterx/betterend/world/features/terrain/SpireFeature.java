@@ -68,14 +68,16 @@ public class SpireFeature extends DefaultFeature {
             )) * 1.3F);
         }).setSource(sdf);
         final BlockPos center = pos;
+        // Cap the spire with the real surface block of the ground it grows from (sampled once,
+        // before the spire overwrites it), so noise-driven surfaces are reflected; see EndBiome.
+        final BlockState spireTop = EndBiome.sampleTopMaterial(world, center.below());
         List<BlockPos> support = Lists.newArrayList();
         sdf.setReplaceFunction(REPLACE).addPostProcess((info) -> {
             if (info.getStateUp().isAir()) {
                 if (random.nextInt(16) == 0) {
                     support.add(info.getPos().above());
                 }
-                return EndBiome.findTopMaterial(world, info.getPos());
-                //return world.getBiome(info.getPos()).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial();
+                return spireTop;
             } else if (info.getState(Direction.UP, 3).isAir()) {
                 return EndBiome.findUnderMaterial(world, info.getPos());
 //				return world.getBiome(info.getPos())

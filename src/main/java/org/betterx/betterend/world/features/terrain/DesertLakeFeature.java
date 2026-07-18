@@ -60,6 +60,10 @@ public class DesertLakeFeature extends DefaultFeature {
         waterLevel = MHelper.min(pos.getY(), waterLevel);
         BlockState state;
 
+        // Sample the real biome surface block once, before any carving disturbs it, and use it for
+        // the whole shore. Reflects noise-driven surfaces and never crashes; see EndBiome.
+        final BlockState borderMaterial = EndBiome.sampleTopMaterial(world, blockPos.below());
+
         int minX = blockPos.getX() - dist2;
         int maxX = blockPos.getX() + dist2;
         int minZ = blockPos.getZ() - dist2;
@@ -126,10 +130,7 @@ public class DesertLakeFeature extends DefaultFeature {
                                 }
                                 pos = POS.below();
                                 if (world.getBlockState(pos).is(CommonBlockTags.END_STONES)) {
-                                    state = EndBiome.findTopMaterial(
-                                            world,
-                                            pos
-                                    ); //world.getBiome(pos).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial();
+                                    state = borderMaterial;
                                     if (y > waterLevel + 1) BlocksHelper.setWithoutUpdate(world, pos, state);
                                     else if (y > waterLevel)
                                         BlocksHelper.setWithoutUpdate(
@@ -202,10 +203,7 @@ public class DesertLakeFeature extends DefaultFeature {
                                 BlocksHelper.setWithoutUpdate(world, POS, EndBlocks.END_MOSS);
                             } else if (y < waterLevel) {
                                 if (world.isEmptyBlock(POS.above())) {
-                                    state = EndBiome.findTopMaterial(
-                                            world,
-                                            pos
-                                    ); //world.getBiome(POS).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial();
+                                    state = borderMaterial;
                                     BlocksHelper.setWithoutUpdate(
                                             world,
                                             POS,

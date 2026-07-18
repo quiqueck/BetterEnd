@@ -39,6 +39,23 @@ import java.util.Map;
 public class LakePiece extends BasePiece {
     private static final BlockState ENDSTONE = Blocks.END_STONE.defaultBlockState();
     private static final BlockState WATER = Blocks.WATER.defaultBlockState();
+
+    // Plants scattered on the lake shore. The attached blocks (fur/wings) survive on any sturdy top,
+    // the bush plants (jungle grass, umbrella moss) grow on CommonBlockTags.SOIL - trying them in a
+    // random order and placing the first that can survive keeps every shore block covered.
+    private static BlockState[] rimPlants;
+
+    private static BlockState[] rimPlants() {
+        if (rimPlants == null) {
+            rimPlants = new BlockState[]{
+                    EndBlocks.JUNGLE_GRASS.defaultBlockState(),
+                    EndBlocks.UMBRELLA_MOSS.defaultBlockState(),
+                    EndBlocks.BLUE_VINE_FUR.defaultBlockState(),
+                    EndBlocks.FILALUX_WINGS.defaultBlockState(),
+            };
+        }
+        return rimPlants;
+    }
     private final Map<Integer, Byte> heightmap = Maps.newHashMap();
     private OpenSimplexNoise noise;
     private BlockPos center;
@@ -152,13 +169,17 @@ public class LakePiece extends BasePiece {
                     double dist = x3 + y2 + z3;
                     if (dist < r2) {
                         BlockState state = chunk.getBlockState(mut);
+                        // Remember the real biome surface block before carving it away, so the rim
+                        // fill below reuses it. This includes END_STONES-tagged biome surfaces such
+                        // as sulphuric rock, flavolite and the mosses (which noise-driven surface
+                        // rules place instead of the biome's single getTopMaterial); only plain
+                        // end stone is excluded, since that is the "nothing special here" filler.
+                        if (state.is(CommonBlockTags.TERRAIN) && !state.is(Blocks.END_STONE)) {
+                            lastSurfaceMaterial = state;
+                        }
                         if (state.is(CommonBlockTags.END_STONES) || state.isAir()) {
                             state = mut.getY() < center.getY() ? WATER : CAVE_AIR;
                             chunk.setBlockState(mut, state, 3);
-                        } else if (state.is(CommonBlockTags.TERRAIN)) {
-                            // A genuine ground block (sand, etc.) SurfaceRules placed here, as opposed
-                            // to endstone/air/incidental non-terrain blocks. Remember it for the rim fill.
-                            lastSurfaceMaterial = state;
                         }
                     } else if (dist <= r3 && mut.getY() < center.getY()) {
                         BlockState state = chunk.getBlockState(mut);
@@ -185,6 +206,11 @@ public class LakePiece extends BasePiece {
                             double placeChance = edgeT > 0.85 ? 0.2 : edgeT > 0.6 ? 0.5 : 1.0;
                             if (placeChance >= 1.0 || random.nextDouble() < placeChance) {
                                 chunk.setBlockState(mut, state, 3);
+                                // Vegetate the shore: dense right next to the water, thinning to
+                                // ~25% at the outer edge of the band.
+                                if (stateAbove.isAir() && random.nextDouble() < 1.0 - 0.75 * edgeT) {
+                                    placeRimPlant(world, chunk, mut, worldPos, random);
+                                }
                             }
                         }
                     }
@@ -192,6 +218,34 @@ public class LakePiece extends BasePiece {
             }
         }
         fixWater(world, chunk, mut, random, sx, sz);
+    }
+
+    /**
+     * Places one shore plant on top of the just-placed rim block at {@code surface}. Tries the
+     * {@link #rimPlants()} in a random order and uses the first that can survive on the rim block, so
+     * soil-only plants land on mossy shores while the attached fur/wings cover bare end stone/dust.
+     *
+     * @param surface      the rim block position in chunk-local X/Z (world Y)
+     * @param surfaceWorld the same block in world coordinates, for {@code canSurvive} lookups
+     */
+    private void placeRimPlant(
+            WorldGenLevel world,
+            ChunkAccess chunk,
+            MutableBlockPos surface,
+            BlockPos surfaceWorld,
+            RandomSource random
+    ) {
+        final BlockState[] plants = rimPlants();
+        final BlockPos plantLocal = surface.above();
+        final BlockPos plantWorld = surfaceWorld.above();
+        final int start = random.nextInt(plants.length);
+        for (int i = 0; i < plants.length; i++) {
+            final BlockState plant = plants[(start + i) % plants.length];
+            if (plant.canSurvive(world, plantWorld)) {
+                chunk.setBlockState(plantLocal, plant, 3);
+                return;
+            }
+        }
     }
 
     private void fixWater(

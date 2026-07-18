@@ -203,6 +203,27 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
                 .orElse(EndBiome.Config.DEFAULT_MATERIAL.getTopMaterial());
     }
 
+    /**
+     * WARNING: this position-based lookup is unreliable during world generation and will often fall
+     * back to {@link EndBiome.Config#DEFAULT_MATERIAL} (plain end stone) instead of the biome's real
+     * surface block. It uses {@link WoverBiomePicker#getBiomeAt(WorldGenLevel, BlockPos)}, which only
+     * reads already-baked chunk biome data and returns {@code null} whenever the containing chunk
+     * hasn't reached {@link net.minecraft.world.level.chunk.status.ChunkStatus#BIOMES} yet or lies
+     * outside the region currently being generated (e.g. the far edge of a large lake) — in which
+     * case the {@code DEFAULT_MATERIAL} fallback silently kicks in.
+     * <p>
+     * Do NOT "fix" this by routing through {@link SurfaceMaterialProvider#findSurfaceMaterialProvider(WorldGenLevel, BlockPos)}
+     * / {@link WorldGenLevel#getBiome(BlockPos)}: that path runs a Voronoi sample across neighbouring
+     * columns and calls {@code getChunk} on chunks that may be unavailable, throwing
+     * {@code IllegalStateException: Requested chunk unavailable during world generation} and crashing
+     * chunk gen (observed via {@code EndLakeFeature}).
+     * <p>
+     * When you already hold a {@link Holder}{@code <}{@link Biome}{@code >} (e.g. a structure piece
+     * that knows its biome, or a feature that picked one), prefer {@link #findTopMaterial(Holder)}.
+     * When you need the true surface block at a position, sample the block already placed there
+     * (tagged {@link org.betterx.wover.tag.api.predefined.CommonBlockTags#TERRAIN}) — see
+     * {@code LakePiece} for the pattern.
+     */
     public static BlockState findTopMaterial(WorldGenLevel world, BlockPos pos) {
         return SurfaceMaterialProvider
                 .findSurfaceMaterialProvider(WoverBiomePicker.getBiomeAt(world, pos))
@@ -217,9 +238,17 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
                 .orElse(EndBiome.Config.DEFAULT_MATERIAL.getUnderMaterial());
     }
 
+    /**
+     * WARNING: same caveats as {@link #findTopMaterial(WorldGenLevel, BlockPos)} — unreliable during
+     * world generation (frequently falls back to {@link EndBiome.Config#DEFAULT_MATERIAL}), and it
+     * must use the null-safe {@link WoverBiomePicker#getBiomeAt(WorldGenLevel, BlockPos)} rather than
+     * {@link WorldGenLevel#getBiome(BlockPos)}, which throws
+     * {@code IllegalStateException: Requested chunk unavailable during world generation}. Prefer
+     * {@link #findUnderMaterial(Holder)} when a biome is already known.
+     */
     public static BlockState findUnderMaterial(WorldGenLevel world, BlockPos pos) {
         return SurfaceMaterialProvider
-                .findSurfaceMaterialProvider(world, pos)
+                .findSurfaceMaterialProvider(WoverBiomePicker.getBiomeAt(world, pos))
                 .map(SurfaceMaterialProvider::getUnderMaterial)
                 .orElse(EndBiome.Config.DEFAULT_MATERIAL.getUnderMaterial());
     }

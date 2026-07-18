@@ -48,6 +48,7 @@ public class LakePiece extends BasePiece {
     private int seed;
 
     private ResourceKey<Biome> biomeID;
+    private BlockState lastSurfaceMaterial;
 
     public LakePiece(BlockPos center, float radius, float depth, RandomSource random, Holder<Biome> biome) {
         super(EndStructures.LAKE_PIECE, random.nextInt(), null);
@@ -84,6 +85,28 @@ public class LakePiece extends BasePiece {
         noise = new OpenSimplexNoise(seed);
         aspect = radius / depth;
         biomeID = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(tag.getStringOr("biome", "")));
+    }
+
+    /**
+     * Returns the terrain material to use for the lake rim/floor. Prefers whatever real terrain
+     * block was last sampled while carving the lake (see {@link #postProcess}), since that reflects
+     * whatever the current SurfaceRules actually placed there. Only falls back to a biome lookup
+     * ({@link EndBiome#findTopMaterial(Holder)}) before the very first block has been sampled.
+     */
+    private BlockState surfaceMaterial(WorldGenLevel world) {
+        if (lastSurfaceMaterial != null) {
+            return lastSurfaceMaterial;
+        }
+        if (biomeID != null) {
+            Holder<Biome> biome = world.registryAccess()
+                                        .lookupOrThrow(Registries.BIOME)
+                                        .get(biomeID)
+                                        .orElse(null);
+            if (biome != null) {
+                return EndBiome.findTopMaterial(biome);
+            }
+        }
+        return ENDSTONE;
     }
 
     @Override
@@ -132,6 +155,10 @@ public class LakePiece extends BasePiece {
                         if (state.is(CommonBlockTags.END_STONES) || state.isAir()) {
                             state = mut.getY() < center.getY() ? WATER : CAVE_AIR;
                             chunk.setBlockState(mut, state, 3);
+                        } else if (state.is(CommonBlockTags.TERRAIN)) {
+                            // A genuine ground block (sand, etc.) SurfaceRules placed here, as opposed
+                            // to endstone/air/incidental non-terrain blocks. Remember it for the rim fill.
+                            lastSurfaceMaterial = state;
                         }
                     } else if (dist <= r3 && mut.getY() < center.getY()) {
                         BlockState state = chunk.getBlockState(mut);
@@ -140,18 +167,25 @@ public class LakePiece extends BasePiece {
                                 world,
                                 worldPos
                         )) {
-                            state = chunk.getBlockState(mut.above(3));
+                            BlockState above3 = chunk.getBlockState(mut.above(3));
                             final BlockState stateAbove = chunk.getBlockState(mut.above());
-                            if (stateAbove.isAir() && state.isAir()) {
-                                state = random.nextInt(10) == 0 ? ENDSTONE : EndBiome.findTopMaterial(world, worldPos);
+                            if (stateAbove.isAir() && above3.isAir()) {
+                                state = random.nextInt(10) == 0 ? ENDSTONE : surfaceMaterial(world);
                             } else if (stateAbove.isAir()) {
-                                state = random.nextBoolean() ? ENDSTONE : EndBiome.findTopMaterial(world, worldPos);
+                                state = random.nextBoolean() ? ENDSTONE : surfaceMaterial(world);
                             } else {
-                                state = state.getFluidState().isEmpty()
+                                state = above3.getFluidState().isEmpty()
                                         ? ENDSTONE
                                         : EndBlocks.ENDSTONE_DUST.defaultBlockState();
                             }
-                            chunk.setBlockState(mut, state, 3);
+
+                            // Taper the rim replacement toward the outer edge of the band so it
+                            // blends into the untouched terrain instead of forming a hard ring.
+                            double edgeT = (dist - r2) / (r3 - r2);
+                            double placeChance = edgeT > 0.85 ? 0.2 : edgeT > 0.6 ? 0.5 : 1.0;
+                            if (placeChance >= 1.0 || random.nextDouble() < placeChance) {
+                                chunk.setBlockState(mut, state, 3);
+                            }
                         }
                     }
                 }
@@ -186,7 +220,7 @@ public class LakePiece extends BasePiece {
                             if (bState.isAir()) {
                                 bState = random.nextBoolean()
                                         ? ENDSTONE
-                                        : EndBiome.findTopMaterial(world, mut.offset(sx, 0, sz));
+                                        : surfaceMaterial(world);
                             } else {
                                 bState = bState.getFluidState().isEmpty()
                                         ? ENDSTONE
@@ -206,7 +240,7 @@ public class LakePiece extends BasePiece {
                                     if (bState.isAir()) {
                                         bState = random.nextBoolean()
                                                 ? ENDSTONE
-                                                : EndBiome.findTopMaterial(world, mut.offset(sx, 0, sz));
+                                                : surfaceMaterial(world);
                                     } else {
                                         bState = bState.getFluidState().isEmpty()
                                                 ? ENDSTONE

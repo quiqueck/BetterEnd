@@ -1,80 +1,80 @@
 {
-  "schemaVersion": 1,
-  "id": "betterend",
-  "version": "21.8.0",
-  "name": "Better End",
-  "description": "More content for The End dimension, including new biomes, plants, mobs, mechanics, terrain generation and more.\nMade by:\n- paulevs (code & art)\n- Bulldog83 (code & art)\n- Edos (building)\n- Yuki (art)\n- Seaward (art)\n- Firel (music)\n",
-  "authors": [
-    "Quiqueck (code)",
-    "paulevs (code & art)",
-    "Bulldog83 (code & art)",
-    "Edos (building)",
-    "Yuki (art)",
-    "Seaward (art)",
-    "Firel (music)"
-  ],
-  "contact": {
-    "homepage": "https://modrinth.com/mod/betterend",
-    "issues": "https://github.com/quiqueck/BetterEnd/issues",
-    "sources": "https://github.com/quiqueck/BetterEnd"
-  },
-  "license": "MIT (CC BY-NC-SA 4.0 for some Assets)",
-  "icon": "assets/betterend/icon.png",
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "org.betterx.betterend.BetterEnd"
+    "schemaVersion": 1,
+    "id": "betterend",
+    "version": "21.8.1",
+    "name": "Better End",
+    "description": "More content for The End dimension, including new biomes, plants, mobs, mechanics, terrain generation and more.\nMade by:\n- paulevs (code & art)\n- Bulldog83 (code & art)\n- Edos (building)\n- Yuki (art)\n- Seaward (art)\n- Firel (music)\n",
+    "authors": [
+        "Quiqueck (code)",
+        "paulevs (code & art)",
+        "Bulldog83 (code & art)",
+        "Edos (building)",
+        "Yuki (art)",
+        "Seaward (art)",
+        "Firel (music)"
     ],
-    "client": [
-      "org.betterx.betterend.client.BetterEndClient"
+    "contact": {
+        "homepage": "https://modrinth.com/mod/betterend",
+        "issues": "https://github.com/quiqueck/BetterEnd/issues",
+        "sources": "https://github.com/quiqueck/BetterEnd"
+    },
+    "license": "MIT (CC BY-NC-SA 4.0 for some Assets)",
+    "icon": "assets/betterend/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "org.betterx.betterend.BetterEnd"
+        ],
+        "client": [
+            "org.betterx.betterend.client.BetterEndClient"
+        ],
+        "fabric-datagen": [
+            "org.betterx.datagen.betterend.BetterEndDatagen"
+        ],
+        "rei_client_diabled": [
+            "org.betterx.betterend.integration.rei.REIPlugin"
+        ],
+        "emi_diabled": [
+            "org.betterx.betterend.integration.emi.EMIPlugin"
+        ]
+    },
+    "accessWidener": "betterend.accesswidener",
+    "mixins": [
+        "betterend.mixins.common.json",
+        "betterend.mixins.client.json"
     ],
-    "fabric-datagen": [
-      "org.betterx.datagen.betterend.BetterEndDatagen"
-    ],
-    "rei_client_diabled": [
-      "org.betterx.betterend.integration.rei.REIPlugin"
-    ],
-    "emi_diabled": [
-      "org.betterx.betterend.integration.emi.EMIPlugin"
-    ]
-  },
-  "accessWidener": "betterend.accesswidener",
-  "mixins": [
-    "betterend.mixins.common.json",
-    "betterend.mixins.client.json"
-  ],
-  "depends": {
-    "fabricloader": ">=0.15.11",
-    "fabric-api": ">=0.100.0",
-    "java": ">=21",
-    "minecraft": [
-      "1.21.6",
-      "1.21.7",
-      "1.21.8"
-    ],
-    "bclib": "21.8.x",
-    "wover": "21.8.x",
-    "wunderlib": "21.8.x"
-  },
-  "breaks": {
-    "bclib": "<21.8.0",
-    "wover": "<21.8.0",
-    "wunderlib": "<21.8.0"
-  },
-  "suggests": {
-    "byg": ">=2.0.0",
-    "blockus": ">=2.0.2",
-    "nourish": ">=1.2.0",
-    "colored_lights": ">=1.0.3",
-    "trinkets": ">=3.7.0"
-  },
-  "custom": {
-    "wover": {
-      "updater_icon": "icon_updater.png",
-      "downloads": {
-        "modrinth": "https://modrinth.com/mod/betterend",
-        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/betterend"
-      }
+    "depends": {
+        "fabricloader": ">=0.15.11",
+        "fabric-api": ">=0.100.0",
+        "java": ">=21",
+        "minecraft": [
+            "1.21.6",
+            "1.21.7",
+            "1.21.8"
+        ],
+        "bclib": "21.8.x",
+        "wover": "21.8.x",
+        "wunderlib": "21.8.x"
+    },
+    "breaks": {
+        "bclib": "<21.8.0",
+        "wover": "<21.8.0",
+        "wunderlib": "<21.8.0"
+    },
+    "suggests": {
+        "byg": ">=2.0.0",
+        "blockus": ">=2.0.2",
+        "nourish": ">=1.2.0",
+        "colored_lights": ">=1.0.3",
+        "trinkets": ">=3.7.0"
+    },
+    "custom": {
+        "wover": {
+            "updater_icon": "icon_updater.png",
+            "downloads": {
+                "modrinth": "https://modrinth.com/mod/betterend",
+                "curseforge": "https://www.curseforge.com/minecraft/mc-mods/betterend"
+            }
+        }
     }
-  }
 }

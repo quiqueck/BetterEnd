@@ -1265,7 +1265,8 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block LANCELEAF_SEED = defineBlock("lanceleaf_seed", LanceleafSeedBlock::new)
-            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_BROWN, false, false))
+            // walkable=true: the seed blocks movement (players should not walk through it).
+            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_BROWN, true, false))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_AMBER_MOSS))
             .addTrait(WeightedCrossModelTrait.propertyDispatch(LanceleafSeedBlock.AGE, List.of(
@@ -1286,7 +1287,8 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block LANCELEAF = defineBlock("lanceleaf", LanceleafBlock::new)
-            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_BROWN, false, false))
+            // walkable=true: lanceleaf blocks movement (players should not walk through it).
+            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_BROWN, true, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_AMBER_MOSS))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_AMBER_MOSS))
@@ -1331,7 +1333,8 @@ public class EndBlocks {
             "glowing_pillar_roots",
             GlowingPillarRootsBlock::new
     )
-            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
+            // walkable=true: the roots block movement (players should not walk through them).
+            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, true, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
             .addTrait(noLootTableTrait())

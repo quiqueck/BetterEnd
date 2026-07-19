@@ -122,6 +122,7 @@ public class EndDoublePlantBlock extends Block implements BonemealableBlock {
     }
 
     public static LootTable.Builder buildLoot(Block block, LootLookupProvider provider) {
-        return provider.dropDoublePlantShears(block);
+        // Double/tall plants drop with ANY tool (like their single counterparts), not shears-only.
+        return provider.dropDoublePlant(block);
     }
 }

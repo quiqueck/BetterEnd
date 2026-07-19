@@ -44,7 +44,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
 public class EndBiomesProvider extends WoverBiomeProvider {
-    public record BiomeInfo(EndBiome.Config config, TagKey<Biome> tag,
+    public record BiomeInfo(EndBiome.Config config, TagKey<Biome>[] tags,
                             List<BuildingListFeature.StructureInfo> structures,
                             ConfiguredFeatureKey<WithConfiguration<BuildingListFeature, BuildingListFeatureConfig>> configuredFeatureKey,
                             PlacedConfiguredFeatureKey placed) {
@@ -76,7 +76,12 @@ public class EndBiomesProvider extends WoverBiomeProvider {
         putBiome(EndBiomes.LANTERN_WOODS, new LanternWoodsBiome(), CommonBiomeTags.IS_END_LAND);
         putBiome(EndBiomes.UMBRA_VALLEY, new UmbraValleyBiome(), CommonBiomeTags.IS_END_LAND);
 
-        putBiome(EndBiomes.ICE_STARFIELD, new BiomeIceStarfield(), CommonBiomeTags.IS_SMALL_END_ISLAND);
+        putBiome(
+                EndBiomes.ICE_STARFIELD,
+                new BiomeIceStarfield(),
+                CommonBiomeTags.IS_SMALL_END_ISLAND,
+                CommonBiomeTags.IS_END_BARRENS
+        );
 
         putBiome(EndBiomes.EMPTY_END_CAVE, new EmptyEndCaveBiome(EndBiomes.EMPTY_END_CAVE), EndTags.IS_END_CAVE);
         putBiome(EndBiomes.EMPTY_SMARAGDANT_CAVE, new EmptySmaragdantCaveBiome(EndBiomes.EMPTY_SMARAGDANT_CAVE), EndTags.IS_END_CAVE);
@@ -86,7 +91,8 @@ public class EndBiomesProvider extends WoverBiomeProvider {
         putBiome(EndBiomes.JADE_CAVE, new JadeCaveBiome(EndBiomes.JADE_CAVE), EndTags.IS_END_CAVE);
     }
 
-    private static void putBiome(EndBiomeKey<?, ?> key, EndBiome.Config config, TagKey<Biome> tag) {
+    @SafeVarargs
+    private static void putBiome(EndBiomeKey<?, ?> key, EndBiome.Config config, TagKey<Biome>... tags) {
         final List<BuildingListFeature.StructureInfo> structures = getBiomeStructures(key.key.location());
         PlacedConfiguredFeatureKey placed = null;
         ConfiguredFeatureKey<WithConfiguration<BuildingListFeature, BuildingListFeatureConfig>> configuredFeatureKey = null;
@@ -105,13 +111,13 @@ public class EndBiomesProvider extends WoverBiomeProvider {
                     .setDecoration(GenerationStep.Decoration.SURFACE_STRUCTURES);
         }
 
-        BIOMES.put(key, new BiomeInfo(config, tag, structures, configuredFeatureKey, placed));
+        BIOMES.put(key, new BiomeInfo(config, tags, structures, configuredFeatureKey, placed));
     }
 
     @Override
     protected void bootstrap(BiomeBootstrapContext context) {
         for (Map.Entry<EndBiomeKey<?, ?>, BiomeInfo> e : BIOMES.entrySet()) {
-            final EndBiomeBuilder builder = e.getKey().bootstrap(context, e.getValue().config, e.getValue().tag);
+            final EndBiomeBuilder builder = e.getKey().bootstrap(context, e.getValue().config, e.getValue().tags);
             if (e.getValue().placed != null)
                 builder.feature(e.getValue().placed);
             builder.register();

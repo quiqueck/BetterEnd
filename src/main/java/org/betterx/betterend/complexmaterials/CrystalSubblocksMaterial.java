@@ -7,6 +7,7 @@ import org.betterx.betterend.blocks.basis.LitPillarBlock;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.client.models.EndModelTraits;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.EndTags;
 import org.betterx.datagen.betterend.recipes.EndCraftingRecipesProvider;
 import org.betterx.bclib.trait.block.TemplateModelTrait;
 import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
@@ -89,6 +90,7 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
         pedestal = EndBlocks.defineBlock(name + "_pedestal", EndPedestal::new)
                              .replacePropertiesWithCopy(source)
                              .addTrait(ModCore.isDatagen() ? ClientModel.buildPedestal(source) : null)
+                             .addTags(EndTags.PEDESTALS)
                              .buildAndRegister();
         bricks = EndBlocks.defineBlock(name + "_bricks", LitBaseBlock::new)
                            .replacePropertiesWithCopy(source)

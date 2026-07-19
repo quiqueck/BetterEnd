@@ -16,6 +16,7 @@ import org.betterx.datagen.betterend.worldgen.features.*;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.PackBuilder;
 import org.betterx.wover.datagen.api.WoverDataGenEntryPoint;
+import org.betterx.wover.datagen.api.provider.BlockPropertiesProvider;
 import org.betterx.wover.pottable.api.datagen.WoverPottablePlantRegistryProvider;
 import org.betterx.wover.pottable.api.datagen.WoverPottableSoilRegistryProvider;
 

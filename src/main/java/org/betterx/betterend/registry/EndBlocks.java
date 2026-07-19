@@ -2,11 +2,12 @@ package org.betterx.betterend.registry;
 
 import org.betterx.bclib.api.v3.tag.BCLBlockTags;
 import org.betterx.bclib.blocks.BaseAnvilBlock;
+import org.betterx.bclib.items.BaseAnvilItem;
 import org.betterx.bclib.blocks.BaseTerrainBlock;
 import net.minecraft.core.Direction;
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.bclib.trait.block.WeightedCrossModelTrait;
-import org.betterx.bclib.blocks.SimpleLeavesBlock;
+import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.bclib.blocks.StalactiteBlock;
 import org.betterx.bclib.trait.block.*;
 import org.betterx.betterend.BetterEnd;
@@ -32,6 +33,7 @@ import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 import org.betterx.wover.block.api.trait.BlockTrait;
 import org.betterx.wover.block.api.trait.BlockTraits;
+import org.betterx.wover.item.api.BlockItemDefinition;
 import org.betterx.wover.pottable.api.trait.PottablePlantBlockTrait;
 import org.betterx.wover.pottable.api.trait.PottableSoilBlockTrait;
 import org.betterx.wover.recipe.api.RecipeMaterial;
@@ -43,13 +45,16 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.List;
@@ -224,6 +229,7 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block SULPHUR_CRYSTAL = defineBlock("sulphur_crystal", SulphurCrystalBlock::new)
+            .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_BRIMSTONE))
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
             .addTrait(BlockTraits.LOOT_TABLE.with(
@@ -1322,6 +1328,7 @@ public class EndBlocks {
     )
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_ORANGE, false, false))
             .addTrait(VegetationTagTrait.plant())
+            .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
             .addTrait(noLootTableTrait())
             .addTrait(WeightedCrossModelTrait.propertyDispatch(GlowingPillarRootsBlock.SHAPE, List.of(
                             WeightedCrossModelTrait.Case.of(BlockProperties.TripleShape.TOP, List.of(
@@ -1846,9 +1853,10 @@ public class EndBlocks {
                     ),
                     WeightedCrossModelTrait.Item.flat(BetterEnd.C.mk("block/flamaea_1"))))
             .sound(SoundType.WET_GRASS)
+            .withBlockItem((def, block) -> new BlockItemDefinition<>(def, id -> new PlaceOnWaterBlockItem(block, id.getProperties())))
             .buildAndRegister();
 
-    public static final Block CAVE_BUSH = defineBlock("cave_bush", SimpleLeavesBlock::new)
+    public static final Block CAVE_BUSH = defineBlock("cave_bush", BaseBlockNotFull::new)
             .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_MAGENTA, 0, false, 0.0F, null, false))
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
@@ -2376,6 +2384,7 @@ public class EndBlocks {
             .requiresCorrectToolForDrops()
             .sound(SoundType.NETHERITE_BLOCK)
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            .withBlockItem((def, block) -> new BlockItemDefinition<>(def, id -> new BlockItem(block, id.getProperties().fireResistant())))
             .buildAndRegister();
     public static final Block CHARCOAL_BLOCK = defineBlock("charcoal_block", CharcoalBlock::new)
             .addTrait(BlockTraits.STONE_BLOCK)
@@ -2505,6 +2514,7 @@ public class EndBlocks {
                     (key, block, generator) -> ((EternalPedestal) block).provideBlockModelsInstance(generator)
             ) : null)
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            .addTags(EndTags.PEDESTALS)
             .buildAndRegister();
     public static final Block INFUSION_PEDESTAL = getBlockRegistry()
             .defineDefaultBlock("infusion_pedestal", def -> new InfusionPedestal(def.blockKey))
@@ -2513,10 +2523,12 @@ public class EndBlocks {
                     (key, block, generator) -> ((InfusionPedestal) block).provideBlockModelsInstance(generator)
             ) : null)
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            .addTags(EndTags.PEDESTALS)
             .buildAndRegister();
     public static final Block AETERNIUM_ANVIL = defineBlock("aeternium_anvil", AeterniumAnvil::new)
             .addTrait(BlockTraits.METAL_BLOCK)
             .addTrait(ModCore.isDatagen() ? BaseAnvilBlock.buildModel(null, null) : null)
+            .withBlockItem((def, block) -> new BlockItemDefinition<>(def, id -> new BaseAnvilItem(block, id.getProperties().fireResistant())))
             .buildAndRegister();
 
     // Technical
@@ -2590,6 +2602,7 @@ public class EndBlocks {
                 .mapColor(color)
                 .addTrait(TerrainBlockTrait.DEFAULT)
                 .addTrait(PottableSoilBlockTrait.DEFAULT)
+                .addTrait(endTerrainLoot())
                 .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                         (key, block, generator) -> {
                             final var terrain = (BaseTerrainBlock) block;
@@ -2598,6 +2611,16 @@ public class EndBlocks {
                 ) : null)
                 .addTags(tags)
                 .buildAndRegister();
+    }
+
+    /**
+     * The loot every {@link BaseTerrainBlock} used to generate through the retired {@code BlockLootProvider}
+     * interface: silk-touch drops the block itself, otherwise its base block (read dynamically via
+     * {@link BaseTerrainBlock#getBaseBlock()}, so {@code PallidiumBlock}'s custom base is honoured).
+     */
+    private static BlockTrait<?, ?> endTerrainLoot() {
+        return BlockTraits.LOOT_TABLE.with((tableKey, blockKey, block, provider) ->
+                provider.dropWithSilkTouch(block, ((BaseTerrainBlock) block).getBaseBlock(), ConstantValue.exactly(1)));
     }
 
     /**
@@ -2617,6 +2640,7 @@ public class EndBlocks {
                 .mapColor(color)
                 .addTrait(TerrainBlockTrait.DEFAULT)
                 .addTrait(PottableSoilBlockTrait.DEFAULT)
+                .addTrait(endTerrainLoot())
                 .addTrait(modelTrait)
                 .addTags(tags)
                 .buildAndRegister();

@@ -6,16 +6,13 @@ import org.betterx.betterend.blocks.InfusionPedestal;
 import org.betterx.betterend.blocks.entities.InfusionPedestalEntity;
 import org.betterx.betterend.blocks.entities.PedestalBlockEntity;
 import org.betterx.betterend.client.models.EndModels;
-import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.rituals.InfusionRitual;
 import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockTagProvider;
 import org.betterx.wover.block.api.client.trait.BlockModelTrait;
 import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import org.betterx.wover.block.api.trait.BlockTraitLookup;
 import org.betterx.wover.sets.api.blocks.BlockSet;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -63,7 +60,7 @@ import java.util.function.ToIntFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PedestalBlock extends EndBlockNotFull implements EntityBlock, BlockTagProvider {
+public class PedestalBlock extends EndBlockNotFull implements EntityBlock {
     public final static EnumProperty<PedestalState> STATE = EndBlockProperties.PEDESTAL_STATE;
     public static final BooleanProperty HAS_ITEM = EndBlockProperties.HAS_ITEM;
     public static final BooleanProperty HAS_LIGHT = BlockProperties.HAS_LIGHT;
@@ -497,10 +494,5 @@ public class PedestalBlock extends EndBlockNotFull implements EntityBlock, Block
         SHAPE_COLUMN_TOP = Shapes.or(SHAPE_PILLAR, columnTop);
         SHAPE_COLUMN = Shapes.or(basin, SHAPE_PILLAR, columnTop);
         SHAPE_BOTTOM = Shapes.or(basin, SHAPE_PILLAR);
-    }
-
-    @Override
-    public void registerBlockTags(ResourceLocation location, TagBootstrapContext<Block> context) {
-        context.add(EndTags.PEDESTALS, this);
     }
 }

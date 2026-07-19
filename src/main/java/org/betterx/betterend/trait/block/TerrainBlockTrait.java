@@ -30,7 +30,7 @@ public class TerrainBlockTrait extends BlockTraitImpl<Block, GenericBlockTrait> 
         super.configure(definition);
 
         definition
-                .addTags(CommonBlockTags.END_STONES, MineableTags.PICKAXE)
+                .addTags(CommonBlockTags.END_STONES, MineableTags.PICKAXE, CommonBlockTags.SOIL)
                 .instrument(NoteBlockInstrument.BASEDRUM)
                 .requiresCorrectToolForDrops()
                 .strength(3.0F, 9.0F)

@@ -1,0 +1,14 @@
+{
+  "type": "wover:condition",
+  "config": {
+    "filter": {
+      "type": "wover:in_biome",
+      "biomes": [
+        "betterend:glowing_grasslands"
+      ],
+      "negate": false
+    },
+    "filter_fail": "betterend:bonemeal_end_moss_not_glowing_grasslands",
+    "filter_pass": "betterend:bonemeal_end_moss_glowing_grasslands"
+  }
+}

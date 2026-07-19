@@ -1,0 +1,14 @@
+{
+  "type": "wover:condition",
+  "config": {
+    "filter": {
+      "type": "wover:in_biome",
+      "biomes": [
+        "betterend:lantern_woods"
+      ],
+      "negate": false
+    },
+    "filter_fail": "betterend:bonemeal_rutiscus_not_lantern_woods",
+    "filter_pass": "betterend:bonemeal_rutiscus_lantern_woods"
+  }
+}

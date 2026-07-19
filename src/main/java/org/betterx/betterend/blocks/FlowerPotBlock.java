@@ -113,7 +113,20 @@ public class FlowerPotBlock extends EndBlockNotFull implements EntityBlock {
             Block block = item.getBlock();
             ResourceKey<Block> blockKey = block.builtInRegistryHolder().key();
             if (findByBlock(soils, blockKey, soil -> soil.block) == null) {
-                return InteractionResult.TRY_WITH_EMPTY_HAND;
+                // Empty pot: a plant can only be placed once soil is in the pot. This used to return
+                // silently, so trying to plant a seed/sapling first looked broken. Give an audible deny
+                // and FAIL so the interaction is not a silent no-op.
+                level.playSound(
+                        player,
+                        pos.getX() + 0.5,
+                        pos.getY() + 0.5,
+                        pos.getZ() + 0.5,
+                        SoundEvents.DISPENSER_FAIL,
+                        SoundSource.BLOCKS,
+                        0.6F,
+                        1
+                );
+                return InteractionResult.FAIL;
             }
             flowerPot.setSoil(Optional.of(blockKey));
             if (!player.isCreative()) {

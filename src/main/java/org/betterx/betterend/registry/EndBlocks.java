@@ -448,19 +448,15 @@ public class EndBlocks {
 
     public static final Block EMERALD_ICE = defineBlock("emerald_ice", EmeraldIceBlock::new)
             .addTrait(IceBlockTrait.withBase(Blocks.ICE))
-            .addTrait(ModelTraitLibrary.cube())
             .randomTicks()
             .buildAndRegister();
 
     public static final Block DENSE_EMERALD_ICE = defineBlock("dense_emerald_ice", Block::new)
             .addTrait(IceBlockTrait.withBase(Blocks.PACKED_ICE))
-            .addTrait(ModelTraitLibrary.cube())
             .buildAndRegister();
 
     public static final Block ANCIENT_EMERALD_ICE = defineBlock("ancient_emerald_ice", AncientEmeraldIceBlock::new)
             .addTrait(IceBlockTrait.withBase(Blocks.BLUE_ICE))
-            .addTrait(ModelTraitLibrary.cube())
-            .addTrait(BlockTraits.LOOT_TABLE.dropWithSilktouch())
             .randomTicks()
             .buildAndRegister();
     ;

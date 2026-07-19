@@ -2,7 +2,7 @@
   "type": "betterend:biome",
   "biome": "betterend:ice_starfield",
   "fogDensity": 2.2,
-  "genChance": 0.06,
+  "genChance": 0.01,
   "generation_data": {
     "intended_placement": "wover:is_end/small_island"
   },

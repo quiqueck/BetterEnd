@@ -101,18 +101,21 @@ public class FlowerPotBlock extends EndBlockNotFull implements EntityBlock {
             return InteractionResult.PASS;
         }
 
-        Registry<PottableSoil> soils = level.registryAccess()
-                                             .lookupOrThrow(PottableSoilRegistry.POTTABLE_SOIL_REGISTRY);
-        Registry<PottablePlant> plants = level.registryAccess()
-                                               .lookupOrThrow(PottablePlantRegistry.POTTABLE_PLANT_REGISTRY);
-
         if (flowerPot.getSoil().isEmpty()) {
             if (!(itemStack.getItem() instanceof BlockItem item)) {
                 return InteractionResult.PASS;
             }
+            // Look the soil registry up lazily (only in the branch that needs it) and null-safe:
+            // using lookupOrThrow here - and eagerly for BOTH registries above - meant that if either
+            // datapack registry was absent at runtime, the whole interaction threw server-side while
+            // the client had already returned CONSUME, so the click did *nothing at all* (no sound, no
+            // seated soil, no placed block). Seating soil must not depend on the plant registry.
+            Registry<PottableSoil> soils = level.registryAccess()
+                                                .lookup(PottableSoilRegistry.POTTABLE_SOIL_REGISTRY)
+                                                .orElse(null);
             Block block = item.getBlock();
             ResourceKey<Block> blockKey = block.builtInRegistryHolder().key();
-            if (findByBlock(soils, blockKey, soil -> soil.block) == null) {
+            if (soils == null || findByBlock(soils, blockKey, soil -> soil.block) == null) {
                 // Empty pot: a plant can only be placed once soil is in the pot. This used to return
                 // silently, so trying to plant a seed/sapling first looked broken. Give an audible deny
                 // and FAIL so the interaction is not a silent no-op.
@@ -162,9 +165,12 @@ public class FlowerPotBlock extends EndBlockNotFull implements EntityBlock {
         if (!(itemStack.getItem() instanceof BlockItem item)) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
+        Registry<PottablePlant> plants = level.registryAccess()
+                                              .lookup(PottablePlantRegistry.POTTABLE_PLANT_REGISTRY)
+                                              .orElse(null);
         Block block = item.getBlock();
         ResourceKey<Block> blockKey = block.builtInRegistryHolder().key();
-        PottablePlant plant = findByBlock(plants, blockKey, p -> p.block);
+        PottablePlant plant = plants == null ? null : findByBlock(plants, blockKey, p -> p.block);
         if (plant == null) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
@@ -251,10 +257,10 @@ public class FlowerPotBlock extends EndBlockNotFull implements EntityBlock {
                                                               .select(2, variant)
                                                               .select(3, variant))
                         );
-                        // Flat inventory sprite instead of the 3D pot block model. No dedicated
-                        // item/<name>.png texture ships for the pots, so the flat item reuses the
-                        // block's own texture as its layer0.
-                        generator.createFlatItem(block, texture);
+                        // Render the pot item as the 3D block model (same approach as
+                        // umbrella_tree_membrane), not a flat sprite. Delegates the item model to the
+                        // block model generated just above.
+                        generator.delegateItemModel(block, location);
                     });
         }
     }

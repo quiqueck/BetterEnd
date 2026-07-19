@@ -501,7 +501,8 @@ public class EndBlocks {
      .buildAndRegister();
 
     public static final Block MOSSY_GLOWSHROOM_FUR = defineBlock("mossy_glowshroom_fur", FurBlock::new)
-            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_LIGHT_BLUE, 15, true, 16, MOSSY_GLOWSHROOM_SAPLING, false))
+            // FurBlock decorative variant: keep pass-through (walkable=false), unlike genuine cube leaves.
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_LIGHT_BLUE, 15, true, 16, MOSSY_GLOWSHROOM_SAPLING, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
             .buildAndRegister();
@@ -703,7 +704,8 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block TENANEA_OUTER_LEAVES = defineBlockOnly("tenanea_outer_leaves", FurBlock::new)
-            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_PINK, 0, false, 32, TENANEA_SAPLING, false))
+            // FurBlock decorative variant: keep pass-through (walkable=false), unlike genuine cube leaves.
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_PINK, 0, false, 32, TENANEA_SAPLING, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(noLootTableTrait())
             .addTrait(upLeafModelTrait(BetterEnd.C.mk("block/tenanea_outer_leaves"),
@@ -751,7 +753,8 @@ public class EndBlocks {
             "umbrella_tree_membrane",
             UmbrellaTreeMembraneBlock::new
     ).replacePropertiesWithCopy(Blocks.SLIME_BLOCK)
-     .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 8, UMBRELLA_TREE_SAPLING))
+     // Translucent canopy membrane, not a cube leaf: keep pass-through (walkable=false).
+     .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, 8, UMBRELLA_TREE_SAPLING, true, false))
      .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
      .buildAndRegister();
 
@@ -820,7 +823,8 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block LUCERNIA_OUTER_LEAVES = defineBlockOnly("lucernia_outer_leaves", FurBlock::new)
-            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_RED, 0, false, 32, LUCERNIA_SAPLING, false))
+            // FurBlock decorative variant: keep pass-through (walkable=false), unlike genuine cube leaves.
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_RED, 0, false, 32, LUCERNIA_SAPLING, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(noLootTableTrait())
             .addTrait(lucerniaOuterLeavesModelTrait())
@@ -1253,7 +1257,8 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block BLUE_VINE_FUR = defineBlock("blue_vine_fur", FurBlock::new)
-            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, 15, BLUE_VINE_SEED, false))
+            // FurBlock decorative variant: keep pass-through (walkable=false), unlike genuine cube leaves.
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, 15, BLUE_VINE_SEED, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(upLeafModelTrait(BetterEnd.C.mk("block/blue_vine_fur"),
                     WeightedTemplateModelTrait.Item.flat(null)))
@@ -1363,7 +1368,8 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block GLOWING_PILLAR_LEAVES = defineBlock("glowing_pillar_leaves", FurBlock::new)
-            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_ORANGE, 0, false, 15, GLOWING_PILLAR_SEED, false))
+            // FurBlock decorative variant: keep pass-through (walkable=false), unlike genuine cube leaves.
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_ORANGE, 0, false, 15, GLOWING_PILLAR_SEED, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(glowingPillarLeavesModelTrait())
             .buildAndRegister();
@@ -1518,7 +1524,8 @@ public class EndBlocks {
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .buildAndRegister();
     public static final Block AMARANITA_FUR = defineBlock("amaranita_fur", FurBlock::new)
-            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_CYAN, 0, false, 15, SMALL_AMARANITA_MUSHROOM, false))
+            // FurBlock decorative variant: keep pass-through (walkable=false), unlike genuine cube leaves.
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_CYAN, 0, false, 15, SMALL_AMARANITA_MUSHROOM, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(ModelTraitLibrary.externalModelFlatItem(null))
             .buildAndRegister();
@@ -1857,7 +1864,8 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block CAVE_BUSH = defineBlock("cave_bush", BaseBlockNotFull::new)
-            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_MAGENTA, 0, false, 0.0F, null, false))
+            // Non-full bush, not a cube leaf: keep pass-through (walkable=false).
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_MAGENTA, 0, false, 0.0F, null, false, false))
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
 

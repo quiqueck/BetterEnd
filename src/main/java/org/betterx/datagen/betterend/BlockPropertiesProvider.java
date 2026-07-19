@@ -4,6 +4,7 @@ import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.WoverDataProvider;
 
 import com.google.common.hash.Hashing;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
@@ -135,7 +136,12 @@ public class BlockPropertiesProvider implements WoverDataProvider<DataProvider> 
                 + "  ignitedByLava=" + state.ignitedByLava()
                 + "  randomlyTicks=" + state.isRandomlyTicking()
                 + "  hasCollision=" + hasCollision(block)
-                + "  canOcclude=" + state.canOcclude();
+                + "  canOcclude=" + state.canOcclude()
+                // The effective chunk render layer (SOLID/CUTOUT/TRANSLUCENT), read from the vanilla registry
+                // that both the RenderLayerProvider scan and the RENDER_LAYER trait populate via
+                // BlockRenderLayerMap - so migrating a block from the interface to the trait shows up here as a
+                // diff only if the layer actually changed. Datagen always runs client-side, so this is safe.
+                + "  renderLayer=" + ItemBlockRenderTypes.getChunkRenderType(state).name();
     }
 
     private class Provider implements DataProvider {

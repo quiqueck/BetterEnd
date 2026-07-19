@@ -23,7 +23,7 @@ classes/
 bin/
 .classpath
 .project
-
+.DS_Store
 # fabric
 
 run/

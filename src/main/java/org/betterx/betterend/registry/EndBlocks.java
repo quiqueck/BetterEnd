@@ -571,7 +571,9 @@ public class EndBlocks {
     // default dropSelf() loot table (block.asItem() would be air) - build the same trait bundle
     // without a loot table trait instead, so they simply drop nothing when broken.
     public static final Block END_LOTUS_LEAF = defineBlockOnly("end_lotus_leaf", EndLotusLeafBlock::new)
-            .addTrait(PlantBlockTrait.withColor(MapColor.COLOR_PINK, true))
+            // Lily-pad leaves tile edge-to-edge (BOTTOM/MIDDLE/TOP segments must line up), so they must
+            // NOT get the random X-Z plant offset - force OffsetType.NONE via the composition overload.
+            .addTrait(PlantBlockTrait.withColor(MapColor.COLOR_PINK, true, OffsetType.NONE))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(BlockTraits.MINEABLE_WITH.needsHoe())
             .addTrait(CompostableBlockTrait.withDefault())

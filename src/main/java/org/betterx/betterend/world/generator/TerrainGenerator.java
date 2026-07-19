@@ -82,6 +82,25 @@ public class TerrainGenerator {
         // island caches can never orphan the static LOCKER and deadlock every worker + the server thread.
         LOCKER.lock();
         try {
+            computeColumnDensity(buffer, posX, posZ, scaleXZ, scaleY, maxHeight);
+        } finally {
+            LOCKER.unlock();
+        }
+    }
+
+    /**
+     * Computes the island terrain density for the (cell-aligned) column at {@code (posX, posZ)} into
+     * {@code buffer}: {@code buffer[y]} holds the density at height {@code y * scaleY} above the noise
+     * bottom, and {@code buffer[y] > 0} means the block there is solid.
+     * <p>
+     * This is the single source of truth shared by {@link #fillTerrainDensity} (which writes the
+     * actual generated terrain via {@code fillSlice}) and {@link #getSurfaceHeight} (which reports the
+     * surface height to structure placement). Keeping both on this one method guarantees structure
+     * placement can never diverge from the terrain that actually generates.
+     * <p>
+     * The caller MUST hold {@link #LOCKER} - this mutates the shared static island layers.
+     */
+    private static void computeColumnDensity(double[] buffer, int posX, int posZ, int scaleXZ, int scaleY, int maxHeight) {
         final float fadeOutDist = 27.0f;
         final float fadOutStart = maxHeight - (fadeOutDist + 1);
         largeIslands.clearCache();
@@ -124,6 +143,41 @@ public class TerrainGenerator {
             }
             buffer[y] = dist;
         }
+    }
+
+    /**
+     * Returns the world Y of the highest solid block of BetterEnd's island terrain at block column
+     * {@code (blockX, blockZ)}, or {@code noiseMinY} (the void floor) if the column is entirely air.
+     * <p>
+     * The value is derived from {@link #computeColumnDensity} - the exact same island density that
+     * {@code fillSlice}/{@link #fillTerrainDensity} write as terrain - so structure placement (which
+     * queries this through {@code getBaseHeight}/{@code getFirstOccupiedHeight}) sees the real islands
+     * and no longer places structures floating at the void floor. The column is sampled cell-aligned
+     * (via {@code floorDiv}), matching how {@code fillSlice} always samples cell corners.
+     *
+     * @param scaleXZ   the noise cell width  ({@code noiseSettings.getCellWidth()})
+     * @param scaleY    the noise cell height ({@code noiseSettings.getCellHeight()})
+     * @param maxHeight the noise height span ({@code noiseSettings.height()})
+     * @param noiseMinY the noise bottom Y    ({@code noiseSettings.minY()})
+     */
+    public static int getSurfaceHeight(int blockX, int blockZ, int scaleXZ, int scaleY, int maxHeight, int noiseMinY) {
+        // Lock-safe like fillTerrainDensity: the computation mutates the shared static island layers,
+        // and try/finally guarantees LOCKER is always released even if the biome source throws.
+        LOCKER.lock();
+        try {
+            if (largeIslands == null || mediumIslands == null || smallIslands == null) {
+                return noiseMinY;
+            }
+            final int alignedX = Math.floorDiv(blockX, scaleXZ) * scaleXZ;
+            final int alignedZ = Math.floorDiv(blockZ, scaleXZ) * scaleXZ;
+            final double[] buffer = new double[Math.max(1, maxHeight / scaleY + 1)];
+            computeColumnDensity(buffer, alignedX, alignedZ, scaleXZ, scaleY, maxHeight);
+            for (int y = buffer.length - 1; y >= 0; y--) {
+                if (buffer[y] > 0) {
+                    return noiseMinY + y * scaleY;
+                }
+            }
+            return noiseMinY;
         } finally {
             LOCKER.unlock();
         }

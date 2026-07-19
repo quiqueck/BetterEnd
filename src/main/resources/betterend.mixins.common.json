@@ -18,6 +18,7 @@
     "LevelMixin",
     "LivingEntityMixin",
     "NoiseBasedChunkGeneratorAccessor",
+    "NoiseBasedChunkGeneratorHeightMixin",
     "NoiseChunkAccessor",
     "NoiseChunkMixin",
     "NoiseGeneratorSettingsMixin",

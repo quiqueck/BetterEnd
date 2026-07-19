@@ -44,7 +44,7 @@ public class LanternWoodsBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.RUSCUS_WOOD)
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
-                .spawn(EntityType.ENDERMAN, 10, 1, 2);
+                .spawn(EntityType.ENDERMAN, 3, 1, 2);
     }
 
     @Override

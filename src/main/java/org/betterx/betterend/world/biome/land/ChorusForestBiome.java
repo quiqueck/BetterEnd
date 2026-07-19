@@ -48,7 +48,7 @@ public class ChorusForestBiome extends EndBiome.Config {
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
                 .spawn(EndEntities.END_SLIME.type(), 5, 1, 2)
-                .spawn(EntityType.ENDERMAN, 10, 1, 4);
+                .spawn(EntityType.ENDERMAN, 3, 1, 4);
     }
 
     @Override

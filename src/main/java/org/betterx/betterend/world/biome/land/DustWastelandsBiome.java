@@ -35,7 +35,7 @@ public class DustWastelandsBiome extends EndBiome.Config {
                 .structure(EndStructures.END_VILLAGE)
                 .structure(EndStructures.ETERNAL_PORTAL)
                 .feature(EndOreFeatures.FLAVOLITE_LAYER)
-                .spawn(EntityType.ENDERMAN, 10, 1, 2);
+                .spawn(EntityType.ENDERMAN, 50, 1, 2);
     }
 
     @Override

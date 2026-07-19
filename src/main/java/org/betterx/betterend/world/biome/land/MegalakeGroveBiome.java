@@ -42,7 +42,7 @@ public class MegalakeGroveBiome extends EndBiome.Config {
                 .spawn(EndEntities.END_FISH.type(), 20, 3, 8)
                 .spawn(EndEntities.CUBOZOA.type(), 50, 3, 8)
                 .spawn(EndEntities.END_SLIME.type(), 5, 1, 2)
-                .spawn(EntityType.ENDERMAN, 10, 1, 2);
+                .spawn(EntityType.ENDERMAN, 3, 1, 2);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class UmbrellaJungleBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.CHARNIA_RED_RARE)
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
-                .spawn(EntityType.ENDERMAN, 10, 1, 2);
+                .spawn(EntityType.ENDERMAN, 3, 1, 2);
     }
 
     @Override

@@ -12,9 +12,15 @@ import org.betterx.wover.recipe.api.RecipeBuilder;
 import org.betterx.wover.sets.api.blocks.BlockSet;
 import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
 
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.SoundType;
+
+import java.util.Optional;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -81,7 +87,23 @@ public class Chain extends SlotFromDefinition {
         private static BlockModelTrait build() {
             return ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> {
-                        generator.createChainModel(block, TextureMapping.getBlockTexture(block));
+                        // Mirrors WoverBlockModelGenerators#createChainModel's block model (parent
+                        // minecraft:block/chain, ALL texture slot, axis-aligned pillar blockstate), but
+                        // deliberately WITHOUT its delegateItemModel(3D) call: the inventory item should be a
+                        // flat sprite (item/<name>.png), like a vanilla chain, not the 3D chain block model.
+                        final var chainTemplate = new ModelTemplate(
+                                Optional.of(ResourceLocation.withDefaultNamespace("block/chain")),
+                                Optional.empty(),
+                                TextureSlot.ALL
+                        );
+                        final var mapping = new TextureMapping()
+                                .put(TextureSlot.ALL, TextureMapping.getBlockTexture(block));
+                        final var model = chainTemplate.create(block, mapping, generator.modelOutput());
+                        generator.vanillaGenerator.createAxisAlignedPillarBlockCustomModel(
+                                block, BlockModelGenerators.plainVariant(model));
+                        // Flat inventory sprite from the dedicated item/<name>.png art (a chain reads better
+                        // as a flat icon, matching vanilla chains).
+                        generator.createFlatItem(block, TextureMapping.getItemTexture(block.asItem()));
                     });
         }
     }

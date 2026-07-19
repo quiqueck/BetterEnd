@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:block/virid_jadestone_flower_pot"
+    "model": "betterend:item/virid_jadestone_flower_pot"
   }
 }

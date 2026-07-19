@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "betterend:block/umbrella_tree_membrane"
+    "layer0": "betterend:block/virid_jadestone_flower_pot"
   }
 }

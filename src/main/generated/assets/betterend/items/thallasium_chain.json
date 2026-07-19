@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:block/thallasium_chain"
+    "model": "betterend:item/thallasium_chain"
   }
 }

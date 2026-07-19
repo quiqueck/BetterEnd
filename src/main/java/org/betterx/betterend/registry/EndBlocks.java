@@ -754,7 +754,11 @@ public class EndBlocks {
             UmbrellaTreeMembraneBlock::new
     ).replacePropertiesWithCopy(Blocks.SLIME_BLOCK)
      // Translucent canopy membrane: solid (walkable=true) so players can stand on the umbrella-tree canopy.
-     .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, 8, UMBRELLA_TREE_SAPLING, true, true))
+     // generateModel=false so LeavesBlockTrait does not attach its default cube-block + FLAT-item model;
+     // instead ModelTraitLibrary.cube() supplies a cube block model whose inventory item is the 3D block
+     // (delegated item model), matching how the membrane rendered as a solid block item previously.
+     .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, 8, UMBRELLA_TREE_SAPLING, false, true))
+     .addTrait(ModelTraitLibrary.cube())
      .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
      .buildAndRegister();
 

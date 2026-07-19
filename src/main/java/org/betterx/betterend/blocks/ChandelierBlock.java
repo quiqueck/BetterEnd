@@ -125,7 +125,11 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal {
                                                      .with(facingDispatch)
                         );
 
-                        generator.delegateItemModel(block, modelCeil);
+                        // Flat inventory sprite from the dedicated item/<name>.png art instead of the 3D
+                        // ceiling block model: chandeliers are thin/complex blocks that read better as a flat
+                        // item icon. (There is no block/<name>.png, only the _wall/_floor/_ceil variants, so
+                        // the flat item must be pointed at the item texture explicitly.)
+                        generator.createFlatItem(block, TextureMapping.getItemTexture(block.asItem()));
                     });
         }
     }

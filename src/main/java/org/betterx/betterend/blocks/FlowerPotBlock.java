@@ -238,7 +238,10 @@ public class FlowerPotBlock extends EndBlockNotFull implements EntityBlock {
                                                               .select(2, variant)
                                                               .select(3, variant))
                         );
-                        generator.delegateItemModel(block, location);
+                        // Flat inventory sprite instead of the 3D pot block model. No dedicated
+                        // item/<name>.png texture ships for the pots, so the flat item reuses the
+                        // block's own texture as its layer0.
+                        generator.createFlatItem(block, texture);
                     });
         }
     }

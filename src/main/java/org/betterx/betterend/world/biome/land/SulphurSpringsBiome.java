@@ -54,7 +54,7 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 .structure(EndStructures.ETERNAL_PORTAL)
                 .spawn(EndEntities.END_FISH.type(), 50, 3, 8)
                 .spawn(EndEntities.CUBOZOA.type(), 50, 3, 8)
-                .spawn(EntityType.ENDERMAN, 50, 1, 4);
+                .spawn(EntityType.ENDERMAN, 10, 1, 4);
     }
 
     @Override

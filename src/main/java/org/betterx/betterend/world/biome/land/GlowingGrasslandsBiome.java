@@ -44,7 +44,7 @@ public class GlowingGrasslandsBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.CHARNIA_RED_RARE)
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.END_VILLAGE)
-                .spawn(EntityType.ENDERMAN, 50, 1, 2);
+                .spawn(EntityType.ENDERMAN, 10, 1, 2);
     }
 
     @Override

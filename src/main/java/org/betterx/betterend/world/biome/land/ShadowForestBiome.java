@@ -48,7 +48,7 @@ public class ShadowForestBiome extends EndBiome.Config {
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
                 .spawn(EndEntities.SHADOW_WALKER.type(), 80, 2, 4)
-                .spawn(EntityType.ENDERMAN, 40, 1, 4)
+                .spawn(EntityType.ENDERMAN, 10, 1, 4)
                 .spawn(EntityType.PHANTOM, 1, 1, 2);
     }
 

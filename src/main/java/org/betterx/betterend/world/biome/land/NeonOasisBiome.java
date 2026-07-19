@@ -50,7 +50,7 @@ public class NeonOasisBiome extends EndBiome.Config {
                 .feature(EndOreFeatures.FLAVOLITE_LAYER)
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
-                .spawn(EntityType.ENDERMAN, 50, 1, 2);
+                .spawn(EntityType.ENDERMAN, 10, 1, 2);
     }
 
     @Override

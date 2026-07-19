@@ -90,7 +90,7 @@
         "type": "minecraft:enderman",
         "maxCount": 4,
         "minCount": 1,
-        "weight": 40
+        "weight": 10
       },
       {
         "type": "minecraft:phantom",

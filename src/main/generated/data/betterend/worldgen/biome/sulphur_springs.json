@@ -73,7 +73,7 @@
         "type": "minecraft:enderman",
         "maxCount": 4,
         "minCount": 1,
-        "weight": 50
+        "weight": 10
       }
     ],
     "underground_water_creature": [],

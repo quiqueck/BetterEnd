@@ -3,8 +3,6 @@ package org.betterx.betterend.registry;
 import org.betterx.bclib.BCLib;
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.items.BaseDiscItem;
-import org.betterx.bclib.items.ModelProviderItem;
-import org.betterx.bclib.models.RecordItemModelProvider;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.item.*;
 import org.betterx.betterend.item.material.AeterniumSet;
@@ -189,14 +187,14 @@ public class EndItems {
     // item-name convention the generic flat-item fallback assumes) - point the item definition at the
     // existing hand-authored model instead of letting the fallback regenerate (and overwrite) it.
     public final static Item SHADOW_BERRY_RAW = getItemRegistry()
-            .defineFoodItem("shadow_berry_raw", def -> new ModelProviderItem(def.getProperties()))
+            .defineFoodItem("shadow_berry_raw", def -> new Item(def.getProperties()))
             .nutrition(4)
             .saturationModifier(0.5F)
             .addTrait(ModCore.isDatagen() ? ExternalItemModel.build() : null)
             .buildAndRegister();
     public final static Item SHADOW_BERRY_COOKED = registerEndFood("shadow_berry_cooked", 6, 0.7F);
     public final static Item END_FISH_RAW = getItemRegistry()
-            .defineFoodItem("end_fish_raw", def -> new ModelProviderItem(def.getProperties()))
+            .defineFoodItem("end_fish_raw", def -> new Item(def.getProperties()))
             .food(Foods.SALMON)
             .addTrait(ModCore.isDatagen() ? ExternalItemModel.build() : null)
             .buildAndRegister();
@@ -242,14 +240,13 @@ public class EndItems {
                 sound,
                 BehaviourBuilders.createDisc().setId(getItemRegistry().key(name))
         );
-        RecordItemModelProvider.add(item);
         getItemRegistry().register(name, item, CommonItemTags.MUSIC_DISCS);
         return item;
     }
 
     public static DefaultItemDefinition<Item> defineEndItem(String name) {
         return getItemRegistry()
-                .defineDefaultItem(name, def -> new ModelProviderItem(def.getProperties()));
+                .defineDefaultItem(name, def -> new Item(def.getProperties()));
     }
 
     public static Item registerEndItem(String name) {
@@ -263,7 +260,7 @@ public class EndItems {
 
     public static Item registerEndFood(String name, int hunger, float saturation, MobEffectInstance... effects) {
         return getItemRegistry()
-                .defineFoodItem(name, def -> new ModelProviderItem(def.getProperties()))
+                .defineFoodItem(name, def -> new Item(def.getProperties()))
                 .nutrition(hunger)
                 .saturationModifier(saturation)
                 .setEffects(effects)
@@ -272,7 +269,7 @@ public class EndItems {
 
     public static Item registerEndFood(String name, FoodProperties foodComponent) {
         return getItemRegistry()
-                .defineFoodItem(name, def -> new ModelProviderItem(def.getProperties()))
+                .defineFoodItem(name, def -> new Item(def.getProperties()))
                 .food(foodComponent)
                 .buildAndRegister();
 
@@ -280,7 +277,7 @@ public class EndItems {
 
     public static Item registerEndDrink(String name, int hunger, float saturation) {
         return getItemRegistry()
-                .defineDrinkItem(name, def -> new ModelProviderItem(def.getProperties()))
+                .defineDrinkItem(name, def -> new Item(def.getProperties()))
                 .nutrition(hunger)
                 .saturationModifier(saturation)
                 .buildAndRegister();

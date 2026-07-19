@@ -1,6 +1,5 @@
 package org.betterx.betterend.item;
 
-import org.betterx.bclib.items.ModelProviderItem;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.util.LangUtil;
 
@@ -18,7 +17,7 @@ import net.minecraft.world.level.Level;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.ApiStatus;
 
-public class GuideBookItem extends ModelProviderItem {
+public class GuideBookItem extends Item {
     public static final Item GUIDE_BOOK = EndItems.getItemRegistry().register(
             "guidebook",
             new GuideBookItem(

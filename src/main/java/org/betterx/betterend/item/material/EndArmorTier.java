@@ -7,26 +7,26 @@ import org.betterx.wover.complex.api.equipment.ArmorTiers;
 public class EndArmorTier {
     public static ArmorTier THALLASIUM = ArmorTier
             .builder("thallasium")
-            .armorMaterial(EndArmorMaterial.THALLASIUM)
+            .armorMaterial(EndArmorMaterial.THALLASIUM.value())
             .armorValuesWithOffset(ArmorTiers.IRON_ARMOR, new ArmorTier.ArmorValues(0))
             .build();
 
     public static ArmorTier TERMINITE = ArmorTier
             .builder("terminite")
-            .armorMaterial(EndArmorMaterial.TERMINITE)
+            .armorMaterial(EndArmorMaterial.TERMINITE.value())
             .armorValuesWithOffset(ArmorTiers.DIAMOND_ARMOR, new ArmorTier.ArmorValues(0))
             .build();
 
     public static ArmorTier CRYSTALITE = ArmorTier
             .builder("crystalite")
-            .armorMaterial(EndArmorMaterial.CRYSTALITE)
+            .armorMaterial(EndArmorMaterial.CRYSTALITE.value())
             .armorValuesWithOffset(ArmorTiers.NETHERITE_ARMOR, new ArmorTier.ArmorValues(1))
             .build();
 
 
     public static ArmorTier AETERNIUM = ArmorTier
             .builder("aeternium")
-            .armorMaterial(EndArmorMaterial.AETERNIUM)
+            .armorMaterial(EndArmorMaterial.AETERNIUM.value())
             .armorValuesWithOffset(
                     ArmorTiers.NETHERITE_ARMOR,
                     new ArmorTier.ArmorValues(100, () -> EndTemplates.PLATE_UPGRADE)

@@ -52,7 +52,9 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .startDisplay(EndBlocks.END_MYCELIUM)
                 .frame(AdvancementType.TASK)
                 .hideFromChat()
-                .background(ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/end.png"))
+                // 1.21.2+ resolves the advancement background through the GUI sprite atlas, so it needs a
+                // sprite id (no "textures/" prefix, no ".png"), not the old raw texture path.
+                .background(ResourceLocation.withDefaultNamespace("gui/advancements/backgrounds/end"))
                 .endDisplay()
                 .addCriterion(
                         "welcome",

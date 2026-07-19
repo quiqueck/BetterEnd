@@ -78,92 +78,67 @@ task changelog() {
 def requiredDependencies = evaluate(project.required_dependencies)
 def optionalDependencies = evaluate(project.optional_dependencies)
 
-modrinth {
+publishMods {
+    dryRun = project.hasProperty("dryRun") ? (project.property("dryRun").toString().toLowerCase() in ["true", "", "1", "yes"]) : false
+    file = remapJar.archiveFile
     def changes = new File(projectDir, "CHANGES.md")
-    if (changes.exists()) {
-        changes = changes.getText('UTF-8')
-    } else {
-        changes = ""
+    changelog = changes.exists() ? changes.getText('UTF-8') : ""
+
+    type = STABLE
+    if (project.release_channel == "beta") {
+        type = BETA
+    } else if (project.release_channel == "alpha") {
+        type = ALPHA
     }
-    def modrinth_token = new File(projectDir, "../MODRINTH_TOKEN")
-    if (modrinth_token.exists()) {
-        modrinth_token = modrinth_token.text
-    } else {
-        modrinth_token = ""
-    }
+
+    modLoaders.add("fabric")
+
     def slurper = new groovy.json.JsonSlurper()
-    token = modrinth_token
-    //modrinth_id
-    projectId = findProperty('modrinth_id') ?: project.archives_base_name
-    versionNumber = project.mod_version
-    versionType = project.release_channel
-    uploadFile = remapJar
-    gameVersions = slurper.parseText(project.modrinth_versions)
-    loaders = ["fabric"]
-    changelog = changes
-    dependencies {
+    def versions = slurper.parseText(project.modrinth_versions)
+    def latestVersion = versions.isEmpty() ? "" : "[${versions.last()}]"
+
+    curseforge {
+        projectId = project.curseforge_id
+
+        def cfTokenFile = new File(projectDir, "../CURSEFORGE_TOKEN")
+        accessToken = cfTokenFile.exists() ? cfTokenFile.text.trim() : ""
+
+        versions.each { v ->
+            minecraftVersions.add(v)
+        }
+
+        // Satisfies CurseForge's mandatory "Environment" version group
+        client = true
+        server = true
+
+        displayName = "${project.archives_base_name}-${project.mod_version} ${latestVersion}"
+
         requiredDependencies.each { dep ->
-            print dep
-            required.project dep
+            requires(dep)
         }
-
         optionalDependencies.each { dep ->
-            optional.project dep
-        }
-    }
-    debugMode = false
-}
-
-curseforge {
-    def projectID = findProperty('modrinth_id') ?: project.archives_base_name
-    def slurper = new groovy.json.JsonSlurper()
-    apiKey = new File(projectDir, "../CURSEFORGE_TOKEN")
-    if (apiKey.exists()) {
-        apiKey = apiKey.text
-    } else {
-        apiKey = ""
-    }
-
-    def changes = new File(projectDir, "CHANGES.md")
-    if (changes.exists()) {
-        changes = changes.getText('UTF-8')
-    } else {
-        changes = ""
-    }
-
-    project {
-        id = project.curseforge_id
-        changelogType = 'markdown'
-        changelog = changes
-        releaseType = project.release_channel
-        def versions = slurper.parseText(project.modrinth_versions);
-        def latestVersion = ''
-        for (v in versions) {
-            addGameVersion v
-            latestVersion = "[$v]"
-        }
-        addGameVersion 'Fabric'
-        addGameVersion 'Java 21'
-        relations {
-            requiredDependencies.each { dep ->
-                requiredDependency dep
-            }
-
-            optionalDependencies.each { dep ->
-                optionalDependency dep
-            }
-        }
-        mainArtifact(remapJar) {
-            displayName = "$projectID-$project.version $latestVersion"
-        }
-        afterEvaluate {
-            mainArtifact(remapJar.outputs)
+            optional(dep)
         }
     }
 
-    options {
-        debug = false
-        forgeGradleIntegration = false
+    modrinth {
+        projectId = findProperty('modrinth_id') ?: project.archives_base_name
+
+        def mrTokenFile = new File(projectDir, "../MODRINTH_TOKEN")
+        accessToken = mrTokenFile.exists() ? mrTokenFile.text.trim() : ""
+
+        versions.each { v ->
+            minecraftVersions.add(v)
+        }
+
+        displayName = "${project.archives_base_name}-${project.mod_version}"
+
+        requiredDependencies.each { dep ->
+            requires(dep)
+        }
+        optionalDependencies.each { dep ->
+            optional(dep)
+        }
     }
 }
 

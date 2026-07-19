@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:bamboo",
+  "valid_soils": "betterend:survives_on/dirt"
+}

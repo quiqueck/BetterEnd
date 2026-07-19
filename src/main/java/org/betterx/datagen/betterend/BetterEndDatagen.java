@@ -17,8 +17,6 @@ import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.PackBuilder;
 import org.betterx.wover.datagen.api.WoverDataGenEntryPoint;
 import org.betterx.wover.datagen.api.provider.BlockPropertiesProvider;
-import org.betterx.wover.pottable.api.datagen.WoverPottablePlantRegistryProvider;
-import org.betterx.wover.pottable.api.datagen.WoverPottableSoilRegistryProvider;
 
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.worldgen.features.EndFeatures;
@@ -38,8 +36,10 @@ public class BetterEndDatagen extends WoverDataGenEntryPoint {
         globalPack.addProvider(ItemTagProvider::new);
         globalPack.addProvider(BiomeTagProvider::new);
         globalPack.addRegistryProvider(JukeboxRegistryProvider::new);
-        globalPack.addRegistryProvider(WoverPottablePlantRegistryProvider::new);
-        globalPack.addRegistryProvider(WoverPottableSoilRegistryProvider::new);
+        // BetterEnd subclasses that also register the vanilla dirt soils + vanilla
+        // flower-pot plant set on top of the trait-driven BetterEnd entries.
+        globalPack.addRegistryProvider(EndPottablePlantProvider::new);
+        globalPack.addRegistryProvider(EndPottableSoilProvider::new);
         globalPack.addMultiProvider(StructureDataProvider::new);
         globalPack.addMultiProvider(VegetationFeaturesProvider::new);
         globalPack.addMultiProvider(OreFeatureProvider::new);

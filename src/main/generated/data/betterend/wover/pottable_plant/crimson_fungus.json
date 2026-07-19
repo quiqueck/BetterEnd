@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:crimson_fungus",
+  "valid_soils": "betterend:survives_on/dirt"
+}

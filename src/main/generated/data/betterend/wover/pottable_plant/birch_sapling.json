@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:birch_sapling",
+  "valid_soils": "betterend:survives_on/dirt"
+}

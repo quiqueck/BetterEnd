@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:torchflower",
+  "valid_soils": "betterend:survives_on/dirt"
+}

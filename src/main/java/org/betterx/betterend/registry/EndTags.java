@@ -129,6 +129,16 @@ public class EndTags {
             "survives_on/sulphuric_rock"
     );
 
+    /**
+     * Vanilla dirt-like soils that a potted vanilla plant may be planted on inside a
+     * BetterEnd flower pot. Used as the {@code valid_soils} tag for the vanilla flower-pot
+     * plant set (see {@code EndPottablePlantProvider}).
+     */
+    public static final TagKey<Block> SURVIVES_ON_DIRT = TagManager.BLOCKS.makeTag(
+            BetterEnd.C,
+            "survives_on/dirt"
+    );
+
     public static void register() {
 
 

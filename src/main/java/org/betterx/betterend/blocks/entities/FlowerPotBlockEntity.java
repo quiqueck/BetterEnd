@@ -63,6 +63,10 @@ public class FlowerPotBlockEntity extends BlockEntity {
                         .orElse(0);
                 state = state.setValue(FlowerPotBlock.POT_LIGHT, light);
                 level.setBlockAndUpdate(worldPosition, state);
+                // Force the block entity (soil/plant) to re-sync to clients even when POT_LIGHT did NOT
+                // change: seating soil, or a 0-light plant, leaves POT_LIGHT=0 so setBlockAndUpdate is a
+                // no-op and the pot's BlockEntityRenderer would otherwise never receive the contents to draw.
+                level.sendBlockUpdated(worldPosition, state, state, Block.UPDATE_CLIENTS);
             }
             level.blockEntityChanged(worldPosition);
         }

@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:warped_roots",
+  "valid_soils": "betterend:survives_on/dirt"
+}

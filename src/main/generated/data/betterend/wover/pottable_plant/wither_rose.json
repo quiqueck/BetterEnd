@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:wither_rose",
+  "valid_soils": "betterend:survives_on/dirt"
+}

@@ -13,6 +13,7 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.Set;
 
@@ -65,6 +66,20 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
         context.add(EndTags.SURVIVES_ON_SHADOW_GRASS, EndBlocks.SHADOW_GRASS);
         context.add(EndTags.SURVIVES_ON_SULPHURIC_ROCK, EndBlocks.SULPHURIC_ROCK.getBaseBlock());
 
+        // Vanilla dirt-like soils accepted by the BetterEnd flower pot. Keep this in sync
+        // with EndPottableSoilProvider.VANILLA_SOILS (this tag is the valid_soils of the
+        // vanilla flower-pot plant set).
+        context.add(
+                EndTags.SURVIVES_ON_DIRT,
+                Blocks.DIRT,
+                Blocks.GRASS_BLOCK,
+                Blocks.COARSE_DIRT,
+                Blocks.PODZOL,
+                Blocks.ROOTED_DIRT,
+                Blocks.MUD,
+                Blocks.MOSS_BLOCK,
+                Blocks.MYCELIUM
+        );
     }
 
     @Override

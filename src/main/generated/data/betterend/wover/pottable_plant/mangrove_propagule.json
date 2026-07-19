@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:mangrove_propagule",
+  "valid_soils": "betterend:survives_on/dirt"
+}

@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:brown_mushroom",
+  "valid_soils": "betterend:survives_on/dirt"
+}

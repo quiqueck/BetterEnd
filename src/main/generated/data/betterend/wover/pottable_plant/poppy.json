@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:poppy",
+  "valid_soils": "betterend:survives_on/dirt"
+}

@@ -1,0 +1,4 @@
+{
+  "block": "minecraft:dead_bush",
+  "valid_soils": "betterend:survives_on/dirt"
+}

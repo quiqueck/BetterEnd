@@ -3,6 +3,7 @@ package org.betterx.betterend.client;
 import org.betterx.bclib.integration.modmenu.ModMenu;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.client.render.BetterEndSkyRenderer;
+import org.betterx.betterend.client.render.EndFlowerPotModels;
 import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.config.screen.ConfigScreen;
 import org.betterx.betterend.events.ItemTooltipCallback;
@@ -26,6 +27,7 @@ public class BetterEndClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         EndBlockEntityRenders.register();
+        EndFlowerPotModels.register();
         EndScreens.register();
         EndParticles.register();
         EndEntitiesRenders.register();

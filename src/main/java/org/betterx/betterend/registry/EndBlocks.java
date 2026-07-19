@@ -753,8 +753,8 @@ public class EndBlocks {
             "umbrella_tree_membrane",
             UmbrellaTreeMembraneBlock::new
     ).replacePropertiesWithCopy(Blocks.SLIME_BLOCK)
-     // Translucent canopy membrane, not a cube leaf: keep pass-through (walkable=false).
-     .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, 8, UMBRELLA_TREE_SAPLING, true, false))
+     // Translucent canopy membrane: solid (walkable=true) so players can stand on the umbrella-tree canopy.
+     .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, 8, UMBRELLA_TREE_SAPLING, true, true))
      .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
      .buildAndRegister();
 
@@ -1864,8 +1864,8 @@ public class EndBlocks {
             .buildAndRegister();
 
     public static final Block CAVE_BUSH = defineBlock("cave_bush", BaseBlockNotFull::new)
-            // Non-full bush, not a cube leaf: keep pass-through (walkable=false).
-            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_MAGENTA, 0, false, 0.0F, null, false, false))
+            // Non-full bush: solid (walkable=true) so it blocks movement like a real bush.
+            .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_MAGENTA, 0, false, 0.0F, null, false, true))
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
 

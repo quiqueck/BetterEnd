@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_jellyshroom_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:jellyshroom_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_jellyshroom_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:jellyshroom_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:jellyshroom_wall"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_jellyshroom_planks",
+      "has_jellyshroom_fence"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:jellyshroom_wall"
+    ]
+  }
+}

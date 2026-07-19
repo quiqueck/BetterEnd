@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "betterend:block/mossy_glowshroom_planks"
+  }
+}

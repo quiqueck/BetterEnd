@@ -99,7 +99,11 @@ public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMat
 
     @Override
     protected SlotMap createDefaultDefinitions() {
-        final SlotMap map = addFurniture(super.createDefaultDefinitions());
+        // WoodSlots.WALL is not part of the wover default set (vanilla has no wooden walls), so re-add it here
+        // to restore BetterEnd's decorative wooden walls (e.g. dragon_tree_wall, end_lotus_wall) that the wover
+        // migration dropped. The Wall slot builds a WallBlock textured with this set's planks and a plank-over-fence
+        // recipe; village structures reference these blocks, and their lang entries were never removed.
+        final SlotMap map = addFurniture(super.createDefaultDefinitions()).add(WoodSlots.WALL);
         if (logVariantWeights != null) {
             map.replace(new WeightedLog(true, logVariantWeights))
                .replace(new WeightedBark(true, logVariantWeights));

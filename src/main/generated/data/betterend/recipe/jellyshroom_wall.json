@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wooden_wall",
+  "key": {
+    "*": "betterend:jellyshroom_planks",
+    "|": "betterend:jellyshroom_fence"
+  },
+  "pattern": [
+    "* *",
+    "|||"
+  ],
+  "result": {
+    "count": 6,
+    "id": "betterend:jellyshroom_wall"
+  }
+}

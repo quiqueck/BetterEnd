@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lucernia_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:lucernia_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_lucernia_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:lucernia_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:lucernia_wall"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lucernia_fence",
+      "has_lucernia_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:lucernia_wall"
+    ]
+  }
+}

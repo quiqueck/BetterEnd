@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "betterend:block/umbrella_tree_planks"
+  }
+}

@@ -5,13 +5,10 @@ import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.ui.ColorUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
-
-import net.fabricmc.loader.api.FabricLoader;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,12 +24,11 @@ public class BiomeColorsMixin {
     private static final int POISON_COLOR = ColorUtil.color(92, 160, 78);
     private static final int STREAM_COLOR = ColorUtil.color(105, 213, 244);
     private static final Point[] OFFSETS;
-    private static final boolean HAS_SODIUM;
 
     @Inject(method = "getAverageWaterColor", at = @At("RETURN"), cancellable = true)
     private static void be_getWaterColor(BlockAndTintGetter world, BlockPos pos, CallbackInfoReturnable<Integer> info) {
         if (Configs.CLIENT_CONFIG.sulfurWaterColor.get()) {
-            BlockAndTintGetter view = HAS_SODIUM ? Minecraft.getInstance().level : world;
+            BlockAndTintGetter view = world;
             MutableBlockPos mut = new MutableBlockPos();
             mut.setY(pos.getY());
             for (int i = 0; i < OFFSETS.length; i++) {
@@ -47,8 +43,6 @@ public class BiomeColorsMixin {
     }
 
     static {
-        HAS_SODIUM = FabricLoader.getInstance().isModLoaded("sodium");
-
         int index = 0;
         OFFSETS = new Point[20];
         for (int x = -2; x < 3; x++) {

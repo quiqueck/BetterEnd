@@ -69,6 +69,6 @@ AETERNIUM > NETHERITE
 
         MaterialManager.stream().forEach(m -> m.registerItemTags(context));
 
-        context.add(CAPE_SLOT, EndItems.CRYSTALITE_ELYTRA, EndItems.ARMORED_ELYTRA);
+        context.add(CAPE_SLOT, Items.ELYTRA, EndItems.CRYSTALITE_ELYTRA, EndItems.ARMORED_ELYTRA);
     }
 }

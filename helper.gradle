@@ -305,15 +305,18 @@ publishing {
         }
     }
     repositories {
-        maven {
-            def slurper = new groovy.json.JsonSlurper();
-            def apiKey = slurper.parseText(new File(projectDir, "../AMBER_TOKEN").text)
-            println "\nPublishing ${project.archives_base_name} to Maven..."
-            name = "Ambertation"
-            url = "https://maven.ambertation.de/releases/"
-            credentials {
-                username = apiKey.username
-                password = apiKey.token
+        def tokenFile = new File(projectDir, "../AMBER_TOKEN")
+        if (tokenFile.exists()) {
+            maven {
+                def slurper = new groovy.json.JsonSlurper();
+                def apiKey = slurper.parseText(tokenFile.text)
+                println "\nPublishing ${project.archives_base_name} to Maven..."
+                name = "Ambertation"
+                url = "https://maven.ambertation.de/releases/"
+                credentials {
+                    username = apiKey.username
+                    password = apiKey.token
+                }
             }
         }
     }

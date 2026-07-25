@@ -3,6 +3,8 @@ package org.betterx.betterend.integration.trinkets;
 import org.betterx.bclib.items.elytra.BCLElytraItem;
 import org.betterx.bclib.items.elytra.BCLElytraUtils;
 
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,15 +44,23 @@ public class Elytra {
         };
 
         BCLElytraUtils.onBreak = (entity, chestStack) -> {
-            Optional<TrinketComponent> oTrinketComponent = TrinketsApi.getTrinketComponent(entity);
-            if (oTrinketComponent.isPresent()) {
-                List<Tuple<SlotReference, ItemStack>> equipped =
-                        oTrinketComponent.get().getEquipped(Elytra::isElytra);
+            if (entity.getItemBySlot(EquipmentSlot.CHEST) == chestStack) {
+                chestStack.hurtAndBreak(1, entity, EquipmentSlot.CHEST);
+            } else {
+                Optional<TrinketComponent> oTrinketComponent = TrinketsApi.getTrinketComponent(entity);
+                if (entity.level() instanceof ServerLevel serverLevel && oTrinketComponent.isPresent()) {
+                    List<Tuple<SlotReference, ItemStack>> equipped =
+                            oTrinketComponent.get().getEquipped(Elytra::isElytra);
 
-                for (Tuple<SlotReference, ItemStack> slot : equipped) {
-                    ItemStack slotStack = slot.getB();
-                    if (slotStack == chestStack) {
-                        TrinketsApi.onTrinketBroken(slotStack, slot.getA(), entity);
+                    for (Tuple<SlotReference, ItemStack> slot : equipped) {
+                        ItemStack slotStack = slot.getB();
+                        if (slotStack == chestStack) {
+                            chestStack.hurtAndBreak(
+                                    1, serverLevel, entity instanceof ServerPlayer serverPlayer ? serverPlayer : null,
+                                    item -> TrinketsApi.onTrinketBroken(slotStack, slot.getA(), entity)
+                            );
+                            break;
+                        }
                     }
                 }
             }

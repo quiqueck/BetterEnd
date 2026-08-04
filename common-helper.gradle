@@ -1,0 +1,231 @@
+// Shared publishing helper: changelog generation, version bumping, and
+// publishing to Modrinth + CurseForge (via mod-publish-plugin).
+// Copy-paste this file identically into every library/mod repo.
+// Everything here is driven by that repo's own gradle.properties.
+//
+// Libraries additionally apply publish-maven.gradle (publishing to our
+// Ambertation maven repo). Mods do not - see the project's build.gradle.
+//
+// This includes WorldWeaver, which used to keep its own fork of this file
+// under the name helper.gradle. The only thing that fork actually needed was
+// a different set of projects for nextVersion to rewrite; that is now derived
+// from the project layout instead of hardcoded - see nextVersion below. Keep
+// it that way rather than reintroducing a per-repo variant.
+
+//from https://lowcarbrob.medium.com/android-pro-tip-generating-your-apps-changelog-from-git-inside-build-gradle-19a07533eec4
+String generateChangelog() {
+    println "Assembeling Changelog ..."
+    def lastTag = "git describe --tags --abbrev=0".execute().text.trim()
+    def gitLogCmd = "git log $lastTag..HEAD --oneline --no-merges --pretty=format:\"%s\"".execute().text.trim()
+
+    def features = ""
+    def fixes = ""
+    def changes = ""
+    gitLogCmd.eachLine { gitLine ->
+        def line = gitLine.substring(1, gitLine.length() - 1)
+        if (line.trim().startsWith("[")) {
+            def sline = line.split("]", 2)
+            if (sline.length == 2) {
+                def type = sline[0].trim().toLowerCase().substring(1)
+                def comment = sline[1].trim()
+
+                //filter issue links
+                if (comment.contains("(")) {
+                    def cline = comment.split("\\(", 2)
+                    if (cline.length == 2 && cline[1].contains("#")) {
+                        comment = cline[0].trim()
+                    }
+                }
+
+                if (type == "fix" || type == "fixes" || type == "fixed") {
+                    fixes += "- $comment \n"
+                } else if (type == "feature" || type == "features") {
+                    features += "- $comment \n"
+                } else if (type == "change" || type == "changes" || type == "changed") {
+                    changes += "- $comment \n"
+                } else {
+                    println "Unknown Type: $type ($line)"
+                }
+            }
+        }
+
+    }
+    def changelog = ""
+    if (!features.isEmpty()) {
+        changelog += "#### Features\n"
+        changelog += features.trim()
+        changelog += "\n\n"
+    }
+    if (!changes.isEmpty()) {
+        changelog += "#### Changes\n"
+        changelog += changes.trim()
+        changelog += "\n\n"
+    }
+    if (!fixes.isEmpty()) {
+        changelog += "#### Fixes\n"
+        changelog += fixes.trim()
+        changelog += "\n\n"
+    }
+
+    println "Changelog since $lastTag:\n$changelog"
+    return changelog
+}
+
+task changelog() {
+    group = 'publishing'
+    doLast {
+        new File(projectDir, "CHANGES.md").text = generateChangelog()
+    }
+}
+
+def requiredDependencies = evaluate(project.required_dependencies)
+def optionalDependencies = evaluate(project.optional_dependencies)
+
+// CurseForge doesn't always use the same project slug as Modrinth, e.g. REI's
+// Modrinth slug is "rei" but its CurseForge slug is "roughly-enough-items".
+// Map those exceptions here; anything not listed is assumed to match on both.
+def curseforgeSlugOverrides = [
+    "rei": "roughly-enough-items",
+]
+
+publishMods {
+    dryRun = project.hasProperty("dryRun") ? (project.property("dryRun").toString().toLowerCase() in ["true", "", "1", "yes"]) : false
+    file = remapJar.archiveFile
+    def changes = new File(projectDir, "CHANGES.md")
+    changelog = changes.exists() ? changes.getText('UTF-8') : ""
+
+    type = STABLE
+    if (project.release_channel == "beta") {
+        type = BETA
+    } else if (project.release_channel == "alpha") {
+        type = ALPHA
+    }
+
+    modLoaders.add("fabric")
+
+    def slurper = new groovy.json.JsonSlurper()
+    def versions = slurper.parseText(project.modrinth_versions)
+    def latestVersion = versions.isEmpty() ? "" : "[${versions.last()}]"
+
+    curseforge {
+        projectId = project.curseforge_id
+
+        def cfTokenFile = new File(projectDir, "../CURSEFORGE_TOKEN")
+        accessToken = cfTokenFile.exists() ? cfTokenFile.text.trim() : ""
+
+        versions.each { v ->
+            minecraftVersions.add(v)
+        }
+
+        // CurseForge requires at least one of client/server to be set.
+        client = true
+        server = true
+
+        displayName = "${project.archives_base_name}-${project.mod_version} ${latestVersion}"
+
+        requiredDependencies.each { dep ->
+            requires(curseforgeSlugOverrides.getOrDefault(dep, dep))
+        }
+        optionalDependencies.each { dep ->
+            optional(curseforgeSlugOverrides.getOrDefault(dep, dep))
+        }
+    }
+
+    modrinth {
+        projectId = findProperty('modrinth_id') ?: project.archives_base_name
+
+        def mrTokenFile = new File(projectDir, "../MODRINTH_TOKEN")
+        accessToken = mrTokenFile.exists() ? mrTokenFile.text.trim() : ""
+
+        versions.each { v ->
+            minecraftVersions.add(v)
+        }
+
+        displayName = "${project.archives_base_name}-${project.mod_version}"
+
+        requiredDependencies.each { dep ->
+            requires(dep)
+        }
+        optionalDependencies.each { dep ->
+            optional(dep)
+        }
+    }
+}
+
+
+task nextVersion() {
+    group = 'publishing'
+
+    doLast {
+        def slurper = new groovy.json.JsonSlurper();
+        def projectID = findProperty('modrinth_id') ?: project.archives_base_name
+        def inputFile = rootProject.file('modrinth.json')
+        def gameVersions = java.net.URLEncoder.encode(project.modrinth_versions, "UTF-8")
+        def json = slurper.parseText('[{ "version_number" : "1.0.-1" }]')
+        try {
+            new URL("https://api.modrinth.com/v2/project/${projectID}/version?&game_versions=${gameVersions}").withInputStream { i -> inputFile.withOutputStream { it << i } }
+            json = slurper.parseText(inputFile.text)
+        } catch (FileNotFoundException) {
+        }
+        println(json)
+        def version = json[0].version_number
+
+        //increment patch version
+        def indexedVersionList = version.split(/\./).toList().withIndex()
+        indexedVersionList = indexedVersionList.collect { num, idx -> num.toInteger() }
+        indexedVersionList[2] = indexedVersionList[2].value + 1
+        def updatedVersion = indexedVersionList.join(".")
+
+        println "\n\n"
+        println "------------- CURRENT VERSION -------------"
+        println "Last Published Version: " + version
+        println "         Game Versions: " + json[0].game_versions
+        println "                Status: " + json[0].status
+        println "              Featured: " + json[0].featured
+        println "            Downloaded: " + json[0].downloads
+        println "\n"
+        println "-------------- NEXT VERSION ---------------"
+        println "Next Version: " + updatedVersion
+        println "\n\n"
+
+
+        def propertiesFile = new File("gradle.properties")
+        def newContents = propertiesFile.text.replaceFirst("mod_version=\\d+.\\d+.\\d+", "mod_version=${updatedVersion}")
+        propertiesFile.text = newContents
+
+        def rootFabricFile = rootProject.file("src/main/resources/fabric.mod.json")
+        def rootFabricFileJson = slurper.parseText(rootFabricFile.text)
+
+        // Rewrite the manifest of every project that belongs to THIS repository and
+        // ships one: the root, plus any real subproject of it (WorldWeaver's wover-*
+        // modules - for every other repo the root is the only match).
+        //
+        // Sibling repos pulled in via includeLocalLib (BCLib/WunderLib/WorldWeaver
+        // inside a mod's build) are ordinary Gradle projects and would otherwise be
+        // caught by this loop, rewriting another repo's fabric.mod.json. They are
+        // excluded by projectDir rather than by name, so a new sibling include never
+        // needs a change here. This file is only ever applied from a repo's own root
+        // build.gradle - the *-composit.gradle files that a sibling is included with
+        // do not apply it - so rootDir is always this repository's own folder.
+        def repoRoot = project.rootDir.canonicalFile
+        allprojects.each { proj ->
+            def projDir = proj.projectDir.canonicalFile
+            def ownedByThisRepo = projDir == repoRoot || projDir.path.startsWith(repoRoot.path + File.separator)
+            def fabricFile = proj.file("src/main/resources/fabric.mod.json")
+            if (!ownedByThisRepo || !fabricFile.exists()) {
+                println "Ignoring ${proj}"
+                return
+            }
+            println "Updating Version in ${proj}"
+
+            def fabricJson = slurper.parseText(fabricFile.text)
+            fabricJson.version = updatedVersion
+            fabricJson.depends.minecraft = slurper.parseText(modrinth_versions)
+            fabricJson.depends.fabricloader = rootFabricFileJson.depends.fabricloader
+            fabricJson.depends['fabric-api'] = rootFabricFileJson.depends['fabric-api']
+            fabricJson.depends.java = rootFabricFileJson.depends.java
+
+            fabricFile.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(fabricJson))
+        }
+    }
+}

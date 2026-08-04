@@ -1,8 +1,10 @@
 {
   "values": [
+    "betterend:music_disc_ender_hollow",
     "betterend:music_disc_endseeker",
     "betterend:music_disc_eo_dracona",
     "betterend:music_disc_grasping_at_stars",
+    "betterend:music_disc_moonlit_undercurrents",
     "betterend:music_disc_strange_and_alien"
   ]
 }

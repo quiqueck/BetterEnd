@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_end_stone": {
+    "has_end_stone_bricks": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:end_stone"
+            "items": "minecraft:end_stone_bricks"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_end_stone"
+      "has_end_stone_bricks"
     ]
   ],
   "rewards": {

@@ -1,10 +1,10 @@
 package org.betterx.betterend.world.structures.village;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.feature.api.placed.PlacedFeatureKey;
-import org.betterx.wover.feature.api.placed.PlacedFeatureManager;
-import org.betterx.wover.structure.api.StructureKeys;
-import org.betterx.wover.structure.api.pools.StructurePoolKey;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureKey;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureManager;
+import de.ambertation.wover.structure.api.StructureKeys;
+import de.ambertation.wover.structure.api.pools.StructurePoolKey;
 
 public class VillagePools {
     public static final PlacedFeatureKey CHORUS_VILLAGE = PlacedFeatureManager.createKey(BetterEnd.C.mk("village_chorus"));

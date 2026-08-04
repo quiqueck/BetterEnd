@@ -1,9 +1,11 @@
 package org.betterx.betterend.mixin.common;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.world.generator.GeneratorOptions;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -48,7 +50,7 @@ public abstract class ChorusFlowerBlockMixin extends Block {
             BlockPos pos,
             CallbackInfoReturnable<Boolean> info
     ) {
-        if (world.getBlockState(pos.below()).is(EndBlocks.CHORUS_NYLIUM)) {
+        if (world.getBlockState(pos.below()).is(EndTerrainBlocks.CHORUS_NYLIUM)) {
             info.setReturnValue(true);
             info.cancel();
         }

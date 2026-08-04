@@ -1,6 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.wover.block.api.BlockProperties;
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
+import de.ambertation.wover.block.api.BlockProperties;
 import org.betterx.bclib.blocks.UpDownPlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -24,6 +26,6 @@ public class BlueVineBlock extends UpDownPlantBlock {
 
     @Override
     protected boolean isTerrain(BlockState state) {
-        return state.getBlock() == EndBlocks.END_MOSS || state.getBlock() == EndBlocks.END_MYCELIUM;
+        return state.getBlock() == EndTerrainBlocks.END_MOSS || state.getBlock() == EndTerrainBlocks.END_MYCELIUM;
     }
 }

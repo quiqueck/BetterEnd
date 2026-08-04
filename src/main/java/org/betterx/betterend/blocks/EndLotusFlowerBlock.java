@@ -1,8 +1,10 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndPlantBlock;
+
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
+import org.betterx.bclib.blocks.BasePlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.loot.api.LootLookupProvider;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +25,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class EndLotusFlowerBlock extends EndPlantBlock {
+public class EndLotusFlowerBlock extends BasePlantBlock {
     private static final VoxelShape SHAPE_OUTLINE = Block.box(2, 0, 2, 14, 14, 14);
     private static final VoxelShape SHAPE_COLLISION = Block.box(0, 0, 0, 16, 2, 16);
 
@@ -51,13 +53,13 @@ public class EndLotusFlowerBlock extends EndPlantBlock {
                 .lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
-                        .add(LootItem.lootTableItem(EndBlocks.END_LOTUS_SEED)
+                        .add(LootItem.lootTableItem(EndWaterPlantBlocks.END_LOTUS_SEED)
                                      .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))));
     }
 
     @Override
     @Environment(EnvType.CLIENT)
     public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
-        return new ItemStack(EndBlocks.END_LOTUS_SEED);
+        return new ItemStack(EndWaterPlantBlocks.END_LOTUS_SEED);
     }
 }

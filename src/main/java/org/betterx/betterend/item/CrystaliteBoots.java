@@ -2,9 +2,9 @@ package org.betterx.betterend.item;
 
 import org.betterx.betterend.effects.EndStatusEffects;
 import org.betterx.betterend.interfaces.MobEffectApplier;
-import org.betterx.wover.complex.api.equipment.ArmorSlot;
-import org.betterx.wover.item.api.ItemDefinition;
-import org.betterx.wover.item.api.ItemRegistry;
+import de.ambertation.wover.complex.api.equipment.ArmorSlot;
+import de.ambertation.wover.item.api.ItemDefinition;
+import de.ambertation.wover.item.api.ItemRegistry;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;

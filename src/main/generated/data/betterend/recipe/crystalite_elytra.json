@@ -18,14 +18,14 @@
         {
           "type": "minecraft:armor",
           "amount": 6.666666401757145,
-          "id": "betterend:armor_boost",
+          "id": "betterend:armor_boost_chestplate",
           "operation": "add_value",
           "slot": "chest"
         },
         {
           "type": "minecraft:armor_toughness",
           "amount": 0.9600000381469727,
-          "id": "betterend:toughness_boost",
+          "id": "betterend:toughness_boost_chestplate",
           "operation": "add_value",
           "slot": "chest"
         },

@@ -1,9 +1,11 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
-import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
+
+import org.betterx.betterend.registry.block.EndCropBlocks;
+import org.betterx.bclib.util.BlocksHelper;
+import org.betterx.bclib.blocks.BasePlantWithAgeBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +23,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jetbrains.annotations.NotNull;
 
-public class CavePumpkinVineBlock extends EndPlantWithAgeBlock {
+public class CavePumpkinVineBlock extends BasePlantWithAgeBlock {
     public CavePumpkinVineBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -30,24 +32,25 @@ public class CavePumpkinVineBlock extends EndPlantWithAgeBlock {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        return SurvivesOnBlockTrait.survivesOn(this, world.getBlockState(pos.above()));
+        BlockPos above = pos.above();
+        return BlocksHelper.isDecorationSupport(world, above, world.getBlockState(above), Direction.DOWN);
     }
 
     @Override
     public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
         int age = state.getValue(AGE);
         BlockState down = world.getBlockState(pos.below());
-        if (down.canBeReplaced() || (down.is(EndBlocks.CAVE_PUMPKIN) && down.getValue(BlockProperties.SMALL))) {
+        if (down.canBeReplaced() || (down.is(EndCropBlocks.CAVE_PUMPKIN) && down.getValue(BlockProperties.SMALL))) {
             if (age < 3) {
                 world.setBlockAndUpdate(pos, state.setValue(AGE, age + 1));
             }
             if (age == 2) {
                 world.setBlockAndUpdate(
                         pos.below(),
-                        EndBlocks.CAVE_PUMPKIN.defaultBlockState().setValue(BlockProperties.SMALL, true)
+                        EndCropBlocks.CAVE_PUMPKIN.defaultBlockState().setValue(BlockProperties.SMALL, true)
                 );
             } else if (age == 3) {
-                world.setBlockAndUpdate(pos.below(), EndBlocks.CAVE_PUMPKIN.defaultBlockState());
+                world.setBlockAndUpdate(pos.below(), EndCropBlocks.CAVE_PUMPKIN.defaultBlockState());
             }
         }
     }
@@ -79,7 +82,7 @@ public class CavePumpkinVineBlock extends EndPlantWithAgeBlock {
         );
         if (state.is(this) && state.getValue(BlockProperties.AGE) > 1) {
             BlockState down = world.getBlockState(pos.below());
-            if (!down.is(EndBlocks.CAVE_PUMPKIN)) {
+            if (!down.is(EndCropBlocks.CAVE_PUMPKIN)) {
                 state = state.setValue(BlockProperties.AGE, 1);
             }
         }

@@ -3,7 +3,7 @@ package org.betterx.betterend.config;
 import de.ambertation.wunderlib.configs.ConfigFile;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.world.generator.LayerOptions;
-import org.betterx.wover.config.api.MainConfig;
+import de.ambertation.wover.config.api.MainConfig;
 
 import net.minecraft.core.BlockPos;
 
@@ -63,7 +63,7 @@ public class GeneratorConfig extends ConfigFile {
 
     public final IntValue endCityFailChance = new IntValue(
             MainConfig.STRUCTURE_GROUP.title(), "end_city_fail_chance",
-            5
+            1
     ).setGroup(MainConfig.STRUCTURE_GROUP).min(1).max(50);
 
     public final BooleanValue newGenerator = new BooleanValue(

@@ -10,7 +10,9 @@ import org.betterx.bclib.sdf.primitive.SDFSphere;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.feature.api.WriteZone;
+import org.betterx.betterend.world.features.trees.EndTreeHelper;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +25,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
@@ -47,7 +51,11 @@ public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES) && !world.getBlockState(pos.above())
                                                                                       .is(CommonBlockTags.END_STONES))
             return false;
+        // Don't grow a bush whose base sits in water (e.g. on the lake floor); a shore bush that only
+        // overhangs the water still generates and gets its submerged leaves waterlogged.
+        if (!world.getFluidState(pos).isEmpty()) return false;
 
+        final List<BlockPos> outerLeaves = new ArrayList<>();
         float radius = MHelper.randRange(1.8F, 3.5F, random);
         OpenSimplexNoise noise = new OpenSimplexNoise(random.nextInt());
         SDF sphere = new SDFSphere().setRadius(radius).setBlock(leaves);
@@ -67,6 +75,9 @@ public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
                 if (distance < 7) {
                     return info.getState().setValue(LeavesBlock.DISTANCE, distance);
                 } else {
+                    // This cell becomes air, orphaning anything that was clinging to whatever used to be
+                    // here; hand it to the prune pass, which also re-checks a position's neighbours.
+                    outerLeaves.add(info.getPos());
                     return DefaultFeature.AIR;
                 }
             }
@@ -76,16 +87,15 @@ public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
                 MHelper.shuffle(DIRECTIONS, random);
                 for (Direction dir : DIRECTIONS) {
                     if (info.getState(dir).isAir()) {
-                        info.setBlockPos(
-                                info.getPos().relative(dir),
-                                outer_leaves.setValue(BlockStateProperties.FACING, dir)
-                        );
+                        final BlockPos outerPos = info.getPos().relative(dir);
+                        info.setBlockPos(outerPos, outer_leaves.setValue(BlockStateProperties.FACING, dir));
+                        outerLeaves.add(outerPos);
                     }
                 }
             }
             return info.getState();
         });
-        sphere.fillRecursive(world, pos);
+        sphere.fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
         BlocksHelper.setWithoutUpdate(world, pos, stem);
         for (Direction d : Direction.values()) {
             BlockPos p = pos.relative(d);
@@ -102,6 +112,12 @@ public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
             }
         }
 
+        // Drop any outer leaf left clinging to nothing - see EndTreeHelper.pruneUnsupportedFur. Must run
+        // after every write above, since the loop right before this one can still bury one under a leaf.
+        EndTreeHelper.pruneUnsupportedFur(world, outerLeaves);
+
+        // Waterlog leaves/outer-leaves the bush placed into a lake (bushes decorate after the lake carves).
+        EndTreeHelper.waterlogSubmerged(world, pos, 6);
         return true;
     }
 

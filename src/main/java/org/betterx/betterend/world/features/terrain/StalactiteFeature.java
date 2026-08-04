@@ -2,7 +2,7 @@ package org.betterx.betterend.world.features.terrain;
 
 import org.betterx.bclib.blocks.StalactiteBlock;
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;

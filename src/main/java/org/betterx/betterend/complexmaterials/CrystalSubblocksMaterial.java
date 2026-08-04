@@ -2,27 +2,26 @@ package org.betterx.betterend.complexmaterials;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.EndPedestal;
-import org.betterx.betterend.blocks.basis.LitBaseBlock;
-import org.betterx.betterend.blocks.basis.LitPillarBlock;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.client.models.EndModelTraits;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndTags;
 import org.betterx.datagen.betterend.recipes.EndCraftingRecipesProvider;
 import org.betterx.bclib.trait.block.TemplateModelTrait;
-import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
-import org.betterx.wover.block.api.trait.BlockTraits;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.recipe.api.CraftingRecipeBuilder;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
+import de.ambertation.wover.block.api.model.ModelTraitLibrary;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.recipe.api.CraftingRecipeBuilder;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.tag.api.event.context.ItemTagBootstrapContext;
+import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
@@ -58,21 +57,25 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
         this.source = source;
         this.name = name;
 
-        polished = EndBlocks.defineBlock(name + "_polished", LitBaseBlock::new)
+        polished = EndBlocks.defineBlock(name + "_polished", Block::new)
                              .replacePropertiesWithCopy(source)
-                             .addTrait(ModCore.isDatagen() ? ClientModel.build() : null)
+                             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
+                             .addTrait(EndModelTraits.unshadedCube())
                              .buildAndRegister();
-        tiles = EndBlocks.defineBlock(name + "_tiles", LitBaseBlock::new)
+        tiles = EndBlocks.defineBlock(name + "_tiles", Block::new)
                           .replacePropertiesWithCopy(source)
-                          .addTrait(ModCore.isDatagen() ? ClientModel.build() : null)
+                          .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
+                          .addTrait(EndModelTraits.unshadedCube())
                           .buildAndRegister();
-        pillar = EndBlocks.defineBlock(name + "_pillar", LitPillarBlock::new)
+        pillar = EndBlocks.defineBlock(name + "_pillar", RotatedPillarBlock::new)
                            .replacePropertiesWithCopy(source)
+                           .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
                            .addTrait(ModelTraitLibrary.pillar())
                            .buildAndRegister();
         stairs = EndBlocks.defineBlock(name + "_stairs", p -> new StairBlock(source.defaultBlockState(), p))
                            .replacePropertiesWithCopy(source)
+                           .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                            .addTrait(TemplateModelTrait.stairs(
                                    LIT_STAIRS, LIT_STAIRS_INNER, LIT_STAIRS_OUTER,
                                    BetterEnd.C.mk("block/" + name + "_top"),
@@ -81,23 +84,28 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                            .buildAndRegister();
         slab = EndBlocks.defineBlock(name + "_slab", SlabBlock::new)
                          .replacePropertiesWithCopy(source)
+                         .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                          .addTrait(EndModelTraits.slabFrom(() -> source, () -> BetterEnd.C.mk("block/" + name)))
                          .buildAndRegister();
         wall = EndBlocks.defineBlock(name + "_wall", WallBlock::new)
                          .replacePropertiesWithCopy(source)
+                         .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                          .addTrait(ModelTraitLibrary.externalModel())
                          .buildAndRegister();
         pedestal = EndBlocks.defineBlock(name + "_pedestal", EndPedestal::new)
                              .replacePropertiesWithCopy(source)
+                             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                              .addTrait(ModCore.isDatagen() ? ClientModel.buildPedestal(source) : null)
                              .addTags(EndTags.PEDESTALS)
                              .buildAndRegister();
-        bricks = EndBlocks.defineBlock(name + "_bricks", LitBaseBlock::new)
+        bricks = EndBlocks.defineBlock(name + "_bricks", Block::new)
                            .replacePropertiesWithCopy(source)
-                           .addTrait(ModCore.isDatagen() ? ClientModel.build() : null)
+                           .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
+                           .addTrait(EndModelTraits.unshadedCube())
                            .buildAndRegister();
         brick_stairs = EndBlocks.defineBlock(name + "_bricks_stairs", p -> new StairBlock(bricks.defaultBlockState(), p))
                                  .replacePropertiesWithCopy(bricks)
+                                 .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                                  .addTrait(TemplateModelTrait.stairs(
                                          LIT_STAIRS, LIT_STAIRS_INNER, LIT_STAIRS_OUTER,
                                          BetterEnd.C.mk("block/" + name + "_bricks"),
@@ -106,10 +114,12 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                                  .buildAndRegister();
         brick_slab = EndBlocks.defineBlock(name + "_bricks_slab", SlabBlock::new)
                                .replacePropertiesWithCopy(bricks)
+                               .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                                .addTrait(ModCore.isDatagen() ? ClientModel.buildSlab(bricks) : null)
                                .buildAndRegister();
         brick_wall = EndBlocks.defineBlock(name + "_bricks_wall", WallBlock::new)
                                .replacePropertiesWithCopy(bricks)
+                               .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                                .addTrait(TemplateModelTrait.wall(
                                        LIT_WALL_POST, LIT_WALL_SIDE, LIT_WALL_SIDE_TALL,
                                        BetterEnd.C.mk("block/" + name + "_bricks")))
@@ -231,12 +241,6 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
      */
     @Environment(EnvType.CLIENT)
     private static class ClientModel {
-        private static BlockModelTrait build() {
-            return ClientBlockTraits.MODEL.with(
-                    (key, block, generator) -> LitBaseBlock.provideBlockModel(generator, block)
-            );
-        }
-
         private static BlockModelTrait buildSlab(Block baseBlock) {
             return ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> generator.createSlab(block, baseBlock)

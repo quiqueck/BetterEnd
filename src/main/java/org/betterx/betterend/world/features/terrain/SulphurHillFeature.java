@@ -1,9 +1,11 @@
 package org.betterx.betterend.world.features.terrain;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
@@ -49,8 +51,8 @@ public class SulphurHillFeature extends DefaultFeature {
         int min = -radius - 3;
         int max = radius + 4;
         MutableBlockPos mut = new MutableBlockPos();
-        BlockState rock = EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE).defaultBlockState();
-        BlockState brimstone = EndBlocks.BRIMSTONE.defaultBlockState().setValue(BlockProperties.ACTIVE, true);
+        BlockState rock = EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE).defaultBlockState();
+        BlockState brimstone = EndStoneBlocks.BRIMSTONE.defaultBlockState().setValue(BlockProperties.ACTIVE, true);
         for (int x = min; x < max; x++) {
             int x2 = x * x;
             int px = pos.getX() + x;
@@ -65,7 +67,7 @@ public class SulphurHillFeature extends DefaultFeature {
                 int d = x2 + z2;
                 mut.setY(pos.getY());
                 BlockState state = world.getBlockState(mut);
-                if (state.canBeReplaced() || state.is(EndBlocks.HYDROTHERMAL_VENT)) {
+                if (state.canBeReplaced() || state.is(EndStoneBlocks.HYDROTHERMAL_VENT)) {
                     if (d < r2 * r2) {
                         BlocksHelper.setWithoutUpdate(world, mut, Blocks.WATER);
                         mut.move(Direction.DOWN);

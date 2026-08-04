@@ -1,6 +1,8 @@
 package org.betterx.betterend.world.features;
 
-import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
+
+import org.betterx.betterend.registry.block.EndPlantBlocks;
+import org.betterx.bclib.blocks.BasePlantWithAgeBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -22,12 +24,12 @@ public class LanceleafFeature extends ScatterFeature<ScatterFeatureConfig> {
             float radius
     ) {
         //noinspection deprecation
-        return EndBlocks.LANCELEAF_SEED.defaultBlockState().canSurvive(world, blockPos);
+        return EndPlantBlocks.LANCELEAF_SEED.defaultBlockState().canSurvive(world, blockPos);
     }
 
     @Override
     public void generate(ScatterFeatureConfig cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos) {
-        EndPlantWithAgeBlock seed = ((EndPlantWithAgeBlock) EndBlocks.LANCELEAF_SEED);
+        BasePlantWithAgeBlock seed = ((BasePlantWithAgeBlock) EndPlantBlocks.LANCELEAF_SEED);
         seed.growAdult(world, random, blockPos);
     }
 

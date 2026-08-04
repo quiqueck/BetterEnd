@@ -119,6 +119,12 @@ public abstract class MountainPiece extends BasePiece {
 
     protected float getHeightClamp(WorldGenLevel world, int radius, int posX, int posZ) {
         MutableBlockPos mut = new MutableBlockPos();
+        // Sample the biome at the mountain's altitude, not at y=0. With vertical cave biomes the whole
+        // column below caveBiomesTopY (~32) is a cave biome, so getHeight's world.getBiome(pos) check
+        // used to see a cave biome there, never match biomeID (crystal/painted_mountains) and return
+        // -10 for every column - collapsing the mountain to flat wherever it overlapped a cave region.
+        // center.getY() is the highland surface (~64), safely above the band, so the land biome shows.
+        mut.setY(center.getY());
         float height = 0;
         float max = 0;
         for (int x = -radius; x <= radius; x++) {

@@ -1,12 +1,14 @@
 package org.betterx.betterend.world.features.terrain;
 
+
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.BuddingSmaragdantCrystalBlock;
 import org.betterx.betterend.blocks.SmaragdantCrystalShardBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -31,9 +33,9 @@ public class SmaragdantCrystalFeature extends DefaultFeature {
 
         MutableBlockPos mut = new MutableBlockPos();
         int count = MHelper.randRange(15, 30, random);
-        BlockState crystal = EndBlocks.SMARAGDANT_CRYSTAL.defaultBlockState();
-        BlockState shard = EndBlocks.SMARAGDANT_CRYSTAL_SHARD.defaultBlockState();
-        BlockState buddingCrystal = EndBlocks.BUDDING_SMARAGDANT_CRYSTAL.defaultBlockState();
+        BlockState crystal = EndCrystalBlocks.SMARAGDANT_CRYSTAL.defaultBlockState();
+        BlockState shard = EndCrystalBlocks.SMARAGDANT_CRYSTAL_SHARD.defaultBlockState();
+        BlockState buddingCrystal = EndCrystalBlocks.BUDDING_SMARAGDANT_CRYSTAL.defaultBlockState();
         for (int i = 0; i < count; i++) {
             mut.set(pos)
                .move(MHelper.floor(random.nextGaussian() * 2 + 0.5), 5, MHelper.floor(random.nextGaussian() * 2 + 0.5));
@@ -56,7 +58,7 @@ public class SmaragdantCrystalFeature extends DefaultFeature {
                                 BlockState sideState = world.getBlockState(sidePos);
                                 if (BuddingSmaragdantCrystalBlock.canShardGrowAtState(sideState)) {
                                     if (random.nextBoolean()) {
-                                        BlockState attachedShard = EndBlocks.SMARAGDANT_CRYSTAL_SHARD
+                                        BlockState attachedShard = EndCrystalBlocks.SMARAGDANT_CRYSTAL_SHARD
                                                 .defaultBlockState()
                                                 .setValue(
                                                         SmaragdantCrystalShardBlock.WATERLOGGED,

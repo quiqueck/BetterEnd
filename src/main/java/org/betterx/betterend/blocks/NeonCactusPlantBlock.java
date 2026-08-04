@@ -1,13 +1,14 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndBlockNotFull;
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.EndBlockProperties.CactusBottom;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -39,7 +40,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class NeonCactusPlantBlock extends EndBlockNotFull implements SimpleWaterloggedBlock {
+public class NeonCactusPlantBlock extends Block implements SimpleWaterloggedBlock {
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     public static final EnumProperty<CactusBottom> CACTUS_BOTTOM = EndBlockProperties.CACTUS_BOTTOM;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -74,9 +75,9 @@ public class NeonCactusPlantBlock extends EndBlockNotFull implements SimpleWater
         BlockState state = this.defaultBlockState()
                                .setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER)
                                .setValue(FACING, ctx.getClickedFace());
-        if (down.is(Blocks.END_STONE) || down.is(EndBlocks.ENDSTONE_DUST)) {
+        if (down.is(Blocks.END_STONE) || down.is(EndTerrainBlocks.ENDSTONE_DUST)) {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.SAND);
-        } else if (down.is(EndBlocks.END_MOSS)) {
+        } else if (down.is(EndTerrainBlocks.END_MOSS)) {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.MOSS);
         } else {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.EMPTY);
@@ -110,15 +111,17 @@ public class NeonCactusPlantBlock extends EndBlockNotFull implements SimpleWater
             BlockState newState,
             RandomSource randomSource
     ) {
-        scheduledTickAccess.scheduleTick(pos, this, 2);
+        if (!state.canSurvive(world, pos)) {
+            scheduledTickAccess.scheduleTick(pos, this, 2);
+        }
         if (state.getValue(WATERLOGGED)) {
             scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
         Direction dir = state.getValue(FACING);
         BlockState downState = world.getBlockState(pos.relative(dir.getOpposite()));
-        if (downState.is(Blocks.END_STONE) || downState.is(EndBlocks.ENDSTONE_DUST)) {
+        if (downState.is(Blocks.END_STONE) || downState.is(EndTerrainBlocks.ENDSTONE_DUST)) {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.SAND);
-        } else if (downState.is(EndBlocks.END_MOSS)) {
+        } else if (downState.is(EndTerrainBlocks.END_MOSS)) {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.MOSS);
         } else {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.EMPTY);
@@ -129,7 +132,7 @@ public class NeonCactusPlantBlock extends EndBlockNotFull implements SimpleWater
     @Override
     public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource random) {
         if (!blockState.canSurvive(serverLevel, blockPos)) {
-            serverLevel.destroyBlock(blockPos, true, null, 1);
+            serverLevel.destroyBlock(blockPos, true);
         }
     }
 
@@ -207,9 +210,9 @@ public class NeonCactusPlantBlock extends EndBlockNotFull implements SimpleWater
     public void growPlant(WorldGenLevel world, BlockPos pos, RandomSource random, int iterations) {
         BlockState state = defaultBlockState();
         BlockState downState = world.getBlockState(pos.below());
-        if (downState.is(Blocks.END_STONE) || downState.is(EndBlocks.ENDSTONE_DUST)) {
+        if (downState.is(Blocks.END_STONE) || downState.is(EndTerrainBlocks.ENDSTONE_DUST)) {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.SAND);
-        } else if (downState.is(EndBlocks.END_MOSS)) {
+        } else if (downState.is(EndTerrainBlocks.END_MOSS)) {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.MOSS);
         } else {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.EMPTY);

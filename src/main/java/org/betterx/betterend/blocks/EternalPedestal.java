@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import de.ambertation.wunderlib.math.Float3;
 import de.ambertation.wunderlib.ui.ColorHelper;
 import org.betterx.bclib.interfaces.ClientLevelAccess;
@@ -12,7 +14,7 @@ import org.betterx.betterend.client.render.PedestalItemRenderer;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndPortals;
 import org.betterx.betterend.rituals.EternalRitual;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
+import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -60,7 +62,7 @@ public class EternalPedestal extends PedestalBlock {
     public static final BooleanProperty ACTIVATED = EndBlockProperties.ACTIVE;
 
     public EternalPedestal(ResourceKey<Block> blockKey) {
-        super(EndBlocks.FLAVOLITE_RUNED_ETERNAL, blockKey);
+        super(EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL, blockKey);
         this.registerDefaultState(defaultBlockState().setValue(ACTIVATED, false));
     }
 

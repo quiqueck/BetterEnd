@@ -1,5 +1,9 @@
 package org.betterx.betterend.client.render;
 
+
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import de.ambertation.wunderlib.ui.ColorHelper;
 import org.betterx.betterend.blocks.EternalPedestal;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
@@ -71,7 +75,7 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
             matrices.scale(1.25F, 1.25F, 1.25F);
         }
         int age = getGemAge();
-        if (state.is(EndBlocks.ETERNAL_PEDESTAL) && state.getValue(EternalPedestal.ACTIVATED)) {
+        if (state.is(EndFunctionalBlocks.ETERNAL_PEDESTAL) && state.getValue(EternalPedestal.ACTIVATED)) {
             float[] colors = ColorHelper.toFloatArrayRGBA(EternalCrystalRenderer.colors(age));
             int y = blockEntity.getBlockPos().getY();
 
@@ -92,7 +96,7 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
         }
         if (activeItem.getItem() == Items.END_CRYSTAL) {
             EndCrystalRenderer.render(age, 314, tickDelta, matrices, vertexConsumers, light);
-        } else if (activeItem.getItem() == EndItems.ETERNAL_CRYSTAL) {
+        } else if (activeItem.getItem() == EndResourceItems.ETERNAL_CRYSTAL) {
             EternalCrystalRenderer.render(age, tickDelta, matrices, vertexConsumers, light);
         } else {
             float rotation = (age + tickDelta) / 25.0F + 6.0F;

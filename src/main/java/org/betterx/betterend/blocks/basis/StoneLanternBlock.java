@@ -1,13 +1,16 @@
 package org.betterx.betterend.blocks.basis;
 
+
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
 import org.betterx.bclib.client.models.BCLModels;
 import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
 
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -38,7 +41,7 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
 
     @Override
     public BlockColor getProvider() {
-        return ((CustomColorProvider) EndBlocks.AURORA_CRYSTAL).getProvider();
+        return ((CustomColorProvider) EndCrystalBlocks.AURORA_CRYSTAL).getProvider();
     }
 
 
@@ -58,7 +61,7 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
      * never-unconditionally-loaded class file avoids that.
      */
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientModel.build();
+        return ModCore.isDatagen() ? ClientModel.build() : null;
     }
 
     @Environment(EnvType.CLIENT)
@@ -96,7 +99,7 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
             return ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> {
                         final var mapping = new TextureMapping()
-                                .put(BCLModels.GLASS, TextureMapping.getBlockTexture(EndBlocks.AURORA_CRYSTAL))
+                                .put(BCLModels.GLASS, TextureMapping.getBlockTexture(EndCrystalBlocks.AURORA_CRYSTAL))
                                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
                                 .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"))
                                 .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"));

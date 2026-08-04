@@ -1,7 +1,7 @@
 package org.betterx.betterend.world.features;
 
 import org.betterx.bclib.blocks.BaseAttachedBlock;
-import org.betterx.betterend.blocks.basis.EndWallPlantBlock;
+import org.betterx.bclib.blocks.BaseWallPlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
 
 import net.minecraft.core.BlockPos;
@@ -29,8 +29,8 @@ public class WallPlantFeature extends WallScatterFeature<WallPlantFeatureConfig>
     ) {
         plant = cfg.getPlantState(random, pos);
         Block block = plant.getBlock();
-        if (block instanceof EndWallPlantBlock) {
-            BlockState state = plant.setValue(EndWallPlantBlock.FACING, dir);
+        if (block instanceof BaseWallPlantBlock) {
+            BlockState state = plant.setValue(BaseWallPlantBlock.FACING, dir);
             return state.canSurvive(world, pos);
         } else if (block instanceof BaseAttachedBlock) {
             BlockState state = plant.setValue(BlockStateProperties.FACING, dir);
@@ -48,8 +48,8 @@ public class WallPlantFeature extends WallScatterFeature<WallPlantFeatureConfig>
             Direction dir
     ) {
         Block block = plant.getBlock();
-        if (block instanceof EndWallPlantBlock) {
-            plant = plant.setValue(EndWallPlantBlock.FACING, dir);
+        if (block instanceof BaseWallPlantBlock) {
+            plant = plant.setValue(BaseWallPlantBlock.FACING, dir);
         } else if (block instanceof BaseAttachedBlock) {
             plant = plant.setValue(BlockStateProperties.FACING, dir);
         }

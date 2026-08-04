@@ -9,10 +9,16 @@ import org.betterx.betterend.config.screen.ConfigScreen;
 import org.betterx.betterend.events.ItemTooltipCallback;
 import org.betterx.betterend.interfaces.MultiModelItem;
 import org.betterx.betterend.item.CrystaliteArmor;
+import org.betterx.betterend.network.RitualUpdate;
 import org.betterx.betterend.registry.*;
+import org.betterx.betterend.rituals.EternalRitual;
 import org.betterx.betterend.world.generator.GeneratorOptions;
 
+import de.ambertation.wunderlib.network.ClientNetworkRegistry;
+import de.ambertation.wunderlib.network.ExecutionPhase;
+
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -35,6 +41,18 @@ public class BetterEndClient implements ClientModInitializer {
         MultiModelItem.register();
         registerTooltips();
 
+        ClientNetworkRegistry.addClientHandler(
+                RitualUpdate.KEY,
+                ExecutionPhase.GAME_THREAD,
+                (msg, ctx) -> EternalRitual.updateActiveStateOnPedestals(
+                        msg.center(),
+                        msg.axis(),
+                        msg.isActive(),
+                        msg.willActivate(),
+                        Minecraft.getInstance().level,
+                        null
+                )
+        );
 
         ModMenu.addModMenuScreen(BetterEnd.C.modId, ConfigScreen::new);
 

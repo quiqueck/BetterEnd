@@ -1,11 +1,12 @@
 package org.betterx.betterend.world.biome.land;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndParticles;
 import org.betterx.betterend.registry.EndSounds;
 import org.betterx.betterend.registry.EndStructures;
-import org.betterx.betterend.registry.features.EndLakeFeatures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
@@ -29,7 +30,7 @@ public class UmbrellaJungleBiome extends EndBiome.Config {
                 .particles(EndParticles.JUNGLE_SPORE, 0.001F)
                 .music(EndSounds.MUSIC_FOREST)
                 .loop(EndSounds.AMBIENT_UMBRELLA_JUNGLE)
-                .feature(EndLakeFeatures.END_LAKE)
+                .structure(EndStructures.END_LAKE)
                 .feature(EndVegetationFeatures.UMBRELLA_TREE)
                 .feature(EndVegetationFeatures.JELLYSHROOM)
                 .feature(EndVegetationFeatures.TWISTED_UMBRELLA_MOSS)
@@ -56,7 +57,7 @@ public class UmbrellaJungleBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.JUNGLE_MOSS.defaultBlockState();
+                return EndTerrainBlocks.JUNGLE_MOSS.defaultBlockState();
             }
         };
     }

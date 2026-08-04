@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndPlantBlock;
+import org.betterx.bclib.blocks.BasePlantBlock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class MurkweedBlock extends EndPlantBlock {
+public class MurkweedBlock extends BasePlantBlock {
     public MurkweedBlock(BlockBehaviour.Properties props) {
         super(props);
     }

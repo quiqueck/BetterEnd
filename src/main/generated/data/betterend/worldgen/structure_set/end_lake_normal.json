@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 8955736,
+    "separation": 2,
+    "spacing": 5
+  },
+  "structures": [
+    {
+      "structure": "betterend:end_lake_normal",
+      "weight": 1
+    }
+  ]
+}

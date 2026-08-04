@@ -1,0 +1,14 @@
+{
+  "type": "betterend:stalactite_cluster",
+  "config": {
+    "ceil_feature": "betterend:end_stone_with_cavemoss_stalactite",
+    "density": 0.35,
+    "floor_feature": "betterend:end_stone_with_cavemoss_stalagmite",
+    "pair_chance": 0.6,
+    "radius": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 6,
+      "min_inclusive": 3
+    }
+  }
+}

@@ -6,9 +6,9 @@ import org.betterx.betterend.world.features.bushes.LargeAmaranitaFeature;
 import org.betterx.betterend.world.features.bushes.Lumecorn;
 import org.betterx.betterend.world.features.bushes.TenaneaBushFeature;
 import org.betterx.betterend.world.features.trees.*;
-import org.betterx.wover.feature.api.configured.ConfiguredFeatureKey;
-import org.betterx.wover.feature.api.configured.ConfiguredFeatureManager;
-import org.betterx.wover.feature.api.configured.configurators.WithConfiguration;
+import de.ambertation.wover.feature.api.configured.ConfiguredFeatureKey;
+import de.ambertation.wover.feature.api.configured.ConfiguredFeatureManager;
+import de.ambertation.wover.feature.api.configured.configurators.WithConfiguration;
 
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
@@ -16,6 +16,7 @@ public class EndConfiguredVegetation {
     public static final ConfiguredFeatureKey<WithConfiguration<DragonTreeFeature, NoneFeatureConfiguration>> DRAGON_TREE = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("dragon_tree"), EndFeatures.DRAGON_TREE_FEATURE);
     public static final ConfiguredFeatureKey<WithConfiguration<GiganticAmaranitaFeature, NoneFeatureConfiguration>> GIGANTIC_AMARANITA = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("gigantic_amaranita"), EndFeatures.GIGANTIC_AMARANITA_FEATURE);
     public static final ConfiguredFeatureKey<WithConfiguration<HelixTreeFeature, NoneFeatureConfiguration>> HELIX_TREE = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("helix_tree"), EndFeatures.HELIX_TREE_FEATURE);
+    public static final ConfiguredFeatureKey<WithConfiguration<DragonHelixTreeFeature, NoneFeatureConfiguration>> DRAGON_HELIX_TREE = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("dragon_helix_tree"), EndFeatures.DRAGON_HELIX_TREE_FEATURE);
     public static final ConfiguredFeatureKey<WithConfiguration<JellyshroomFeature, NoneFeatureConfiguration>> JELLYSHROOM = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("jellyshroom"), EndFeatures.JELLYSHROOM_FEATURE);
     public static final ConfiguredFeatureKey<WithConfiguration<LacugroveFeature, NoneFeatureConfiguration>> LACUGROVE = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("lacugrove"), EndFeatures.LACUGROVE_FEATURE);
     public static final ConfiguredFeatureKey<WithConfiguration<LucerniaFeature, NoneFeatureConfiguration>> LUCERNIA = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("lucernia"), EndFeatures.LUCERNIA_FEATURE);

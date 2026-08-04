@@ -1,8 +1,9 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndBlockNotFull;
+
+import org.betterx.betterend.registry.block.EndDecorBlocks;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -32,7 +34,7 @@ import java.util.Queue;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class MengerSpongeBlock extends EndBlockNotFull {
+public class MengerSpongeBlock extends Block {
     public static final VoxelShape SHAPE;
 
     public MengerSpongeBlock(BlockBehaviour.Properties props) {
@@ -42,7 +44,7 @@ public class MengerSpongeBlock extends EndBlockNotFull {
     @Override
     public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
         if (absorbWater(world, pos)) {
-            world.setBlockAndUpdate(pos, EndBlocks.MENGER_SPONGE_WET.defaultBlockState());
+            world.setBlockAndUpdate(pos, EndDecorBlocks.MENGER_SPONGE_WET.defaultBlockState());
         }
 
     }
@@ -59,7 +61,7 @@ public class MengerSpongeBlock extends EndBlockNotFull {
             RandomSource randomSource
     ) {
         if (world instanceof LevelAccessor levelAccessor && absorbWater(levelAccessor, pos)) {
-            return EndBlocks.MENGER_SPONGE_WET.defaultBlockState();
+            return EndDecorBlocks.MENGER_SPONGE_WET.defaultBlockState();
         }
         return state;
     }

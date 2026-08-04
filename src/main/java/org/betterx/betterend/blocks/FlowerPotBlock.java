@@ -1,14 +1,14 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndBlockNotFull;
 import org.betterx.betterend.blocks.entities.FlowerPotBlockEntity;
 import org.betterx.betterend.client.models.EndModels;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.pottable.api.PottablePlant;
-import org.betterx.wover.pottable.api.PottablePlantRegistry;
-import org.betterx.wover.pottable.api.PottableSoil;
-import org.betterx.wover.pottable.api.PottableSoilRegistry;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.pottable.api.PottablePlant;
+import de.ambertation.wover.pottable.api.PottablePlantRegistry;
+import de.ambertation.wover.pottable.api.PottableSoil;
+import de.ambertation.wover.pottable.api.PottableSoilRegistry;
 
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -52,7 +52,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 
-public class FlowerPotBlock extends EndBlockNotFull implements EntityBlock {
+public class FlowerPotBlock extends Block implements EntityBlock {
     public static final IntegerProperty POT_LIGHT = EndBlockProperties.POT_LIGHT;
     private static final VoxelShape SHAPE_EMPTY;
     private static final VoxelShape SHAPE_FULL;
@@ -233,7 +233,7 @@ public class FlowerPotBlock extends EndBlockNotFull implements EntityBlock {
      * never-unconditionally-loaded class file avoids that.
      */
     public static BlockModelTrait buildModel() {
-        return ClientModel.build();
+        return ModCore.isDatagen() ? ClientModel.build() : null;
     }
 
     @Environment(EnvType.CLIENT)

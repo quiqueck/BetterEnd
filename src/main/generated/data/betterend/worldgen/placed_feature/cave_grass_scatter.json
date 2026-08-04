@@ -1,0 +1,31 @@
+{
+  "feature": "betterend:cave_grass",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 10
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 56
+        },
+        "min_inclusive": {
+          "absolute": 4
+        }
+      }
+    },
+    {
+      "type": "wover:solid_in_dir",
+      "random_select": false
+    }
+  ]
+}

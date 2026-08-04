@@ -1,5 +1,7 @@
 package org.betterx.betterend.mixin.client;
 
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.registry.EndBlocks;
@@ -38,7 +40,7 @@ public class BiomeColorsMixin {
             for (int i = 0; i < OFFSETS.length; i++) {
                 mut.setX(pos.getX() + OFFSETS[i].x);
                 mut.setZ(pos.getZ() + OFFSETS[i].y);
-                if ((view.getBlockState(mut).is(EndBlocks.BRIMSTONE))) {
+                if ((view.getBlockState(mut).is(EndStoneBlocks.BRIMSTONE))) {
                     info.setReturnValue(i < 4 ? POISON_COLOR : STREAM_COLOR);
                     return;
                 }

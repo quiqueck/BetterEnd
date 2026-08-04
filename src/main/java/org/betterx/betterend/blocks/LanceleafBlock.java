@@ -1,11 +1,13 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.PentaShape;
+
+import org.betterx.betterend.registry.block.EndPlantBlocks;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.PentaShape;
 import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
-import org.betterx.betterend.blocks.basis.EndPlantBlock;
+import org.betterx.bclib.blocks.BasePlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.loot.api.LootLookupProvider;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
@@ -28,7 +30,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-public class LanceleafBlock extends EndPlantBlock {
+public class LanceleafBlock extends BasePlantBlock {
 
     public static final EnumProperty<PentaShape> SHAPE = BlockProperties.PENTA_SHAPE;
     public static final IntegerProperty ROTATION = BlockProperties.ROTATION;
@@ -89,11 +91,11 @@ public class LanceleafBlock extends EndPlantBlock {
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .when(isBottom(block))
-                        .add(LootItem.lootTableItem(EndBlocks.LANCELEAF_SEED)))
+                        .add(LootItem.lootTableItem(EndPlantBlocks.LANCELEAF_SEED)))
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .when(InvertedLootItemCondition.invert(isBottom(block)))
                         .when(LootItemRandomChanceCondition.randomChance(0.5F))
-                        .add(LootItem.lootTableItem(EndBlocks.LANCELEAF_SEED)));
+                        .add(LootItem.lootTableItem(EndPlantBlocks.LANCELEAF_SEED)));
     }
 }

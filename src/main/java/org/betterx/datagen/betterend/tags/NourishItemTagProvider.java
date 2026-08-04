@@ -1,11 +1,13 @@
 package org.betterx.datagen.betterend.tags;
 
+
+import org.betterx.betterend.registry.item.EndFoodItems;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.WoverTagProvider;
-import org.betterx.wover.tag.api.TagManager;
-import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.WoverTagProvider;
+import de.ambertation.wover.tag.api.TagManager;
+import de.ambertation.wover.tag.api.event.context.ItemTagBootstrapContext;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -23,34 +25,34 @@ public class NourishItemTagProvider extends WoverTagProvider.ForItems {
         TagKey<Item> sweets = TagManager.ITEMS.makeTag(BetterEnd.NOURISH, "sweets");
 
 
-        context.add(fats, EndItems.END_FISH_RAW, EndItems.END_FISH_COOKED);
+        context.add(fats, EndFoodItems.END_FISH_RAW, EndFoodItems.END_FISH_COOKED);
         context.add(
                 fruit,
-                EndItems.SHADOW_BERRY_RAW,
-                EndItems.SHADOW_BERRY_COOKED,
-                EndItems.BLOSSOM_BERRY,
-                EndItems.SHADOW_BERRY_JELLY,
-                EndItems.SWEET_BERRY_JELLY,
-                EndItems.BLOSSOM_BERRY_JELLY,
-                EndItems.AMBER_ROOT_RAW,
-                EndItems.CHORUS_MUSHROOM_RAW,
-                EndItems.CHORUS_MUSHROOM_COOKED,
-                EndItems.BOLUX_MUSHROOM_COOKED
+                EndFoodItems.SHADOW_BERRY_RAW,
+                EndFoodItems.SHADOW_BERRY_COOKED,
+                EndFoodItems.BLOSSOM_BERRY,
+                EndFoodItems.SHADOW_BERRY_JELLY,
+                EndFoodItems.SWEET_BERRY_JELLY,
+                EndFoodItems.BLOSSOM_BERRY_JELLY,
+                EndFoodItems.AMBER_ROOT_RAW,
+                EndFoodItems.CHORUS_MUSHROOM_RAW,
+                EndFoodItems.CHORUS_MUSHROOM_COOKED,
+                EndFoodItems.BOLUX_MUSHROOM_COOKED
         );
         context.add(
                 protein,
-                EndItems.END_FISH_RAW,
-                EndItems.END_FISH_COOKED,
-                EndItems.CHORUS_MUSHROOM_COOKED,
-                EndItems.BOLUX_MUSHROOM_COOKED,
-                EndItems.CAVE_PUMPKIN_PIE
+                EndFoodItems.END_FISH_RAW,
+                EndFoodItems.END_FISH_COOKED,
+                EndFoodItems.CHORUS_MUSHROOM_COOKED,
+                EndFoodItems.BOLUX_MUSHROOM_COOKED,
+                EndFoodItems.CAVE_PUMPKIN_PIE
         );
         context.add(
                 sweets,
-                EndItems.SHADOW_BERRY_JELLY,
-                EndItems.SWEET_BERRY_JELLY,
-                EndItems.BLOSSOM_BERRY_JELLY,
-                EndItems.CAVE_PUMPKIN_PIE
+                EndFoodItems.SHADOW_BERRY_JELLY,
+                EndFoodItems.SWEET_BERRY_JELLY,
+                EndFoodItems.BLOSSOM_BERRY_JELLY,
+                EndFoodItems.CAVE_PUMPKIN_PIE
         );
     }
 }

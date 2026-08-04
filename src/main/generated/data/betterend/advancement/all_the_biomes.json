@@ -161,6 +161,22 @@
       },
       "trigger": "minecraft:location"
     },
+    "betterend:flower_islets": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "betterend:flower_islets"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
     "betterend:foggy_mushroomland": {
       "conditions": {
         "player": [
@@ -400,6 +416,22 @@
         ]
       },
       "trigger": "minecraft:location"
+    },
+    "betterend:waterfall_ponds": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "betterend:waterfall_ponds"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
     }
   },
   "display": {
@@ -447,6 +479,9 @@
       "betterend:empty_smaragdant_cave"
     ],
     [
+      "betterend:flower_islets"
+    ],
+    [
       "betterend:foggy_mushroomland"
     ],
     [
@@ -490,6 +525,9 @@
     ],
     [
       "betterend:umbrella_jungle"
+    ],
+    [
+      "betterend:waterfall_ponds"
     ]
   ],
   "rewards": {

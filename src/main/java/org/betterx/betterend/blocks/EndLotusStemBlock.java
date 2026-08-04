@@ -1,8 +1,8 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,6 +1,7 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndBlockNotFull;
+
+import org.betterx.betterend.registry.block.EndDecorBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -17,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -29,7 +31,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 @SuppressWarnings("deprecation")
-public class MengerSpongeWetBlock extends EndBlockNotFull {
+public class MengerSpongeWetBlock extends Block {
     public MengerSpongeWetBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -37,7 +39,7 @@ public class MengerSpongeWetBlock extends EndBlockNotFull {
     @Override
     public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
         if (world.dimensionType().ultraWarm()) {
-            world.setBlock(pos, EndBlocks.MENGER_SPONGE.defaultBlockState(), 3);
+            world.setBlock(pos, EndDecorBlocks.MENGER_SPONGE.defaultBlockState(), 3);
             world.levelEvent(2009, pos, 0);
             world.playSound(
                     null,

@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.trees;
 
+
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.PosInfo;
 import org.betterx.bclib.sdf.SDF;
@@ -11,6 +13,9 @@ import org.betterx.betterend.blocks.HelixTreeLeavesBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import com.mojang.math.Axis;
+
+import de.ambertation.wover.feature.api.WriteZone;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.tags.BlockTags;
@@ -53,7 +58,7 @@ public class HelixTreeFeature extends DefaultFeature {
             dz = (float) Math.cos(i + angle) * radius;
             spline.add(new Vector3f(dx, i * 2, dz));
         }
-        SDF sdf = SplineHelper.buildSDF(spline, 1.7F, 0.5F, (p) -> EndBlocks.HELIX_TREE.getBark().defaultBlockState());
+        SDF sdf = SplineHelper.buildSDF(spline, 1.7F, 0.5F, (p) -> EndWoodBlocks.HELIX_TREE.getBark().defaultBlockState());
         SDF rotated = new SDFRotation().setRotation(Axis.YP, (float) Math.PI).setSource(sdf);
         sdf = new SDFUnion().setSourceA(rotated).setSourceB(sdf);
 
@@ -63,7 +68,7 @@ public class HelixTreeFeature extends DefaultFeature {
                 spline2,
                 1.0F,
                 0.5F,
-                (p) -> EndBlocks.HELIX_TREE.getBark().defaultBlockState()
+                (p) -> EndWoodBlocks.HELIX_TREE.getBark().defaultBlockState()
         );
         stem = new SDFTranslate().setTranslate(lastPoint.x(), lastPoint.y(), lastPoint.z()).setSource(stem);
         sdf = new SDFSmoothUnion().setRadius(3).setSourceA(sdf).setSourceB(stem);
@@ -72,20 +77,33 @@ public class HelixTreeFeature extends DefaultFeature {
         dx = 30 * scale;
         float dy1 = -20 * scale;
         float dy2 = 100 * scale;
+        // fillArea reads every block in the box, and this box is up to 61 blocks wide - far past the 3x3
+        // chunks a feature may touch. Clipping it to the write zone drops nothing the tree could have placed
+        // there anyway (those writes were already being discarded) and removes the reads from chunks that
+        // have not been carved - or even filled - yet. See WriteZone.
+        final WriteZone zone = WriteZone.of(world);
         sdf.addPostProcess(POST)
            .fillArea(
                    world,
                    pos,
                    new AABB(
-                           pos.offset((int) -dx, (int) dy1, (int) -dx).getCenter(),
-                           pos.offset((int) dx, (int) dy2, (int) dx).getCenter()
+                           new BlockPos(
+                                   zone.clampX(pos.getX() - (int) dx),
+                                   pos.getY() + (int) dy1,
+                                   zone.clampZ(pos.getZ() - (int) dx)
+                           ).getCenter(),
+                           new BlockPos(
+                                   zone.clampX(pos.getX() + (int) dx),
+                                   pos.getY() + (int) dy2,
+                                   zone.clampZ(pos.getZ() + (int) dx)
+                           ).getCenter()
                    )
            );
         SplineHelper.scale(spline, scale);
         SplineHelper.fillSplineForce(
                 spline,
                 world,
-                EndBlocks.HELIX_TREE.getBark().defaultBlockState(),
+                EndWoodBlocks.HELIX_TREE.getBark().defaultBlockState(),
                 pos,
                 BlockBehaviour.BlockStateBase::canBeReplaced
         );
@@ -93,7 +111,7 @@ public class HelixTreeFeature extends DefaultFeature {
         SplineHelper.fillSplineForce(
                 spline,
                 world,
-                EndBlocks.HELIX_TREE.getBark().defaultBlockState(),
+                EndWoodBlocks.HELIX_TREE.getBark().defaultBlockState(),
                 pos,
                 BlockBehaviour.BlockStateBase::canBeReplaced
         );
@@ -106,7 +124,7 @@ public class HelixTreeFeature extends DefaultFeature {
         SplineHelper.fillSplineForce(
                 spline2,
                 world,
-                EndBlocks.HELIX_TREE.getLog().defaultBlockState(),
+                EndWoodBlocks.HELIX_TREE.getLog().defaultBlockState(),
                 leafStart,
                 BlockBehaviour.BlockStateBase::canBeReplaced
         );
@@ -129,7 +147,7 @@ public class HelixTreeFeature extends DefaultFeature {
         Vector3f start = new Vector3f();
         Vector3f end = new Vector3f();
         lastPoint = spline.get(0);
-        BlockState leaf = EndBlocks.HELIX_TREE_LEAVES.defaultBlockState();
+        BlockState leaf = EndWoodBlocks.HELIX_TREE_LEAVES.defaultBlockState();
         for (int i = 1; i < spline.size(); i++) {
             Vector3f point = spline.get(i);
             int minY = MHelper.floor(lastPoint.y());
@@ -170,6 +188,9 @@ public class HelixTreeFeature extends DefaultFeature {
             }
         }
 
+        // Helix leaves are a custom Block without the WATERLOGGED property, so this is a no-op for the
+        // leaves today; kept for uniformity (and its trunk shares the shore-flood scan).
+        EndTreeHelper.waterlogSubmerged(world, pos, 20);
         return true;
     }
 
@@ -213,8 +234,8 @@ public class HelixTreeFeature extends DefaultFeature {
 
     static {
         POST = (info) -> {
-            if (EndBlocks.HELIX_TREE.isTreeLog(info.getStateUp()) && EndBlocks.HELIX_TREE.isTreeLog(info.getStateDown())) {
-                return EndBlocks.HELIX_TREE.getLog().defaultBlockState();
+            if (EndWoodBlocks.HELIX_TREE.isTreeLog(info.getStateUp()) && EndWoodBlocks.HELIX_TREE.isTreeLog(info.getStateDown())) {
+                return EndWoodBlocks.HELIX_TREE.getLog().defaultBlockState();
             }
             return info.getState();
         };

@@ -33,11 +33,9 @@
     "water_fog_color": -14794435
   },
   "features": [
+    [],
     [
       "betterend:geyser",
-      "betterend:sulphuric_cave"
-    ],
-    [
       "betterend:sulphuric_lake"
     ],
     [],

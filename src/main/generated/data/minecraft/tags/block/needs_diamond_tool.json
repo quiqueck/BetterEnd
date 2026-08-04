@@ -1,5 +1,7 @@
 {
   "values": [
+    "betterend:aeternium_anvil",
+    "betterend:aeternium_block",
     "betterend:mossy_obsidian"
   ]
 }

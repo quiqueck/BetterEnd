@@ -1,11 +1,12 @@
 package org.betterx.betterend.world.biome.land;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndParticles;
 import org.betterx.betterend.registry.EndSounds;
 import org.betterx.betterend.registry.EndStructures;
-import org.betterx.betterend.registry.features.EndLakeFeatures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
@@ -28,7 +29,7 @@ public class LanternWoodsBiome extends EndBiome.Config {
                 .plantsColor(254, 85, 57)
                 .music(EndSounds.MUSIC_FOREST)
                 .particles(EndParticles.GLOWING_SPHERE, 0.001F)
-                .feature(EndLakeFeatures.END_LAKE_NORMAL)
+                .structure(EndStructures.END_LAKE_NORMAL)
                 .feature(EndVegetationFeatures.FLAMAEA)
                 .feature(EndVegetationFeatures.LUCERNIA)
                 .feature(EndVegetationFeatures.LUCERNIA_BUSH)
@@ -52,7 +53,7 @@ public class LanternWoodsBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.RUTISCUS.defaultBlockState();
+                return EndTerrainBlocks.RUTISCUS.defaultBlockState();
             }
         };
     }

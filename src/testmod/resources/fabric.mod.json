@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "betterend-testmod",
+  "version": "1.0.0",
+  "name": "BetterEnd (TestMod)",
+  "description": "Headless GameTest suite for BetterEnd. Never shipped.",
+  "authors": [
+    "Quiqueck"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": [
+      "org.betterx.betterend.testmod.gametest.CrystaliteArmorGameTest",
+      "org.betterx.betterend.testmod.gametest.CrystaliteEffectGameTest",
+      "org.betterx.betterend.testmod.gametest.EndVeilGameTest",
+      "org.betterx.betterend.testmod.gametest.EndVeilObtainableGameTest"
+    ]
+  },
+  "mixins": [
+    "betterend.testmod.mixins.common.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "betterend": "*"
+  }
+}

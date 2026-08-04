@@ -3,6 +3,7 @@ package org.betterx.betterend.world.features;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.util.GlobalState;
+import de.ambertation.wover.feature.api.WriteZone;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -40,6 +41,10 @@ public abstract class InvertedScatterFeature<FC extends ScatterFeatureConfig> ex
         final WorldGenLevel world = featureConfig.level();
         int maxY = world.getHeight(Heightmap.Types.WORLD_SURFACE, center.getX(), center.getZ());
         int minY = BlocksHelper.upRay(world, new BlockPos(center.getX(), 0, center.getZ()), maxY);
+        // Scatter points land up to cfg.radius from center, past the 3x3 chunks a feature may touch on an
+        // unlucky roll - same over-read as ScatterFeature.place(); see WriteZone there for the
+        // reasoning.
+        final WriteZone zone = WriteZone.of(world);
         for (int y = maxY; y > minY; y--) {
             POS.set(center.getX(), y, center.getZ());
             if (world.getBlockState(POS).isAir() && !world.getBlockState(POS.above()).isAir()) {
@@ -52,6 +57,9 @@ public abstract class InvertedScatterFeature<FC extends ScatterFeatureConfig> ex
                     float z = pr * (float) Math.sin(theta);
 
                     POS.set(center.getX() + x, center.getY() - 7, center.getZ() + z);
+                    if (!zone.contains(POS)) {
+                        continue;
+                    }
                     int up = BlocksHelper.upRay(world, POS, 16);
                     if (up > 14) continue;
                     POS.setY(POS.getY() + up);

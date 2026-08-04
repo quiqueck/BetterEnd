@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.blocks.BaseBlockWithEntity;
 import org.betterx.bclib.interfaces.AlloyingRecipeWorkstation;
 import org.betterx.betterend.blocks.entities.EndStoneSmelterBlockEntity;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
@@ -49,11 +47,7 @@ public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements Alloyi
     public static final String ID = "end_stone_smelter";
 
     public EndStoneSmelter(BlockBehaviour.Properties props) {
-        super(BehaviourBuilders.createStone(props, MapColor.COLOR_YELLOW)
-                               .lightLevel(state -> state.getValue(LIT) ? 15 : 0)
-                               .strength(4F, 100F)
-                               .requiresCorrectToolForDrops()
-        );
+        super(props);
         registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
     }
 

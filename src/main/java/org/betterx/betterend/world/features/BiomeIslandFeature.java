@@ -7,6 +7,7 @@ import org.betterx.bclib.sdf.operator.SDFTranslate;
 import org.betterx.bclib.sdf.primitive.SDFCappedCone;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
+import de.ambertation.wover.feature.api.WriteZone;
 import org.betterx.betterend.world.biome.EndBiome;
 
 import net.minecraft.core.BlockPos;
@@ -46,7 +47,9 @@ public class BiomeIslandFeature extends DefaultFeature {
 
         simplexNoise = new OpenSimplexNoise(world.getSeed());
         CENTER.set(pos);
-        ISLAND.fillRecursive(world, pos.below());
+        // Small island, but reuses the same unbounded flood-fill as the larger features - clip it to the
+        // write zone for consistency/safety; see WriteZone.
+        ISLAND.fillRecursive(world, pos.below(), WriteZone.of(world).toBoundingBox());
         return true;
     }
 

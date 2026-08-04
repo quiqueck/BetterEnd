@@ -34,13 +34,8 @@
     "water_fog_color": -8927491
   },
   "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
-    [
-      "betterend:end_lake"
-    ],
+    [],
+    [],
     [],
     [],
     [

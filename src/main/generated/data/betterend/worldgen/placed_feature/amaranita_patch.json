@@ -1,0 +1,19 @@
+{
+  "feature": {
+    "type": "betterend:amaranita_patch",
+    "config": {}
+  },
+  "placement": [
+    {
+      "type": "minecraft:count_on_every_layer",
+      "count": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1,
+        "min_inclusive": 0
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

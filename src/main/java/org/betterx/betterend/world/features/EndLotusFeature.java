@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features;
 
+
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
 import org.betterx.betterend.blocks.EndLotusSeedBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -14,7 +16,7 @@ public class EndLotusFeature extends UnderwaterPlantScatter<ScatterFeatureConfig
 
     @Override
     public void generate(ScatterFeatureConfig cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos) {
-        EndLotusSeedBlock seed = (EndLotusSeedBlock) EndBlocks.END_LOTUS_SEED;
+        EndLotusSeedBlock seed = (EndLotusSeedBlock) EndWaterPlantBlocks.END_LOTUS_SEED;
         seed.grow(world, random, blockPos);
     }
 

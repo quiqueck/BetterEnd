@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndPlantBlock;
+import org.betterx.bclib.blocks.BasePlantBlock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BoluxMushroomBlock extends EndPlantBlock {
+public class BoluxMushroomBlock extends BasePlantBlock {
     private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 9, 15);
 
     public BoluxMushroomBlock(BlockBehaviour.Properties props) {

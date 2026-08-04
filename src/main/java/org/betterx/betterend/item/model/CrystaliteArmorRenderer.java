@@ -1,5 +1,7 @@
 package org.betterx.betterend.item.model;
 
+
+import org.betterx.betterend.registry.item.EndEquipmentItems;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndItems;
 
@@ -33,13 +35,15 @@ public class CrystaliteArmorRenderer implements ArmorRenderer {
     public static void register() {
         if (INSTANCE == null) {
             INSTANCE = new CrystaliteArmorRenderer();
+            // CRYSTALITE_ELYTRA deliberately excluded: it now has its own equipment asset
+            // (assets/betterend/equipment/elytra_crystalite.json, a "wings" layer only) and
+            // renders through vanilla's wings layer instead of this custom chestplate-shaped model.
             ArmorRenderer.register(
                     INSTANCE,
-                    EndItems.CRYSTALITE_HELMET,
-                    EndItems.CRYSTALITE_CHESTPLATE,
-                    EndItems.CRYSTALITE_ELYTRA,
-                    EndItems.CRYSTALITE_LEGGINGS,
-                    EndItems.CRYSTALITE_BOOTS
+                    EndEquipmentItems.CRYSTALITE_HELMET,
+                    EndEquipmentItems.CRYSTALITE_CHESTPLATE,
+                    EndEquipmentItems.CRYSTALITE_LEGGINGS,
+                    EndEquipmentItems.CRYSTALITE_BOOTS
             );
         }
     }

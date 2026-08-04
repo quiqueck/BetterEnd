@@ -1,12 +1,12 @@
 package org.betterx.betterend.registry.features;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.feature.api.Features;
-import org.betterx.wover.feature.api.configured.ConfiguredFeatureKey;
-import org.betterx.wover.feature.api.configured.ConfiguredFeatureManager;
-import org.betterx.wover.feature.api.configured.configurators.WeightedBlockPatch;
-import org.betterx.wover.feature.api.configured.configurators.WithConfiguration;
-import org.betterx.wover.feature.api.features.config.ConditionFeatureConfig;
+import de.ambertation.wover.feature.api.Features;
+import de.ambertation.wover.feature.api.configured.ConfiguredFeatureKey;
+import de.ambertation.wover.feature.api.configured.ConfiguredFeatureManager;
+import de.ambertation.wover.feature.api.configured.configurators.WeightedBlockPatch;
+import de.ambertation.wover.feature.api.configured.configurators.WithConfiguration;
+import de.ambertation.wover.feature.api.features.config.ConditionFeatureConfig;
 
 import net.minecraft.world.level.levelgen.feature.Feature;
 

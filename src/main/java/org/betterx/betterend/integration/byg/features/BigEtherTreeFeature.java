@@ -6,7 +6,8 @@ import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.integration.Integrations;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.feature.api.WriteZone;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -27,6 +28,11 @@ public class BigEtherTreeFeature extends DefaultFeature {
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES)) return false;
+
+        // height reaches 60 and branches fan out radially to ~0.4*height (~24 blocks) - well past the 3x3
+        // chunks a feature may touch. Clip both the branch splines and the trunk flood-fill to the write
+        // zone; see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
 
         BlockState log = Integrations.BYG.getDefaultState("ether_log");
         BlockState wood = Integrations.BYG.getDefaultState("ether_wood");
@@ -59,7 +65,7 @@ public class BigEtherTreeFeature extends DefaultFeature {
                 SplineHelper.rotateSpline(br, angle);
 
                 SplineHelper.offset(br, start);
-                SplineHelper.fillSpline(br, world, wood, pos, replace);
+                SplineHelper.fillSpline(br, world, wood, pos, replace, zone.toBoundingBox());
             }
         }
 
@@ -70,7 +76,7 @@ public class BigEtherTreeFeature extends DefaultFeature {
                 return wood;
             }
             return info.getState();
-        }).fillRecursive(world, pos);
+        }).fillRecursive(world, pos, zone.toBoundingBox());
 
         return true;
     }

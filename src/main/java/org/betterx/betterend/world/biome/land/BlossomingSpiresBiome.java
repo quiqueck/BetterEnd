@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.biome.land;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndEntities;
@@ -55,7 +57,7 @@ public class BlossomingSpiresBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.PINK_MOSS.defaultBlockState();
+                return EndTerrainBlocks.PINK_MOSS.defaultBlockState();
             }
 
             @Override

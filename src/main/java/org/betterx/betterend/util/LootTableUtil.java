@@ -1,13 +1,17 @@
 package org.betterx.betterend.util;
 
+
+import org.betterx.betterend.registry.item.EndDiscItems;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBiomes;
+import org.betterx.betterend.registry.EndEnchantments;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTemplates;
-import org.betterx.wover.loot.api.LootTableManager;
+import de.ambertation.wover.loot.api.LootTableManager;
 
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -18,6 +22,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -25,7 +30,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 
 public class LootTableUtil {
     public static final ResourceKey<LootTable> VILLAGE_LOOT = LootTableManager.createLootTableKey(BetterEnd.C, "chests/end_village_loot");
@@ -44,13 +49,16 @@ public class LootTableUtil {
 
 
     public static void init() {
-        LootTableEvents.MODIFY.register((key, tableBuilder, source) -> {
-            final ResourceLocation id = key.location();
+        LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
+            // Compare keys to keys. BuiltInLootTables exposes ResourceKey<LootTable>, so testing it
+            // against the ResourceLocation from key.location() is an Object#equals between two
+            // different types: it compiles, never matches, and silently disables every modification
+            // below.
             final LootItemCondition.Builder IN_END = LocationCheck.checkLocation(LocationPredicate.Builder
                     .location()
                     .setDimension(Level.END));
 
-            if (BuiltInLootTables.END_CITY_TREASURE.equals(id)) {
+            if (BuiltInLootTables.END_CITY_TREASURE.equals(key)) {
                 LootPool.Builder builder = LootPool.lootPool();
                 builder.setRolls(ConstantValue.exactly(1));
                 builder.when(LootItemRandomChanceCondition.randomChance(0.2f));
@@ -59,10 +67,12 @@ public class LootTableUtil {
 
                 builder = LootPool.lootPool();
                 builder.setRolls(UniformGenerator.between(0, 3));
-                builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_STRANGE_AND_ALIEN));
-                builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_GRASPING_AT_STARS));
-                builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_ENDSEEKER));
-                builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_EO_DRACONA));
+                builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_STRANGE_AND_ALIEN));
+                builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_GRASPING_AT_STARS));
+                builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDSEEKER));
+                builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_EO_DRACONA));
+                builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDER_HOLLOW));
+                builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_MOONLIT_UNDERCURRENTS));
                 tableBuilder.withPool(builder);
 
                 tableBuilder.withPool(LootPool
@@ -77,7 +87,42 @@ public class LootTableUtil {
                         .add(LootItem.lootTableItem(EndTemplates.THALLASIUM_UPGRADE).setWeight(2))
                         .add(LootItem.lootTableItem(EndTemplates.TERMINITE_UPGRADE).setWeight(2))
                 );
-            } else if (BuiltInLootTables.FISHING.equals(id)) {
+
+                // End Veil is a head-armor enchantment with no other route into a survival world:
+                // BetterEnd emits no enchantment tags, so it is not in
+                // #minecraft:in_enchanting_table and an enchanting table can never roll it. This pool
+                // and the end_veil_book infusion recipe are the two ways to get it.
+                //
+                // EnchantRandomlyFunction rather than a hand-built component: it is the vanilla path
+                // for "enchant this book with exactly this", and it knows to write stored_enchantments
+                // on a book instead of enchantments, which is the difference between a usable book and
+                // an inert one.
+                // End Veil is a head-armor enchantment with no other route into a survival world:
+                // BetterEnd emits no enchantment tags, so it is not in #minecraft:in_enchanting_table
+                // and an enchanting table can never roll it. This pool and the end_veil_book infusion
+                // recipe are the two ways to get it.
+                //
+                // EnchantRandomlyFunction rather than a hand-built component: it is the vanilla path
+                // for "enchant this book with exactly this", and it knows to write stored_enchantments
+                // on a book instead of enchantments, which is the difference between a usable book and
+                // an inert one.
+                //
+                // The holder has to come from the registries this event hands out. Resolving it from
+                // the world state instead yields a holder from an earlier registry instance: the book
+                // still generates, but every attempt to encode it fails with "is not valid in current
+                // registry set", so it can neither be saved nor sent to a client.
+                tableBuilder.withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .when(LootItemRandomChanceCondition.randomChance(0.25f))
+                        .add(LootItem.lootTableItem(Items.BOOK)
+                                     .apply(EnchantRandomlyFunction
+                                             .randomEnchantment()
+                                             .withEnchantment(registries
+                                                     .lookupOrThrow(Registries.ENCHANTMENT)
+                                                     .getOrThrow(EndEnchantments.END_VEIL.key()))))
+                );
+            } else if (BuiltInLootTables.FISHING.equals(key)) {
                 tableBuilder.modifyPools((modifier) -> modifier.when(IN_END.invert()));
                 tableBuilder.withPool(LootPool.lootPool().when(IN_END).setRolls(ConstantValue.exactly(1.0F))
                                               .add(NestedLootTable.lootTableReference(FISHING_FISH)

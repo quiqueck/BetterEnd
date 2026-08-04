@@ -1,16 +1,17 @@
 package org.betterx.betterend.complexmaterials.types;
 
 import org.betterx.betterend.complexmaterials.MetalMaterial;
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.trait.BlockRecipeTrait;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.block.api.trait.BlockTraits;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.sets.api.blocks.BlockSet;
-import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
-import org.betterx.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.model.BlockModelBinding;
+import de.ambertation.wover.block.api.model.ModelTraitLibrary;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.trait.BlockRecipeTrait;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.sets.api.blocks.SlotFromDefinition;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.tags.BlockTags;
 
@@ -47,7 +48,7 @@ public class SourceBlock extends SlotFromDefinition {
     }
 
     @Override
-    protected BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
+    protected BlockModelBinding buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
         return ModelTraitLibrary.cube();
     }
 }

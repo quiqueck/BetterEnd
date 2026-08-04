@@ -1,7 +1,10 @@
 package org.betterx.betterend.world.features;
 
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.util.GlobalState;
@@ -21,9 +24,11 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 public class SilkMothNestFeature extends DefaultFeature {
     private boolean canGenerate(WorldGenLevel world, BlockPos pos) {
         BlockState state = world.getBlockState(pos.above());
-        if (state.is(BlockTags.LEAVES) || state.is(BlockTags.LOGS)) {
+        // Cube leaves or logs only: a tenanea_outer_leaves above fills just the half of its block nearest
+        // its own support, so a nest hung under one dangles half a block clear of it.
+        if (BlocksHelper.isCubeLeaves(world, pos.above(), state) || state.is(BlockTags.LOGS)) {
             state = world.getBlockState(pos);
-            if ((state.isAir() || state.is(EndBlocks.TENANEA_OUTER_LEAVES)) && world.isEmptyBlock(pos.below())) {
+            if ((state.isAir() || state.is(EndWoodBlocks.TENANEA_OUTER_LEAVES)) && world.isEmptyBlock(pos.below())) {
                 for (Direction dir : BlocksHelper.HORIZONTAL) {
                     return !world.getBlockState(pos.below().relative(dir)).blocksMotion();
                 }
@@ -48,7 +53,7 @@ public class SilkMothNestFeature extends DefaultFeature {
                 BlocksHelper.setWithoutUpdate(
                         world,
                         POS,
-                        EndBlocks.SILK_MOTH_NEST.defaultBlockState()
+                        EndFunctionalBlocks.SILK_MOTH_NEST.defaultBlockState()
                                                 .setValue(BlockStateProperties.HORIZONTAL_FACING, dir)
                                                 .setValue(BlockProperties.ACTIVE, false)
                 );
@@ -56,7 +61,7 @@ public class SilkMothNestFeature extends DefaultFeature {
                 BlocksHelper.setWithoutUpdate(
                         world,
                         POS,
-                        EndBlocks.SILK_MOTH_NEST.defaultBlockState()
+                        EndFunctionalBlocks.SILK_MOTH_NEST.defaultBlockState()
                                                 .setValue(BlockStateProperties.HORIZONTAL_FACING, dir)
                 );
                 return true;

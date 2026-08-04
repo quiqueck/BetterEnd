@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -63,7 +65,7 @@ public class VentBubbleColumnBlock extends Block implements BucketPickup, Liquid
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         BlockState blockState = world.getBlockState(pos.below());
-        return blockState.is(this) || blockState.is(EndBlocks.HYDROTHERMAL_VENT);
+        return blockState.is(this) || blockState.is(EndStoneBlocks.HYDROTHERMAL_VENT);
     }
 
     @Override

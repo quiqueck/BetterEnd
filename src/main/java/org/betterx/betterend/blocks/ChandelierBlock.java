@@ -2,10 +2,11 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.betterend.client.models.EndModels;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
 
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -56,7 +57,7 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal {
      * type references in a class file the server actually has to verify.
      */
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientModel.build();
+        return ModCore.isDatagen() ? ClientModel.build() : null;
     }
 
     @Environment(EnvType.CLIENT)

@@ -1,0 +1,57 @@
+{
+  "biome": "betterend:waterfall_ponds",
+  "priority": 1000,
+  "ruleSource": {
+    "type": "minecraft:sequence",
+    "sequence": [
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:stone_depth",
+          "add_surface_depth": false,
+          "offset": 0,
+          "secondary_depth_range": 0,
+          "surface_type": "floor"
+        },
+        "then_run": {
+          "type": "minecraft:sequence",
+          "sequence": [
+            {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "wover:threshold_condition",
+                "roughness": {
+                  "type": "minecraft:uniform",
+                  "max_exclusive": 0.4,
+                  "min_inclusive": -0.4
+                },
+                "scale_x": 0.1,
+                "scale_z": 0.1,
+                "seed": 4141,
+                "threshold": 0.0
+              },
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": {
+                  "Name": "betterend:end_moss"
+                }
+              }
+            },
+            {
+              "type": "minecraft:block",
+              "result_state": {
+                "Name": "betterend:end_moss"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "minecraft:block",
+        "result_state": {
+          "Name": "minecraft:end_stone"
+        }
+      }
+    ]
+  }
+}

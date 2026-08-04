@@ -1,5 +1,8 @@
 package org.betterx.betterend.registry;
 
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.EndStoneSmelter;
 import org.betterx.betterend.blocks.FlowerPotBlock;
@@ -17,7 +20,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 public class EndBlockEntities {
     public final static BlockEntityType<EndStoneSmelterBlockEntity> END_STONE_SMELTER = registerBlockEntity(
             EndStoneSmelter.ID,
-            FabricBlockEntityTypeBuilder.create(EndStoneSmelterBlockEntity::new, EndBlocks.END_STONE_SMELTER)
+            FabricBlockEntityTypeBuilder.create(EndStoneSmelterBlockEntity::new, EndFunctionalBlocks.END_STONE_SMELTER)
     );
     public final static BlockEntityType<PedestalBlockEntity> PEDESTAL = registerBlockEntity(
             "pedestal",
@@ -25,15 +28,15 @@ public class EndBlockEntities {
     );
     public final static BlockEntityType<EternalPedestalEntity> ETERNAL_PEDESTAL = registerBlockEntity(
             "eternal_pedestal",
-            FabricBlockEntityTypeBuilder.create(EternalPedestalEntity::new, EndBlocks.ETERNAL_PEDESTAL)
+            FabricBlockEntityTypeBuilder.create(EternalPedestalEntity::new, EndFunctionalBlocks.ETERNAL_PEDESTAL)
     );
     public final static BlockEntityType<InfusionPedestalEntity> INFUSION_PEDESTAL = registerBlockEntity(
             "infusion_pedestal",
-            FabricBlockEntityTypeBuilder.create(InfusionPedestalEntity::new, EndBlocks.INFUSION_PEDESTAL)
+            FabricBlockEntityTypeBuilder.create(InfusionPedestalEntity::new, EndFunctionalBlocks.INFUSION_PEDESTAL)
     );
     public final static BlockEntityType<BlockEntityHydrothermalVent> HYDROTHERMAL_VENT = registerBlockEntity(
             "hydrother_malvent",
-            FabricBlockEntityTypeBuilder.create(BlockEntityHydrothermalVent::new, EndBlocks.HYDROTHERMAL_VENT)
+            FabricBlockEntityTypeBuilder.create(BlockEntityHydrothermalVent::new, EndStoneBlocks.HYDROTHERMAL_VENT)
     );
     public final static BlockEntityType<FlowerPotBlockEntity> FLOWER_POT = registerBlockEntity(
             "flower_pot",

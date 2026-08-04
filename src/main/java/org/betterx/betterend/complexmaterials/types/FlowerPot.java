@@ -3,18 +3,18 @@ package org.betterx.betterend.complexmaterials.types;
 import org.betterx.betterend.blocks.FlowerPotBlock;
 import static org.betterx.betterend.blocks.FlowerPotBlock.POT_LIGHT;
 import org.betterx.betterend.complexmaterials.StoneMaterial;
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.block.api.BlockRegistry;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.block.api.trait.BlockRecipeTrait;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.block.api.trait.BlockTraits;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.recipe.api.RecipeMaterial;
-import org.betterx.wover.sets.api.blocks.BlockSet;
-import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
-import org.betterx.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.BlockRegistry;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.trait.BlockRecipeTrait;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.recipe.api.RecipeMaterial;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.sets.api.blocks.SlotFromDefinition;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,16 +43,19 @@ public class FlowerPot extends SlotFromDefinition {
     }
 
     public static BlockRecipeTrait recipe(RecipeMaterial brick) {
-        return BlockTraits.RECIPE.with(
-                (key, block, context) -> {
-                    RecipeBuilder
-                            .crafting(key.location(), block)
-                            .outputCount(3)
-                            .shape("# #", " # ")
-                            .addMaterial('#', brick)
-                            .group("end_pots")
-                            .build(context);
-                });
+        return BlockTraits.RECIPE.with(potRecipe(brick));
+    }
+
+    private static BlockRecipeTrait.RecipeFactory potRecipe(RecipeMaterial brick) {
+        return (key, block, context) -> {
+            RecipeBuilder
+                    .crafting(key.location(), block)
+                    .outputCount(3)
+                    .shape("# #", " # ")
+                    .addMaterial('#', brick)
+                    .group("end_pots")
+                    .build(context);
+        };
     }
 
     @Override
@@ -64,7 +67,17 @@ public class FlowerPot extends SlotFromDefinition {
 
     @Override
     protected BlockRecipeTrait buildRecipe(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return recipe(set.recipeMaterialWithFallback(SlotType.BRICK));
+        final BlockRecipeTrait.RecipeFactory potRecipe = potRecipe(set.recipeMaterial(SlotType.BRICK));
+        return BlockTraits.RECIPE.with(
+                (key, block, context) -> {
+                    // Sets without a BRICK slot (the vanilla-backed stone sets) cannot name their matching vanilla
+                    // brick here; a fallback would silently resolve to the source block and emit a second pot
+                    // recipe - from full blocks - under the block's own ID. Those sets declare the recipe by hand
+                    // instead (EndCraftingRecipesProvider), so skip rather than emit a wrong recipe.
+                    if (set.getBlock(SlotType.BRICK) == null) return;
+
+                    potRecipe.buildRecipe(key, block, context);
+                });
     }
 
     @Override

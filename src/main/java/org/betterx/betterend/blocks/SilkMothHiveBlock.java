@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.LootUtil;
 import org.betterx.bclib.util.MHelper;
@@ -111,11 +113,11 @@ public class SilkMothHiveBlock extends Block {
                 double px = pos.getX() + dir.getStepX() + 0.5;
                 double py = pos.getY() + dir.getStepY() + 0.5;
                 double pz = pos.getZ() + dir.getStepZ() + 0.5;
-                ItemStack drop = new ItemStack(EndItems.SILK_FIBER, MHelper.randRange(8, 16, level.getRandom()));
+                ItemStack drop = new ItemStack(EndResourceItems.SILK_FIBER, MHelper.randRange(8, 16, level.getRandom()));
                 ItemEntity entity = new ItemEntity(level, px, py, pz, drop);
                 level.addFreshEntity(entity);
                 if (level.getRandom().nextInt(4) == 0) {
-                    drop = new ItemStack(EndItems.SILK_MOTH_MATRIX);
+                    drop = new ItemStack(EndResourceItems.SILK_MOTH_MATRIX);
                     entity = new ItemEntity(level, px, py, pz, drop);
                     level.addFreshEntity(entity);
                 }

@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndUnderwaterPlantBlock;
+import org.betterx.bclib.blocks.UnderwaterPlantBlock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class PondAnemoneBlock extends EndUnderwaterPlantBlock {
+public class PondAnemoneBlock extends UnderwaterPlantBlock {
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 14, 14);
 
     public PondAnemoneBlock(BlockBehaviour.Properties props) {

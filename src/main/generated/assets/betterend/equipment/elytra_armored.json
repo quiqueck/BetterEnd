@@ -1,0 +1,20 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "betterend:aeternium"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "betterend:aeternium"
+      }
+    ],
+    "wings": [
+      {
+        "texture": "betterend:elytra_armored",
+        "use_player_texture": true
+      }
+    ]
+  }
+}

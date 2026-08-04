@@ -4,7 +4,8 @@ import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.util.GlobalState;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.feature.api.WriteZone;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -72,6 +73,12 @@ public abstract class ScatterFeature<FC extends ScatterFeatureConfig> extends Fe
 
         float r = MHelper.randRange(cfg.radius * 0.5F, cfg.radius, random);
         int count = MHelper.floor(r * r * MHelper.randRange(1.5F, 3F, random));
+        // Scatter points land up to cfg.radius from center (20 for end_lotus_leaf) - past the 3x3 chunks a
+        // feature may touch on an unlucky roll. Skipping an out-of-zone point is behaviour-neutral (a plant
+        // placed there would have been silently dropped by WorldGenRegion anyway) and removes the "Detected
+        // unsafe terrain read during worldgen" spam every ScatterFeature subclass produced. See
+        // WriteZone.
+        final WriteZone zone = WriteZone.of(world);
         synchronized (this) {
             for (int i = 0; i < count; i++) {
                 float pr = r * (float) Math.sqrt(random.nextFloat());
@@ -80,6 +87,9 @@ public abstract class ScatterFeature<FC extends ScatterFeatureConfig> extends Fe
                 float z = pr * (float) Math.sin(theta);
 
                 POS.set(center.getX() + x, center.getY() + getYOffset(), center.getZ() + z);
+                if (!zone.contains(POS)) {
+                    continue;
+                }
 
                 if (getGroundPlant(cfg, world, POS) && canGenerate(
                         cfg,

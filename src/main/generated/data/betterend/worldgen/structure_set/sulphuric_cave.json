@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1073037128,
+    "separation": 4,
+    "spacing": 9
+  },
+  "structures": [
+    {
+      "structure": "betterend:sulphuric_cave",
+      "weight": 1
+    }
+  ]
+}

@@ -1,50 +1,6 @@
 {
   "type": "betterend:lush_aurora_cave_biome",
   "biome": "betterend:lush_aurora_cave",
-  "ceil_features": {
-    "configured_features": [
-      {
-        "configured_feature": "betterend:cave_bush",
-        "weight": 1.0
-      },
-      {
-        "configured_feature": "betterend:cave_pumpkin",
-        "weight": 2.0
-      },
-      {
-        "configured_feature": "betterend:rubinea",
-        "weight": 5.0
-      },
-      {
-        "configured_feature": "betterend:magnula",
-        "weight": 6.0
-      },
-      {
-        "configured_feature": "betterend:end_stone_stalactite_cavemoss",
-        "weight": 16.0
-      }
-    ]
-  },
-  "floor_features": {
-    "configured_features": [
-      {
-        "configured_feature": "betterend:big_aurora_crystal",
-        "weight": 1.0
-      },
-      {
-        "configured_feature": "betterend:cave_bush",
-        "weight": 6.0
-      },
-      {
-        "configured_feature": "betterend:cave_grass",
-        "weight": 46.0
-      },
-      {
-        "configured_feature": "betterend:end_stone_stalagmite_cavemoss",
-        "weight": 51.0
-      }
-    ]
-  },
   "fogDensity": 2.0,
   "generation_data": {
     "intended_placement": "betterend:is_end_cave"

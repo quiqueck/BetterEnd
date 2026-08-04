@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -37,7 +39,7 @@ public class UmbrellaTreeClusterEmptyBlock extends Block {
             BlocksHelper.setWithUpdate(
                     world,
                     pos,
-                    EndBlocks.UMBRELLA_TREE_CLUSTER.defaultBlockState().setValue(UmbrellaTreeClusterBlock.NATURAL, true)
+                    EndWoodBlocks.UMBRELLA_TREE_CLUSTER.defaultBlockState().setValue(UmbrellaTreeClusterBlock.NATURAL, true)
             );
         }
     }

@@ -1,0 +1,21 @@
+{
+  "type": "betterend:end_tunnel_cave",
+  "config": {
+    "lava_level": {
+      "above_bottom": 0
+    },
+    "probability": 1.0,
+    "replaceable": "#wover:surfaces/end/stones",
+    "threshold": 0.15,
+    "y": {
+      "type": "minecraft:uniform",
+      "max_inclusive": {
+        "absolute": 0
+      },
+      "min_inclusive": {
+        "absolute": 0
+      }
+    },
+    "yScale": 1.0
+  }
+}

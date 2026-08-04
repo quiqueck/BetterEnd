@@ -1,6 +1,9 @@
 package org.betterx.betterend.portal;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.EndPortalBlock;
@@ -67,9 +70,9 @@ public class PortalBuilder {
             new Point(0, 1),
             new Point(0, 2)
     );
-    private final static Block BASE = EndBlocks.FLAVOLITE.getBlock(SlotType.TILES);
-    public final static Block FRAME = EndBlocks.FLAVOLITE_RUNED_ETERNAL;
-    public final static Block PORTAL = EndBlocks.END_PORTAL_BLOCK;
+    private final static Block BASE = EndStoneBlocks.FLAVOLITE.getBlock(SlotType.TILES);
+    public final static Block FRAME = EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL;
+    public final static Block PORTAL = EndFunctionalBlocks.END_PORTAL_BLOCK;
     public static int SPIRAL_SEARCH_RADIUS = 128;
     private final ServerLevel targetLevel;
     private final Level sourceLevel;

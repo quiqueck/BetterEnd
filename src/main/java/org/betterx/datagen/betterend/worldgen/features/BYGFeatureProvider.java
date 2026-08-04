@@ -1,8 +1,8 @@
 package org.betterx.datagen.betterend.worldgen.features;
 
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.multi.WoverFeatureProvider;
-import org.betterx.wover.feature.api.placed.PlacedFeatureKey;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.multi.WoverFeatureProvider;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureKey;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;

@@ -1,10 +1,11 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndBlockNotFull;
+
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jetbrains.annotations.NotNull;
 
-public class EndLotusLeafBlock extends EndBlockNotFull {
+public class EndLotusLeafBlock extends Block {
     public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     private static final VoxelShape VSHAPE = Block.box(0, 0, 0, 16, 1, 16);
@@ -71,6 +72,6 @@ public class EndLotusLeafBlock extends EndBlockNotFull {
             @NotNull BlockState blockState,
             boolean bl
     ) {
-        return new ItemStack(EndBlocks.END_LOTUS_SEED);
+        return new ItemStack(EndWaterPlantBlocks.END_LOTUS_SEED);
     }
 }

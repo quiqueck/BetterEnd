@@ -1,5 +1,8 @@
 package org.betterx.betterend.entity;
 
+
+import org.betterx.betterend.registry.item.EndFoodItems;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndItems;
 
@@ -102,7 +105,7 @@ public class CubozoaEntity extends AbstractSchoolingFish {
 
     @Override
     public @NotNull ItemStack getBucketItemStack() {
-        ItemStack bucket = EndItems.BUCKET_CUBOZOA.getDefaultInstance();
+        ItemStack bucket = EndFoodItems.BUCKET_CUBOZOA.getDefaultInstance();
 //        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, bucket, (tag) -> {
 //            tag.putByte("Variant", entityData.get(VARIANT));
 //            tag.putByte("Scale", entityData.get(SCALE));
@@ -137,7 +140,7 @@ public class CubozoaEntity extends AbstractSchoolingFish {
     protected void dropFromLootTable(ServerLevel serverLevel, DamageSource source, boolean causedByPlayer) {
         int count = random.nextInt(3);
         if (count > 0) {
-            ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(EndItems.GELATINE, count));
+            ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(EndResourceItems.GELATINE, count));
             this.level().addFreshEntity(drop);
         }
     }

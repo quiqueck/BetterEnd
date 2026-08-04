@@ -1,8 +1,8 @@
 package org.betterx.betterend.item.material;
 
 import org.betterx.betterend.registry.EndTemplates;
-import org.betterx.wover.complex.api.equipment.ArmorTier;
-import org.betterx.wover.complex.api.equipment.ArmorTiers;
+import de.ambertation.wover.complex.api.equipment.ArmorTier;
+import de.ambertation.wover.complex.api.equipment.ArmorTiers;
 
 public class EndArmorTier {
     public static ArmorTier THALLASIUM = ArmorTier
@@ -32,4 +32,18 @@ public class EndArmorTier {
                     new ArmorTier.ArmorValues(100, () -> EndTemplates.PLATE_UPGRADE)
             )
             .build();
+
+    // Same per-slot values as AETERNIUM/CRYSTALITE, just wrapping the elytra-specific render
+    // material (see EndArmorMaterial.AETERNIUM_ELYTRA/CRYSTALITE_ELYTRA).
+    public static ArmorTier AETERNIUM_ELYTRA = AETERNIUM.copyWithOffset(
+            "aeternium_elytra",
+            EndArmorMaterial.AETERNIUM_ELYTRA.value(),
+            new ArmorTier.ArmorValues(0)
+    );
+
+    public static ArmorTier CRYSTALITE_ELYTRA = CRYSTALITE.copyWithOffset(
+            "crystalite_elytra",
+            EndArmorMaterial.CRYSTALITE_ELYTRA.value(),
+            new ArmorTier.ArmorValues(0)
+    );
 }

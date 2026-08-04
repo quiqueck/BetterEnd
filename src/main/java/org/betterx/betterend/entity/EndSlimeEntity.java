@@ -5,8 +5,8 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.interfaces.ISlime;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.util.GlobalState;
-import org.betterx.wover.enchantment.api.EnchantmentUtils;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.enchantment.api.EnchantmentUtils;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -246,6 +246,13 @@ public class EndSlimeEntity extends Slime {
             }
             if (biome.equals(EndBiomes.MEGALAKE_GROVE) && random.nextBoolean()) {
                 return true;
+            }
+            // Foggy Mushroomland (mossy) and Amber Land (amber) assign their own slime variant in
+            // finalizeSpawn, but are dry, so the water-near fallback below almost never fires there
+            // - especially Amber Land. Give them a low waterless spawn rate so those variants
+            // actually appear. Tune the 1-in-8 chance to taste.
+            if (biome.equals(EndBiomes.FOGGY_MUSHROOMLAND) || biome.equals(EndBiomes.AMBER_LAND)) {
+                return random.nextInt(8) == 0;
             }
         }
         return random.nextInt(4) == 0 && isWaterNear(world, pos);

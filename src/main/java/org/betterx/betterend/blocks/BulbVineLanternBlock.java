@@ -1,13 +1,13 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.client.models.BCLModels;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.basis.EndLanternBlock;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
 
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -18,9 +18,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -30,14 +28,6 @@ import net.fabricmc.api.Environment;
 public class BulbVineLanternBlock extends EndLanternBlock {
     private static final VoxelShape SHAPE_CEIL = Block.box(4, 4, 4, 12, 16, 12);
     private static final VoxelShape SHAPE_FLOOR = Block.box(4, 0, 4, 12, 12, 12);
-
-    public BulbVineLanternBlock() {
-        this(BehaviourBuilders.createMetal(MapColor.COLOR_LIGHT_GRAY)
-                              .strength(1)
-                              .lightLevel((bs) -> 15)
-                              .requiresCorrectToolForDrops()
-                              .sound(SoundType.LANTERN));
-    }
 
     public BulbVineLanternBlock(Properties settings) {
         super(settings);
@@ -67,7 +57,7 @@ public class BulbVineLanternBlock extends EndLanternBlock {
      * StoneLanternBlock for the same fix applied elsewhere.
      */
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientModel.build();
+        return ModCore.isDatagen() ? ClientModel.build() : null;
     }
 
     @Environment(EnvType.CLIENT)

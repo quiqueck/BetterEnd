@@ -1,13 +1,22 @@
 package org.betterx.datagen.betterend.recipes;
 
+
+
+import org.betterx.betterend.registry.block.EndDecorBlocks;
+import org.betterx.betterend.registry.block.EndMetalBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
+import org.betterx.betterend.registry.item.EndEquipmentItems;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.betterend.recipe.builders.InfusionRecipe;
+import org.betterx.betterend.registry.EndEnchantments;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.complex.api.equipment.ArmorSlot;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.complex.api.equipment.ArmorSlot;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.WoverRecipeProvider;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -25,93 +34,93 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
     protected void bootstrap(RecipeBuilder.Context context) {
         final HolderLookup.RegistryLookup<Enchantment> enchantments =
                 context.lookupProvider().lookupOrThrow(Registries.ENCHANTMENT);
-        InfusionRecipe.create("runed_flavolite", EndBlocks.FLAVOLITE_RUNED)
-                      .setPrimaryInput(EndBlocks.FLAVOLITE.getBlock(SlotType.POLISHED))
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.CRYSTAL_SHARDS)
+        InfusionRecipe.create("runed_flavolite", EndStoneBlocks.FLAVOLITE_RUNED)
+                      .setPrimaryInput(EndStoneBlocks.FLAVOLITE.getBlock(SlotType.POLISHED))
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.CRYSTAL_SHARDS)
                       .setTime(100)
                       .build(context);
 
-        InfusionRecipe.create("eternal_crystal", EndItems.ETERNAL_CRYSTAL)
+        InfusionRecipe.create("eternal_crystal", EndResourceItems.ETERNAL_CRYSTAL)
                       .setPrimaryInputAndUnlock(Items.END_CRYSTAL)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, EndItems.ENDER_SHARD)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, EndItems.ENDER_SHARD)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, EndItems.ENDER_SHARD)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, EndItems.ENDER_SHARD)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, EndResourceItems.ENDER_SHARD)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, EndResourceItems.ENDER_SHARD)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, EndResourceItems.ENDER_SHARD)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, EndResourceItems.ENDER_SHARD)
                       .setTime(250)
                       .build(context);
 
-        InfusionRecipe.create("crystalite_helmet", EndItems.CRYSTALITE_HELMET)
-                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.equipment.get(ArmorSlot.HELMET_SLOT))
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.AMBER_GEM)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.CRYSTAL_SHARDS)
+        InfusionRecipe.create("crystalite_helmet", EndEquipmentItems.CRYSTALITE_HELMET)
+                      .setPrimaryInputAndUnlock(EndMetalBlocks.TERMINITE.equipment.get(ArmorSlot.HELMET_SLOT))
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.CRYSTAL_SHARDS)
                       .setTime(150)
                       .build(context);
-        InfusionRecipe.create("crystalite_chestplate", EndItems.CRYSTALITE_CHESTPLATE)
-                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.equipment.get(ArmorSlot.CHESTPLATE_SLOT))
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.AMBER_GEM)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, EndItems.CRYSTAL_SHARDS)
+        InfusionRecipe.create("crystalite_chestplate", EndEquipmentItems.CRYSTALITE_CHESTPLATE)
+                      .setPrimaryInputAndUnlock(EndMetalBlocks.TERMINITE.equipment.get(ArmorSlot.CHESTPLATE_SLOT))
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, EndResourceItems.CRYSTAL_SHARDS)
                       .setTime(300)
                       .build(context);
-        InfusionRecipe.create("crystalite_leggings", EndItems.CRYSTALITE_LEGGINGS)
-                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.equipment.get(ArmorSlot.LEGGINGS_SLOT))
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.AMBER_GEM)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.CRYSTAL_SHARDS)
+        InfusionRecipe.create("crystalite_leggings", EndEquipmentItems.CRYSTALITE_LEGGINGS)
+                      .setPrimaryInputAndUnlock(EndMetalBlocks.TERMINITE.equipment.get(ArmorSlot.LEGGINGS_SLOT))
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.CRYSTAL_SHARDS)
                       .setTime(225)
                       .build(context);
-        InfusionRecipe.create("crystalite_boots", EndItems.CRYSTALITE_BOOTS)
-                      .setPrimaryInputAndUnlock(EndBlocks.TERMINITE.equipment.get(ArmorSlot.BOOTS_SLOT))
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.AMBER_GEM)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.CRYSTAL_SHARDS)
+        InfusionRecipe.create("crystalite_boots", EndEquipmentItems.CRYSTALITE_BOOTS)
+                      .setPrimaryInputAndUnlock(EndMetalBlocks.TERMINITE.equipment.get(ArmorSlot.BOOTS_SLOT))
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.CRYSTAL_SHARDS)
                       .setTime(150)
                       .build(context);
 
-        InfusionRecipe.create("crystalite_elytra", EndItems.CRYSTALITE_ELYTRA)
+        InfusionRecipe.create("crystalite_elytra", EndEquipmentItems.CRYSTALITE_ELYTRA)
                       .setPrimaryInputAndUnlock(Items.ELYTRA)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.AMBER_GEM)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.ENCHANTED_MEMBRANE)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.ENCHANTED_MEMBRANE)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.ENCHANTED_MEMBRANE)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, EndItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.ENCHANTED_MEMBRANE)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.ENCHANTED_MEMBRANE)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.ENCHANTED_MEMBRANE)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, EndResourceItems.CRYSTAL_SHARDS)
                       .setTime(500)
                       .build(context);
 
-        InfusionRecipe.create("enchanted_petal", EndItems.ENCHANTED_PETAL)
-                      .setPrimaryInputAndUnlock(EndItems.HYDRALUX_PETAL)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.CRYSTAL_SHARDS)
+        InfusionRecipe.create("enchanted_petal", EndResourceItems.ENCHANTED_PETAL)
+                      .setPrimaryInputAndUnlock(EndResourceItems.HYDRALUX_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.CRYSTAL_SHARDS)
                       .setTime(75)
                       .build(context);
-        InfusionRecipe.create("enchanted_membrane", EndItems.ENCHANTED_MEMBRANE)
+        InfusionRecipe.create("enchanted_membrane", EndResourceItems.ENCHANTED_MEMBRANE)
                       .setPrimaryInputAndUnlock(Items.PHANTOM_MEMBRANE)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.CRYSTAL_SHARDS)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.CRYSTAL_SHARDS)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.CRYSTAL_SHARDS)
                       .setTime(75)
                       .build(context);
 
         InfusionRecipe.create("protection_book", Enchantments.PROTECTION, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.TURTLE_HELMET)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
@@ -122,7 +131,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("fire_protection_book", Enchantments.FIRE_PROTECTION, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.BLAZE_ROD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.BLAZE_ROD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.BLAZE_ROD)
@@ -138,7 +147,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                               Enchantments.FEATHER_FALLING, 1, enchantments
                       )
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.FEATHER)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.FEATHER)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.FEATHER)
@@ -154,7 +163,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                               Enchantments.BLAST_PROTECTION, 1, enchantments
                       )
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Blocks.OBSIDIAN)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Blocks.OBSIDIAN)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Blocks.OBSIDIAN)
@@ -170,7 +179,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                               Enchantments.PROJECTILE_PROTECTION, 1, enchantments
                       )
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.TURTLE_SCUTE)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.SHIELD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.TURTLE_SCUTE)
@@ -183,7 +192,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("respiration_book", Enchantments.RESPIRATION, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.NAUTILUS_SHELL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.NAUTILUS_SHELL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.NAUTILUS_SHELL)
@@ -196,7 +205,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("aqua_affinity_book", Enchantments.AQUA_AFFINITY, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.PRISMARINE_CRYSTALS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.PRISMARINE_CRYSTALS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.PRISMARINE_CRYSTALS)
@@ -207,9 +216,26 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .group("enchantment")
                       .setTime(300)
                       .build(context);
+        // The only craftable route to End Veil. The enchantment is not in #minecraft:in_enchanting_table
+        // (BetterEnd emits no enchantment tags at all), so without this and the End City book pool it
+        // would be unobtainable outside of commands. Ender-themed catalysts to match the effect: looking
+        // at an enderman without angering it.
+        InfusionRecipe.create("end_veil_book", EndEnchantments.END_VEIL.key(), 1, enchantments)
+                      .setPrimaryInputAndUnlock(Items.BOOK)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.ENDER_DUST)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.ENDER_SHARD)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.ENDER_DUST)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, Items.LAPIS_LAZULI)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, Items.LAPIS_LAZULI)
+                      .group("enchantment")
+                      .setTime(300)
+                      .build(context);
         InfusionRecipe.create("thorns_book", Enchantments.THORNS, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Blocks.CACTUS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Blocks.CACTUS)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Blocks.CACTUS)
@@ -222,9 +248,9 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("depth_strider_book", Enchantments.DEPTH_STRIDER, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Blocks.LILY_PAD)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndBlocks.END_LILY_SEED)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndWaterPlantBlocks.END_LILY_SEED)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Blocks.LILY_PAD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
@@ -235,8 +261,8 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("frost_walker_book", Enchantments.FROST_WALKER, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndBlocks.ANCIENT_EMERALD_ICE)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndDecorBlocks.ANCIENT_EMERALD_ICE)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, Items.LAPIS_LAZULI)
@@ -246,7 +272,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("soul_speed_book", Enchantments.SOUL_SPEED, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Blocks.SOUL_SAND, Blocks.SOUL_SOIL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Blocks.SOUL_SAND, Blocks.SOUL_SOIL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Blocks.SOUL_SAND, Blocks.SOUL_SOIL)
@@ -259,20 +285,20 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("swift_sneak_book", Enchantments.SWIFT_SNEAK, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ETERNAL_CRYSTAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ETERNAL_CRYSTAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.SCULK_SENSOR)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.SCULK_CATALYST)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.SCULK_SENSOR)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.SCULK_VEIN)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, EndItems.ENCHANTED_PETAL)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, EndResourceItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, Items.SCULK_VEIN)
                       .group("enchantment")
                       .setTime(500)
                       .build(context);
         InfusionRecipe.create("sharpness_book", Enchantments.SHARPNESS, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.NETHERITE_SCRAP)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
@@ -283,7 +309,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("smite_book", Enchantments.SMITE, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Blocks.SUNFLOWER)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.GOLD_INGOT)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Blocks.SUNFLOWER)
@@ -296,7 +322,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("bane_of_arthropods_book", Enchantments.BANE_OF_ARTHROPODS, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.FERMENTED_SPIDER_EYE)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.IRON_INGOT)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.FERMENTED_SPIDER_EYE)
@@ -309,7 +335,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("knockback_book", Enchantments.KNOCKBACK, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.REDSTONE)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Blocks.PISTON)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.REDSTONE)
@@ -322,7 +348,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("fire_aspect_book", Enchantments.FIRE_ASPECT, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.BLAZE_POWDER)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.MAGMA_CREAM)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.BLAZE_POWDER)
@@ -335,7 +361,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("looting_book", Enchantments.LOOTING, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.EMERALD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.GOLD_INGOT)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.EMERALD)
@@ -348,7 +374,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("sweeping_book", Enchantments.SWEEPING_EDGE, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.GOLDEN_SWORD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.IRON_SWORD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.GOLDEN_SWORD)
@@ -361,10 +387,10 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("efficiency_book", Enchantments.EFFICIENCY, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.AMBER_GEM)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.AMBER_GEM)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.AMBER_GEM)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, Items.LAPIS_LAZULI)
@@ -374,9 +400,9 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("silk_touch_book", Enchantments.SILK_TOUCH, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Blocks.COBWEB)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.ETERNAL_CRYSTAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.ETERNAL_CRYSTAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Blocks.COBWEB)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
@@ -387,7 +413,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("unbreaking_book", Enchantments.UNBREAKING, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.DIAMOND)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.DIAMOND)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.DIAMOND)
@@ -400,7 +426,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("fortune_book", Enchantments.FORTUNE, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.EMERALD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.RABBIT_FOOT)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.EMERALD)
@@ -413,10 +439,10 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("power_book", Enchantments.POWER, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, EndResourceItems.AMBER_GEM)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.DIAMOND_SWORD)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndItems.AMBER_GEM)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, EndResourceItems.AMBER_GEM)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, Items.LAPIS_LAZULI)
@@ -426,7 +452,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("punch_book", Enchantments.PUNCH, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.POPPED_CHORUS_FRUIT)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.SPECTRAL_ARROW)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.POPPED_CHORUS_FRUIT)
@@ -439,7 +465,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("flame_book", Enchantments.FLAME, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.BLAZE_POWDER)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.SPECTRAL_ARROW)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.BLAZE_POWDER)
@@ -452,9 +478,9 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("infinity_book", Enchantments.INFINITY, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.SPECTRAL_ARROW)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndItems.ETERNAL_CRYSTAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, EndResourceItems.ETERNAL_CRYSTAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.SPECTRAL_ARROW)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
@@ -465,7 +491,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("luck_of_sea_book", Enchantments.LUCK_OF_THE_SEA, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.EMERALD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.FISHING_ROD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.EMERALD)
@@ -478,7 +504,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("lure_book", Enchantments.LURE, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.GOLD_NUGGET)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.FISHING_ROD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.GOLD_NUGGET)
@@ -491,7 +517,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("loyalty_book", Enchantments.LOYALTY, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.ENDER_EYE)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.HEART_OF_THE_SEA)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.ENDER_EYE)
@@ -504,7 +530,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("impaling_book", Enchantments.IMPALING, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.PRISMARINE_SHARD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.IRON_SWORD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.PRISMARINE_SHARD)
@@ -517,7 +543,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("riptide_book", Enchantments.RIPTIDE, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.LEAD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.HEART_OF_THE_SEA)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.LEAD)
@@ -530,7 +556,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("channeling_book", Enchantments.CHANNELING, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.CHAIN)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.HEART_OF_THE_SEA)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.CHAIN)
@@ -543,7 +569,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("multishot_book", Enchantments.MULTISHOT, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.ARROW)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.SPECTRAL_ARROW)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.ARROW)
@@ -556,7 +582,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("quick_charge_book", Enchantments.QUICK_CHARGE, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.QUARTZ)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.GLOWSTONE_DUST)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.QUARTZ)
@@ -569,7 +595,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("piercing_book", Enchantments.PIERCING, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.GLOWSTONE_DUST)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.SPECTRAL_ARROW)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.GLOWSTONE_DUST)
@@ -582,7 +608,7 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .build(context);
         InfusionRecipe.create("mending_book", Enchantments.MENDING, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
-                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.EXPERIENCE_BOTTLE)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Blocks.ANVIL)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.EXPERIENCE_BOTTLE)

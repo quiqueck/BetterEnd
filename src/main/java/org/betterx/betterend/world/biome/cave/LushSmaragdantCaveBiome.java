@@ -1,24 +1,20 @@
 package org.betterx.betterend.world.biome.cave;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
-import org.betterx.bclib.util.WeightedList;
-import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndParticles;
-import org.betterx.betterend.registry.features.EndConfiguredCaveFeatures;
+import org.betterx.betterend.registry.features.EndPlacedCaveFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.biome.EndBiomeKey;
-import org.betterx.wover.biome.api.BiomeKey;
-import org.betterx.wover.biome.api.data.BiomeData;
-import org.betterx.wover.biome.api.data.BiomeGenerationDataContainer;
+import de.ambertation.wover.biome.api.BiomeKey;
+import de.ambertation.wover.biome.api.data.BiomeGenerationDataContainer;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,14 +25,6 @@ public class LushSmaragdantCaveBiome extends EndCaveBiome.Config<LushSmaragdantC
     public static final KeyDispatchDataCodec<LushSmaragdantCaveBiome.Biome> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
 
     public static class Biome extends EndCaveBiome {
-        @Override
-        public void datagenSetup(BootstrapContext<BiomeData> dataContext) {
-            this.addFloorFeature(EndConfiguredCaveFeatures.SMARAGDANT_CRYSTAL.getHolder(dataContext), 1);
-            this.addFloorFeature(EndConfiguredCaveFeatures.SMARAGDANT_CRYSTAL_SHARD.getHolder(dataContext), 20);
-
-            this.addCeilFeature(EndConfiguredCaveFeatures.END_STONE_STALACTITE.getHolder(dataContext), 1);
-        }
-
         @Override
         public KeyDispatchDataCodec<? extends EndCaveBiome> codec() {
             return LushSmaragdantCaveBiome.KEY_CODEC;
@@ -53,26 +41,14 @@ public class LushSmaragdantCaveBiome extends EndCaveBiome.Config<LushSmaragdantC
                 @Nullable ResourceKey<net.minecraft.world.level.biome.Biome> edge,
                 @Nullable ResourceKey<net.minecraft.world.level.biome.Biome> parent,
                 boolean hasCaves,
-                SurfaceMaterialProvider surface,
-                WeightedList<Holder<ConfiguredFeature<?, ?>>> floorFeatures,
-                WeightedList<Holder<ConfiguredFeature<?, ?>>> ceilFeatures
+                SurfaceMaterialProvider surface
         ) {
             super(
                     fogDensity, biome, generatorData, terrainHeight,
                     genChance, edgeSize, vertical,
                     edge, parent,
-                    hasCaves, surface, floorFeatures, ceilFeatures
+                    hasCaves, surface
             );
-        }
-
-        @Override
-        public float getFloorDensity() {
-            return 0.1F;
-        }
-
-        @Override
-        public float getCeilDensity() {
-            return 0.1F;
         }
     }
 
@@ -83,6 +59,11 @@ public class LushSmaragdantCaveBiome extends EndCaveBiome.Config<LushSmaragdantC
     @Override
     public void addCustomBuildData(EndBiomeBuilder builder) {
         super.addCustomBuildData(builder);
+        builder.feature(EndPlacedCaveFeatures.STALACTITE_CLUSTER_CAVEMOSS)
+               .feature(EndPlacedCaveFeatures.SMARAGDANT_CRYSTAL)
+               .feature(EndPlacedCaveFeatures.SMARAGDANT_SHARD_SCATTER)
+               .feature(EndPlacedCaveFeatures.CAVE_LUSH_FLOOR_PATCH)
+               .feature(EndPlacedCaveFeatures.CAVE_LUSH_CEILING_PATCH);
         builder.fogColor(0, 253, 182)
                .fogDensity(2.0F)
                .plantsColor(0, 131, 145)
@@ -95,7 +76,7 @@ public class LushSmaragdantCaveBiome extends EndCaveBiome.Config<LushSmaragdantC
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.CAVE_MOSS.defaultBlockState();
+                return EndTerrainBlocks.CAVE_MOSS.defaultBlockState();
             }
         };
     }
@@ -114,6 +95,6 @@ public class LushSmaragdantCaveBiome extends EndCaveBiome.Config<LushSmaragdantC
             boolean hasCave,
             SurfaceMaterialProvider surface
     ) {
-        return new LushSmaragdantCaveBiome.Biome(fogDensity, key.key, generatorData, terrainHeight, genChance, edgeSize, vertical, edge, parent, hasCave, surface, new WeightedList<>(), new WeightedList<>());
+        return new LushSmaragdantCaveBiome.Biome(fogDensity, key.key, generatorData, terrainHeight, genChance, edgeSize, vertical, edge, parent, hasCave, surface);
     }
 }

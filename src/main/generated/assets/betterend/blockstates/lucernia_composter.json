@@ -7,7 +7,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/composter_contents1"
+        "model": "betterend:block/lucernia_composter_contents1"
       },
       "when": {
         "level": "1"
@@ -15,7 +15,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/composter_contents2"
+        "model": "betterend:block/lucernia_composter_contents2"
       },
       "when": {
         "level": "2"
@@ -23,7 +23,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/composter_contents3"
+        "model": "betterend:block/lucernia_composter_contents3"
       },
       "when": {
         "level": "3"
@@ -31,7 +31,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/composter_contents4"
+        "model": "betterend:block/lucernia_composter_contents4"
       },
       "when": {
         "level": "4"
@@ -39,7 +39,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/composter_contents5"
+        "model": "betterend:block/lucernia_composter_contents5"
       },
       "when": {
         "level": "5"
@@ -47,7 +47,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/composter_contents6"
+        "model": "betterend:block/lucernia_composter_contents6"
       },
       "when": {
         "level": "6"
@@ -55,7 +55,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/composter_contents7"
+        "model": "betterend:block/lucernia_composter_contents7"
       },
       "when": {
         "level": "7"
@@ -63,7 +63,7 @@
     },
     {
       "apply": {
-        "model": "minecraft:block/composter_contents_ready"
+        "model": "betterend:block/lucernia_composter_contents_ready"
       },
       "when": {
         "level": "8"

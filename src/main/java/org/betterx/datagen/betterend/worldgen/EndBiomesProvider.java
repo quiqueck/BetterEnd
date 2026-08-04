@@ -9,21 +9,23 @@ import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.biome.EndBiomeKey;
 import org.betterx.betterend.world.biome.air.BiomeIceStarfield;
+import org.betterx.betterend.world.biome.air.FlowerIsletsBiome;
+import org.betterx.betterend.world.biome.air.WaterfallPondsBiome;
 import org.betterx.betterend.world.biome.cave.*;
 import org.betterx.betterend.world.biome.land.*;
 import org.betterx.betterend.world.features.BuildingListFeature;
 import org.betterx.betterend.world.features.BuildingListFeatureConfig;
 import org.betterx.betterend.world.features.NBTFeature;
-import org.betterx.wover.biome.api.builder.BiomeBootstrapContext;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.multi.WoverBiomeProvider;
-import org.betterx.wover.feature.api.configured.ConfiguredFeatureKey;
-import org.betterx.wover.feature.api.configured.ConfiguredFeatureManager;
-import org.betterx.wover.feature.api.configured.configurators.WithConfiguration;
-import org.betterx.wover.feature.api.placed.PlacedConfiguredFeatureKey;
-import org.betterx.wover.feature.api.placed.PlacedFeatureManager;
-import org.betterx.wover.state.api.WorldState;
-import org.betterx.wover.tag.api.predefined.CommonBiomeTags;
+import de.ambertation.wover.biome.api.builder.BiomeBootstrapContext;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.multi.WoverBiomeProvider;
+import de.ambertation.wover.feature.api.configured.ConfiguredFeatureKey;
+import de.ambertation.wover.feature.api.configured.ConfiguredFeatureManager;
+import de.ambertation.wover.feature.api.configured.configurators.WithConfiguration;
+import de.ambertation.wover.feature.api.placed.PlacedConfiguredFeatureKey;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureManager;
+import de.ambertation.wover.state.api.WorldState;
+import de.ambertation.wover.tag.api.predefined.CommonBiomeTags;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -76,11 +78,29 @@ public class EndBiomesProvider extends WoverBiomeProvider {
         putBiome(EndBiomes.LANTERN_WOODS, new LanternWoodsBiome(), CommonBiomeTags.IS_END_LAND);
         putBiome(EndBiomes.UMBRA_VALLEY, new UmbraValleyBiome(), CommonBiomeTags.IS_END_LAND);
 
+        // Ice stars belong to the void (outermost small-island ring) only, not the barrens ring inside
+        // it. Removing IS_END_BARRENS empties the barrens tag, so that ring falls back to the picker's
+        // default (vanilla end_barrens) - barren islands with no ice stars.
         putBiome(
                 EndBiomes.ICE_STARFIELD,
                 new BiomeIceStarfield(),
-                CommonBiomeTags.IS_SMALL_END_ISLAND,
-                CommonBiomeTags.IS_END_BARRENS
+                CommonBiomeTags.IS_SMALL_END_ISLAND
+        );
+
+        // Lush void-ring small-island biomes. They are placed as ordinary void small-island patches
+        // via the IS_SMALL_END_ISLAND tag; each grows its own flat-topped end-stone terrain through
+        // EndStructures.SMALL_ISLAND (RAW_GENERATION) instead of relying on the (removed)
+        // terrain-coupled small-island biome decider. Each opts into END_BRIDGE and SMALL_ISLAND in
+        // its class.
+        putBiome(
+                EndBiomes.FLOWER_ISLETS,
+                new FlowerIsletsBiome(),
+                CommonBiomeTags.IS_SMALL_END_ISLAND
+        );
+        putBiome(
+                EndBiomes.WATERFALL_PONDS,
+                new WaterfallPondsBiome(),
+                CommonBiomeTags.IS_SMALL_END_ISLAND
         );
 
         putBiome(EndBiomes.EMPTY_END_CAVE, new EmptyEndCaveBiome(EndBiomes.EMPTY_END_CAVE), EndTags.IS_END_CAVE);

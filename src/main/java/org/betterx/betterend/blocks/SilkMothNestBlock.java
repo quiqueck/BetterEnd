@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.item.EndResourceItems;
 import net.minecraft.world.level.block.Block;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.LootUtil;
@@ -13,7 +15,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -86,8 +87,11 @@ public class SilkMothNestBlock extends Block {
             RandomSource randomSource
     ) {
         if (!state.getValue(ACTIVE)) {
-            if (canSupportCenter(world, pos.above(), Direction.DOWN) || world.getBlockState(pos.above())
-                                                                             .is(BlockTags.LEAVES)) {
+            final BlockPos above = pos.above();
+            // Cube leaves only, matching SilkMothNestFeature.canGenerate - a nest under the thin
+            // *_outer_leaves would hang half a block clear of it.
+            if (canSupportCenter(world, above, Direction.DOWN)
+                    || BlocksHelper.isCubeLeaves(world, above, world.getBlockState(above))) {
                 return state;
             } else {
                 return Blocks.AIR.defaultBlockState();
@@ -172,10 +176,10 @@ public class SilkMothNestBlock extends Block {
                 double px = pos.getX() + dir.getStepX() + 0.5;
                 double py = pos.getY() + dir.getStepY() + 0.5;
                 double pz = pos.getZ() + dir.getStepZ() + 0.5;
-                ItemStack drop = new ItemStack(EndItems.SILK_FIBER, MHelper.randRange(1, 4, level.getRandom()));
+                ItemStack drop = new ItemStack(EndResourceItems.SILK_FIBER, MHelper.randRange(1, 4, level.getRandom()));
                 ItemEntity entity = new ItemEntity(level, px, py, pz, drop);
                 level.addFreshEntity(entity);
-                drop = new ItemStack(EndItems.SILK_MOTH_MATRIX, MHelper.randRange(1, 3, level.getRandom()));
+                drop = new ItemStack(EndResourceItems.SILK_MOTH_MATRIX, MHelper.randRange(1, 3, level.getRandom()));
                 entity = new ItemEntity(level, px, py, pz, drop);
                 level.addFreshEntity(entity);
                 if (!player.isCreative()) {

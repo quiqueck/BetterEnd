@@ -12,7 +12,8 @@ import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.integration.Integrations;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.feature.api.WriteZone;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -41,6 +42,11 @@ public class NightshadeRedwoodTreeFeature extends DefaultFeature {
         final WorldGenLevel world = featureConfig.level();
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES)) return false;
 
+        // height reaches 60 and branches scale up to 15 - well past the 3x3 chunks a feature may touch.
+        // Clip canGenerate, the branch splines, the trunk flood-fill and the canopy flood-fill to the write
+        // zone; see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+
         BlockState log = Integrations.BYG.getDefaultState("nightshade_log");
         BlockState wood = Integrations.BYG.getDefaultState("nightshade_wood");
         BlockState leaves = Integrations.BYG.getDefaultState("nightshade_leaves");
@@ -61,7 +67,7 @@ public class NightshadeRedwoodTreeFeature extends DefaultFeature {
         List<Vector3f> trunk = SplineHelper.makeSpline(0, 0, 0, 0, height, 0, height / 4);
         SplineHelper.offsetParts(trunk, random, 0.8F, 0, 0.8F);
 
-        if (!SplineHelper.canGenerate(trunk, pos, world, replace)) {
+        if (!SplineHelper.canGenerate(trunk, pos, world, replace, zone.toBoundingBox())) {
             return false;
         }
 
@@ -81,7 +87,7 @@ public class NightshadeRedwoodTreeFeature extends DefaultFeature {
             SplineHelper.scale(branch, scale);
             SplineHelper.offsetParts(branch, random, 0.3F, 0.3F, 0.3F);
             SplineHelper.offset(branch, offset);
-            SplineHelper.fillSpline(branch, world, wood, pos, replace);
+            SplineHelper.fillSpline(branch, world, wood, pos, replace, zone.toBoundingBox());
         }
 
         SDF sdf = SplineHelper.buildSDF(trunk, 2.3F, 0.8F, splinePlacer);
@@ -91,7 +97,7 @@ public class NightshadeRedwoodTreeFeature extends DefaultFeature {
                                  .setAngle(random.nextFloat() * MHelper.PI2)
                                  .setSource(roots);
         sdf = new SDFSmoothUnion().setRadius(2F).setSourceA(sdf).setSourceB(roots);
-        sdf.setReplaceFunction(replace).addPostProcess(post).fillRecursive(world, pos);
+        sdf.setReplaceFunction(replace).addPostProcess(post).fillRecursive(world, pos, zone.toBoundingBox());
         Vector3f last = SplineHelper.getPos(trunk, trunk.size() - 1.35F);
         for (int y = 0; y < 8; y++) {
             BlockPos p = pos.offset((int) (last.x() + 0.5), (int) (last.y() + y), (int) (last.z() + 0.5));
@@ -174,7 +180,7 @@ public class NightshadeRedwoodTreeFeature extends DefaultFeature {
         canopy = new SDFDisplacement().setFunction((vec) -> MHelper.randRange(-3F, 3F, random)).setSource(canopy);
         canopy.addPostProcess(leavesPost1)
               .addPostProcess(leavesPost2)
-              .fillRecursiveIgnore(world, pos.offset(0, (int) (height * 0.75), 0), ignore);
+              .fillRecursiveIgnore(world, pos.offset(0, (int) (height * 0.75), 0), zone.toBoundingBox(), ignore);
 
         return true;
     }

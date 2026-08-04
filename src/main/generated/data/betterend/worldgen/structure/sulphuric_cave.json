@@ -1,0 +1,6 @@
+{
+  "type": "betterend:sulphuric_cave",
+  "biomes": "#betterend:has_structure/sulphuric_cave",
+  "spawn_overrides": {},
+  "step": "raw_generation"
+}

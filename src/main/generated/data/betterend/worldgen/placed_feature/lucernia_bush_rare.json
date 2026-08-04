@@ -18,7 +18,8 @@
         "state": {
           "Name": "betterend:lucernia_outer_leaves",
           "Properties": {
-            "facing": "up"
+            "facing": "up",
+            "waterlogged": "false"
           }
         }
       },

@@ -18,7 +18,7 @@
           "max_delay": 2400,
           "min_delay": 600,
           "replace_current_music": true,
-          "sound": "betterend:betterend.music.dark"
+          "sound": "betterend:betterend.music.ender_hollow"
         },
         "weight": 1
       }
@@ -35,13 +35,8 @@
     "water_fog_color": -14013104
   },
   "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
-    [
-      "betterend:end_lake_rare"
-    ],
+    [],
+    [],
     [],
     [],
     [

@@ -14,7 +14,7 @@
           "if_true": {
             "type": "minecraft:stone_depth",
             "add_surface_depth": false,
-            "offset": 3,
+            "offset": 1,
             "secondary_depth_range": 0,
             "surface_type": "floor"
           },
@@ -30,8 +30,8 @@
         "type": "minecraft:condition",
         "if_true": {
           "type": "minecraft:stone_depth",
-          "add_surface_depth": true,
-          "offset": 1,
+          "add_surface_depth": false,
+          "offset": 0,
           "secondary_depth_range": 0,
           "surface_type": "floor"
         },

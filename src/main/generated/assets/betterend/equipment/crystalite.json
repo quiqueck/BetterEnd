@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "betterend:crystalite"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "betterend:crystalite"
+      }
+    ]
+  }
+}

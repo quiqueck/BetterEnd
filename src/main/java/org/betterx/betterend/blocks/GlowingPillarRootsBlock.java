@@ -1,9 +1,12 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndMushroomBlocks;
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.blocks.UpDownPlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
@@ -31,12 +34,12 @@ public class GlowingPillarRootsBlock extends UpDownPlantBlock {
 
     @Override
     protected boolean isTerrain(BlockState state) {
-        return state.is(EndBlocks.AMBER_MOSS);
+        return state.is(EndTerrainBlocks.AMBER_MOSS);
     }
 
     @Override
     @Environment(EnvType.CLIENT)
     public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
-        return new ItemStack(EndBlocks.GLOWING_PILLAR_SEED);
+        return new ItemStack(EndMushroomBlocks.GLOWING_PILLAR_SEED);
     }
 }

@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndPlantBlock;
+import org.betterx.bclib.blocks.BasePlantBlock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class FlamaeaBlock extends EndPlantBlock {
+public class FlamaeaBlock extends BasePlantBlock {
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 1, 16);
 
     public FlamaeaBlock(BlockBehaviour.Properties props) {

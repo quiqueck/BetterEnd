@@ -1,9 +1,9 @@
 package org.betterx.betterend.complexmaterials;
 
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.sets.api.blocks.SlotMap;
-import org.betterx.wover.sets.api.blocks.SlotType;
-import org.betterx.wover.sets.api.blocks.slots.StoneSlots;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.sets.api.blocks.SlotMap;
+import de.ambertation.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.sets.api.blocks.slots.StoneSlots;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;

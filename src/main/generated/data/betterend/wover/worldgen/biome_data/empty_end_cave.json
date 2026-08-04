@@ -1,22 +1,6 @@
 {
   "type": "betterend:empty_end_cave_biome",
   "biome": "betterend:empty_end_cave",
-  "ceil_features": {
-    "configured_features": [
-      {
-        "configured_feature": "betterend:end_stone_stalactite",
-        "weight": 1.0
-      }
-    ]
-  },
-  "floor_features": {
-    "configured_features": [
-      {
-        "configured_feature": "betterend:end_stone_stalagmite",
-        "weight": 1.0
-      }
-    ]
-  },
   "fogDensity": 2.0,
   "generation_data": {
     "intended_placement": "betterend:is_end_cave"

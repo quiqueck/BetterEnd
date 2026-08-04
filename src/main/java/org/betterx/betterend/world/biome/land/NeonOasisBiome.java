@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.biome.land;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndSounds;
@@ -10,9 +12,9 @@ import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.surface.SplitNoiseCondition;
-import org.betterx.wover.surface.api.SurfaceRuleBuilder;
-import org.betterx.wover.surface.impl.BaseSurfaceRuleBuilder;
-import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
+import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
+import de.ambertation.wover.surface.impl.BaseSurfaceRuleBuilder;
+import de.ambertation.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.BiomeTags;
@@ -58,12 +60,12 @@ public class NeonOasisBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.ENDSTONE_DUST.defaultBlockState();
+                return EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState();
             }
 
             @Override
             public BlockState getAltTopMaterial() {
-                return EndBlocks.END_MOSS.defaultBlockState();
+                return EndTerrainBlocks.END_MOSS.defaultBlockState();
             }
 
             @Override
@@ -71,8 +73,8 @@ public class NeonOasisBiome extends EndBiome.Config {
                 RuleSource surfaceBlockRule = new SwitchRuleSource(
                         new SplitNoiseCondition(),
                         List.of(
-                                SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.END_MOSS.defaultBlockState())
+                                SurfaceRules.state(EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState()),
+                                SurfaceRules.state(EndTerrainBlocks.END_MOSS.defaultBlockState())
                         )
                 );
                 return super
@@ -90,7 +92,7 @@ public class NeonOasisBiome extends EndBiome.Config {
                         // FILLER (900) - the old 4 sorted after it and never ran.
                         .rule(SurfaceRules.ifTrue(
                                 SurfaceRules.stoneDepthCheck(2, true, CaveSurface.FLOOR),
-                                SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState())
+                                SurfaceRules.state(EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState())
                         ), BaseSurfaceRuleBuilder.SUB_SURFACE_PRIORITY);
             }
         };

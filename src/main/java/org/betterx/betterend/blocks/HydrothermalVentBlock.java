@@ -1,12 +1,13 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
 
-import org.betterx.betterend.blocks.basis.EndBlockNotFull;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import de.ambertation.wover.sets.api.blocks.SlotType;
+
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.entities.BlockEntityHydrothermalVent;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,7 +43,7 @@ import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class HydrothermalVentBlock extends EndBlockNotFull implements EntityBlock, LiquidBlockContainer, SimpleWaterloggedBlock {
+public class HydrothermalVentBlock extends Block implements EntityBlock, LiquidBlockContainer, SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty ACTIVATED = BlockProperties.ACTIVE;
     private static final VoxelShape SHAPE = Block.box(1, 1, 1, 15, 16, 15);
@@ -82,7 +83,7 @@ public class HydrothermalVentBlock extends EndBlockNotFull implements EntityBloc
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         state = world.getBlockState(pos.below());
-        return state.is(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
+        return state.is(EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
     }
 
     @Override
@@ -126,8 +127,8 @@ public class HydrothermalVentBlock extends EndBlockNotFull implements EntityBloc
     public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         BlockPos up = pos.above();
         if (world.getBlockState(up).is(Blocks.WATER)) {
-            BlocksHelper.setWithoutUpdate(world, up, EndBlocks.VENT_BUBBLE_COLUMN);
-            world.scheduleTick(up, EndBlocks.VENT_BUBBLE_COLUMN, 5);
+            BlocksHelper.setWithoutUpdate(world, up, EndStoneBlocks.VENT_BUBBLE_COLUMN);
+            world.scheduleTick(up, EndStoneBlocks.VENT_BUBBLE_COLUMN, 5);
         }
     }
 

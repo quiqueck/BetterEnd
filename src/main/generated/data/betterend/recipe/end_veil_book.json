@@ -1,0 +1,24 @@
+{
+  "type": "betterend:infusion",
+  "catalysts": {
+    "east": "betterend:ender_dust",
+    "north": "betterend:enchanted_petal",
+    "north_east": "minecraft:lapis_lazuli",
+    "north_west": "minecraft:lapis_lazuli",
+    "south": "betterend:ender_shard",
+    "south_east": "minecraft:lapis_lazuli",
+    "south_west": "minecraft:lapis_lazuli",
+    "west": "betterend:ender_dust"
+  },
+  "group": "enchantment",
+  "input": "minecraft:book",
+  "result": {
+    "item": "minecraft:enchanted_book",
+    "nbt": {
+      "minecraft:stored_enchantments": {
+        "betterend:end_veil": 1
+      }
+    }
+  },
+  "time": 300
+}

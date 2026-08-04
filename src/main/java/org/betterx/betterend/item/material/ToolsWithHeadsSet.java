@@ -3,10 +3,10 @@ package org.betterx.betterend.item.material;
 import org.betterx.bclib.recipes.BCLRecipeBuilder;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.complex.api.equipment.*;
-import org.betterx.wover.item.api.trait.ItemRecipeTrait;
-import org.betterx.wover.item.api.trait.ItemTraits;
-import org.betterx.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.complex.api.equipment.*;
+import de.ambertation.wover.item.api.trait.ItemRecipeTrait;
+import de.ambertation.wover.item.api.trait.ItemTraits;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
 
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;

@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.biome.land;
 
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.*;
 import org.betterx.betterend.registry.features.EndLakeFeatures;
@@ -8,10 +10,10 @@ import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.surface.SulphuricSurfaceNoiseCondition;
-import org.betterx.wover.sets.api.blocks.SlotType;
-import org.betterx.wover.surface.api.SurfaceRuleBuilder;
-import org.betterx.wover.surface.impl.BaseSurfaceRuleBuilder;
-import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
+import de.ambertation.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
+import de.ambertation.wover.surface.impl.BaseSurfaceRuleBuilder;
+import de.ambertation.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,12 +48,12 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 .feature(EndTerrainFeatures.GEYSER)
                 .feature(EndTerrainFeatures.SURFACE_VENT)
                 .feature(EndLakeFeatures.SULPHURIC_LAKE)
-                .feature(EndTerrainFeatures.SULPHURIC_CAVE)
                 .feature(EndVegetationFeatures.HYDRALUX)
                 .feature(EndVegetationFeatures.CHARNIA_GREEN)
                 .feature(EndVegetationFeatures.CHARNIA_ORANGE)
                 .feature(EndVegetationFeatures.CHARNIA_RED_RARE)
                 .structure(EndStructures.ETERNAL_PORTAL)
+                .structure(EndStructures.SULPHURIC_CAVE)
                 .spawn(EndEntities.END_FISH.type(), 50, 3, 8)
                 .spawn(EndEntities.CUBOZOA.type(), 50, 3, 8)
                 .spawn(EntityType.ENDERMAN, 1, 1, 4);
@@ -62,14 +64,14 @@ public class SulphurSpringsBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.BRIMSTONE.defaultBlockState();
+                return EndStoneBlocks.BRIMSTONE.defaultBlockState();
             }
 
             @Override
             public BlockState getAltTopMaterial() {
                 // The surface switch's "default" band (index 0). Brimstone rather than plain end
                 // stone, so the biome floor matches the brimstone rims of its sulphuric pools.
-                return EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE).defaultBlockState();
+                return EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE).defaultBlockState();
             }
 
             @Override

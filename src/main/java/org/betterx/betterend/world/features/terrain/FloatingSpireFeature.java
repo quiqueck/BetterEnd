@@ -7,6 +7,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
+import de.ambertation.wover.feature.api.WriteZone;
 import org.betterx.betterend.world.biome.EndBiome;
 
 import net.minecraft.core.BlockPos;
@@ -83,7 +84,7 @@ public class FloatingSpireFeature extends SpireFeature {
             }
             return info.getState();
         });
-        sdf.fillRecursive(world, center);
+        sdf.fillRecursive(world, center, WriteZone.of(world).toBoundingBox());
 
         for (BlockPos bpos : support) {
             final Holder<Biome> biome = world.getBiome(bpos);

@@ -1,11 +1,13 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndPlantBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
+import org.betterx.bclib.blocks.BasePlantWithAgeBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.PentaShape;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.PentaShape;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -15,7 +17,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class LanceleafSeedBlock extends EndPlantWithAgeBlock {
+public class LanceleafSeedBlock extends BasePlantWithAgeBlock {
     public LanceleafSeedBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -29,7 +31,7 @@ public class LanceleafSeedBlock extends EndPlantWithAgeBlock {
         }
         int rotation = random.nextInt(4);
         MutableBlockPos mut = new MutableBlockPos().set(pos);
-        BlockState plant = EndBlocks.LANCELEAF.defaultBlockState().setValue(BlockProperties.ROTATION, rotation);
+        BlockState plant = EndPlantBlocks.LANCELEAF.defaultBlockState().setValue(BlockProperties.ROTATION, rotation);
         BlocksHelper.setWithoutUpdate(world, mut, plant.setValue(BlockProperties.PENTA_SHAPE, PentaShape.BOTTOM));
         BlocksHelper.setWithoutUpdate(
                 world,

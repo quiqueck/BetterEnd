@@ -1,0 +1,88 @@
+{
+  "carvers": [],
+  "downfall": 0.5,
+  "effects": {
+    "fog_color": -8861466,
+    "foliage_color": -9518186,
+    "grass_color": -9518186,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "betterend:betterend.ambient.dust_wastelands",
+      "tick_delay": 6000
+    },
+    "music": [
+      {
+        "data": {
+          "max_delay": 2400,
+          "min_delay": 600,
+          "replace_current_music": true,
+          "sound": "betterend:betterend.music.water"
+        },
+        "weight": 1
+      }
+    ],
+    "music_volume": 1.0,
+    "particle": {
+      "options": {
+        "type": "betterend:firefly"
+      },
+      "probability": 8.0E-4
+    },
+    "sky_color": 0,
+    "water_color": -11480356,
+    "water_fog_color": -11480356
+  },
+  "features": [
+    [],
+    [
+      "betterend:pond_with_waterfall"
+    ],
+    [],
+    [],
+    [
+      "minecraft:end_gateway_return",
+      "betterend:crashed_ship"
+    ],
+    [],
+    [
+      "betterend:thallasium_ore",
+      "betterend:ender_ore"
+    ],
+    [],
+    [],
+    [
+      "betterend:dragon_helix_tree",
+      "betterend:blooming_cooksonia",
+      "betterend:salteago",
+      "betterend:globulagus",
+      "betterend:umbrella_moss",
+      "betterend:creeping_moss",
+      "betterend:end_lily",
+      "betterend:pond_anemone",
+      "betterend:bubble_coral",
+      "betterend:charnia_cyan",
+      "betterend:charnia_green"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 3
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.5
+}

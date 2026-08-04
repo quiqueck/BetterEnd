@@ -1,5 +1,7 @@
 package org.betterx.betterend.mixin.common;
 
+
+import org.betterx.betterend.registry.block.EndDecorBlocks;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.world.generator.GeneratorOptions;
@@ -90,7 +92,7 @@ public abstract class ServerLevelMixin extends Level {
         if (state.is(Blocks.ICE)) {
             ResourceLocation biome = getBiome(pos).unwrapKey().orElseThrow().location();
             if (biome.getNamespace().equals(BetterEnd.MOD_ID)) {
-                state = EndBlocks.EMERALD_ICE.defaultBlockState();
+                state = EndDecorBlocks.EMERALD_ICE.defaultBlockState();
             }
         }
         return state;

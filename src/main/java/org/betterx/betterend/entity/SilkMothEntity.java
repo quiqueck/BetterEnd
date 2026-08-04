@@ -1,5 +1,10 @@
 package org.betterx.betterend.entity;
 
+
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.item.EndFoodItems;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.BetterEnd;
@@ -7,7 +12,7 @@ import org.betterx.betterend.blocks.EndBlockProperties;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndEntities;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.enchantment.api.EnchantmentUtils;
+import de.ambertation.wover.enchantment.api.EnchantmentUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -109,7 +114,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new ReturnToHiveGoal());
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, Ingredient.of(EndItems.BLOSSOM_BERRY), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, Ingredient.of(EndFoodItems.BLOSSOM_BERRY), false));
         this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(8, new WanderAroundGoal());
         this.goalSelector.addGoal(9, new FloatGoal(this));
@@ -176,7 +181,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
             }
         }
         int count = minCount < maxCount ? MHelper.randRange(minCount, maxCount, random) : maxCount;
-        ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(EndItems.SILK_FIBER, count));
+        ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(EndResourceItems.SILK_FIBER, count));
         this.level().addFreshEntity(drop);
     }
 
@@ -268,15 +273,15 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
         public boolean canContinueToUse() {
             return SilkMothEntity.this.navigation.isInProgress() && level().getBlockState(entrance)
                                                                            .isAir() && (level().getBlockState(hivePos)
-                                                                                               .is(EndBlocks.SILK_MOTH_NEST) || level()
+                                                                                               .is(EndFunctionalBlocks.SILK_MOTH_NEST) || level()
                     .getBlockState(hivePos)
-                    .is(EndBlocks.SILK_MOTH_HIVE));
+                    .is(EndFunctionalBlocks.SILK_MOTH_HIVE));
         }
 
         @Override
         public void start() {
             BlockState state = SilkMothEntity.this.level().getBlockState(SilkMothEntity.this.hivePos);
-            if (!state.is(EndBlocks.SILK_MOTH_NEST) && !state.is(EndBlocks.SILK_MOTH_HIVE)) {
+            if (!state.is(EndFunctionalBlocks.SILK_MOTH_NEST) && !state.is(EndFunctionalBlocks.SILK_MOTH_HIVE)) {
                 SilkMothEntity.this.hivePos = null;
                 return;
             }
@@ -298,9 +303,9 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
             double dz = Math.abs(SilkMothEntity.this.entrance.getZ() - SilkMothEntity.this.getZ());
             if (dx + dy + dz < 1) {
                 BlockState state = SilkMothEntity.this.level().getBlockState(hivePos);
-                if (state.is(EndBlocks.SILK_MOTH_NEST) || state.is(EndBlocks.SILK_MOTH_HIVE)) {
+                if (state.is(EndFunctionalBlocks.SILK_MOTH_NEST) || state.is(EndFunctionalBlocks.SILK_MOTH_HIVE)) {
                     int fullness = state.getValue(EndBlockProperties.FULLNESS);
-                    boolean isHive = state.is(EndBlocks.SILK_MOTH_HIVE);
+                    boolean isHive = state.is(EndFunctionalBlocks.SILK_MOTH_HIVE);
                     if (fullness < 3 && (isHive || SilkMothEntity.this.random.nextBoolean())) {
                         fullness += isHive ? MHelper.randRange(1, 2, random) : 1;
                         if (fullness > 3) {
@@ -330,7 +335,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
 
     @Override
     public boolean isFood(ItemStack itemStack) {
-        return itemStack.is(EndItems.BLOSSOM_BERRY);
+        return itemStack.is(EndFoodItems.BLOSSOM_BERRY);
     }
 
     @Override

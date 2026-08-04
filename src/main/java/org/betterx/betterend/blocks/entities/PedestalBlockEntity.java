@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks.entities;
 
+
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.registry.EndBlockEntities;
 import org.betterx.betterend.registry.EndItems;
@@ -80,7 +82,7 @@ public class PedestalBlockEntity extends BlockEntity implements Container {
             BlockState state = level.getBlockState(worldPosition);
             if (state.getBlock() instanceof PedestalBlock) {
                 state = state.setValue(PedestalBlock.HAS_ITEM, !isEmpty());
-                state = state.setValue(PedestalBlock.HAS_LIGHT, activeItem.getItem() == EndItems.ETERNAL_CRYSTAL);
+                state = state.setValue(PedestalBlock.HAS_LIGHT, activeItem.getItem() == EndResourceItems.ETERNAL_CRYSTAL);
             }
             level.setBlockAndUpdate(worldPosition, state);
             level.blockEntityChanged(worldPosition);

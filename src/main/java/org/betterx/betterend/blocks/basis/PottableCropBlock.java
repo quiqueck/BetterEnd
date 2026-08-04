@@ -1,7 +1,7 @@
 package org.betterx.betterend.blocks.basis;
 
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.wover.loot.api.LootLookupProvider;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

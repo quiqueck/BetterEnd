@@ -1,7 +1,7 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.betterend.blocks.basis.EndPlantBlock;
+import org.betterx.bclib.blocks.BasePlantBlock;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
 
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class SmallAmaranitaBlock extends EndPlantBlock {
+public class SmallAmaranitaBlock extends BasePlantBlock {
     public SmallAmaranitaBlock(BlockBehaviour.Properties props) {
         super(props);
     }

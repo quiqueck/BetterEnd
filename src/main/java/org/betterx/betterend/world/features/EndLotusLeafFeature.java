@@ -1,7 +1,9 @@
 package org.betterx.betterend.world.features;
 
+
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.EndLotusLeafBlock;
 import org.betterx.betterend.registry.EndBlocks;
@@ -38,7 +40,7 @@ public class EndLotusLeafFeature extends ScatterFeature<ScatterFeatureConfig> {
 
     private void generateLeaf(WorldGenLevel world, BlockPos pos) {
         MutableBlockPos p = new MutableBlockPos();
-        BlockState leaf = EndBlocks.END_LOTUS_LEAF.defaultBlockState();
+        BlockState leaf = EndWaterPlantBlocks.END_LOTUS_LEAF.defaultBlockState();
         BlocksHelper.setWithoutUpdate(world, pos, leaf.setValue(EndLotusLeafBlock.SHAPE, TripleShape.BOTTOM));
         for (Direction move : BlocksHelper.HORIZONTAL) {
             BlocksHelper.setWithoutUpdate(

@@ -6,11 +6,11 @@ import org.betterx.bclib.recipes.BCLRecipeManager;
 import org.betterx.bclib.util.ItemStackCodec;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.rituals.InfusionRitual;
-import org.betterx.wover.enchantment.api.EnchantmentUtils;
-import org.betterx.wover.item.api.ItemStackHelper;
-import org.betterx.wover.recipe.api.BaseRecipeBuilder;
-import org.betterx.wover.recipe.api.BaseUnlockableRecipeBuilder;
-import org.betterx.wover.recipe.impl.CraftingRecipeBuilderImpl;
+import de.ambertation.wover.enchantment.api.EnchantmentUtils;
+import de.ambertation.wover.item.api.ItemStackHelper;
+import de.ambertation.wover.recipe.api.BaseRecipeBuilder;
+import de.ambertation.wover.recipe.api.BaseUnlockableRecipeBuilder;
+import de.ambertation.wover.recipe.impl.CraftingRecipeBuilderImpl;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -236,7 +236,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         }
 
         @Override
-        protected InfusionRecipe createRecipe(org.betterx.wover.recipe.api.RecipeBuilder.Context ctx) {
+        protected InfusionRecipe createRecipe(de.ambertation.wover.recipe.api.RecipeBuilder.Context ctx) {
             Ingredient[] resolvedCatalysts = new Ingredient[catalysts.length];
             for (int i = 0; i < catalysts.length; i++) {
                 resolvedCatalysts[i] = catalysts[i].createIngredient(ctx);

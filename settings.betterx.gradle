@@ -1,47 +1,22 @@
+apply from: "common-settings.gradle"
+
 // #### Custom Settings ####
 
-//Change the next line to disable local library loading
+// Change the next line to disable local library loading, even if the sibling folders exist
 def allowLocalLibUse = true
 
-//When true, the local libraries is also used in commandline builds
-def allowLocalLibInConsoleMode = true
-
-//The path were to look for the local libraries
-def BCLibPath = '../BCLib'
 def WoverPath = '../WorldWeaver'
-def WunderLibPath = '../WunderLib'
-
 
 // #### Logic ####
-def isIDE = properties.containsKey('android.injected.invoked.from.ide')
-        || (System.getenv("XPC_SERVICE_NAME") ?: "").contains("intellij")
-        || (System.getenv("XPC_SERVICE_NAME") ?: "").contains(".idea")
-        || System.getenv("IDEA_INITIAL_DIRECTORY") != null
+includeLocalLib('BCLib', '../BCLib', './bclib-composit.gradle', allowLocalLibUse)
+includeLocalLib('wunderlib', '../WunderLib', './wunderlib-composit.gradle', allowLocalLibUse)
 
-println "IntelliJ: ${isIDE}"
-
-def BCLibFolder = new File(BCLibPath)
-def WunderLibFolder = new File(WunderLibPath)
 def WoverFolder = new File(WoverPath)
-
-if (allowLocalLibUse && (isIDE || allowLocalLibInConsoleMode) && BCLibFolder.exists()) {
-    println "!! Using local BCLib from '${BCLibFolder}'"
-
-    include ':BCLib'
-    project(":BCLib").projectDir = BCLibFolder
-    project(':BCLib').buildFileName = './bclib-composit.gradle'
-}
-
-if (allowLocalLibUse && (isIDE || allowLocalLibInConsoleMode) && WunderLibFolder.exists()) {
-    println "!! Using local WunderLib from '${WunderLibFolder}'"
-
-    include ':wunderlib'
-    project(":wunderlib").projectDir = WunderLibFolder
-    project(':wunderlib').buildFileName = './wunderlib-composit.gradle'
-}
-
-if (allowLocalLibUse && (isIDE || allowLocalLibInConsoleMode) && WoverFolder.exists()) {
-    println "!! Using local WorldWeaver from '${WoverFolder}'"
+if (allowLocalLibUse && WoverFolder.exists()) {
+    println "Using local WorldWeaver from '${WoverFolder}'"
+    println "If you do not want to load the local version of WorldWeaver"
+    println "either rename the folder containing it to something else,"
+    println "or set 'allowLocalLibUse' to false."
 
     include ':WorldWeaver'
     project(":WorldWeaver").projectDir = WoverFolder
@@ -50,14 +25,16 @@ if (allowLocalLibUse && (isIDE || allowLocalLibInConsoleMode) && WoverFolder.exi
     def WoverModuleFile = WoverFolder.toPath().resolve("module-include.gradle").toFile()
     apply from: WoverModuleFile
     gradle.ext.set("knownWoverModules", ext.knownWoverModules)
+
     ext.knownWoverModules.each { module ->
-        def fullName = ":WorldWeaver:${module}";
-        def path = WoverFolder.toPath().resolve(module).toFile();
+        def fullName = ":WorldWeaver:${module}"
+        def path = WoverFolder.toPath().resolve(module).toFile()
 
         include fullName
         project(fullName).name = module
 
-        print(project(fullName).parent)
         println "Including module ${module} from ${path}"
     }
+} else if (allowLocalLibUse) {
+    logger.warn("WARNING: allowLocalLibUse is enabled but '${WoverFolder}' was not found - building against the published org.betterx:worldweaver Maven artifact instead.")
 }

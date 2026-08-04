@@ -6,7 +6,7 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.ui.ColorUtil;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
+import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.data.models.model.TextureMapping;

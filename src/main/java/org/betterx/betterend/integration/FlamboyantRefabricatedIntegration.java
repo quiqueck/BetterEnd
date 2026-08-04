@@ -1,14 +1,17 @@
 package org.betterx.betterend.integration;
 
+
+import org.betterx.betterend.registry.block.EndDecorBlocks;
 import org.betterx.bclib.integration.ModIntegration;
+import org.betterx.bclib.trait.block.PlantLikeBlockTrait;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.HydraluxPetalColoredBlock;
 import org.betterx.betterend.complexmaterials.ColoredMaterial;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.ui.ColorUtil;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.core.api.ModCore;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.core.api.ModCore;
 
 import net.minecraft.world.level.ItemLike;
 
@@ -27,8 +30,10 @@ public class FlamboyantRefabricatedIntegration extends ModIntegration {
 
     @Override
     public void init() {
-        Map<Integer, String> colors = Maps.newHashMap();
-        Map<Integer, ItemLike> dyes = Maps.newHashMap();
+        // Insertion-ordered so the variants register (and so appear in the creative tab) in the order
+        // they are listed below rather than shuffled by RGB hash - see ColoredMaterial's own maps.
+        Map<Integer, String> colors = Maps.newLinkedHashMap();
+        Map<Integer, ItemLike> dyes = Maps.newLinkedHashMap();
 
         addColor("fead1d", "amber", colors, dyes);
         addColor("bd9a5f", "beige", colors, dyes);
@@ -49,11 +54,14 @@ public class FlamboyantRefabricatedIntegration extends ModIntegration {
 
         new ColoredMaterial(
                 HydraluxPetalColoredBlock::new,
-                EndBlocks.HYDRALUX_PETAL_BLOCK,
+                EndDecorBlocks.HYDRALUX_PETAL_BLOCK,
                 colors,
                 dyes,
                 true,
+                // Same nature-tab marker as the built-in tinted petals in EndDecorBlocks, so these land
+                // beside their untinted source block instead of the catch-all blocks tab.
                 (def) -> def.addTrait(ModCore.isDatagen() ? ClientModel.build() : null)
+                            .addTrait(PlantLikeBlockTrait.withDefault())
         );
     }
 

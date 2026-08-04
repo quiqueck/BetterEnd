@@ -7,12 +7,13 @@ import org.betterx.betterend.blocks.entities.InfusionPedestalEntity;
 import org.betterx.betterend.blocks.entities.PedestalBlockEntity;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.betterend.rituals.InfusionRitual;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
 
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -60,7 +61,7 @@ import java.util.function.ToIntFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PedestalBlock extends EndBlockNotFull implements EntityBlock {
+public class PedestalBlock extends Block implements EntityBlock {
     public final static EnumProperty<PedestalState> STATE = EndBlockProperties.PEDESTAL_STATE;
     public static final BooleanProperty HAS_ITEM = EndBlockProperties.HAS_ITEM;
     public static final BooleanProperty HAS_LIGHT = BlockProperties.HAS_LIGHT;
@@ -462,7 +463,7 @@ public class PedestalBlock extends EndBlockNotFull implements EntityBlock {
     }
 
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientModelBuilder.build(set);
+        return ModCore.isDatagen() ? ClientModelBuilder.build(set) : null;
     }
 
     @Environment(EnvType.CLIENT)

@@ -1,8 +1,10 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -92,7 +94,7 @@ public class BrimstoneBlock extends Block {
                         world.setBlockAndUpdate(side, sideState.setValue(SulphurCrystalBlock.AGE, age));
                     }
                 } else if (sideState.getFluidState().getType() == Fluids.WATER) {
-                    BlockState crystal = EndBlocks.SULPHUR_CRYSTAL.defaultBlockState()
+                    BlockState crystal = EndStoneBlocks.SULPHUR_CRYSTAL.defaultBlockState()
                                                                   .setValue(SulphurCrystalBlock.FACING, dir)
                                                                   .setValue(SulphurCrystalBlock.WATERLOGGED, true)
                                                                   .setValue(SulphurCrystalBlock.AGE, 0);

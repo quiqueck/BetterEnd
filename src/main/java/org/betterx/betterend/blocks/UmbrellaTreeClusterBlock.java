@@ -1,9 +1,13 @@
 package org.betterx.betterend.blocks;
 
+
+
+import org.betterx.betterend.registry.block.EndWoodBlocks;
+import org.betterx.betterend.registry.item.EndFoodItems;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -58,7 +62,7 @@ public class UmbrellaTreeClusterBlock extends Block {
             if (!player.isCreative()) {
                 itemStack.shrink(1);
             }
-            itemStack = new ItemStack(EndItems.UMBRELLA_CLUSTER_JUICE);
+            itemStack = new ItemStack(EndFoodItems.UMBRELLA_CLUSTER_JUICE);
             player.addItem(itemStack);
             level.playLocalSound(
                     blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
@@ -67,7 +71,7 @@ public class UmbrellaTreeClusterBlock extends Block {
             );
             BlocksHelper.setWithUpdate(
                     level, blockPos,
-                    EndBlocks.UMBRELLA_TREE_CLUSTER_EMPTY.defaultBlockState()
+                    EndWoodBlocks.UMBRELLA_TREE_CLUSTER_EMPTY.defaultBlockState()
                                                          .setValue(NATURAL, blockState.getValue(NATURAL))
             );
             return InteractionResult.SUCCESS;

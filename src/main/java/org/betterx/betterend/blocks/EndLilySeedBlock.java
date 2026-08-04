@@ -1,10 +1,12 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
-import org.betterx.betterend.blocks.basis.EndUnderwaterPlantWithAgeBlock;
+
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
+import org.betterx.bclib.blocks.UnderwaterPlantWithAgeBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -13,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
-public class EndLilySeedBlock extends EndUnderwaterPlantWithAgeBlock {
+public class EndLilySeedBlock extends UnderwaterPlantWithAgeBlock {
     public EndLilySeedBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
@@ -24,21 +26,21 @@ public class EndLilySeedBlock extends EndUnderwaterPlantWithAgeBlock {
             BlocksHelper.setWithoutUpdate(
                     world,
                     pos,
-                    EndBlocks.END_LILY.defaultBlockState().setValue(EndLilyBlock.SHAPE, TripleShape.BOTTOM)
+                    EndWaterPlantBlocks.END_LILY.defaultBlockState().setValue(EndLilyBlock.SHAPE, TripleShape.BOTTOM)
             );
             BlockPos up = pos.above();
             while (world.getFluidState(up).isSource()) {
                 BlocksHelper.setWithoutUpdate(
                         world,
                         up,
-                        EndBlocks.END_LILY.defaultBlockState().setValue(EndLilyBlock.SHAPE, TripleShape.MIDDLE)
+                        EndWaterPlantBlocks.END_LILY.defaultBlockState().setValue(EndLilyBlock.SHAPE, TripleShape.MIDDLE)
                 );
                 up = up.above();
             }
             BlocksHelper.setWithoutUpdate(
                     world,
                     up,
-                    EndBlocks.END_LILY.defaultBlockState().setValue(EndLilyBlock.SHAPE, TripleShape.TOP)
+                    EndWaterPlantBlocks.END_LILY.defaultBlockState().setValue(EndLilyBlock.SHAPE, TripleShape.TOP)
             );
         }
     }
@@ -52,7 +54,7 @@ public class EndLilySeedBlock extends EndUnderwaterPlantWithAgeBlock {
     }
 
     @Override
-    protected boolean isValidGround(BlockState state) {
+    protected boolean isTerrain(BlockState state) {
         return state.is(CommonBlockTags.END_STONES);
     }
 }

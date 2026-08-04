@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/aurora_crystal"
+    "model": "betterend:item/aurora_crystal",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -569951
+      }
+    ]
   }
 }

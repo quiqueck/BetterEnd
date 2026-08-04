@@ -1,5 +1,8 @@
 package org.betterx.betterend.world.features;
 
+
+import org.betterx.betterend.registry.block.EndDecorBlocks;
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -20,12 +23,12 @@ public class MengerSpongeFeature extends UnderwaterPlantScatter<ScatterFeatureCo
 
     @Override
     public void generate(ScatterFeatureConfig cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos) {
-        BlocksHelper.setWithoutUpdate(world, blockPos, EndBlocks.MENGER_SPONGE_WET);
+        BlocksHelper.setWithoutUpdate(world, blockPos, EndDecorBlocks.MENGER_SPONGE_WET);
         if (random.nextBoolean()) {
             for (Direction dir : BlocksHelper.DIRECTIONS) {
                 BlockPos pos = blockPos.relative(dir);
                 if (REPLACE.apply(world.getBlockState(pos))) {
-                    BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.MENGER_SPONGE_WET);
+                    BlocksHelper.setWithoutUpdate(world, pos, EndDecorBlocks.MENGER_SPONGE_WET);
                 }
             }
         }
@@ -33,7 +36,7 @@ public class MengerSpongeFeature extends UnderwaterPlantScatter<ScatterFeatureCo
 
     static {
         REPLACE = (state) -> {
-            if (state.is(EndBlocks.END_LOTUS_STEM)) {
+            if (state.is(EndWoodBlocks.END_LOTUS_STEM)) {
                 return false;
             }
             return !state.getFluidState().isEmpty() || state.canBeReplaced();

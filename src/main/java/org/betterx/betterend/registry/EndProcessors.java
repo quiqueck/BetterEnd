@@ -1,8 +1,8 @@
 package org.betterx.betterend.registry;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.structure.api.StructureKeys;
-import org.betterx.wover.structure.api.processors.StructureProcessorKey;
+import de.ambertation.wover.structure.api.StructureKeys;
+import de.ambertation.wover.structure.api.processors.StructureProcessorKey;
 
 public class EndProcessors {
     public static final StructureProcessorKey WEATHERED_10_PERCENT = StructureKeys.processor(BetterEnd.C.mk("weather_10_percent"));

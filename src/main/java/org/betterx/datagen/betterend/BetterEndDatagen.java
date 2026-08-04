@@ -9,14 +9,19 @@ import org.betterx.datagen.betterend.tags.BiomeTagProvider;
 import org.betterx.datagen.betterend.tags.BlockTagProvider;
 import org.betterx.datagen.betterend.tags.ItemTagProvider;
 import org.betterx.datagen.betterend.tags.NourishItemTagProvider;
+import org.betterx.datagen.betterend.worldgen.CarverProvider;
 import org.betterx.datagen.betterend.worldgen.EndBiomeModificationProvider;
 import org.betterx.datagen.betterend.worldgen.EndBiomesProvider;
 import org.betterx.datagen.betterend.worldgen.StructureDataProvider;
 import org.betterx.datagen.betterend.worldgen.features.*;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.PackBuilder;
-import org.betterx.wover.datagen.api.WoverDataGenEntryPoint;
-import org.betterx.wover.datagen.api.provider.BlockPropertiesProvider;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.PackBuilder;
+import de.ambertation.wover.datagen.api.WoverDataGenEntryPoint;
+import de.ambertation.wover.datagen.api.provider.BlockPropertiesProvider;
+import de.ambertation.wover.datagen.api.provider.WoverBlockRegistrationsProvider;
+import de.ambertation.wover.datagen.api.provider.WoverBlockShapesProvider;
+import de.ambertation.wover.datagen.api.provider.WoverEquipmentAssetProvider;
+import de.ambertation.wover.datagen.api.provider.WoverItemRegistrationsProvider;
 
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.worldgen.features.EndFeatures;
@@ -36,6 +41,7 @@ public class BetterEndDatagen extends WoverDataGenEntryPoint {
         globalPack.addProvider(ItemTagProvider::new);
         globalPack.addProvider(BiomeTagProvider::new);
         globalPack.addRegistryProvider(JukeboxRegistryProvider::new);
+        globalPack.addRegistryProvider(CarverProvider::new);
         // BetterEnd subclasses that also register the vanilla dirt soils + vanilla
         // flower-pot plant set on top of the trait-driven BetterEnd entries.
         globalPack.addRegistryProvider(EndPottablePlantProvider::new);
@@ -58,7 +64,11 @@ public class BetterEndDatagen extends WoverDataGenEntryPoint {
         globalPack.addProvider(EndEnchantmentProvider::new);
         globalPack.addProvider(EndChestLootTableProvider::new);
         globalPack.addProvider(EndModelProvider::new);
+        globalPack.addProvider(WoverEquipmentAssetProvider::new);
         globalPack.addProvider(BlockPropertiesProvider::new);
+        globalPack.addProvider(WoverBlockRegistrationsProvider::new);
+        globalPack.addProvider(WoverItemRegistrationsProvider::new);
+        globalPack.addProvider(WoverBlockShapesProvider::new);
 
 
         globalPack.callOnInitializeDatapack((generator, pack, location) -> {
@@ -94,4 +104,5 @@ public class BetterEndDatagen extends WoverDataGenEntryPoint {
         EndRegistrySupplier.INSTANCE.bootstrapRegistries(registryBuilder);
 
     }
+
 }

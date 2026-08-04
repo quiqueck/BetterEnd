@@ -3,9 +3,9 @@ package org.betterx.datagen.betterend.worldgen.features;
 import org.betterx.betterend.registry.EndFeatures;
 import org.betterx.betterend.registry.features.EndConfiguredLakeFeature;
 import org.betterx.betterend.registry.features.EndLakeFeatures;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.multi.WoverFeatureProvider;
-import org.betterx.wover.feature.api.placed.PlacedFeatureKey;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.multi.WoverFeatureProvider;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureKey;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -27,9 +27,8 @@ public class LakeFeatureProvider extends WoverFeatureProvider {
 
     @Override
     protected void bootstrapPlaced(BootstrapContext<PlacedFeature> context) {
-        registerLake(context, EndLakeFeatures.END_LAKE, EndFeatures.END_LAKE_FEATURE, 4);
-        registerLake(context, EndLakeFeatures.END_LAKE_NORMAL, EndFeatures.END_LAKE_FEATURE, 20);
-        registerLake(context, EndLakeFeatures.END_LAKE_RARE, EndFeatures.END_LAKE_FEATURE, 40);
+        // END_LAKE / END_LAKE_NORMAL / END_LAKE_RARE are now structures (EndStructures.END_LAKE*),
+        // registered in StructureDataProvider, so they are no longer placed as features here.
         registerLake(context, EndLakeFeatures.DESERT_LAKE, EndFeatures.DESERT_LAKE_FEATURE, 8);
 
         EndLakeFeatures

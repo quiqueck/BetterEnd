@@ -1,8 +1,10 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndDoublePlantBlock;
+
+import org.betterx.betterend.registry.block.EndPlantBlocks;
+import org.betterx.bclib.blocks.BaseDoublePlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.betterend.blocks.basis.EndPlantBlock;
+import org.betterx.bclib.blocks.BasePlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -16,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class TwistedUmbrellaMossBlock extends EndPlantBlock {
+public class TwistedUmbrellaMossBlock extends BasePlantBlock {
     public TwistedUmbrellaMossBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -39,9 +41,9 @@ public class TwistedUmbrellaMossBlock extends EndPlantBlock {
     @Override
     public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
         int rot = world.random.nextInt(4);
-        BlockState bs = EndBlocks.TWISTED_UMBRELLA_MOSS_TALL.defaultBlockState()
-                                                            .setValue(EndDoublePlantBlock.ROTATION, rot);
+        BlockState bs = EndPlantBlocks.TWISTED_UMBRELLA_MOSS_TALL.defaultBlockState()
+                                                            .setValue(BaseDoublePlantBlock.ROTATION, rot);
         BlocksHelper.setWithoutUpdate(world, pos, bs);
-        BlocksHelper.setWithoutUpdate(world, pos.above(), bs.setValue(EndDoublePlantBlock.TOP, true));
+        BlocksHelper.setWithoutUpdate(world, pos.above(), bs.setValue(BaseDoublePlantBlock.TOP, true));
     }
 }

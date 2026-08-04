@@ -1,5 +1,8 @@
 package org.betterx.betterend.world.features;
 
+
+import org.betterx.betterend.registry.block.EndPlantBlocks;
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.betterend.blocks.NeonCactusPlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
@@ -18,11 +21,11 @@ public class NeonCactusFeature extends DefaultFeature {
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         BlockState ground = world.getBlockState(pos.below());
-        if (!ground.is(EndBlocks.ENDSTONE_DUST) && !ground.is(EndBlocks.END_MOSS)) {
+        if (!ground.is(EndTerrainBlocks.ENDSTONE_DUST) && !ground.is(EndTerrainBlocks.END_MOSS)) {
             return false;
         }
 
-        NeonCactusPlantBlock cactus = ((NeonCactusPlantBlock) EndBlocks.NEON_CACTUS);
+        NeonCactusPlantBlock cactus = ((NeonCactusPlantBlock) EndPlantBlocks.NEON_CACTUS);
         cactus.growPlant(world, pos, random);
 
         return true;

@@ -1,8 +1,10 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndVineBlocks;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +32,7 @@ public class BlueVineLanternBlock extends Block {
     @Override
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        return !state.getValue(NATURAL) || world.getBlockState(pos.below()).getBlock() == EndBlocks.BLUE_VINE;
+        return !state.getValue(NATURAL) || world.getBlockState(pos.below()).getBlock() == EndVineBlocks.BLUE_VINE;
     }
 
     @Override

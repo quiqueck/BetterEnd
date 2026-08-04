@@ -1,21 +1,37 @@
 package org.betterx.datagen.betterend.recipes;
 
+
+
+import org.betterx.betterend.registry.block.EndCropBlocks;
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
+import org.betterx.betterend.registry.block.EndDecorBlocks;
+import org.betterx.betterend.registry.block.EndMetalBlocks;
+import org.betterx.betterend.registry.block.EndMushroomBlocks;
+import org.betterx.betterend.registry.block.EndSaplingBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.registry.block.EndVineBlocks;
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
+import org.betterx.betterend.registry.block.EndWoodBlocks;
+import org.betterx.betterend.registry.item.EndDiscItems;
+import org.betterx.betterend.registry.item.EndEquipmentItems;
+import org.betterx.betterend.registry.item.EndFoodItems;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTemplates;
 import org.betterx.betterend.util.LootTableUtil;
-import org.betterx.wover.biome.api.BiomeKey;
-import org.betterx.wover.complex.api.equipment.ToolSlot;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.WoverLootTableProvider;
-import org.betterx.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.biome.api.BiomeKey;
+import de.ambertation.wover.complex.api.equipment.ToolSlot;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.WoverLootTableProvider;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.HolderSet;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
@@ -47,19 +63,19 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(1, 2))
-                .add(LootItem.lootTableItem(EndItems.END_FISH_RAW));
+                .add(LootItem.lootTableItem(EndFoodItems.END_FISH_RAW));
     }
 
     private LootPool.Builder fishingJunk() {
         final LootPool.Builder builder = LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(1, 2))
-                .add(LootItem.lootTableItem(EndItems.END_LILY_LEAF))
+                .add(LootItem.lootTableItem(EndResourceItems.END_LILY_LEAF))
                 .add(LootItem.lootTableItem(Items.ENDER_PEARL))
                 .add(LootItem.lootTableItem(Items.CHORUS_FRUIT))
-                .add(LootItem.lootTableItem(EndItems.GELATINE))
-                .add(LootItem.lootTableItem(EndItems.CRYSTAL_SHARDS))
-                .add(LootItem.lootTableItem(EndItems.HYDRALUX_PETAL).when(IN_SULPHUR_SPRINGS));
+                .add(LootItem.lootTableItem(EndResourceItems.GELATINE))
+                .add(LootItem.lootTableItem(EndResourceItems.CRYSTAL_SHARDS))
+                .add(LootItem.lootTableItem(EndResourceItems.HYDRALUX_PETAL).when(IN_SULPHUR_SPRINGS));
         addCharnia(builder);
         return builder;
     }
@@ -68,9 +84,9 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(ConstantValue.exactly(1))
-                .add(LootItem.lootTableItem(EndBlocks.TERMINITE.equipment.swordBlade))
-                .add(LootItem.lootTableItem(EndBlocks.TERMINITE.equipment.forgedPlate))
-                .add(LootItem.lootTableItem(EndBlocks.MENGER_SPONGE))
+                .add(LootItem.lootTableItem(EndMetalBlocks.TERMINITE.equipment.swordBlade))
+                .add(LootItem.lootTableItem(EndMetalBlocks.TERMINITE.equipment.forgedPlate))
+                .add(LootItem.lootTableItem(EndDecorBlocks.MENGER_SPONGE))
                 .add(LootItem.lootTableItem(Items.BOW)
                              .apply(SetItemDamageFunction.setDamage(UniformGenerator.between(0.0F, 0.25F)))
                              .apply(EnchantWithLevelsFunction.enchantWithLevels(lookup, ConstantValue.exactly(30.0F))))
@@ -85,18 +101,18 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.MOSSY_GLOWSHROOM.getBlock(SlotType.PLANKS)))
-                .add(LootItem.lootTableItem(EndBlocks.MOSSY_GLOWSHROOM_SAPLING))
-                .add(LootItem.lootTableItem(EndBlocks.BLUE_VINE_SEED));
+                .add(LootItem.lootTableItem(EndWoodBlocks.MOSSY_GLOWSHROOM.getBlock(SlotType.PLANKS)))
+                .add(LootItem.lootTableItem(EndSaplingBlocks.MOSSY_GLOWSHROOM_SAPLING))
+                .add(LootItem.lootTableItem(EndVineBlocks.BLUE_VINE_SEED));
     }
 
     private LootPool.Builder chorusForest() {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.PYTHADENDRON.getBlock(SlotType.PLANKS)))
-                .add(LootItem.lootTableItem(EndBlocks.PYTHADENDRON_SAPLING))
-                .add(LootItem.lootTableItem(EndBlocks.CHORUS_MUSHROOM))
+                .add(LootItem.lootTableItem(EndWoodBlocks.PYTHADENDRON.getBlock(SlotType.PLANKS)))
+                .add(LootItem.lootTableItem(EndSaplingBlocks.PYTHADENDRON_SAPLING))
+                .add(LootItem.lootTableItem(EndCropBlocks.CHORUS_MUSHROOM))
                 .add(LootItem.lootTableItem(EndTemplates.HANDLE_ATTACHMENT));
     }
 
@@ -104,28 +120,28 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.DRAGON_TREE.getBlock(SlotType.PLANKS)))
-                .add(LootItem.lootTableItem(EndBlocks.DRAGON_TREE_SAPLING))
-                .add(LootItem.lootTableItem(EndBlocks.SHADOW_BERRY))
-                .add(LootItem.lootTableItem(EndItems.SHADOW_BERRY_RAW));
+                .add(LootItem.lootTableItem(EndWoodBlocks.DRAGON_TREE.getBlock(SlotType.PLANKS)))
+                .add(LootItem.lootTableItem(EndSaplingBlocks.DRAGON_TREE_SAPLING))
+                .add(LootItem.lootTableItem(EndCropBlocks.SHADOW_BERRY))
+                .add(LootItem.lootTableItem(EndFoodItems.SHADOW_BERRY_RAW));
     }
 
     private LootPool.Builder lanternWoods() {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.LUCERNIA.getBlock(SlotType.PLANKS)))
-                .add(LootItem.lootTableItem(EndBlocks.LUCERNIA_SAPLING))
-                .add(LootItem.lootTableItem(EndBlocks.BOLUX_MUSHROOM));
+                .add(LootItem.lootTableItem(EndWoodBlocks.LUCERNIA.getBlock(SlotType.PLANKS)))
+                .add(LootItem.lootTableItem(EndSaplingBlocks.LUCERNIA_SAPLING))
+                .add(LootItem.lootTableItem(EndMushroomBlocks.BOLUX_MUSHROOM));
     }
 
     private LootPool.Builder umbrellaJungle() {
         return LootPool
                 .lootPool()
                 .setRolls(UniformGenerator.between(4, 8))
-                .add(LootItem.lootTableItem(EndBlocks.UMBRELLA_TREE.getBlock(SlotType.PLANKS)))
-                .add(LootItem.lootTableItem(EndBlocks.UMBRELLA_TREE_SAPLING))
-                .add(LootItem.lootTableItem(EndBlocks.SMALL_JELLYSHROOM));
+                .add(LootItem.lootTableItem(EndWoodBlocks.UMBRELLA_TREE.getBlock(SlotType.PLANKS)))
+                .add(LootItem.lootTableItem(EndSaplingBlocks.UMBRELLA_TREE_SAPLING))
+                .add(LootItem.lootTableItem(EndMushroomBlocks.SMALL_JELLYSHROOM));
     }
 
 
@@ -198,17 +214,17 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                 .lootPool()
                 .setRolls(UniformGenerator.between(1, 2))
                 .add(LootItem
-                        .lootTableItem(EndItems.AETERNIUM_SET.ingot)
+                        .lootTableItem(EndEquipmentItems.AETERNIUM_SET.ingot)
                         .setWeight(8)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))
                 )
                 .add(LootItem
-                        .lootTableItem(EndBlocks.FLAVOLITE_RUNED_ETERNAL)
+                        .lootTableItem(EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL)
                         .setWeight(4)
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                 )
                 .add(LootItem
-                        .lootTableItem(EndItems.ETERNAL_CRYSTAL)
+                        .lootTableItem(EndResourceItems.ETERNAL_CRYSTAL)
                         .setWeight(1)
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                 )
@@ -240,7 +256,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                 .lootPool()
                 .setRolls(UniformGenerator.between(1, 3))
                 .add(LootItem
-                        .lootTableItem(EndItems.LEATHER_WRAPPED_STICK)
+                        .lootTableItem(EndResourceItems.LEATHER_WRAPPED_STICK)
                         .setWeight(10)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
                 )
@@ -250,17 +266,17 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5)))
                 )
                 .add(LootItem
-                        .lootTableItem(EndItems.SHADOW_BERRY_COOKED)
+                        .lootTableItem(EndFoodItems.SHADOW_BERRY_COOKED)
                         .setWeight(8)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))
                 )
                 .add(LootItem
-                        .lootTableItem(EndItems.BLOSSOM_BERRY_JELLY)
+                        .lootTableItem(EndFoodItems.BLOSSOM_BERRY_JELLY)
                         .setWeight(4)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))
                 )
                 .add(LootItem
-                        .lootTableItem(EndBlocks.THALLASIUM.equipment.shovelHead)
+                        .lootTableItem(EndMetalBlocks.THALLASIUM.equipment.shovelHead)
                         .setWeight(2)
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                 )
@@ -272,65 +288,67 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
     }
 
     private static void addCharnia(LootPool.Builder pool) {
-        pool.add(LootItem.lootTableItem(EndBlocks.CHARNIA_CYAN)
+        pool.add(LootItem.lootTableItem(EndWaterPlantBlocks.CHARNIA_CYAN)
                          .when(IN_GLOWING_GRASSLANDS.or(IN_MEGALAKE)
                                                     .or(IN_MEGALAKE_GROVE)
                                                     .or(
                                                             IN_NEON_OASIS)));
-        pool.add(LootItem.lootTableItem(EndBlocks.CHARNIA_LIGHT_BLUE)
+        pool.add(LootItem.lootTableItem(EndWaterPlantBlocks.CHARNIA_LIGHT_BLUE)
                          .when(IN_FOGGY_MUSHROOMLAND.or(IN_GLOWING_GRASSLANDS)
                                                     .or(IN_MEGALAKE)
                                                     .or(IN_MEGALAKE_GROVE)
                                                     .or(IN_UMBRELLA_JUNGLE)));
-        pool.add(LootItem.lootTableItem(EndBlocks.CHARNIA_GREEN)
+        pool.add(LootItem.lootTableItem(EndWaterPlantBlocks.CHARNIA_GREEN)
                          .when(IN_GLOWING_GRASSLANDS.or(IN_NEON_OASIS)
                                                     .or(IN_SULPHUR_SPRINGS)
                                                     .or(IN_UMBRELLA_JUNGLE)));
-        pool.add(LootItem.lootTableItem(EndBlocks.CHARNIA_RED)
+        pool.add(LootItem.lootTableItem(EndWaterPlantBlocks.CHARNIA_RED)
                          .when(IN_AMBER_LAND.or(IN_LANTERN_WOODS)
                                             .or(IN_NEON_OASIS)));
-        pool.add(LootItem.lootTableItem(EndBlocks.CHARNIA_ORANGE)
+        pool.add(LootItem.lootTableItem(EndWaterPlantBlocks.CHARNIA_ORANGE)
                          .when(IN_AMBER_LAND.or(IN_LANTERN_WOODS)
                                             .or(IN_SULPHUR_SPRINGS)));
-        pool.add(LootItem.lootTableItem(EndBlocks.CHARNIA_PURPLE)
+        pool.add(LootItem.lootTableItem(EndWaterPlantBlocks.CHARNIA_PURPLE)
                          .when(IN_CHORUS_FOREST.or(IN_SHADOW_FOREST)));
     }
 
     private static LootTable.Builder includeCommonItems(LootTable.Builder table) {
         LootPool.Builder builder = LootPool.lootPool();
         builder.setRolls(UniformGenerator.between(0, 2));
-        builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_STRANGE_AND_ALIEN));
-        builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_GRASPING_AT_STARS));
-        builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_ENDSEEKER));
-        builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_EO_DRACONA));
+        builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_STRANGE_AND_ALIEN));
+        builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_GRASPING_AT_STARS));
+        builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDSEEKER));
+        builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_EO_DRACONA));
+        builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDER_HOLLOW));
+        builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_MOONLIT_UNDERCURRENTS));
         table.withPool(builder);
 
         builder = LootPool.lootPool();
         builder.setRolls(UniformGenerator.between(4, 8));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.ingot));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.rawOre));
+        builder.add(LootItem.lootTableItem(EndMetalBlocks.THALLASIUM.equipment.ingot));
+        builder.add(LootItem.lootTableItem(EndMetalBlocks.THALLASIUM.rawOre));
         builder.add(LootItem.lootTableItem(Items.ENDER_PEARL));
         table.withPool(builder);
 
         builder = LootPool.lootPool();
         builder.setRolls(UniformGenerator.between(2, 4));
-        builder.add(LootItem.lootTableItem(EndBlocks.TERMINITE.equipment.ingot));
-        builder.add(LootItem.lootTableItem(EndItems.ENDER_SHARD));
-        builder.add(LootItem.lootTableItem(EndBlocks.AURORA_CRYSTAL));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.AXE_SLOT)));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.PICKAXE_SLOT)));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.HOE_SLOT)));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.SWORD_SLOT)));
-        builder.add(LootItem.lootTableItem(EndBlocks.THALLASIUM.equipment.get(ToolSlot.SHOVEL_SLOT)));
+        builder.add(LootItem.lootTableItem(EndMetalBlocks.TERMINITE.equipment.ingot));
+        builder.add(LootItem.lootTableItem(EndResourceItems.ENDER_SHARD));
+        builder.add(LootItem.lootTableItem(EndCrystalBlocks.AURORA_CRYSTAL));
+        builder.add(LootItem.lootTableItem(EndMetalBlocks.THALLASIUM.equipment.get(ToolSlot.AXE_SLOT)));
+        builder.add(LootItem.lootTableItem(EndMetalBlocks.THALLASIUM.equipment.get(ToolSlot.PICKAXE_SLOT)));
+        builder.add(LootItem.lootTableItem(EndMetalBlocks.THALLASIUM.equipment.get(ToolSlot.HOE_SLOT)));
+        builder.add(LootItem.lootTableItem(EndMetalBlocks.THALLASIUM.equipment.get(ToolSlot.SWORD_SLOT)));
+        builder.add(LootItem.lootTableItem(EndMetalBlocks.THALLASIUM.equipment.get(ToolSlot.SHOVEL_SLOT)));
         builder.add(LootItem.lootTableItem(Items.ENDER_EYE));
         builder.add(LootItem.lootTableItem(Blocks.OBSIDIAN));
         table.withPool(builder);
 
         builder = LootPool.lootPool();
         builder.setRolls(UniformGenerator.between(0, 4));
-        builder.add(LootItem.lootTableItem(EndBlocks.FLAVOLITE_RUNED));
-        builder.add(LootItem.lootTableItem(EndItems.AETERNIUM_SET.ingot));
-        builder.add(LootItem.lootTableItem(EndItems.AMBER_GEM));
+        builder.add(LootItem.lootTableItem(EndStoneBlocks.FLAVOLITE_RUNED));
+        builder.add(LootItem.lootTableItem(EndEquipmentItems.AETERNIUM_SET.ingot));
+        builder.add(LootItem.lootTableItem(EndResourceItems.AMBER_GEM));
         builder.add(LootItem.lootTableItem(Items.END_CRYSTAL));
         builder.add(LootItem.lootTableItem(Items.GHAST_TEAR));
         table.withPool(builder);

@@ -1,18 +1,20 @@
 package org.betterx.betterend.complexmaterials.types;
 
+
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.betterend.blocks.basis.StoneLanternBlock;
 import org.betterx.betterend.complexmaterials.StoneMaterial;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.block.api.BlockRegistry;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.trait.BlockRecipeTrait;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.block.api.trait.BlockTraits;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.sets.api.blocks.BlockSet;
-import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
-import org.betterx.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.BlockRegistry;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.trait.BlockRecipeTrait;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.sets.api.blocks.SlotFromDefinition;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,6 +40,8 @@ public class StoneLantern extends SlotFromDefinition {
     @Override
     protected void addSlotSpecificDefinitions(BlockSet<?> set, BlockDefinition<?, ?> def) {
         super.addSlotSpecificDefinitions(set, def);
+        // noOcclusion() moved out of EndLanternBlock's constructor (R1, WP6.14) to here.
+        def.noOcclusion();
         def.lightLevel((bs) -> 15);
         def.addTrait(BlockTraits.LOOT_TABLE.dropSelf());
     }
@@ -55,7 +59,7 @@ public class StoneLantern extends SlotFromDefinition {
                     RecipeBuilder
                             .crafting(key.location(), block)
                             .shape("S", "#", "S")
-                            .addMaterial('#', EndItems.CRYSTAL_SHARDS)
+                            .addMaterial('#', EndResourceItems.CRYSTAL_SHARDS)
                             .addMaterial('S', set.recipeMaterial(SlotType.SLAB))
                             .group("end_stone_lanterns")
                             .build(context);

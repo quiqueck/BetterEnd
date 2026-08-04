@@ -3,11 +3,11 @@ package org.betterx.betterend.complexmaterials;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.DefaultBlockDefinition;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
+import de.ambertation.wover.block.api.DefaultBlockDefinition;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.tag.api.event.context.ItemTagBootstrapContext;
+import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.DyeColor;
@@ -26,9 +26,13 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ColoredMaterial implements MaterialManager.Material {
-    private static final Map<Integer, ItemLike> DYES = Maps.newHashMap();
-    private static final Map<Integer, String> COLORS = Maps.newHashMap();
-    private final Map<Integer, Block> colors = Maps.newHashMap();
+    // Insertion-ordered: colors.forEach() below is what registers the tinted blocks, so this map's
+    // iteration order becomes their registration order and - via ItemRegistry's own insertion order -
+    // the order they appear in the creative tab. A HashMap keyed by RGB int shuffled them into
+    // black, lime, cyan, gray, ... instead of the DyeColor order the static block fills them in.
+    private static final Map<Integer, ItemLike> DYES = Maps.newLinkedHashMap();
+    private static final Map<Integer, String> COLORS = Maps.newLinkedHashMap();
+    private final Map<Integer, Block> colors = Maps.newLinkedHashMap();
 
     public ColoredMaterial(Function<BlockBehaviour.Properties, Block> constructor, Block source, boolean craftEight) {
         this(constructor, source, COLORS, DYES, craftEight, null);

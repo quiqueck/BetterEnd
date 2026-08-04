@@ -1,25 +1,24 @@
 package org.betterx.betterend.world.biome.cave;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
-import org.betterx.bclib.util.WeightedList;
 import org.betterx.betterend.noise.OpenSimplexNoise;
-import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.features.EndPlacedCaveFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.biome.EndBiomeKey;
-import org.betterx.wover.biome.api.BiomeKey;
-import org.betterx.wover.biome.api.data.BiomeGenerationDataContainer;
+import de.ambertation.wover.biome.api.BiomeKey;
+import de.ambertation.wover.biome.api.data.BiomeGenerationDataContainer;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,15 +48,13 @@ public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
                 @Nullable ResourceKey<net.minecraft.world.level.biome.Biome> edge,
                 @Nullable ResourceKey<net.minecraft.world.level.biome.Biome> parent,
                 boolean hasCaves,
-                SurfaceMaterialProvider surface,
-                WeightedList<Holder<ConfiguredFeature<?, ?>>> floorFeatures,
-                WeightedList<Holder<ConfiguredFeature<?, ?>>> ceilFeatures
+                SurfaceMaterialProvider surface
         ) {
             super(
                     fogDensity, biome, generatorData, terrainHeight,
                     genChance, edgeSize, vertical,
                     edge, parent,
-                    hasCaves, surface, floorFeatures, ceilFeatures
+                    hasCaves, surface
             );
         }
 
@@ -73,9 +70,9 @@ public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
         }
 
         static {
-            JADE[0] = EndBlocks.VIRID_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState();
-            JADE[1] = EndBlocks.AZURE_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState();
-            JADE[2] = EndBlocks.SANDY_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState();
+            JADE[0] = EndStoneBlocks.VIRID_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState();
+            JADE[1] = EndStoneBlocks.AZURE_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState();
+            JADE[2] = EndStoneBlocks.SANDY_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState();
         }
     }
 
@@ -87,6 +84,7 @@ public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
     @Override
     public void addCustomBuildData(EndBiomeBuilder builder) {
         super.addCustomBuildData(builder);
+        builder.feature(EndPlacedCaveFeatures.STALACTITE_CLUSTER_PLAIN);
         builder.fogColor(118, 150, 112)
                .fogDensity(2.0F)
                .waterAndFogColor(95, 223, 255);
@@ -109,7 +107,7 @@ public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
         return new JadeCaveBiome.Biome(
                 fogDensity, key.key, generatorData,
                 terrainHeight, genChance, edgeSize, vertical, edge, parent,
-                hasCave, surface, new WeightedList<>(), new WeightedList<>()
+                hasCave, surface
         );
     }
 }

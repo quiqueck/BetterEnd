@@ -2,7 +2,7 @@ package org.betterx.betterend.mixin.client;
 
 import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.world.biome.EndBiome;
-import org.betterx.wover.biome.api.BiomeManager;
+import de.ambertation.wover.biome.api.BiomeManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;

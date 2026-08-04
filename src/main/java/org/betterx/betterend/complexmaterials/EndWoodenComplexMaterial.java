@@ -6,14 +6,16 @@ import org.betterx.bclib.furniture.slots.Taburet;
 import org.betterx.bclib.trait.block.WeightedBark;
 import org.betterx.bclib.trait.block.WeightedLog;
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.sets.api.blocks.SlotMap;
-import org.betterx.wover.sets.api.blocks.SlotType;
-import org.betterx.wover.sets.api.blocks.WoodenBlockSet;
-import org.betterx.wover.sets.api.blocks.slots.WoodSlots;
-import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.block.api.trait.behaviour.FlammableBlockTrait;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.SlotMap;
+import de.ambertation.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.sets.api.blocks.WoodenBlockSet;
+import de.ambertation.wover.sets.api.blocks.slots.WoodSlots;
+import de.ambertation.wover.tag.api.event.context.ItemTagBootstrapContext;
+import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -134,6 +136,23 @@ public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMat
 
     private static boolean isFurniture(SlotType slot) {
         return slot == SlotType.TABURET || slot == SlotType.CHAIR || slot == SlotType.BAR_STOOL;
+    }
+
+    @Override
+    protected FlammableBlockTrait flammableTrait(SlotType slot) {
+        // Vanilla differentiates fire behaviour by wood part rather than using one flat value for the
+        // whole tree: logs/bark keep the generic default (5/5, matching e.g. oak_log/oak_wood), while every
+        // planks-derived part of the set (planks, slabs, stairs, fences, doors, furniture, ...) catches and
+        // spreads fire faster (5/20, matching oak_planks/oak_slab/oak_stairs/oak_fence). Leaves are not part
+        // of this wood-set slot map (see LeavesBlockTrait for their own 30/60 value).
+        return isLogSlot(slot) ? BlockTraits.FLAMMABLE.withDefault() : BlockTraits.FLAMMABLE.with(5, 20);
+    }
+
+    private static boolean isLogSlot(SlotType slot) {
+        return slot == SlotType.LOG
+                || slot == SlotType.BARK
+                || slot == SlotType.STRIPPED_LOG
+                || slot == SlotType.STRIPPED_BARK;
     }
 
     @Override

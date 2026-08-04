@@ -1,8 +1,10 @@
 package org.betterx.betterend.registry;
 
+
+import org.betterx.betterend.registry.item.EndEquipmentItems;
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.item.api.SmithingTemplateDefinition;
-import org.betterx.wover.item.api.smithing.SmithingTemplates;
+import de.ambertation.wover.item.api.SmithingTemplateDefinition;
+import de.ambertation.wover.item.api.smithing.SmithingTemplates;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.SmithingTemplateItem;
@@ -27,7 +29,7 @@ public class EndTemplates {
 
 
     // LEATHER_HANDLE_ATTACHMENT and TOOL_ASSEMBLY must be declared before HANDLE_ATTACHMENT:
-    // constructing EndItems.AETERNIUM_SET (an AeterniumSet) needs them, but HANDLE_ATTACHMENT's
+    // constructing EndEquipmentItems.AETERNIUM_SET (an AeterniumSet) needs them, but HANDLE_ATTACHMENT's
     // own initializer is what triggers EndItems' class loading in the first place (via
     // EndItems.getItemRegistry()) - if they were declared after HANDLE_ATTACHMENT, that nested,
     // same-thread re-entrant access would observe them as still-unassigned (null).

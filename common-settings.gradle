@@ -1,0 +1,74 @@
+// Shared settings-phase helper for local sibling library inclusion.
+// Copy-paste this file identically into every library/mod repo's settings.gradle.
+//
+// Includes a sibling project's folder as a real Gradle subproject (plain
+// multi-project include, not includeBuild - see modApiOrLocal below for why:
+// Loom's remap cache for includeBuild-substituted mod dependencies is keyed
+// by coordinate+version, not content, so it never notices local rebuilds;
+// a plain subproject goes through Gradle's own incremental task tracking
+// instead, which is reliable). Falls back to a warning (not silence) when
+// allowLocalLibUse is on but the folder is missing.
+//
+// Usage in settings.gradle:
+//   apply from: "common-settings.gradle"
+//   includeLocalLib('wunderlib', '../WunderLib', './wunderlib-composit.gradle', allowLocalLibUse)
+ext.includeLocalLib = { String moduleName, String path, String buildFileName, boolean allowLocalLibUse = true ->
+    def folder = new File(path)
+    if (allowLocalLibUse && folder.exists()) {
+        println "Using local ${moduleName} from '${folder}'"
+        println "If you do not want to load the local version of ${moduleName}"
+        println "either rename the folder containing it to something else,"
+        println "or set 'allowLocalLibUse' to false."
+
+        include ":${moduleName}"
+        project(":${moduleName}").projectDir = folder
+        project(":${moduleName}").buildFileName = buildFileName
+    } else if (allowLocalLibUse) {
+        logger.warn("WARNING: allowLocalLibUse is enabled but '${folder}' was not found - building against the published Maven artifact instead.")
+    }
+}
+
+// Declares a dependency on a sibling mod/library. If it's present as a real
+// local subproject (via includeLocalLib above, not includeBuild), consumes
+// its 'dev' configuration directly as a plain Gradle project dependency -
+// Gradle's own incremental task tracking always rebuilds it fresh on source
+// changes. Otherwise falls back to the published artifact via modApi.
+// alsoInclude controls whether the artifact is also embedded via Loom's
+// include(...) - true for the project/mod that actually ships it, false for
+// sub-modules of a multi-module library that just need it on the compile
+// classpath (only the aggregating project should embed it, or it ends up
+// duplicated in the final jar).
+//
+// Defined on `gradle` (not `project`) so it's callable identically from a
+// single-project repo's build.gradle and from every subproject of a
+// multi-module repo (e.g. WorldWeaver's wover-* modules) - a plain project
+// `ext` would only be visible on whichever project defined it.
+//
+// Takes the DependencyHandler explicitly (`dependencies` at the call site)
+// rather than referencing a bare `dependencies` inside the closure body:
+// this closure is defined once here, during the settings phase, so its own
+// owner/delegate has no DependencyHandler at all - Groovy closures resolve
+// bare identifiers via the owner/delegate fixed at *definition* time, not
+// wherever they're later called from, so an implicit `dependencies` inside
+// the closure body would fail. Passing it in sidesteps that entirely.
+//
+// Do not swap this for includeBuild+modApi: that route goes through Loom's
+// mod-remap cache, which is keyed by coordinate+version rather than content
+// and never notices local rebuilds (or worse - see the git history/memory
+// notes on the modApiOrLocal experiment that corrupted Fabric Loader's
+// access-widener state entirely).
+//
+// Usage: gradle.modApiOrLocal(dependencies, ':wunderlib', "de.ambertation:wunderlib:${wunderlib_version}")
+gradle.ext.modApiOrLocal = { deps, String localProjectPath, String coordinate, boolean alsoInclude = true ->
+    if (gradle.rootProject.findProject(localProjectPath) != null) {
+        deps.add('implementation', deps.project(path: localProjectPath, configuration: 'dev'))
+        if (alsoInclude) {
+            deps.add('include', deps.project(path: localProjectPath))
+        }
+    } else {
+        deps.add('modApi', coordinate)
+        if (alsoInclude) {
+            deps.add('include', coordinate)
+        }
+    }
+}

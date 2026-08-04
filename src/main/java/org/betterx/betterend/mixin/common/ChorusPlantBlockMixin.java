@@ -1,7 +1,9 @@
 package org.betterx.betterend.mixin.common;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -58,7 +60,7 @@ public abstract class ChorusPlantBlockMixin extends Block {
             CallbackInfoReturnable<Boolean> info
     ) {
         BlockState down = world.getBlockState(pos.below());
-        if (down.is(EndBlocks.CHORUS_NYLIUM) || down.is(Blocks.END_STONE)) {
+        if (down.is(EndTerrainBlocks.CHORUS_NYLIUM) || down.is(Blocks.END_STONE)) {
             info.setReturnValue(true);
         }
     }

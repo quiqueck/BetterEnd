@@ -1,6 +1,11 @@
 package org.betterx.betterend.util;
 
-import org.betterx.betterend.blocks.basis.EndDoublePlantBlock;
+
+import org.betterx.betterend.registry.block.EndCropBlocks;
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
+import org.betterx.betterend.registry.block.EndLightBlocks;
+import org.betterx.betterend.registry.block.EndVineBlocks;
+import org.betterx.bclib.blocks.BaseDoublePlantBlock;
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.bclib.blocks.StalactiteBlock;
 import org.betterx.bclib.util.BlocksHelper;
@@ -19,6 +24,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.google.common.collect.Sets;
 
@@ -30,6 +36,17 @@ public class BlockFixer {
     private static final BlockState WATER = Blocks.WATER.defaultBlockState();
 
     public static void fixBlocks(LevelAccessor level, BlockPos start, BlockPos end) {
+        fixBlocks(level, start, end, null);
+    }
+
+    /**
+     * @param writeBounds when non-null, the chorus flood-fill (the only branch that writes
+     *                    horizontally) will neither write to nor propagate through positions
+     *                    outside these bounds. All other branches write only vertically at the
+     *                    scanned column and are unaffected. Passing {@code null} restores the
+     *                    original unbounded behavior for every branch.
+     */
+    public static void fixBlocks(LevelAccessor level, BlockPos start, BlockPos end, BoundingBox writeBounds) {
         final Registry<DimensionType> registry = level.registryAccess()
                                                       .lookupOrThrow(Registries.DIMENSION_TYPE);
         final ResourceLocation dimKey = registry.getKey(level.dimensionType());
@@ -85,11 +102,11 @@ public class BlockFixer {
                             break;
                         }
                     }
-                } else if (state.is(EndBlocks.SMARAGDANT_CRYSTAL) || state.is(EndBlocks.BUDDING_SMARAGDANT_CRYSTAL)) {
+                } else if (state.is(EndCrystalBlocks.SMARAGDANT_CRYSTAL) || state.is(EndCrystalBlocks.BUDDING_SMARAGDANT_CRYSTAL)) {
                     POS.setY(POS.getY() - 1);
                     if (level.isEmptyBlock(POS)) {
                         POS.setY(POS.getY() + 1);
-                        while (state.is(EndBlocks.SMARAGDANT_CRYSTAL) || state.is(EndBlocks.BUDDING_SMARAGDANT_CRYSTAL)) {
+                        while (state.is(EndCrystalBlocks.SMARAGDANT_CRYSTAL) || state.is(EndCrystalBlocks.BUDDING_SMARAGDANT_CRYSTAL)) {
                             setWithoutUpdate(level, POS, AIR);
                             POS.setY(POS.getY() + 1);
                             state = level.getBlockState(POS);
@@ -111,8 +128,8 @@ public class BlockFixer {
                             }
                         }
                     }
-                } else if (state.is(EndBlocks.CAVE_PUMPKIN)) {
-                    if (!level.getBlockState(POS.above()).is(EndBlocks.CAVE_PUMPKIN_SEED)) {
+                } else if (state.is(EndCropBlocks.CAVE_PUMPKIN)) {
+                    if (!level.getBlockState(POS.above()).is(EndCropBlocks.CAVE_PUMPKIN_SEED)) {
                         setWithoutUpdate(level, POS, AIR);
                     }
                 } else if (!state.canSurvive(level, POS)) {
@@ -124,9 +141,19 @@ public class BlockFixer {
 
                         for (int i = 0; i < 64 && !ends.isEmpty(); i++) {
                             ends.forEach((pos) -> {
+                                // The chorus flood-fill is the only branch that writes horizontally.
+                                // When writeBounds is set (per-chunk structure use), never write to or
+                                // propagate through a position outside the writable region, so a chorus
+                                // block on the far side of the boundary is left completely untouched.
+                                if (writeBounds != null && !writeBounds.isInside(pos)) {
+                                    return;
+                                }
                                 setWithoutUpdate(level, pos, AIR);
                                 for (Direction dir : BlocksHelper.HORIZONTAL) {
                                     BlockPos p = pos.relative(dir);
+                                    if (writeBounds != null && !writeBounds.isInside(p)) {
+                                        continue;
+                                    }
                                     BlockState st = level.getBlockState(p);
                                     if ((st.is(Blocks.CHORUS_PLANT) || st.is(Blocks.CHORUS_FLOWER)) && !st.canSurvive(
                                             level,
@@ -136,6 +163,9 @@ public class BlockFixer {
                                     }
                                 }
                                 BlockPos p = pos.above();
+                                if (writeBounds != null && !writeBounds.isInside(p)) {
+                                    return;
+                                }
                                 BlockState st = level.getBlockState(p);
                                 if ((st.is(Blocks.CHORUS_PLANT) || st.is(Blocks.CHORUS_FLOWER)) && !st.canSurvive(
                                         level,
@@ -190,15 +220,15 @@ public class BlockFixer {
                     else {
                         // Blue Vine
                         if (state.getBlock() instanceof BlueVineBlock) {
-                            while (state.is(EndBlocks.BLUE_VINE) || state.is(EndBlocks.BLUE_VINE_LANTERN) || state.is(
-                                    EndBlocks.BLUE_VINE_FUR)) {
+                            while (state.is(EndVineBlocks.BLUE_VINE) || state.is(EndLightBlocks.BLUE_VINE_LANTERN) || state.is(
+                                    EndVineBlocks.BLUE_VINE_FUR)) {
                                 setWithoutUpdate(level, POS, AIR);
                                 POS.setY(POS.getY() + 1);
                                 state = level.getBlockState(POS);
                             }
                         }
                         // Double plants
-                        if (state.getBlock() instanceof EndDoublePlantBlock) {
+                        if (state.getBlock() instanceof BaseDoublePlantBlock) {
                             setWithoutUpdate(level, POS, AIR);
                             POS.setY(POS.getY() + 1);
                             setWithoutUpdate(level, POS, AIR);

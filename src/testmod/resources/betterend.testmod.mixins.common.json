@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.betterx.betterend.testmod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EnderManInvoker"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

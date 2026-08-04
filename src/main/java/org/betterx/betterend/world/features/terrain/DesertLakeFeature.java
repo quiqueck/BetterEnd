@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
@@ -7,8 +9,9 @@ import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.util.BlockFixer;
 import org.betterx.betterend.util.GlobalState;
+import de.ambertation.wover.feature.api.WriteZone;
 import org.betterx.betterend.world.biome.EndBiome;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -64,10 +67,18 @@ public class DesertLakeFeature extends DefaultFeature {
         // the whole shore. Reflects noise-driven surfaces and never crashes; see EndBiome.
         final BlockState borderMaterial = EndBiome.sampleTopMaterial(world, blockPos.below());
 
-        int minX = blockPos.getX() - dist2;
-        int maxX = blockPos.getX() + dist2;
-        int minZ = blockPos.getZ() - dist2;
-        int maxZ = blockPos.getZ() + dist2;
+        // The shore reaches dist2 (up to 22) blocks out and BlockFixer another 2 on top, but a feature may
+        // only touch the 3x3 chunks around the one it is decorating - at most 16 blocks past the origin's
+        // own chunk in any direction. Everything from here on is therefore clipped to that zone. This is
+        // behaviour-neutral for the world (writes out there were already dropped by WorldGenRegion); what it
+        // removes is the "Detected unsafe terrain read during worldgen" spam and, more importantly, the lake
+        // shaping itself reading blocks from chunks that have not been carved - or even filled - yet.
+        // See WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+        int minX = zone.clampX(blockPos.getX() - dist2);
+        int maxX = zone.clampX(blockPos.getX() + dist2);
+        int minZ = zone.clampZ(blockPos.getZ() - dist2);
+        int maxZ = zone.clampZ(blockPos.getZ() + dist2);
         int maskMinX = minX - 1;
         int maskMinZ = minZ - 1;
 
@@ -138,13 +149,13 @@ public class DesertLakeFeature extends DefaultFeature {
                                                 pos,
                                                 random.nextBoolean()
                                                         ? state
-                                                        : EndBlocks.ENDSTONE_DUST.defaultBlockState()
+                                                        : EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState()
                                         );
                                     else
                                         BlocksHelper.setWithoutUpdate(
                                                 world,
                                                 pos,
-                                                EndBlocks.ENDSTONE_DUST.defaultBlockState()
+                                                EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState()
                                         );
                                 }
                             }
@@ -158,12 +169,14 @@ public class DesertLakeFeature extends DefaultFeature {
 
         double aspect = (radius / depth);
 
-        for (int x = blockPos.getX() - dist; x <= blockPos.getX() + dist; x++) {
+        // The bowl is narrower than the shore, but it still has to stay inside the clipped box above - both
+        // to keep the reads legal and because `mask` is indexed relative to it.
+        for (int x = Math.max(blockPos.getX() - dist, minX); x <= Math.min(blockPos.getX() + dist, maxX); x++) {
             POS.setX(x);
             int x2 = x - blockPos.getX();
             x2 *= x2;
             int mx = x - maskMinX;
-            for (int z = blockPos.getZ() - dist; z <= blockPos.getZ() + dist; z++) {
+            for (int z = Math.max(blockPos.getZ() - dist, minZ); z <= Math.min(blockPos.getZ() + dist, maxZ); z++) {
                 POS.setZ(z);
                 int z2 = z - blockPos.getZ();
                 z2 *= z2;
@@ -186,7 +199,7 @@ public class DesertLakeFeature extends DefaultFeature {
                             }
                             pos = POS.below();
                             if (world.getBlockState(pos).is(CommonBlockTags.END_STONES)) {
-                                BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.ENDSTONE_DUST.defaultBlockState());
+                                BlocksHelper.setWithoutUpdate(world, pos, EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState());
                             }
                             pos = POS.above();
                             while (canReplace(state = world.getBlockState(pos)) && !state.isAir() && state
@@ -200,21 +213,21 @@ public class DesertLakeFeature extends DefaultFeature {
                         else if (y2 + x2 + z2 <= rb) {
                             state = world.getBlockState(POS);
                             if (state.is(CommonBlockTags.END_STONES) && world.isEmptyBlock(POS.above())) {
-                                BlocksHelper.setWithoutUpdate(world, POS, EndBlocks.END_MOSS);
+                                BlocksHelper.setWithoutUpdate(world, POS, EndTerrainBlocks.END_MOSS);
                             } else if (y < waterLevel) {
                                 if (world.isEmptyBlock(POS.above())) {
                                     state = borderMaterial;
                                     BlocksHelper.setWithoutUpdate(
                                             world,
                                             POS,
-                                            random.nextBoolean() ? state : EndBlocks.ENDSTONE_DUST.defaultBlockState()
+                                            random.nextBoolean() ? state : EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState()
                                     );
                                     BlocksHelper.setWithoutUpdate(world, POS.below(), END_STONE);
                                 } else {
                                     BlocksHelper.setWithoutUpdate(
                                             world,
                                             POS,
-                                            EndBlocks.ENDSTONE_DUST.defaultBlockState()
+                                            EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState()
                                     );
                                     BlocksHelper.setWithoutUpdate(world, POS.below(), END_STONE);
                                 }
@@ -227,8 +240,8 @@ public class DesertLakeFeature extends DefaultFeature {
 
         BlockFixer.fixBlocks(
                 world,
-                new BlockPos(minX - 2, waterLevel - 2, minZ - 2),
-                new BlockPos(maxX + 2, blockPos.getY() + 20, maxZ + 2)
+                new BlockPos(zone.clampX(minX - 2), waterLevel - 2, zone.clampZ(minZ - 2)),
+                new BlockPos(zone.clampX(maxX + 2), blockPos.getY() + 20, zone.clampZ(maxZ + 2))
         );
 
         return true;
@@ -236,7 +249,7 @@ public class DesertLakeFeature extends DefaultFeature {
 
     private boolean canReplace(BlockState state) {
         return state.is(CommonBlockTags.END_STONES)
-                || state.is(EndBlocks.ENDSTONE_DUST)
+                || state.is(EndTerrainBlocks.ENDSTONE_DUST)
                 || BlocksHelper.replaceableOrPlant(state)
                 || state.is(CommonBlockTags.WATER_PLANT);
     }

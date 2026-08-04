@@ -12,6 +12,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.RandomState;
+import org.betterx.betterend.util.WorldgenDebug;
+
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 
@@ -33,11 +35,41 @@ public abstract class FeatureBaseStructure extends Structure {
                 context.randomState()
         );
         if (pos.getY() >= 10) {
+            WorldgenDebug.log(
+                    "%s: generation point ACCEPTED at %s (chunk %s)",
+                    getClass().getSimpleName(), pos, context.chunkPos()
+            );
             return Optional.of(new Structure.GenerationStub(pos, (structurePiecesBuilder) -> {
                 generatePieces(structurePiecesBuilder, context);
             }));
         }
+        WorldgenDebug.log(
+                "%s: generation point REJECTED (sampled surface y=%d < 10, i.e. no terrain) at chunk %s",
+                getClass().getSimpleName(), pos.getY(), context.chunkPos()
+        );
         return Optional.empty();
+    }
+
+    /**
+     * Generation point for structures that build SELF-SUPPORTING shapes in the open void (SDF
+     * islands, giant ice stars): no terrain gate, because their whole purpose is to generate where
+     * nothing exists - the default {@link #findGenerationPoint}'s y >= 10 terrain gate would reject
+     * exactly the chunks they are meant for. The stub sits at the chunk centre at {@code stubY};
+     * the structure's biome check at that position still applies and is the only gate needed.
+     */
+    protected Optional<GenerationStub> findVoidGenerationPoint(GenerationContext context, int stubY) {
+        final BlockPos pos = new BlockPos(
+                context.chunkPos().getBlockX(8),
+                stubY,
+                context.chunkPos().getBlockZ(8)
+        );
+        WorldgenDebug.log(
+                "%s: void generation point at %s (chunk %s)",
+                getClass().getSimpleName(), pos, context.chunkPos()
+        );
+        return Optional.of(new Structure.GenerationStub(pos, (structurePiecesBuilder) -> {
+            generatePieces(structurePiecesBuilder, context);
+        }));
     }
 
     protected Holder<Biome> getNoiseBiome(ChunkGenerator cg, RandomState rState, int i, int j, int k) {
@@ -49,7 +81,9 @@ public abstract class FeatureBaseStructure extends Structure {
             Structure.GenerationContext context
     );
 
-    private static BlockPos getGenerationHeight(
+    // Package-visible so LakeWaterLevels can replicate the generation-point gate for neighbouring
+    // megalake placements without duplicating this logic.
+    static BlockPos getGenerationHeight(
             ChunkPos chunkPos,
             ChunkGenerator chunkGenerator,
             LevelHeightAccessor levelHeightAccessor,

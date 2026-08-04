@@ -8,12 +8,16 @@ import org.betterx.betterend.world.features.VineFeatureConfig;
 import org.betterx.betterend.world.features.bushes.BushFeature;
 import org.betterx.betterend.world.features.bushes.BushFeatureConfig;
 import org.betterx.betterend.world.features.terrain.*;
-import org.betterx.wover.feature.api.configured.ConfiguredFeatureKey;
-import org.betterx.wover.feature.api.configured.ConfiguredFeatureManager;
-import org.betterx.wover.feature.api.configured.configurators.WithConfiguration;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterConfig;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
+import de.ambertation.wover.feature.api.configured.ConfiguredFeatureKey;
+import de.ambertation.wover.feature.api.configured.ConfiguredFeatureManager;
+import de.ambertation.wover.feature.api.configured.configurators.WithConfiguration;
 
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
 
 public class EndConfiguredCaveFeatures {
     public static final ConfiguredFeatureKey<WithConfiguration<SmaragdantCrystalFeature, NoneFeatureConfiguration>> SMARAGDANT_CRYSTAL = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("smaragdant_crystal"), EndFeatures.SMARAGDANT_CRYSTAL_FEATURE);
@@ -31,5 +35,13 @@ public class EndConfiguredCaveFeatures {
     public static final ConfiguredFeatureKey<WithConfiguration<StalactiteFeature, StalactiteFeatureConfig>> END_STONE_WITH_CAVEMOSS_STALAGMITE = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("end_stone_with_cavemoss_stalagmite"), EndFeatures.STALACTITE_FEATURE);
 
     public static final ConfiguredFeatureKey<WithConfiguration<CavePumpkinFeature, NoneFeatureConfiguration>> CAVE_PUMPKIN = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_pumpkin"), EndFeatures.CAVE_PUMPKIN_FEATURE);
+
+    // WP4.3: dripstone-style stalactite clusters (own their per-column floor/ceiling placement).
+    public static final ConfiguredFeatureKey<WithConfiguration<StalactiteClusterFeature, StalactiteClusterConfig>> STALACTITE_CLUSTER_PLAIN = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("stalactite_cluster_plain"), EndFeatures.STALACTITE_CLUSTER);
+    public static final ConfiguredFeatureKey<WithConfiguration<StalactiteClusterFeature, StalactiteClusterConfig>> STALACTITE_CLUSTER_CAVEMOSS = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("stalactite_cluster_cavemoss"), EndFeatures.STALACTITE_CLUSTER);
+
+    // WP4.4: lush cave vegetation patches (vanilla VegetationPatchFeature, data-only).
+    public static final ConfiguredFeatureKey<WithConfiguration<Feature<VegetationPatchConfiguration>, VegetationPatchConfiguration>> CAVE_LUSH_FLOOR_PATCH = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_lush_floor_patch"), Feature.VEGETATION_PATCH);
+    public static final ConfiguredFeatureKey<WithConfiguration<Feature<VegetationPatchConfiguration>, VegetationPatchConfiguration>> CAVE_LUSH_CEILING_PATCH = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_lush_ceiling_patch"), Feature.VEGETATION_PATCH);
 
 }

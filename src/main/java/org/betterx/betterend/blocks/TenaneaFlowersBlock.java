@@ -23,7 +23,7 @@ public class TenaneaFlowersBlock extends BaseVineBlock implements CustomColorPro
     public static final Vec3i[] COLORS;
 
     public TenaneaFlowersBlock(BlockBehaviour.Properties props) {
-        super(props, 15);
+        super(props);
     }
 
     @Override

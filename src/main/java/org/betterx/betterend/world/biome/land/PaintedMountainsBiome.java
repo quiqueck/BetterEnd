@@ -1,6 +1,9 @@
 package org.betterx.betterend.world.biome.land;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
@@ -9,8 +12,8 @@ import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.surface.VerticalBandNoiseCondition;
-import org.betterx.wover.surface.api.SurfaceRuleBuilder;
-import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
+import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
+import de.ambertation.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
@@ -42,7 +45,7 @@ public class PaintedMountainsBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.ENDSTONE_DUST.defaultBlockState();
+                return EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState();
             }
 
             public SurfaceRuleBuilder surface() {
@@ -51,11 +54,11 @@ public class PaintedMountainsBiome extends EndBiome.Config {
                 SurfaceRules.RuleSource surfaceBlockRule = new SwitchRuleSource(
                         VerticalBandNoiseCondition.DEFAULT,
                         List.of(
-                                SurfaceRules.state(EndBlocks.FLAVOLITE.getBlock(SlotType.SOURCE).defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.VIOLECITE.getBlock(SlotType.SOURCE).defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.VIRID_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.AZURE_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.SANDY_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState())
+                                SurfaceRules.state(EndStoneBlocks.FLAVOLITE.getBlock(SlotType.SOURCE).defaultBlockState()),
+                                SurfaceRules.state(EndStoneBlocks.VIOLECITE.getBlock(SlotType.SOURCE).defaultBlockState()),
+                                SurfaceRules.state(EndStoneBlocks.VIRID_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState()),
+                                SurfaceRules.state(EndStoneBlocks.AZURE_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState()),
+                                SurfaceRules.state(EndStoneBlocks.SANDY_JADESTONE.getBlock(SlotType.SOURCE).defaultBlockState())
                         )
                 );
                 return SurfaceRuleBuilder.start().rule(surfaceBlockRule, 9);

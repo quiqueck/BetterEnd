@@ -1,15 +1,19 @@
 package org.betterx.datagen.betterend.worldgen.features;
 
+
+import org.betterx.betterend.registry.block.EndMetalBlocks;
+import org.betterx.betterend.registry.block.EndOreBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import static org.betterx.betterend.complexmaterials.MetalMaterial.ORE;
 import org.betterx.betterend.complexmaterials.StoneMaterial;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndFeatures;
 import org.betterx.betterend.registry.features.EndOreFeatures;
 import org.betterx.betterend.world.features.terrain.OreLayerFeatureConfig;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.multi.WoverFeatureProvider;
-import org.betterx.wover.feature.api.placed.PlacedFeatureKey;
-import org.betterx.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.multi.WoverFeatureProvider;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureKey;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.block.Block;
@@ -31,13 +35,13 @@ public class OreFeatureProvider extends WoverFeatureProvider {
 
     @Override
     protected void bootstrapPlaced(BootstrapContext<PlacedFeature> context) {
-        registerOre(context, EndOreFeatures.THALLASIUM_ORE, EndBlocks.THALLASIUM.getBlock(ORE), 24, 8);
-        registerOre(context, EndOreFeatures.ENDER_ORE, EndBlocks.ENDER_ORE, 12, 4);
-        registerOre(context, EndOreFeatures.AMBER_ORE, EndBlocks.AMBER_ORE, 60, 6);
-        registerOre(context, EndOreFeatures.DRAGON_BONE_BLOCK_ORE, EndBlocks.DRAGON_BONE_BLOCK, 24, 8);
+        registerOre(context, EndOreFeatures.THALLASIUM_ORE, EndMetalBlocks.THALLASIUM.getBlock(ORE), 24, 8);
+        registerOre(context, EndOreFeatures.ENDER_ORE, EndOreBlocks.ENDER_ORE, 12, 4);
+        registerOre(context, EndOreFeatures.AMBER_ORE, EndOreBlocks.AMBER_ORE, 60, 6);
+        registerOre(context, EndOreFeatures.DRAGON_BONE_BLOCK_ORE, EndStoneBlocks.DRAGON_BONE_BLOCK, 24, 8);
 
-        registerLayer(context, EndOreFeatures.VIOLECITE_LAYER, EndBlocks.VIOLECITE, 15, 16, 128, 8);
-        registerLayer(context, EndOreFeatures.FLAVOLITE_LAYER, EndBlocks.FLAVOLITE, 12, 16, 128, 6);
+        registerLayer(context, EndOreFeatures.VIOLECITE_LAYER, EndStoneBlocks.VIOLECITE, 15, 16, 128, 8);
+        registerLayer(context, EndOreFeatures.FLAVOLITE_LAYER, EndStoneBlocks.FLAVOLITE, 12, 16, 128, 6);
     }
 
     private void registerOre(

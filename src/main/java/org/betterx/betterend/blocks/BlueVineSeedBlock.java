@@ -1,11 +1,14 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndLightBlocks;
+import org.betterx.betterend.registry.block.EndVineBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
+import org.betterx.bclib.blocks.BasePlantWithAgeBlock;
 import org.betterx.betterend.blocks.basis.FurBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,7 +17,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlueVineSeedBlock extends EndPlantWithAgeBlock {
+public class BlueVineSeedBlock extends BasePlantWithAgeBlock {
     public BlueVineSeedBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -29,21 +32,21 @@ public class BlueVineSeedBlock extends EndPlantWithAgeBlock {
         BlocksHelper.setWithoutUpdate(
                 world,
                 pos,
-                EndBlocks.BLUE_VINE.defaultBlockState()
+                EndVineBlocks.BLUE_VINE.defaultBlockState()
                                    .setValue(BlockProperties.TRIPLE_SHAPE, BlockProperties.TripleShape.BOTTOM)
         );
         for (int i = 1; i < height; i++) {
             BlocksHelper.setWithoutUpdate(
                     world,
                     pos.above(i),
-                    EndBlocks.BLUE_VINE.defaultBlockState()
+                    EndVineBlocks.BLUE_VINE.defaultBlockState()
                                        .setValue(BlockProperties.TRIPLE_SHAPE, BlockProperties.TripleShape.MIDDLE)
             );
         }
         BlocksHelper.setWithoutUpdate(
                 world,
                 pos.above(height),
-                EndBlocks.BLUE_VINE.defaultBlockState()
+                EndVineBlocks.BLUE_VINE.defaultBlockState()
                                    .setValue(BlockProperties.TRIPLE_SHAPE, BlockProperties.TripleShape.TOP)
         );
         placeLantern(world, pos.above(height + 1));
@@ -53,7 +56,7 @@ public class BlueVineSeedBlock extends EndPlantWithAgeBlock {
         BlocksHelper.setWithoutUpdate(
                 world,
                 pos,
-                EndBlocks.BLUE_VINE_LANTERN.defaultBlockState().setValue(BlueVineLanternBlock.NATURAL, true)
+                EndLightBlocks.BLUE_VINE_LANTERN.defaultBlockState().setValue(BlueVineLanternBlock.NATURAL, true)
         );
         for (Direction dir : BlocksHelper.HORIZONTAL) {
             BlockPos p = pos.relative(dir);
@@ -61,7 +64,7 @@ public class BlueVineSeedBlock extends EndPlantWithAgeBlock {
                 BlocksHelper.setWithoutUpdate(
                         world,
                         p,
-                        EndBlocks.BLUE_VINE_FUR.defaultBlockState().setValue(FurBlock.FACING, dir)
+                        EndVineBlocks.BLUE_VINE_FUR.defaultBlockState().setValue(FurBlock.FACING, dir)
                 );
             }
         }
@@ -69,7 +72,7 @@ public class BlueVineSeedBlock extends EndPlantWithAgeBlock {
             BlocksHelper.setWithoutUpdate(
                     world,
                     pos.above(),
-                    EndBlocks.BLUE_VINE_FUR.defaultBlockState().setValue(FurBlock.FACING, Direction.UP)
+                    EndVineBlocks.BLUE_VINE_FUR.defaultBlockState().setValue(FurBlock.FACING, Direction.UP)
             );
         }
     }

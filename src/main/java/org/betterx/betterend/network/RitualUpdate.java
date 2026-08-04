@@ -1,101 +1,53 @@
 package org.betterx.betterend.network;
 
-import de.ambertation.wunderlib.network.ClientBoundNetworkPayload;
-import de.ambertation.wunderlib.network.ClientBoundPacketHandler;
-import org.betterx.bclib.api.v2.dataexchange.BaseDataHandler;
+import de.ambertation.wunderlib.network.ClientBoundMessage;
+import de.ambertation.wunderlib.network.NetworkRegistry;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.rituals.EternalRitual;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+public record RitualUpdate(BlockPos center, Direction.Axis axis, byte flags) {
+    static final byte ACTIVE_FLAG = 1;
+    static final byte WILL_ACTIVATE_FLAG = 2;
 
-public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload> {
-    public static final ResourceLocation CHANNEL = BetterEnd.C.mk("ritual_update");
-    public static final RitualUpdate INSTANCE = new RitualUpdate();
+    // StreamCodec.composite() accepts StreamCodec<? super B, T> contravariantly, so a plain
+    // StreamCodec<ByteBuf, Axis> (ByteBufCodecs.STRING_UTF8 isn't generic in its buffer type) is fine here
+    // without pinning it to RegistryFriendlyByteBuf.
+    private static final StreamCodec<io.netty.buffer.ByteBuf, Direction.Axis> AXIS_CODEC =
+            ByteBufCodecs.STRING_UTF8.map(Direction.Axis::byName, Direction.Axis::getName);
 
-    public RitualUpdate() {
-        super(
-                CHANNEL,
-                Payload::new
-        );
+    public static final ClientBoundMessage<RitualUpdate> KEY = NetworkRegistry.registerClientBound(
+            BetterEnd.C.mk("ritual_update"),
+            StreamCodec.composite(
+                    BlockPos.STREAM_CODEC, RitualUpdate::center,
+                    AXIS_CODEC, RitualUpdate::axis,
+                    ByteBufCodecs.BYTE, RitualUpdate::flags,
+                    RitualUpdate::new
+            )
+    );
+
+    public static RitualUpdate of(EternalRitual ritual) {
+        byte flags = 0;
+        if (ritual.isActive()) flags |= ACTIVE_FLAG;
+        if (ritual.willActivate()) flags |= WILL_ACTIVATE_FLAG;
+        return new RitualUpdate(ritual.getCenter(), ritual.getAxis(), flags);
     }
 
-    public static class Payload extends ClientBoundNetworkPayload<Payload> {
-        byte flags;
-        BlockPos center;
-        Direction.Axis axis;
-
-        public Payload(EternalRitual ritual) {
-            super(INSTANCE);
-            this.center = ritual.getCenter();
-            this.axis = ritual.getAxis();
-
-            if (ritual.isActive()) {
-                this.flags |= ACTIVE_FLAG;
-            }
-            if (ritual.willActivate()) {
-                this.flags |= WILL_ACTIVATE_FLAG;
-            }
-        }
-
-        public Payload(RegistryFriendlyByteBuf buf) {
-            super(INSTANCE);
-            center = buf.readBlockPos();
-            axis = Direction.Axis.byName(BaseDataHandler.readString(buf));
-            flags = buf.readByte();
-        }
-
-
-        @Override
-        protected void write(RegistryFriendlyByteBuf buf) {
-            buf.writeBlockPos(center);
-            BaseDataHandler.writeString(buf, axis.getName());
-            buf.writeByte(flags);
-        }
-
-        @Override
-        protected void prepareOnServer(ServerPlayer player) {
-
-        }
-
-        @Override
-        protected void processOnClient(PacketSender responseSender) {
-
-        }
-
-        @Override
-        @Environment(EnvType.CLIENT)
-        protected void processOnGameThread(Minecraft client) {
-            EternalRitual.updateActiveStateOnPedestals(
-                    center,
-                    axis,
-                    (flags & ACTIVE_FLAG) != 0,
-                    (flags & WILL_ACTIVATE_FLAG) != 0,
-                    client.level,
-                    null
-            );
-        }
+    public boolean isActive() {
+        return (flags & ACTIVE_FLAG) != 0;
     }
 
-    Payload payload;
-    private static final byte ACTIVE_FLAG = 1;
-    private static final byte WILL_ACTIVATE_FLAG = 2;
-
-    public RitualUpdate(EternalRitual ritual) {
-        this();
-        this.payload = new Payload(ritual);
+    public boolean willActivate() {
+        return (flags & WILL_ACTIVATE_FLAG) != 0;
     }
 
-    public void sendToClient(ServerLevel level) {
-        super.sendToClient(level, payload);
+    public static void send(ServerLevel level, EternalRitual ritual) {
+        NetworkRegistry.sendToClient(level, KEY, of(ritual));
     }
 }

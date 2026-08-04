@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "end_metal_chain",
+  "group": "metal_chain",
   "key": {
     "#": "betterend:terminite_ingot",
     "N": "betterend:terminite_nugget"

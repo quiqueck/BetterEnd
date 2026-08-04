@@ -1,10 +1,9 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,10 +15,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;

@@ -1,5 +1,10 @@
 package org.betterx.betterend.tab;
 
+
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
+import org.betterx.betterend.registry.block.EndWoodBlocks;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.bclib.trait.block.PlantLikeBlockTrait;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
@@ -8,18 +13,18 @@ import org.betterx.betterend.registry.EndItems;
 public class CreativeTabs {
 
     public static void register() {
-        org.betterx.wover.tabs.api.CreativeTabs
+        de.ambertation.wover.tabs.api.CreativeTabs
                 .start(BetterEnd.C)
                 .createTab("nature")
                 .setPredicate(item -> PlantLikeBlockTrait.TAB_PREDICATE.contains(item)
-                        || item == EndItems.END_LILY_LEAF
-                        || item == EndItems.END_LILY_LEAF_DRIED
+                        || item == EndResourceItems.END_LILY_LEAF
+                        || item == EndResourceItems.END_LILY_LEAF_DRIED
                 )
-                .setIcon(EndBlocks.TENANEA_FLOWERS)
+                .setIcon(EndWoodBlocks.TENANEA_FLOWERS)
                 .buildAndAdd()
-                .createBlockOnlyTab(EndBlocks.END_MYCELIUM)
+                .createBlockOnlyTab(EndTerrainBlocks.END_MYCELIUM)
                 .buildAndAdd()
-                .createItemOnlyTab(EndItems.ETERNAL_CRYSTAL)
+                .createItemOnlyTab(EndResourceItems.ETERNAL_CRYSTAL)
                 .buildAndAdd()
                 .processRegistries()
                 .registerAllTabs();

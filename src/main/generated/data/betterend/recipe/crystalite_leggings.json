@@ -20,17 +20,17 @@
         },
         {
           "type": "minecraft:armor",
-          "amount": 6.4,
-          "id": "betterend:armor_boost",
+          "amount": 6.0,
+          "id": "betterend:armor_boost_leggings",
           "operation": "add_value",
-          "slot": "chest"
+          "slot": "legs"
         },
         {
           "type": "minecraft:armor_toughness",
-          "amount": 0.9600000381469727,
-          "id": "betterend:toughness_boost",
+          "amount": 1.2000000476837158,
+          "id": "betterend:toughness_boost_leggings",
           "operation": "add_value",
-          "slot": "chest"
+          "slot": "legs"
         }
       ]
     }

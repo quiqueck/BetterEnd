@@ -5,12 +5,6 @@
     "type": "minecraft:sequence",
     "sequence": [
       {
-        "type": "minecraft:block",
-        "result_state": {
-          "Name": "betterend:umbralith"
-        }
-      },
-      {
         "type": "minecraft:condition",
         "if_true": {
           "type": "minecraft:stone_depth",
@@ -57,6 +51,12 @@
             "type": "betterend:umbra_srf",
             "umbra_srf": 0
           }
+        }
+      },
+      {
+        "type": "minecraft:block",
+        "result_state": {
+          "Name": "betterend:umbralith"
         }
       }
     ]

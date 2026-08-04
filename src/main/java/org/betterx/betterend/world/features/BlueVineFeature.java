@@ -1,8 +1,10 @@
 package org.betterx.betterend.world.features;
 
+
+import org.betterx.betterend.registry.block.EndVineBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
+import org.betterx.bclib.blocks.BasePlantWithAgeBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -31,7 +33,7 @@ public class BlueVineFeature extends ScatterFeature<ScatterFeatureConfig> {
                 center.getZ() - blockPos.getZ()
         ) / radius * 0.6F + random.nextFloat() * 0.4F;
         small = d > 0.5F;
-        return EndBlocks.BLUE_VINE_SEED.defaultBlockState().canSurvive(world, blockPos);
+        return EndVineBlocks.BLUE_VINE_SEED.defaultBlockState().canSurvive(world, blockPos);
     }
 
     @Override
@@ -40,10 +42,10 @@ public class BlueVineFeature extends ScatterFeature<ScatterFeatureConfig> {
             BlocksHelper.setWithoutUpdate(
                     world,
                     blockPos,
-                    EndBlocks.BLUE_VINE_SEED.defaultBlockState().setValue(EndPlantWithAgeBlock.AGE, random.nextInt(4))
+                    EndVineBlocks.BLUE_VINE_SEED.defaultBlockState().setValue(BasePlantWithAgeBlock.AGE, random.nextInt(4))
             );
         } else {
-            EndPlantWithAgeBlock seed = ((EndPlantWithAgeBlock) EndBlocks.BLUE_VINE_SEED);
+            BasePlantWithAgeBlock seed = ((BasePlantWithAgeBlock) EndVineBlocks.BLUE_VINE_SEED);
             seed.growAdult(world, random, blockPos);
         }
     }

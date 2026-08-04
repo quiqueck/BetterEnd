@@ -4,12 +4,12 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.features.EndOreFeatures;
 import org.betterx.betterend.registry.features.EndTerrainFeatures;
-import org.betterx.wover.biome.api.modification.BiomeModification;
-import org.betterx.wover.biome.api.modification.BiomeModificationRegistry;
-import org.betterx.wover.biome.api.modification.predicates.BiomePredicate;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.WoverRegistryContentProvider;
-import org.betterx.wover.tag.api.predefined.CommonBiomeTags;
+import de.ambertation.wover.biome.api.modification.BiomeModification;
+import de.ambertation.wover.biome.api.modification.BiomeModificationRegistry;
+import de.ambertation.wover.biome.api.modification.predicates.BiomePredicate;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.WoverRegistryContentProvider;
+import de.ambertation.wover.tag.api.predefined.CommonBiomeTags;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 

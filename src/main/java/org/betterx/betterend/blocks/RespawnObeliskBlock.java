@@ -1,13 +1,17 @@
 package org.betterx.betterend.blocks;
 
+
+
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.particle.InfusionParticleType;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.ui.ColorUtil;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.core.BlockPos;
@@ -150,7 +154,7 @@ public class RespawnObeliskBlock extends Block implements CustomColorProvider {
 
     @Override
     public BlockColor getProvider() {
-        return ((CustomColorProvider) EndBlocks.AURORA_CRYSTAL).getProvider();
+        return ((CustomColorProvider) EndCrystalBlocks.AURORA_CRYSTAL).getProvider();
     }
 
     @Override
@@ -163,7 +167,7 @@ public class RespawnObeliskBlock extends Block implements CustomColorProvider {
             @NotNull InteractionHand hand,
             @NotNull BlockHitResult blockHitResult
     ) {
-        boolean canActivate = itemStack.getItem() == EndItems.AMBER_GEM && itemStack.getCount() > 5;
+        boolean canActivate = itemStack.getItem() == EndResourceItems.AMBER_GEM && itemStack.getCount() > 5;
         if (hand != InteractionHand.MAIN_HAND || !canActivate) {
             if (!level.isClientSide && !(itemStack.getItem() instanceof BlockItem) && !player.isCreative()) {
                 ServerPlayer serverPlayerEntity = (ServerPlayer) player;
@@ -183,7 +187,7 @@ public class RespawnObeliskBlock extends Block implements CustomColorProvider {
             double px = pos.getX() + 0.5;
             double py = pos.getY() + 0.5;
             double pz = pos.getZ() + 0.5;
-            InfusionParticleType particle = new InfusionParticleType(new ItemStack(EndItems.AMBER_GEM));
+            InfusionParticleType particle = new InfusionParticleType(new ItemStack(EndResourceItems.AMBER_GEM));
             if (level instanceof ServerLevel) {
                 double py1 = py;
                 double py2 = py - 0.2;

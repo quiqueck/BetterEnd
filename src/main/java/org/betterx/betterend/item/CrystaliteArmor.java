@@ -3,10 +3,10 @@ package org.betterx.betterend.item;
 import org.betterx.betterend.effects.EndStatusEffects;
 import org.betterx.betterend.item.material.EndArmorTier;
 import org.betterx.betterend.trait.item.EndArmorItemTraitBuilder;
-import org.betterx.wover.complex.api.equipment.ArmorSlot;
-import org.betterx.wover.item.api.ArmorItemDefinition;
-import org.betterx.wover.item.api.ItemDefinition;
-import org.betterx.wover.item.api.ItemRegistry;
+import de.ambertation.wover.complex.api.equipment.ArmorSlot;
+import de.ambertation.wover.item.api.ArmorItemDefinition;
+import de.ambertation.wover.item.api.ItemDefinition;
+import de.ambertation.wover.item.api.ItemRegistry;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -31,6 +31,8 @@ public class CrystaliteArmor extends Item {
 
     public final static MutableComponent CHEST_DESC;
     public final static MutableComponent BOOTS_DESC;
+    public final static MutableComponent HELMET_DESC;
+    public final static MutableComponent LEGGINGS_DESC;
 
     public CrystaliteArmor(ItemDefinition<?, ?> definition) {
         super(definition.getProperties());
@@ -65,5 +67,9 @@ public class CrystaliteArmor extends Item {
         CHEST_DESC.setStyle(descStyle);
         BOOTS_DESC = Component.translatable("tooltip.armor.crystalite_boots");
         BOOTS_DESC.setStyle(descStyle);
+        HELMET_DESC = Component.translatable("tooltip.armor.crystalite_helmet");
+        HELMET_DESC.setStyle(descStyle);
+        LEGGINGS_DESC = Component.translatable("tooltip.armor.crystalite_leggings");
+        LEGGINGS_DESC.setStyle(descStyle);
     }
 }

@@ -2,7 +2,7 @@ package org.betterx.betterend.world.features;
 
 import org.betterx.bclib.util.StructureHelper;
 import org.betterx.betterend.util.LootTableUtil;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

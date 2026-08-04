@@ -1,8 +1,11 @@
 package org.betterx.betterend.world.features.trees;
 
+
+import org.betterx.betterend.registry.block.EndVineBlocks;
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.*;
 import org.betterx.bclib.sdf.primitive.SDFSphere;
@@ -12,7 +15,8 @@ import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.blocks.basis.FurBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.feature.api.WriteZone;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -38,6 +42,13 @@ public class LucerniaFeature extends DefaultFeature {
     private static final List<Vector3f> SPLINE;
     private static final List<Vector3f> ROOT;
 
+    /**
+     * How far past its nominal radius a leaf ball's surface reaches: {@code noise * 2} plus
+     * {@code randRange(-1.5, 1.5)}, both applied through {@code SDFDisplacement}, which adds to the
+     * distance - so the negative half of each range grows the shape.
+     */
+    private static final float LEAF_BALL_BULGE = 3.5F;
+
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
         final RandomSource random = featureConfig.random();
@@ -45,6 +56,12 @@ public class LucerniaFeature extends DefaultFeature {
         final WorldGenLevel world = featureConfig.level();
         final NoneFeatureConfiguration config = featureConfig.config();
         if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
+
+        // Branch splines are scaled by up to `size` (up to 20) and rotated to any angle, so the fillSpline
+        // below, the leaf-ball flood-fill, and the root splines can all read/write past the 3x3 chunks a
+        // feature may touch. Clip every one of them to the write zone; see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+        final List<BlockPos> outerLeaves = Lists.newArrayList();
 
         float size = MHelper.randRange(12, 20, random);
         int count = (int) (size * 0.3F);
@@ -56,7 +73,14 @@ public class LucerniaFeature extends DefaultFeature {
             SplineHelper.rotateSpline(spline, angle);
             SplineHelper.scale(spline, size * MHelper.randRange(0.5F, 1F, random));
             SplineHelper.offsetParts(spline, random, 1F, 0, 1F);
-            SplineHelper.fillSpline(spline, world, EndBlocks.LUCERNIA.getBark().defaultBlockState(), pos, REPLACE);
+            SplineHelper.fillSpline(
+                    spline,
+                    world,
+                    EndWoodBlocks.LUCERNIA.getBark().defaultBlockState(),
+                    pos,
+                    REPLACE,
+                    zone.toBoundingBox()
+            );
             Vector3f last = spline.get(spline.size() - 1);
             float leavesRadius = (size * 0.13F + MHelper.randRange(0.8F, 1.5F, random)) * 1.4F;
             OpenSimplexNoise noise = new OpenSimplexNoise(random.nextLong());
@@ -66,12 +90,20 @@ public class LucerniaFeature extends DefaultFeature {
                     leavesRadius,
                     random,
                     noise,
-                    config != null
+                    config != null,
+                    zone,
+                    outerLeaves
             );
         }
 
-        makeRoots(world, pos.offset(0, MHelper.randRange(3, 5, random), 0), size * 0.35F, random);
+        makeRoots(world, pos.offset(0, MHelper.randRange(3, 5, random), 0), size * 0.35F, random, zone);
 
+        // Drop outer leaves the canopy left clinging to nothing - see EndTreeHelper.pruneUnsupportedFur.
+        // Run once for the whole tree, after every ball: a later ball routinely overwrites an earlier one's
+        // leaves.
+        EndTreeHelper.pruneUnsupportedFur(world, outerLeaves);
+
+        EndTreeHelper.waterlogSubmerged(world, pos, 20);
         return true;
     }
 
@@ -81,10 +113,16 @@ public class LucerniaFeature extends DefaultFeature {
             float radius,
             RandomSource random,
             OpenSimplexNoise noise,
-            boolean natural
+            boolean natural,
+            WriteZone zone,
+            List<BlockPos> outerLeaves
     ) {
+        // Size the ball to the room its centre has rather than letting the write bounds take a chord out
+        // of it; see EndTreeHelper.fitBallRadius. About one lucernia in twenty is affected.
+        radius = EndTreeHelper.fitBallRadius(zone, pos, radius, LEAF_BALL_BULGE, 2F);
+
         SDF sphere = new SDFSphere().setRadius(radius)
-                                    .setBlock(EndBlocks.LUCERNIA_LEAVES.defaultBlockState()
+                                    .setBlock(EndWoodBlocks.LUCERNIA_LEAVES.defaultBlockState()
                                                                        .setValue(LeavesBlock.DISTANCE, 6));
         SDF sub = new SDFScale().setScale(5).setSource(sphere);
         sub = new SDFTranslate().setTranslate(0, -radius * 5, 0).setSource(sub);
@@ -100,19 +138,19 @@ public class LucerniaFeature extends DefaultFeature {
         MutableBlockPos mut = new MutableBlockPos();
         for (Direction d1 : BlocksHelper.HORIZONTAL) {
             BlockPos p = mut.set(pos).move(Direction.UP).move(d1).immutable();
-            BlocksHelper.setWithoutUpdate(world, p, EndBlocks.LUCERNIA.getBark().defaultBlockState());
+            BlocksHelper.setWithoutUpdate(world, p, EndWoodBlocks.LUCERNIA.getBark().defaultBlockState());
             for (Direction d2 : BlocksHelper.HORIZONTAL) {
                 mut.set(p).move(Direction.UP).move(d2);
-                BlocksHelper.setWithoutUpdate(world, p, EndBlocks.LUCERNIA.getBark().defaultBlockState());
+                BlocksHelper.setWithoutUpdate(world, p, EndWoodBlocks.LUCERNIA.getBark().defaultBlockState());
             }
         }
 
-        BlockState top = EndBlocks.FILALUX.defaultBlockState().setValue(BlockProperties.TRIPLE_SHAPE, TripleShape.TOP);
-        BlockState middle = EndBlocks.FILALUX.defaultBlockState()
+        BlockState top = EndVineBlocks.FILALUX.defaultBlockState().setValue(BlockProperties.TRIPLE_SHAPE, TripleShape.TOP);
+        BlockState middle = EndVineBlocks.FILALUX.defaultBlockState()
                                              .setValue(BlockProperties.TRIPLE_SHAPE, TripleShape.MIDDLE);
-        BlockState bottom = EndBlocks.FILALUX.defaultBlockState()
+        BlockState bottom = EndVineBlocks.FILALUX.defaultBlockState()
                                              .setValue(BlockProperties.TRIPLE_SHAPE, TripleShape.BOTTOM);
-        BlockState outer = EndBlocks.LUCERNIA_OUTER_LEAVES.defaultBlockState();
+        BlockState outer = EndWoodBlocks.LUCERNIA_OUTER_LEAVES.defaultBlockState();
 
         List<BlockPos> support = Lists.newArrayList();
         sphere.addPostProcess((info) -> {
@@ -127,17 +165,19 @@ public class LucerniaFeature extends DefaultFeature {
                         return info.getState();
                     }
                 }
-                info.setState(EndBlocks.LUCERNIA.getBark().defaultBlockState());
+                info.setState(EndWoodBlocks.LUCERNIA.getBark().defaultBlockState());
             }
 
             MHelper.shuffle(DIRECTIONS, random);
             for (Direction d : DIRECTIONS) {
                 if (info.getState(d).isAir()) {
-                    info.setBlockPos(info.getPos().relative(d), outer.setValue(FurBlock.FACING, d));
+                    final BlockPos outerPos = info.getPos().relative(d);
+                    info.setBlockPos(outerPos, outer.setValue(FurBlock.FACING, d));
+                    outerLeaves.add(outerPos);
                 }
             }
 
-            if (EndBlocks.LUCERNIA.isTreeLog(info.getState())) {
+            if (EndWoodBlocks.LUCERNIA.isTreeLog(info.getState())) {
                 for (int x = -6; x < 7; x++) {
                     int ax = Math.abs(x);
                     mut.setX(x + info.getPos().getX());
@@ -163,15 +203,15 @@ public class LucerniaFeature extends DefaultFeature {
             }
             return info.getState();
         });
-        sphere.fillRecursiveIgnore(world, pos, IGNORE);
-        BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.LUCERNIA.getBark());
+        sphere.fillRecursiveIgnore(world, pos, zone.toBoundingBox(), IGNORE);
+        BlocksHelper.setWithoutUpdate(world, pos, EndWoodBlocks.LUCERNIA.getBark());
 
         support.forEach((bpos) -> {
             BlockState state = world.getBlockState(bpos);
-            if (state.isAir() || state.is(EndBlocks.LUCERNIA_OUTER_LEAVES)) {
+            if (state.isAir() || state.is(EndWoodBlocks.LUCERNIA_OUTER_LEAVES)) {
                 int count = MHelper.randRange(3, 8, random);
                 mut.set(bpos);
-                if (world.getBlockState(mut.above()).is(EndBlocks.LUCERNIA_LEAVES)) {
+                if (world.getBlockState(mut.above()).is(EndWoodBlocks.LUCERNIA_LEAVES)) {
                     BlocksHelper.setWithoutUpdate(world, mut, top);
                     for (int i = 1; i < count; i++) {
                         mut.setY(mut.getY() - 1);
@@ -187,7 +227,13 @@ public class LucerniaFeature extends DefaultFeature {
         });
     }
 
-    private void makeRoots(WorldGenLevel world, BlockPos pos, float radius, RandomSource random) {
+    private void makeRoots(
+            WorldGenLevel world,
+            BlockPos pos,
+            float radius,
+            RandomSource random,
+            WriteZone zone
+    ) {
         int count = (int) (radius * 1.5F);
         for (int i = 0; i < count; i++) {
             float angle = (float) i / (float) count * MHelper.PI2;
@@ -202,9 +248,10 @@ public class LucerniaFeature extends DefaultFeature {
                 SplineHelper.fillSplineForce(
                         branch,
                         world,
-                        EndBlocks.LUCERNIA.getBark().defaultBlockState(),
+                        EndWoodBlocks.LUCERNIA.getBark().defaultBlockState(),
                         pos,
-                        REPLACE
+                        REPLACE,
+                        zone.toBoundingBox()
                 );
             }
         }
@@ -215,13 +262,13 @@ public class LucerniaFeature extends DefaultFeature {
 			/*if (state.is(CommonBlockTags.END_STONES)) {
 				return true;
 			}*/
-            if (state.getBlock() == EndBlocks.LUCERNIA_LEAVES) {
+            if (state.getBlock() == EndWoodBlocks.LUCERNIA_LEAVES) {
                 return true;
             }
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.LUCERNIA::isTreeLog;
+        IGNORE = EndWoodBlocks.LUCERNIA::isTreeLog;
 
         SPLINE = Lists.newArrayList(
                 new Vector3f(0.00F, 0.00F, 0.00F),

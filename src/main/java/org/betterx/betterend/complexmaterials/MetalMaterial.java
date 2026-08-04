@@ -8,21 +8,19 @@ import org.betterx.betterend.complexmaterials.types.*;
 import org.betterx.betterend.item.material.ToolsWithHeadsSet;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTemplates;
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.block.api.trait.BlockTraits;
-import org.betterx.wover.complex.api.equipment.ArmorTier;
-import org.betterx.wover.complex.api.equipment.ToolTier;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.sets.api.blocks.BlockSet;
-import org.betterx.wover.sets.api.blocks.SlotFactory;
-import org.betterx.wover.sets.api.blocks.SlotMap;
-import org.betterx.wover.sets.api.blocks.SlotType;
-import org.betterx.wover.sets.api.blocks.slots.StoneSlots;
-import org.betterx.wover.sets.api.blocks.slots.WoodSlots;
-import org.betterx.wover.tag.api.TagManager;
-import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.complex.api.equipment.ArmorTier;
+import de.ambertation.wover.complex.api.equipment.ToolTier;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.*;
+import de.ambertation.wover.sets.api.blocks.slots.MetalSlots;
+import de.ambertation.wover.sets.api.blocks.slots.StoneSlots;
+import de.ambertation.wover.sets.api.blocks.slots.WoodSlots;
+import de.ambertation.wover.tag.api.TagManager;
+import de.ambertation.wover.tag.api.event.context.ItemTagBootstrapContext;
+import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -38,17 +36,17 @@ import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialManager.Material {
+public class MetalMaterial extends MetalBlockSet<MetalMaterial> implements MaterialManager.Material {
     public static final SlotType TILE = new SlotType("tile");
-    public static final SlotType ORE = new SlotType("ore");
-    public static final SlotType BARS = new SlotType("bars");
-    public static final SlotType CHAIN = new SlotType("chain");
+    public static final SlotType ORE = SlotType.ORE;
+    public static final SlotType BARS = SlotType.BARS;
+    public static final SlotType CHAIN = SlotType.CHAIN;
     public static final SlotType CHANDELIER = new SlotType("chandelier");
     public static final SlotType BULB_LANTERN = new SlotType("bulb_lantern");
     public static final SlotType ANVIL = new SlotType("anvil");
 
-    public static final SlotType INGOT = new SlotType("ingot");
-    public static final SlotType NUGGET = new SlotType("nugget");
+    public static final SlotType INGOT = SlotType.INGOT;
+    public static final SlotType NUGGET = SlotType.NUGGET;
 
     public ColoredMaterial bulb_lantern_colored;
 
@@ -59,6 +57,10 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
     public final ToolsWithHeadsSet equipment;
 
     private final Consumer<BlockDefinition<?, ?>> settingsSupplier;
+    /** Vanilla-style harvest-tier gate ({@code needs_stone_tool}/{@code needs_iron_tool}/...) applied to
+     *  every common block definition in this material's family (block, ore, tile, chain, bars, chandelier,
+     *  bulb lantern, anvil, slab, stairs, door, trapdoor, pressure plate), or {@code null} for wood-tier. */
+    private final @Nullable TagKey<Block> harvestTierTag;
 
     public static MetalMaterial makeNormal(
             String name,
@@ -67,6 +69,18 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
             ArmorTier armor,
             TagKey<Item> anvilTools,
             Supplier<SmithingTemplateItem> swordHandleTemplate
+    ) {
+        return makeNormal(name, color, material, armor, anvilTools, swordHandleTemplate, null);
+    }
+
+    public static MetalMaterial makeNormal(
+            String name,
+            MapColor color,
+            ToolTier material,
+            ArmorTier armor,
+            TagKey<Item> anvilTools,
+            Supplier<SmithingTemplateItem> swordHandleTemplate,
+            @Nullable TagKey<Block> harvestTierTag
     ) {
         return new MetalMaterial(
                 name,
@@ -77,7 +91,8 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 Items.STICK,
                 anvilTools,
                 () -> EndTemplates.HANDLE_ATTACHMENT,
-                swordHandleTemplate
+                swordHandleTemplate,
+                harvestTierTag
         );
     }
 
@@ -92,6 +107,20 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
             TagKey<Item> anvilTools,
             Supplier<SmithingTemplateItem> swordHandleTemplate
     ) {
+        return makeOreless(name, color, hardness, resistance, material, armor, anvilTools, swordHandleTemplate, null);
+    }
+
+    public static MetalMaterial makeOreless(
+            String name,
+            MapColor color,
+            float hardness,
+            float resistance,
+            ToolTier material,
+            ArmorTier armor,
+            TagKey<Item> anvilTools,
+            Supplier<SmithingTemplateItem> swordHandleTemplate,
+            @Nullable TagKey<Block> harvestTierTag
+    ) {
         return new MetalMaterial(
                 name,
                 false,
@@ -104,7 +133,8 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 Items.STICK,
                 anvilTools,
                 () -> EndTemplates.HANDLE_ATTACHMENT,
-                swordHandleTemplate
+                swordHandleTemplate,
+                harvestTierTag
         );
     }
 
@@ -117,10 +147,12 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
             Item handleItem,
             TagKey<Item> anvilTools,
             Supplier<SmithingTemplateItem> handleTemplate,
-            Supplier<SmithingTemplateItem> swordHandleTemplate
+            Supplier<SmithingTemplateItem> swordHandleTemplate,
+            @Nullable TagKey<Block> harvestTierTag
     ) {
         super(BetterEnd.C, name, SlotType.SOURCE);
         this.settingsSupplier = settingsSupplier;
+        this.harvestTierTag = harvestTierTag;
         equipment = new ToolsWithHeadsSet(
                 name, material, armor,
                 handleItem, handleTemplate, swordHandleTemplate,
@@ -154,6 +186,13 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 .requiresCorrectToolForDrops()
                 .sound(SoundType.IRON);
 
+        // Anvils are excluded: vanilla's own anvil/chipped_anvil/damaged_anvil carry no needs_*_tool tag
+        // (mineable/pickaxe only, any tier works) and aeternium_anvil - the one anvil the mineable-tags
+        // review does tier - gets it explicitly at its own registration site instead.
+        if (harvestTierTag != null && !slot.equals(ANVIL)) {
+            blockDefinition.addTags(harvestTierTag);
+        }
+
         settingsSupplier.accept(blockDefinition);
     }
 
@@ -171,8 +210,8 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 new SourceBlock(this),
                 oreSlot(),
                 new Tile(this),
-                new Chain(this),
-                new Bars(this),
+                MetalSlots.CHAIN,
+                MetalSlots.BARS,
                 Chandelier.SLOT,
                 BulbLantern.SLOT,
                 new Anvil(this.equipment.toolTier.level),
@@ -192,8 +231,16 @@ public class MetalMaterial extends BlockSet<MetalMaterial> implements MaterialMa
                 BulbVineLanternColoredBlock::new,
                 getBlock(BULB_LANTERN),
                 false,
-                def -> def.addTrait(ModCore.isDatagen() ? BulbVineLanternBlock.buildModel(null, null) : null)
-                          .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
+                def -> {
+                    def.addTrait(ModCore.isDatagen() ? BulbVineLanternBlock.buildModel(null, null) : null)
+                       .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe());
+                    // The colored variants are built via replacePropertiesWithCopy(source), which does not
+                    // carry tags - so the family's harvest-tier gate must be re-applied here explicitly,
+                    // same as the base bulb_lantern gets it through addCommonBlockDefinitions.
+                    if (harvestTierTag != null) {
+                        def.addTags(harvestTierTag);
+                    }
+                }
         );
 
         return this;

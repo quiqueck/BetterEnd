@@ -1,7 +1,10 @@
 package org.betterx.betterend.world.features;
 
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+
+import org.betterx.betterend.registry.block.EndLightBlocks;
+import org.betterx.betterend.registry.block.EndVineBlocks;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
@@ -16,9 +19,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 public class FilaluxFeature extends SkyScatterFeature {
     @Override
     public void generate(ScatterFeatureConfig cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos) {
-        BlockState vine = EndBlocks.FILALUX.defaultBlockState();
-        BlockState wings = EndBlocks.FILALUX_WINGS.defaultBlockState();
-        BlocksHelper.setWithoutUpdate(world, blockPos, EndBlocks.FILALUX_LANTERN);
+        BlockState vine = EndVineBlocks.FILALUX.defaultBlockState();
+        BlockState wings = EndVineBlocks.FILALUX_WINGS.defaultBlockState();
+        BlocksHelper.setWithoutUpdate(world, blockPos, EndLightBlocks.FILALUX_LANTERN);
         BlocksHelper.setWithoutUpdate(
                 world,
                 blockPos.above(),

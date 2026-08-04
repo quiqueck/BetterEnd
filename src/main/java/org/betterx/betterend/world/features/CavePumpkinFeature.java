@@ -1,10 +1,12 @@
 package org.betterx.betterend.world.features;
 
+
+import org.betterx.betterend.registry.block.EndCropBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.EndBlockProperties;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -28,13 +30,13 @@ public class CavePumpkinFeature extends DefaultFeature {
         BlocksHelper.setWithoutUpdate(
                 world,
                 pos,
-                EndBlocks.CAVE_PUMPKIN_SEED.defaultBlockState().setValue(EndBlockProperties.AGE, age)
+                EndCropBlocks.CAVE_PUMPKIN_SEED.defaultBlockState().setValue(EndBlockProperties.AGE, age)
         );
         if (age > 1) {
             BlocksHelper.setWithoutUpdate(
                     world,
                     pos.below(),
-                    EndBlocks.CAVE_PUMPKIN.defaultBlockState().setValue(EndBlockProperties.SMALL, age < 3)
+                    EndCropBlocks.CAVE_PUMPKIN.defaultBlockState().setValue(EndBlockProperties.SMALL, age < 3)
             );
         }
 

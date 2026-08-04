@@ -1,0 +1,6 @@
+{
+  "type": "betterend:small_island",
+  "biomes": "#betterend:has_structure/small_island",
+  "spawn_overrides": {},
+  "step": "raw_generation"
+}

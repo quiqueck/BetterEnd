@@ -1,15 +1,22 @@
 package org.betterx.datagen.betterend.tags;
 
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.block.EndMetalBlocks;
+import org.betterx.betterend.registry.block.EndOreBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
 import org.betterx.betterend.complexmaterials.MaterialManager;
 import static org.betterx.betterend.complexmaterials.MetalMaterial.ORE;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.datagen.betterend.worldgen.EndBiomesProvider;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.WoverTagProvider;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.WoverTagProvider;
+import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
@@ -28,23 +35,35 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
     }
 
     private static void addSurvivesOn(TagBootstrapContext<Block> context) {
+        // The flower_islets void-ring islands (SmallIslandStructure) coat their tops in sangnum and
+        // pallidium instead of end moss, so every ground plant the flower_islets biome plants must be
+        // allowed to root on those blocks - otherwise the vegetation still refuses to grow there.
+        final Block[] FLOWER_ISLET_COAT = {
+                EndTerrainBlocks.SANGNUM,
+                EndTerrainBlocks.PALLIDIUM_FULL,
+                EndTerrainBlocks.PALLIDIUM_HEAVY,
+                EndTerrainBlocks.PALLIDIUM_THIN,
+                EndTerrainBlocks.PALLIDIUM_TINY
+        };
+
         context.add(
                 EndTags.SURVIVES_ON_PALLIDIUM,
-                EndBlocks.PALLIDIUM_FULL,
-                EndBlocks.PALLIDIUM_HEAVY,
-                EndBlocks.PALLIDIUM_THIN,
-                EndBlocks.PALLIDIUM_TINY
+                EndTerrainBlocks.PALLIDIUM_FULL,
+                EndTerrainBlocks.PALLIDIUM_HEAVY,
+                EndTerrainBlocks.PALLIDIUM_THIN,
+                EndTerrainBlocks.PALLIDIUM_TINY
         );
-        context.add(EndTags.SURVIVES_ON_AMBER_MOSS, EndBlocks.AMBER_MOSS);
-        context.add(EndTags.SURVIVES_ON_BRIMSTONE, EndBlocks.BRIMSTONE);
-        context.add(EndTags.SURVIVES_ON_CHORUS_NYLIUM, EndBlocks.CHORUS_NYLIUM);
+        context.add(EndTags.SURVIVES_ON_AMBER_MOSS, EndTerrainBlocks.AMBER_MOSS);
+        context.add(EndTags.SURVIVES_ON_BRIMSTONE, EndStoneBlocks.BRIMSTONE);
+        context.add(EndTags.SURVIVES_ON_CHORUS_NYLIUM, EndTerrainBlocks.CHORUS_NYLIUM);
         context.add(
                 EndTags.SURVIVES_ON_END_BONE,
-                EndBlocks.SANGNUM,
-                EndBlocks.MOSSY_OBSIDIAN,
-                EndBlocks.MOSSY_DRAGON_BONE
+                EndTerrainBlocks.SANGNUM,
+                EndStoneBlocks.MOSSY_OBSIDIAN,
+                EndStoneBlocks.MOSSY_DRAGON_BONE
         );
-        context.add(EndTags.SURVIVES_ON_END_MOSS, EndBlocks.END_MOSS);
+        context.add(EndTags.SURVIVES_ON_END_MOSS, EndTerrainBlocks.END_MOSS);
+        context.add(EndTags.SURVIVES_ON_END_MOSS, FLOWER_ISLET_COAT);
         context.add(EndTags.SURVIVES_ON_END_STONE, CommonBlockTags.END_STONES);
         context.add(
                 EndTags.SURVIVES_ON_END_STONE_OR_TREES,
@@ -52,19 +71,22 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
                 BlockTags.LEAVES,
                 BlockTags.LOGS
         );
-        context.add(EndTags.SURVIVES_ON_JUNGLE_MOSS, EndBlocks.JUNGLE_MOSS);
+        context.add(EndTags.SURVIVES_ON_JUNGLE_MOSS, EndTerrainBlocks.JUNGLE_MOSS);
         context.add(
                 EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM,
-                EndBlocks.END_MOSS,
-                EndBlocks.END_MYCELIUM,
-                EndBlocks.JUNGLE_MOSS
+                EndTerrainBlocks.END_MOSS,
+                EndTerrainBlocks.END_MYCELIUM,
+                EndTerrainBlocks.JUNGLE_MOSS
         );
-        context.add(EndTags.SURVIVES_ON_MOSS_OR_DUST, EndBlocks.END_MOSS, EndBlocks.ENDSTONE_DUST);
-        context.add(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM, EndBlocks.END_MOSS, EndBlocks.END_MYCELIUM);
-        context.add(EndTags.SURVIVES_ON_PINK_MOSS, EndBlocks.PINK_MOSS);
-        context.add(EndTags.SURVIVES_ON_RUTISCUS, EndBlocks.RUTISCUS);
-        context.add(EndTags.SURVIVES_ON_SHADOW_GRASS, EndBlocks.SHADOW_GRASS);
-        context.add(EndTags.SURVIVES_ON_SULPHURIC_ROCK, EndBlocks.SULPHURIC_ROCK.getBaseBlock());
+        context.add(EndTags.SURVIVES_ON_JUNGLE_MOSS_OR_MYCELIUM, FLOWER_ISLET_COAT);
+        context.add(EndTags.SURVIVES_ON_MOSS_OR_DUST, EndTerrainBlocks.END_MOSS, EndTerrainBlocks.ENDSTONE_DUST);
+        context.add(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM, EndTerrainBlocks.END_MOSS, EndTerrainBlocks.END_MYCELIUM);
+        context.add(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM, FLOWER_ISLET_COAT);
+        context.add(EndTags.SURVIVES_ON_PINK_MOSS, EndTerrainBlocks.PINK_MOSS);
+        context.add(EndTags.SURVIVES_ON_RUTISCUS, EndTerrainBlocks.RUTISCUS);
+        context.add(EndTags.SURVIVES_ON_RUTISCUS, FLOWER_ISLET_COAT);
+        context.add(EndTags.SURVIVES_ON_SHADOW_GRASS, EndTerrainBlocks.SHADOW_GRASS);
+        context.add(EndTags.SURVIVES_ON_SULPHURIC_ROCK, EndStoneBlocks.SULPHURIC_ROCK.getBaseBlock());
 
         // Vanilla dirt-like soils accepted by the BetterEnd flower pot. Keep this in sync
         // with EndPottableSoilProvider.VANILLA_SOILS (this tag is the valid_soils of the
@@ -84,25 +106,25 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
 
     @Override
     public void prepareTags(TagBootstrapContext<Block> context) {
-        addEndGround(context, EndBlocks.THALLASIUM.getBlock(ORE));
-        addEndGround(context, EndBlocks.ENDSTONE_DUST);
-        addEndGround(context, EndBlocks.AMBER_ORE);
-        addEndGround(context, EndBlocks.CAVE_MOSS);
+        addEndGround(context, EndMetalBlocks.THALLASIUM.getBlock(ORE));
+        addEndGround(context, EndTerrainBlocks.ENDSTONE_DUST);
+        addEndGround(context, EndOreBlocks.AMBER_ORE);
+        addEndGround(context, EndTerrainBlocks.CAVE_MOSS);
 
         context.add(
                 CommonBlockTags.END_STONES,
-                EndBlocks.ENDER_ORE,
-                EndBlocks.BRIMSTONE
+                EndOreBlocks.ENDER_ORE,
+                EndStoneBlocks.BRIMSTONE
         );
-        context.add(CommonBlockTags.END_STONES, EndBlocks.BRIMSTONE);
-        context.add(BlockTags.ANVIL, EndBlocks.AETERNIUM_ANVIL);
-        context.add(BlockTags.BEACON_BASE_BLOCKS, EndBlocks.AETERNIUM_BLOCK);
+        context.add(CommonBlockTags.END_STONES, EndStoneBlocks.BRIMSTONE);
+        context.add(BlockTags.ANVIL, EndFunctionalBlocks.AETERNIUM_ANVIL);
+        context.add(BlockTags.BEACON_BASE_BLOCKS, EndMetalBlocks.AETERNIUM_BLOCK);
         context.add(
                 BlockTags.DRAGON_IMMUNE,
-                EndBlocks.ENDER_ORE,
-                EndBlocks.ETERNAL_PEDESTAL,
-                EndBlocks.FLAVOLITE_RUNED_ETERNAL,
-                EndBlocks.FLAVOLITE_RUNED
+                EndOreBlocks.ENDER_ORE,
+                EndFunctionalBlocks.ETERNAL_PEDESTAL,
+                EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL,
+                EndStoneBlocks.FLAVOLITE_RUNED
         );
 
         context.add(EndTags.BONEMEAL_TARGET_WATER_GRASS, CommonBlockTags.END_STONES);
@@ -120,12 +142,12 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
         MaterialManager.stream().forEach(m -> m.registerBlockTags(context));
 
         Block[] charnias = new Block[]{
-                EndBlocks.CHARNIA_CYAN,
-                EndBlocks.CHARNIA_GREEN,
-                EndBlocks.CHARNIA_ORANGE,
-                EndBlocks.CHARNIA_LIGHT_BLUE,
-                EndBlocks.CHARNIA_PURPLE,
-                EndBlocks.CHARNIA_RED
+                EndWaterPlantBlocks.CHARNIA_CYAN,
+                EndWaterPlantBlocks.CHARNIA_GREEN,
+                EndWaterPlantBlocks.CHARNIA_ORANGE,
+                EndWaterPlantBlocks.CHARNIA_LIGHT_BLUE,
+                EndWaterPlantBlocks.CHARNIA_PURPLE,
+                EndWaterPlantBlocks.CHARNIA_RED
         };
 
         for (Block charnia : charnias) {

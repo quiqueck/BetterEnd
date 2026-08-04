@@ -3,13 +3,13 @@ package org.betterx.betterend.integration.byg.biomes;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.integration.Integrations;
 import org.betterx.betterend.integration.byg.features.BYGFeatures;
-import org.betterx.betterend.registry.features.EndLakeFeatures;
+import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.surface.api.Conditions;
-import org.betterx.wover.surface.api.SurfaceRuleBuilder;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.surface.api.Conditions;
+import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -48,7 +48,7 @@ public class OldBulbisGardens extends EndBiome.Config {
                        ParticleTypes.REVERSE_PORTAL,
                        0.002F
                )
-               .feature(EndLakeFeatures.END_LAKE_RARE)
+               .structure(EndStructures.END_LAKE_RARE)
                .feature(BYGFeatures.OLD_BULBIS_TREE);
 
         Holder<Biome> biome = Integrations.BYG.getBiome("bulbis_gardens");

@@ -1,9 +1,9 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
-import org.betterx.betterend.blocks.basis.EndPlantBlock;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import org.betterx.bclib.blocks.BasePlantBlock;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -20,13 +20,17 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class LargeAmaranitaBlock extends EndPlantBlock {
+import net.minecraft.world.item.context.BlockPlaceContext;
+import org.jetbrains.annotations.NotNull;
+
+public class LargeAmaranitaBlock extends BasePlantBlock {
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     private static final VoxelShape SHAPE_BOTTOM = Block.box(4, 0, 4, 12, 14, 12);
     private static final VoxelShape SHAPE_TOP = Shapes.or(Block.box(1, 3, 1, 15, 16, 15), SHAPE_BOTTOM);
 
     public LargeAmaranitaBlock(BlockBehaviour.Properties props) {
         super(props);
+        this.registerDefaultState(this.stateDefinition.any().setValue(SHAPE, TripleShape.TOP));
     }
 
     @Override
@@ -41,15 +45,63 @@ public class LargeAmaranitaBlock extends EndPlantBlock {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        TripleShape shape = state.getValue(SHAPE);
-        if (shape == TripleShape.BOTTOM) {
-            return SurvivesOnBlockTrait.survivesOn(this, world.getBlockState(pos.below()))
-                    && world.getBlockState(pos.above()).is(this);
-        } else if (shape == TripleShape.TOP) {
-            return world.getBlockState(pos.below()).is(this);
-        } else {
-            return world.getBlockState(pos.below()).is(this) && world.getBlockState(pos.above()).is(this);
+        BlockState below = world.getBlockState(pos.below());
+        if (below.is(this)) {
+            return true;
         }
+        return SurvivesOnBlockTrait.survivesOn(this, below);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        LevelReader level = ctx.getLevel();
+        BlockPos pos = ctx.getClickedPos();
+        boolean hasThisBelow = level.getBlockState(pos.below()).is(this);
+        boolean hasThisAbove = level.getBlockState(pos.above()).is(this);
+
+        TripleShape shape;
+        if (hasThisBelow && hasThisAbove) {
+            shape = TripleShape.MIDDLE;
+        } else if (hasThisBelow) {
+            shape = TripleShape.TOP;
+        } else if (hasThisAbove) {
+            shape = TripleShape.BOTTOM;
+        } else {
+            shape = TripleShape.TOP;
+        }
+        return this.defaultBlockState().setValue(SHAPE, shape);
+    }
+
+    @Override
+    protected @NotNull BlockState updateShape(
+            BlockState state,
+            LevelReader level,
+            net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess,
+            BlockPos pos,
+            net.minecraft.core.Direction neighborDirection,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
+    ) {
+        if (!canSurvive(state, level, pos)) {
+            return net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
+        }
+
+        boolean hasThisBelow = level.getBlockState(pos.below()).is(this);
+        boolean hasThisAbove = level.getBlockState(pos.above()).is(this);
+
+        TripleShape shape;
+        if (hasThisBelow && hasThisAbove) {
+            shape = TripleShape.MIDDLE;
+        } else if (hasThisBelow) {
+            shape = TripleShape.TOP;
+        } else if (hasThisAbove) {
+            shape = TripleShape.BOTTOM;
+        } else {
+            shape = TripleShape.TOP;
+        }
+
+        return state.setValue(SHAPE, shape);
     }
 
     @Override

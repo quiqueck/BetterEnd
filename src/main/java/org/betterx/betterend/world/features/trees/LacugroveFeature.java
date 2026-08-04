@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.trees;
 
+
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.PosInfo;
 import org.betterx.bclib.sdf.SDF;
@@ -12,7 +14,8 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.feature.api.WriteZone;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -35,6 +38,13 @@ public class LacugroveFeature extends DefaultFeature {
     private static final Function<BlockState, Boolean> IGNORE;
     private static final Function<PosInfo, BlockState> POST;
 
+    /**
+     * How far past its nominal radius the leaf ball's surface reaches: {@code noise * 3} plus
+     * {@code nextFloat() * 3 - 1.5}, both applied through {@code SDFDisplacement}, which adds to the
+     * distance - so the negative half of each range grows the shape.
+     */
+    private static final float LEAF_BALL_BULGE = 4.5F;
+
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
         final RandomSource random = featureConfig.random();
@@ -42,11 +52,16 @@ public class LacugroveFeature extends DefaultFeature {
         final WorldGenLevel world = featureConfig.level();
         if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
 
+        // size reaches 25, and the trunk/leaf-ball flood-fills and canGenerate probe are otherwise bounded
+        // only by their own shape - past the 3x3 chunks a feature may touch. Clip every one to the write
+        // zone; see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+
         float size = MHelper.randRange(15, 25, random);
         List<Vector3f> spline = SplineHelper.makeSpline(0, 0, 0, 0, size, 0, 6);
         SplineHelper.offsetParts(spline, random, 1F, 0, 1F);
 
-        if (!SplineHelper.canGenerate(spline, pos, world, REPLACE)) {
+        if (!SplineHelper.canGenerate(spline, pos, world, REPLACE, zone.toBoundingBox())) {
             return false;
         }
 
@@ -55,22 +70,36 @@ public class LacugroveFeature extends DefaultFeature {
         float radius = MHelper.randRange(6F, 8F, random);
         radius *= (size - 15F) / 20F + 1F;
         Vector3f center = spline.get(4);
-        leavesBall(world, pos.offset((int) center.x(), (int) center.y(), (int) center.z()), radius, random, noise);
+        leavesBall(
+                world,
+                pos.offset((int) center.x(), (int) center.y(), (int) center.z()),
+                radius,
+                random,
+                noise,
+                zone
+        );
 
         radius = MHelper.randRange(1.2F, 1.8F, random);
         SDF function = SplineHelper.buildSDF(
                 spline,
                 radius,
                 0.7F,
-                (bpos) -> EndBlocks.LACUGROVE.getBark().defaultBlockState()
+                (bpos) -> EndWoodBlocks.LACUGROVE.getBark().defaultBlockState()
         );
 
         function.setReplaceFunction(REPLACE);
         function.addPostProcess(POST);
-        function.fillRecursive(world, pos);
+        function.fillRecursive(world, pos, zone.toBoundingBox());
 
         spline = spline.subList(4, 6);
-        SplineHelper.fillSpline(spline, world, EndBlocks.LACUGROVE.getBark().defaultBlockState(), pos, REPLACE);
+        SplineHelper.fillSpline(
+                spline,
+                world,
+                EndWoodBlocks.LACUGROVE.getBark().defaultBlockState(),
+                pos,
+                REPLACE,
+                zone.toBoundingBox()
+        );
 
         MutableBlockPos mut = new MutableBlockPos();
         int offset = random.nextInt(2);
@@ -101,7 +130,7 @@ public class LacugroveFeature extends DefaultFeature {
                                 BlocksHelper.setWithoutUpdate(
                                         world,
                                         mut,
-                                        y == top ? EndBlocks.LACUGROVE.getBark() : EndBlocks.LACUGROVE.getLog()
+                                        y == top ? EndWoodBlocks.LACUGROVE.getBark() : EndWoodBlocks.LACUGROVE.getLog()
                                 );
                             } else {
                                 break;
@@ -112,6 +141,7 @@ public class LacugroveFeature extends DefaultFeature {
             }
         }
 
+        EndTreeHelper.waterlogSubmerged(world, pos, 16);
         return true;
     }
 
@@ -120,10 +150,17 @@ public class LacugroveFeature extends DefaultFeature {
             BlockPos pos,
             float radius,
             RandomSource random,
-            OpenSimplexNoise noise
+            OpenSimplexNoise noise,
+            WriteZone zone
     ) {
+        // Size the ball to the room its centre has rather than letting the write bounds take a chord out
+        // of it; see EndTreeHelper.fitBallRadius. Rare here - about one lacugrove in seventy, and shallow
+        // - but it is the same one line, and lacugrove runs a leaf-decay pass afterwards that a clipped
+        // canopy feeds orphaned leaves into.
+        radius = EndTreeHelper.fitBallRadius(zone, pos, radius, LEAF_BALL_BULGE, 2F);
+
         SDF sphere = new SDFSphere().setRadius(radius)
-                                    .setBlock(EndBlocks.LACUGROVE_LEAVES.defaultBlockState()
+                                    .setBlock(EndWoodBlocks.LACUGROVE_LEAVES.defaultBlockState()
                                                                         .setValue(LeavesBlock.DISTANCE, 6));
         sphere = new SDFDisplacement().setFunction((vec) -> (float) noise.eval(
                 vec.x() * 0.2,
@@ -142,7 +179,7 @@ public class LacugroveFeature extends DefaultFeature {
                         return info.getState();
                     }
                 }
-                info.setState(EndBlocks.LACUGROVE.getBark().defaultBlockState());
+                info.setState(EndWoodBlocks.LACUGROVE.getBark().defaultBlockState());
                 for (int x = -6; x < 7; x++) {
                     int ax = Math.abs(x);
                     mut.setX(x + info.getPos().getX());
@@ -168,7 +205,7 @@ public class LacugroveFeature extends DefaultFeature {
             }
             return info.getState();
         });
-        sphere.fillRecursiveIgnore(world, pos, IGNORE);
+        sphere.fillRecursiveIgnore(world, pos, zone.toBoundingBox(), IGNORE);
 
         if (radius > 5) {
             int count = (int) (radius * 2.5F);
@@ -181,18 +218,18 @@ public class LacugroveFeature extends DefaultFeature {
                 boolean place = true;
                 for (Direction d : Direction.values()) {
                     BlockState state = world.getBlockState(p.relative(d));
-                    if (!EndBlocks.LACUGROVE.isTreeLog(state) && !state.is(EndBlocks.LACUGROVE_LEAVES)) {
+                    if (!EndWoodBlocks.LACUGROVE.isTreeLog(state) && !state.is(EndWoodBlocks.LACUGROVE_LEAVES)) {
                         place = false;
                         break;
                     }
                 }
                 if (place) {
-                    BlocksHelper.setWithoutUpdate(world, p, EndBlocks.LACUGROVE.getBark());
+                    BlocksHelper.setWithoutUpdate(world, p, EndWoodBlocks.LACUGROVE.getBark());
                 }
             }
         }
 
-        BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.LACUGROVE.getBark());
+        BlocksHelper.setWithoutUpdate(world, pos, EndWoodBlocks.LACUGROVE.getBark());
     }
 
     static {
@@ -200,20 +237,20 @@ public class LacugroveFeature extends DefaultFeature {
 			/*if (state.is(CommonBlockTags.END_STONES)) {
 				return true;
 			}*/
-            if (EndBlocks.LACUGROVE.isTreeLog(state)) {
+            if (EndWoodBlocks.LACUGROVE.isTreeLog(state)) {
                 return true;
             }
-            if (state.getBlock() == EndBlocks.LACUGROVE_LEAVES) {
+            if (state.getBlock() == EndWoodBlocks.LACUGROVE_LEAVES) {
                 return true;
             }
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.LACUGROVE::isTreeLog;
+        IGNORE = EndWoodBlocks.LACUGROVE::isTreeLog;
 
         POST = (info) -> {
-            if (EndBlocks.LACUGROVE.isTreeLog(info.getStateUp()) && EndBlocks.LACUGROVE.isTreeLog(info.getStateDown())) {
-                return EndBlocks.LACUGROVE.getLog().defaultBlockState();
+            if (EndWoodBlocks.LACUGROVE.isTreeLog(info.getStateUp()) && EndWoodBlocks.LACUGROVE.isTreeLog(info.getStateDown())) {
+                return EndWoodBlocks.LACUGROVE.getLog().defaultBlockState();
             }
             return info.getState();
         };

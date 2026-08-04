@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.biome.land;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndEntities;
@@ -51,12 +53,12 @@ public class MegalakeBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.END_MOSS.defaultBlockState();
+                return EndTerrainBlocks.END_MOSS.defaultBlockState();
             }
 
             @Override
             public BlockState getAltTopMaterial() {
-                return EndBlocks.ENDSTONE_DUST.defaultBlockState();
+                return EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState();
             }
         };
     }

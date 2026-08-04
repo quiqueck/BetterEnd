@@ -1,5 +1,7 @@
 package org.betterx.betterend.integration.rei;
 
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
 //import org.betterx.bclib.blocks.BaseFurnaceBlock;
 //import org.betterx.bclib.recipes.AlloyingRecipe;
 //import org.betterx.bclib.recipes.AnvilRecipe;
@@ -72,8 +74,8 @@ package org.betterx.betterend.integration.rei;
 //
 //    @Override
 //    public void registerCategories(CategoryRegistry registry) {
-//        EntryStack<ItemStack> endStoneSmelter = EntryStacks.of(EndBlocks.END_STONE_SMELTER);
-//        EntryStack<ItemStack> infusionRitual = EntryStacks.of(EndBlocks.INFUSION_PEDESTAL);
+//        EntryStack<ItemStack> endStoneSmelter = EntryStacks.of(EndFunctionalBlocks.END_STONE_SMELTER);
+//        EntryStack<ItemStack> infusionRitual = EntryStacks.of(EndFunctionalBlocks.INFUSION_PEDESTAL);
 //        List<EntryStack<?>> anvils = Lists.newArrayList(EntryIngredients.ofItems(EndBlocks.getModBlocks()
 //                                                                                          .stream()
 //                                                                                          .filter(EndAnvilBlock.class::isInstance)

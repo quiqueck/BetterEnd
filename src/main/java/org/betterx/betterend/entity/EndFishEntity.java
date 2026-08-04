@@ -1,8 +1,10 @@
 package org.betterx.betterend.entity;
 
+
+import org.betterx.betterend.registry.item.EndFoodItems;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.enchantment.api.EnchantmentUtils;
+import de.ambertation.wover.enchantment.api.EnchantmentUtils;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -109,7 +111,7 @@ public class EndFishEntity extends AbstractSchoolingFish {
 
     @Override
     public @NotNull ItemStack getBucketItemStack() {
-        ItemStack bucket = EndItems.BUCKET_END_FISH.getDefaultInstance();
+        ItemStack bucket = EndFoodItems.BUCKET_END_FISH.getDefaultInstance();
 //        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, bucket, (tag) -> {
 //            tag.putByte("variant", entityData.get(VARIANT));
 //            tag.putByte("scale", entityData.get(SCALE));
@@ -169,7 +171,7 @@ public class EndFishEntity extends AbstractSchoolingFish {
 
     @Override
     protected void dropFromLootTable(ServerLevel serverLevel, DamageSource source, boolean causedByPlayer) {
-        Item item = source.is(DamageTypeTags.IS_FIRE) ? EndItems.END_FISH_COOKED : EndItems.END_FISH_RAW;
+        Item item = source.is(DamageTypeTags.IS_FIRE) ? EndFoodItems.END_FISH_COOKED : EndFoodItems.END_FISH_RAW;
         if (causedByPlayer) {
             ItemStack handItem = ((Player) source.getEntity()).getItemInHand(InteractionHand.MAIN_HAND);
             if (EnchantmentUtils.getItemEnchantmentLevel(
@@ -177,7 +179,7 @@ public class EndFishEntity extends AbstractSchoolingFish {
                     Enchantments.FIRE_ASPECT,
                     handItem
             ) > 0) {
-                item = EndItems.END_FISH_COOKED;
+                item = EndFoodItems.END_FISH_COOKED;
             }
         }
         ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(item));

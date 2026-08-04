@@ -1,0 +1,6 @@
+{
+  "type": "betterend:end_lake_normal",
+  "biomes": "#betterend:has_structure/end_lake_normal",
+  "spawn_overrides": {},
+  "step": "lakes"
+}

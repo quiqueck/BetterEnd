@@ -1,0 +1,31 @@
+{
+  "values": [
+    "betterend:terminite_bars",
+    "betterend:terminite_block",
+    "betterend:terminite_bulb_lantern",
+    "betterend:terminite_bulb_lantern_black",
+    "betterend:terminite_bulb_lantern_blue",
+    "betterend:terminite_bulb_lantern_brown",
+    "betterend:terminite_bulb_lantern_cyan",
+    "betterend:terminite_bulb_lantern_gray",
+    "betterend:terminite_bulb_lantern_green",
+    "betterend:terminite_bulb_lantern_light_blue",
+    "betterend:terminite_bulb_lantern_light_gray",
+    "betterend:terminite_bulb_lantern_lime",
+    "betterend:terminite_bulb_lantern_magenta",
+    "betterend:terminite_bulb_lantern_orange",
+    "betterend:terminite_bulb_lantern_pink",
+    "betterend:terminite_bulb_lantern_purple",
+    "betterend:terminite_bulb_lantern_red",
+    "betterend:terminite_bulb_lantern_white",
+    "betterend:terminite_bulb_lantern_yellow",
+    "betterend:terminite_chain",
+    "betterend:terminite_chandelier",
+    "betterend:terminite_door",
+    "betterend:terminite_plate",
+    "betterend:terminite_slab",
+    "betterend:terminite_stairs",
+    "betterend:terminite_tile",
+    "betterend:terminite_trapdoor"
+  ]
+}

@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks.basis;
 
+import org.betterx.bclib.blocks.BaseWallPlantBlock;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -15,10 +17,10 @@ import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Underwater variant of {@link EndWallPlantBlock}: always water-logged and only survives while submerged.
+ * Underwater variant of {@link BaseWallPlantBlock}: always water-logged and only survives while submerged.
  * Reproduces the former BCLib {@code BaseUnderwaterWallPlantBlock} on the vanilla-based wall plant.
  */
-public class EndUnderwaterWallPlantBlock extends EndWallPlantBlock implements LiquidBlockContainer {
+public class EndUnderwaterWallPlantBlock extends BaseWallPlantBlock implements LiquidBlockContainer {
     public EndUnderwaterWallPlantBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -46,7 +48,7 @@ public class EndUnderwaterWallPlantBlock extends EndWallPlantBlock implements Li
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return level.getFluidState(pos).getType() == Fluids.WATER && super.canSurvive(state, level, pos);
     }
 }

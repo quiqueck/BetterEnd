@@ -5,6 +5,43 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
+          "condition": "minecraft:any_of",
+          "terms": [
+            {
+              "condition": "minecraft:match_tool",
+              "predicate": {
+                "items": "#c:tools/shears"
+              }
+            },
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "items": "#minecraft:hoes"
+                  }
+                },
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantments": "minecraft:silk_touch",
+                          "levels": {
+                            "min": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
           "block": "betterend:bulb_vine",
           "condition": "minecraft:block_state_property",
           "properties": {
@@ -30,6 +67,43 @@
     {
       "bonus_rolls": 0.0,
       "conditions": [
+        {
+          "condition": "minecraft:any_of",
+          "terms": [
+            {
+              "condition": "minecraft:match_tool",
+              "predicate": {
+                "items": "#c:tools/shears"
+              }
+            },
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "items": "#minecraft:hoes"
+                  }
+                },
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantments": "minecraft:silk_touch",
+                          "levels": {
+                            "min": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         {
           "condition": "minecraft:inverted",
           "term": {

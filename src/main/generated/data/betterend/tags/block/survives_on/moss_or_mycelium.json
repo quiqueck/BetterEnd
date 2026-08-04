@@ -1,6 +1,11 @@
 {
   "values": [
     "betterend:end_moss",
-    "betterend:end_mycelium"
+    "betterend:end_mycelium",
+    "betterend:pallidium_full",
+    "betterend:pallidium_heavy",
+    "betterend:pallidium_thin",
+    "betterend:pallidium_tiny",
+    "betterend:sangnum"
   ]
 }

@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndMushroomBlocks;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -26,7 +28,7 @@ public class GlowingPillarLuminophorBlock extends Block {
     @Override
     @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        return !state.getValue(NATURAL) || world.getBlockState(pos.below()).is(EndBlocks.GLOWING_PILLAR_ROOTS);
+        return !state.getValue(NATURAL) || world.getBlockState(pos.below()).is(EndMushroomBlocks.GLOWING_PILLAR_ROOTS);
     }
 
     @Override

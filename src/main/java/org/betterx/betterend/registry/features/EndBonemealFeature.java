@@ -1,8 +1,8 @@
 package org.betterx.betterend.registry.features;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.feature.api.placed.PlacedFeatureKey;
-import org.betterx.wover.feature.api.placed.PlacedFeatureManager;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureKey;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureManager;
 
 public class EndBonemealFeature {
     public static final PlacedFeatureKey BONEMEAL_END_MOSS_NOT_GLOWING_GRASSLANDS = PlacedFeatureManager

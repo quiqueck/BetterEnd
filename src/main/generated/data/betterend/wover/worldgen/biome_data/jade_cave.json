@@ -1,12 +1,6 @@
 {
   "type": "betterend:jade_cave_biome",
   "biome": "betterend:jade_cave",
-  "ceil_features": {
-    "configured_features": []
-  },
-  "floor_features": {
-    "configured_features": []
-  },
   "fogDensity": 2.0,
   "generation_data": {
     "intended_placement": "betterend:is_end_cave"

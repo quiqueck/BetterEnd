@@ -2,10 +2,10 @@ package org.betterx.datagen.betterend;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndTags;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.pottable.api.PottablePlant;
-import org.betterx.wover.pottable.api.PottablePlantRegistry;
-import org.betterx.wover.pottable.api.datagen.WoverPottablePlantRegistryProvider;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.pottable.api.PottablePlant;
+import de.ambertation.wover.pottable.api.PottablePlantRegistry;
+import de.ambertation.wover.pottable.api.datagen.WoverPottablePlantRegistryProvider;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -19,7 +19,7 @@ import java.util.List;
  * Serializes the {@link PottablePlant} entries for BetterEnd.
  * <p>
  * In addition to every BetterEnd block carrying a
- * {@link org.betterx.wover.pottable.api.trait.PottablePlantBlockTrait} (handled by the
+ * {@link de.ambertation.wover.pottable.api.trait.PottablePlantBlockTrait} (handled by the
  * super class), this provider explicitly registers the standard VANILLA flower-pot plant
  * set. Those vanilla blocks have no BetterEnd trait, so they need to be added by hand.
  * <p>

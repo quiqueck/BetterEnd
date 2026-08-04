@@ -1,7 +1,7 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndPlantBlock;
-import org.betterx.wover.loot.api.LootLookupProvider;
+import org.betterx.bclib.blocks.BasePlantBlock;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +19,7 @@ import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-public class NeedlegrassBlock extends EndPlantBlock {
+public class NeedlegrassBlock extends BasePlantBlock {
     public NeedlegrassBlock(BlockBehaviour.Properties props) {
         super(props);
     }

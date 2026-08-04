@@ -19,6 +19,14 @@
         {
           "type": "minecraft:item",
           "name": "betterend:music_disc_eo_dracona"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "betterend:music_disc_ender_hollow"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "betterend:music_disc_moonlit_undercurrents"
         }
       ],
       "rolls": {

@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFDisplacement;
@@ -12,7 +14,8 @@ import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.feature.api.WriteZone;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -58,7 +61,7 @@ public class ObsidianPillarBasementFeature extends DefaultFeature {
         vec = MHelper.randomHorizontal(random);
         angle = random.nextFloat() * 0.2F;
         pillar = new SDFRotation().setRotation(vec, angle).setSource(pillar);
-        BlockState mossy = EndBlocks.MOSSY_OBSIDIAN.defaultBlockState();
+        BlockState mossy = EndStoneBlocks.MOSSY_OBSIDIAN.defaultBlockState();
         pillar.addPostProcess((info) -> {
             if (info.getStateUp().isAir() && random.nextFloat() > 0.1F) {
                 return mossy;
@@ -66,7 +69,10 @@ public class ObsidianPillarBasementFeature extends DefaultFeature {
             return info.getState();
         }).setReplaceFunction((state) -> {
             return state.is(CommonBlockTags.END_STONES) || BlocksHelper.replaceableOrPlant(state);
-        }).fillRecursive(world, pos);
+        // The tilt (up to ~11deg) plus the noise-displaced cut can push the flood-fill past the pillar's own
+        // radius; clip it to the write zone so it can't wander into unloaded neighbour chunks. See
+        // WriteZone.
+        }).fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
 
         return true;
     }

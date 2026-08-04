@@ -1,11 +1,14 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndLightBlocks;
+import org.betterx.betterend.registry.block.EndMushroomBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
+import org.betterx.bclib.blocks.BasePlantWithAgeBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -17,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock {
+public class GlowingPillarSeedBlock extends BasePlantWithAgeBlock {
     public GlowingPillarSeedBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -31,7 +34,7 @@ public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock {
         }
 
         MutableBlockPos mut = new MutableBlockPos().set(pos);
-        BlockState roots = EndBlocks.GLOWING_PILLAR_ROOTS.defaultBlockState();
+        BlockState roots = EndMushroomBlocks.GLOWING_PILLAR_ROOTS.defaultBlockState();
         if (height < 2) {
             BlocksHelper.setWithUpdate(world, mut, roots.setValue(BlockProperties.TRIPLE_SHAPE, TripleShape.MIDDLE));
         } else {
@@ -43,7 +46,7 @@ public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock {
         BlocksHelper.setWithUpdate(
                 world,
                 mut,
-                EndBlocks.GLOWING_PILLAR_LUMINOPHOR.defaultBlockState().setValue(BlueVineLanternBlock.NATURAL, true)
+                EndLightBlocks.GLOWING_PILLAR_LUMINOPHOR.defaultBlockState().setValue(BlueVineLanternBlock.NATURAL, true)
         );
         for (Direction dir : BlocksHelper.DIRECTIONS) {
             pos = mut.relative(dir);
@@ -51,7 +54,7 @@ public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock {
                 BlocksHelper.setWithUpdate(
                         world,
                         pos,
-                        EndBlocks.GLOWING_PILLAR_LEAVES.defaultBlockState().setValue(BlockStateProperties.FACING, dir)
+                        EndMushroomBlocks.GLOWING_PILLAR_LEAVES.defaultBlockState().setValue(BlockStateProperties.FACING, dir)
                 );
             }
         }
@@ -60,7 +63,7 @@ public class GlowingPillarSeedBlock extends EndPlantWithAgeBlock {
             BlocksHelper.setWithUpdate(
                     world,
                     mut,
-                    EndBlocks.GLOWING_PILLAR_LEAVES.defaultBlockState()
+                    EndMushroomBlocks.GLOWING_PILLAR_LEAVES.defaultBlockState()
                                                    .setValue(BlockStateProperties.FACING, Direction.UP)
             );
         }

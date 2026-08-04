@@ -1,12 +1,14 @@
 package org.betterx.betterend.world.features.bushes;
 
+
+import org.betterx.betterend.registry.block.EndMushroomBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -35,7 +37,7 @@ public class LargeAmaranitaFeature extends DefaultFeature {
         }
         mut.set(pos);
 
-        BlockState state = EndBlocks.LARGE_AMARANITA_MUSHROOM.defaultBlockState();
+        BlockState state = EndMushroomBlocks.LARGE_AMARANITA_MUSHROOM.defaultBlockState();
         BlocksHelper.setWithUpdate(world, mut, state.setValue(BlockProperties.TRIPLE_SHAPE, TripleShape.BOTTOM));
         if (height > 2) {
             BlocksHelper.setWithUpdate(

@@ -6,12 +6,12 @@ import org.betterx.betterend.mixin.common.NoiseBasedChunkGeneratorAccessor;
 import org.betterx.betterend.mixin.common.NoiseChunkAccessor;
 import org.betterx.betterend.mixin.common.NoiseInterpolatorAccessor;
 import org.betterx.betterend.noise.OpenSimplexNoise;
-import org.betterx.wover.biome.api.BiomeManager;
-import org.betterx.wover.block.api.BlockHelper;
-import org.betterx.wover.common.generator.api.biomesource.BiomeSourceWithConfig;
-import org.betterx.wover.generator.api.biomesource.WoverBiomeData;
-import org.betterx.wover.generator.api.biomesource.end.WoverEndConfig;
-import org.betterx.wover.generator.impl.biomesource.end.WoverEndBiomeSource;
+import de.ambertation.wover.biome.api.BiomeManager;
+import de.ambertation.wover.block.api.BlockHelper;
+import de.ambertation.wover.common.generator.api.biomesource.BiomeSourceWithConfig;
+import de.ambertation.wover.generator.api.biomesource.WoverBiomeData;
+import de.ambertation.wover.generator.api.biomesource.end.WoverEndConfig;
+import de.ambertation.wover.generator.impl.biomesource.end.WoverEndBiomeSource;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -202,7 +202,19 @@ public class TerrainGenerator {
     }
 
     private static @Nullable WoverBiomeData getBiomeData(BiomeSource biomeSource, int x, int z) {
-        if (BiomeManager.biomeDataForHolder(biomeSource.getNoiseBiome(x, 0, z, sampler)) instanceof WoverBiomeData biome) {
+        // Sample the biome ABOVE the vertical cave-biome band. getAverageDepth uses a biome's
+        // terrainHeight to shape the island surface, but sampling at quart y=0 lands INSIDE the cave
+        // band (EndCaveBiomeDecider substitutes cave biomes for hasCaves land columns below
+        // caveBiomesTopY). Cave biomes carry a terrainHeight that is not meant to drive surface
+        // terrain, so reading it there flattened every hasCaves island to a plane and starved the
+        // height-gated structures (crystal MOUNTAIN, MEGALAKE, umbralith arches) that bail on low
+        // ground - while hasCaves=false biomes (e.g. Sulphur Springs) were unaffected. The End's
+        // erosion ring is Y-independent, so sampling just above the band returns the true surface
+        // land/void biome without any cave substitution.
+        final int biomeY = config == null
+                ? 0
+                : (config.caveBiomesTopY + config.caveBiomesTopJitter + 8) >> 2;
+        if (BiomeManager.biomeDataForHolder(biomeSource.getNoiseBiome(x, biomeY, z, sampler)) instanceof WoverBiomeData biome) {
             return biome;
         }
         return null;
@@ -236,6 +248,13 @@ public class TerrainGenerator {
         LOCKER.lock();
         // try/finally so an exception below can never orphan the static LOCKER (see fillTerrainDensity).
         try {
+        // Defensive guard: getNoiseBiome (and therefore any BiomeDecider calling isLand) can be invoked
+        // before onServerLevelInit has run initNoise (e.g. during datagen biome sampling). Treat an
+        // un-initialized generator as "no land" so callers fall back to their void/plain suggestion
+        // rather than NPE on the still-null island layers.
+        if (largeIslands == null || mediumIslands == null || smallIslands == null || noise1 == null) {
+            return false;
+        }
         POS.setLocation(sectionX, sectionZ);
 
         TerrainBoolCache section = TERRAIN_BOOL_CACHE_MAP.get(POS);

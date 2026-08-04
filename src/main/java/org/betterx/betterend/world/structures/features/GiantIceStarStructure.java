@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.structures.features;
 
+
+import org.betterx.betterend.registry.block.EndDecorBlocks;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFRotation;
 import org.betterx.bclib.sdf.operator.SDFTranslate;
@@ -40,6 +42,15 @@ public class GiantIceStarStructure extends SDFStructureFeature {
         return EndStructures.GIANT_ICE_STAR.type();
     }
 
+    @Override
+    public java.util.Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+        // Void structure: giant ice stars float in the open void, so the inherited y >= 10 terrain
+        // gate rejected them almost everywhere (debug logs showed mostly REJECTED chunks) - they
+        // only ever appeared on the rare void chunks that happened to carry terrain. Stub Y at the
+        // middle of the star height range (32..128); biome check at the stub still applies.
+        return findVoidGenerationPoint(context, 80);
+    }
+
     protected static SDF getSDF(BlockPos pos, RandomSource random) {
         float size = MHelper.randRange(minSize, maxSize, random);
         int count = MHelper.randRange(minCount, maxCount, random);
@@ -48,7 +59,7 @@ public class GiantIceStarStructure extends SDFStructureFeature {
         SDF spike = new SDFCappedCone().setRadius1(3 + (size - 5) * 0.2F)
                                        .setRadius2(0)
                                        .setHeight(size)
-                                       .setBlock(EndBlocks.DENSE_SNOW);
+                                       .setBlock(EndDecorBlocks.DENSE_SNOW);
         spike = new SDFTranslate().setTranslate(0, size - 0.5F, 0).setSource(spike);
         for (Vector3f point : points) {
             SDF rotated = spike;
@@ -69,9 +80,9 @@ public class GiantIceStarStructure extends SDFStructureFeature {
         final float randScale = size * 0.3F;
 
         final BlockPos center = pos;
-        final BlockState ice = EndBlocks.EMERALD_ICE.defaultBlockState();
-        final BlockState dense = EndBlocks.DENSE_EMERALD_ICE.defaultBlockState();
-        final BlockState ancient = EndBlocks.ANCIENT_EMERALD_ICE.defaultBlockState();
+        final BlockState ice = EndDecorBlocks.EMERALD_ICE.defaultBlockState();
+        final BlockState dense = EndDecorBlocks.DENSE_EMERALD_ICE.defaultBlockState();
+        final BlockState ancient = EndDecorBlocks.ANCIENT_EMERALD_ICE.defaultBlockState();
         final SDF sdfCopy = sdf;
 
         return sdf.addPostProcess((info) -> {
@@ -118,6 +129,9 @@ public class GiantIceStarStructure extends SDFStructureFeature {
         int x = chunkPos.getBlockX(MHelper.randRange(4, 12, random));
         int z = chunkPos.getBlockZ(MHelper.randRange(4, 12, random));
         BlockPos start = new BlockPos(x, MHelper.randRange(32, 128, random), z);
+        // If this never logs, the structure start was rejected before piece creation (placement,
+        // biome check at the generation point, or the SDFStructureFeature gate).
+        org.betterx.betterend.util.WorldgenDebug.log("GiantIceStarStructure: piece at %s (chunk %s)", start, chunkPos);
         VoxelPiece piece = new VoxelPiece((world) -> {
             getSDF(start, random).fillRecursive(world, start);
         }, random.nextInt());

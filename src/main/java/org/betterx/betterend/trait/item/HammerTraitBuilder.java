@@ -1,17 +1,17 @@
 package org.betterx.betterend.trait.item;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.complex.api.equipment.ToolSlot;
-import org.betterx.wover.complex.api.equipment.ToolTier;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.item.api.ItemDefinition;
-import org.betterx.wover.item.api.ToolItemDefinition;
-import org.betterx.wover.item.api.trait.AbstractItemTraitBuilder;
-import org.betterx.wover.item.api.trait.ItemTrait;
-import org.betterx.wover.item.api.trait.ItemTraitKey;
-import org.betterx.wover.item.impl.trait.ItemTraitImpl;
-import org.betterx.wover.tag.api.predefined.CommonItemTags;
-import org.betterx.wover.tag.api.predefined.MineableTags;
+import de.ambertation.wover.complex.api.equipment.ToolSlot;
+import de.ambertation.wover.complex.api.equipment.ToolTier;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.item.api.ItemDefinition;
+import de.ambertation.wover.item.api.ToolItemDefinition;
+import de.ambertation.wover.item.api.trait.AbstractItemTraitBuilder;
+import de.ambertation.wover.item.api.trait.ItemTrait;
+import de.ambertation.wover.item.api.trait.ItemTraitKey;
+import de.ambertation.wover.item.impl.trait.ItemTraitImpl;
+import de.ambertation.wover.tag.api.predefined.CommonItemTags;
+import de.ambertation.wover.tag.api.predefined.MineableTags;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;

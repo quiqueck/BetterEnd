@@ -1,0 +1,8 @@
+{
+  "comparator_output": 0,
+  "description": {
+    "translate": "jukebox_song.betterend.ender_hollow"
+  },
+  "length_in_seconds": 219.0,
+  "sound_event": "betterend:betterend.record.ender_hollow"
+}

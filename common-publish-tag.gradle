@@ -1,0 +1,263 @@
+// Tags the current commit with the published version whenever this project
+// is published to Modrinth. Shared by both libraries and mods - copy-paste
+// into every repo (unlike common-publish-maven.gradle, which is library-only).
+//
+// The tag is created LOCALLY and never pushed. That is deliberate: these tags
+// land on the development branches, and a tag cannot be pushed without the
+// commit it points at and that commit's whole ancestry. Pushing one to a public
+// remote therefore publishes the internal history behind it, reachable by anyone
+// who clones - even though no public branch references it. Push tags yourself,
+// to the internal remote, alongside the commits they belong to.
+//
+// For the same reason, do not push with --tags ("push all tags"): that pushes
+// every local tag regardless of the branch being pushed, dragging each one's
+// ancestry along. --follow-tags is the safe flag - it only pushes annotated tags
+// reachable from the commits actually being pushed (these tags are lightweight,
+// so it skips them entirely).
+//
+// If a tag with that name already exists (e.g. republishing the same version
+// after a fix), it is moved to the current commit.
+// Skipped entirely for dry runs, or if publishModrinth itself failed.
+
+def isDryRun = project.hasProperty("dryRun") ? (project.property("dryRun").toString().toLowerCase() in ["true", "", "1", "yes"]) : false
+
+def gitOutput = { String cmd ->
+    def proc = cmd.execute()
+    def out = new StringBuilder()
+    def err = new StringBuilder()
+    proc.consumeProcessOutput(out, err)
+    proc.waitFor()
+    return out.toString().trim()
+}
+
+def gitRun = { String cmd ->
+    def proc = cmd.execute()
+    def out = new StringBuilder()
+    def err = new StringBuilder()
+    proc.consumeProcessOutput(out, err)
+    proc.waitFor()
+    if (proc.exitValue() != 0) {
+        throw new GradleException("'${cmd}' failed (exit ${proc.exitValue()}): ${err.toString().trim()}")
+    }
+    return out.toString().trim()
+}
+
+task tagRelease {
+    group = 'publishing'
+    doLast {
+        def tagName = project.version as String
+
+        def localTag = gitOutput("git tag -l ${tagName}")
+
+        if (localTag) {
+            println "Tag '${tagName}' already exists - moving it to the current commit."
+            gitRun("git tag -f ${tagName}")
+        } else {
+            println "Tagging release as '${tagName}'."
+            gitRun("git tag ${tagName}")
+        }
+
+        println "  created locally only. Push it yourself, to the internal remote, with the"
+        println "  commits it belongs to - see the note at the top of common-publish-tag.gradle."
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Release branch
+//
+// The development branches carry detailed, internal commit messages that are
+// not meant to be published, so this deliberately does not merge. It builds a
+// single commit whose tree is the current branch's tree and whose only parent
+// is the previous release commit, which makes the release branch a linear
+// series of "Release Version x" snapshots with no link to - and no route back
+// into - the development history.
+//
+//     gradlew :mergeToRelease
+//
+// The first release on a branch continues from the previous version line, so it
+// reads as a diff instead of as a full import of every file: release/26.2 is
+// created on top of release/26.1, release/26.3 on top of release/26.2, and
+// release/26.1 - which has no release branch before it - on top of the old
+// 1.21.6 development branch, whose history is the public one these releases
+// carry on from. Every release after the first sits on the previous release.
+//
+// The predecessor is named by 'previous_release_branch' in gradle.properties
+// (-PpreviousRelease= wins); 'none' starts the branch with a parentless commit,
+// which lists every file once.
+//
+// Note what this means for the 26.1 case: everything reachable from the
+// predecessor becomes part of the public branch. That is intended for 1.21.6,
+// but it is never intended for a 26.x development branch - those carry the
+// detailed internal messages. The task prints how many commits are inherited and
+// how many of them are not yet on 'origin' before you push, so a predecessor
+// pointed at the wrong branch is visible rather than silent.
+//
+// The subject is "Release Version <mod_version>" and the body is CHANGES.md,
+// the same changelog that is sent to Modrinth and CurseForge.
+//
+// Both of those inputs are read, never produced: this task has no dependency on
+// 'changelog' or 'nextVersion', so a hand-edited CHANGES.md and a hand-set
+// mod_version are exactly what gets released. Generate and edit them first, in
+// a separate invocation - running either of those tasks in the same build as
+// this one is refused outright (see the taskGraph check below), because they
+// would overwrite the very text this commit is supposed to carry.
+//
+// The release branch defaults to release/<current branch> - release/26.2 when
+// run from 26.2. Override with -PreleaseBranch=<name>.
+//
+// Nothing is pushed and no branch is checked out: the working tree is never
+// touched, only the release ref is moved. Push it yourself once it looks right.
+// ---------------------------------------------------------------------------
+
+// git inside this repository, taking its arguments as a list so that paths and
+// refs survive untouched (the String helpers above split on whitespace) and
+// working from projectDir rather than whatever the daemon's cwd happens to be.
+def gitHere = { List<String> args, boolean tolerateFailure = false ->
+    def proc = (['git', '-C', projectDir.absolutePath] + args).execute()
+    def out = new StringBuilder()
+    def err = new StringBuilder()
+    proc.consumeProcessOutput(out, err)
+    proc.waitFor()
+    if (proc.exitValue() != 0) {
+        if (tolerateFailure) return ""
+        throw new GradleException("'git ${args.join(' ')}' failed (exit ${proc.exitValue()}): ${err.toString().trim()}")
+    }
+    return out.toString().trim()
+}
+
+task mergeToRelease {
+    group = 'publishing'
+    description = 'Adds the current branch\'s state to its release branch as a single, changelog-titled commit.'
+
+    doLast {
+        def sourceBranch = gitHere(['rev-parse', '--abbrev-ref', 'HEAD'])
+        if (sourceBranch == 'HEAD') {
+            throw new GradleException("HEAD is detached - check out the branch you want to release first.")
+        }
+
+        def releaseBranch = (findProperty('releaseBranch') ?: "release/${sourceBranch}") as String
+        if (releaseBranch == sourceBranch) {
+            throw new GradleException("The release branch and the source branch are both '${sourceBranch}'.")
+        }
+
+        def changes = new File(projectDir, "CHANGES.md")
+        if (!changes.exists() || changes.getText('UTF-8').trim().isEmpty()) {
+            throw new GradleException(
+                    "CHANGES.md is missing or empty, and it is the release commit's message body.\n" +
+                            "Run 'gradlew changelog' first."
+            )
+        }
+
+        // The commit is built from the committed tree, so anything still in the working
+        // tree is silently not part of the release. Say so rather than leave it implicit.
+        def dirty = gitHere(['status', '--porcelain'])
+        if (dirty) {
+            logger.warn("WARNING: this repository has uncommitted changes. The release commit is built from " +
+                    "the last commit on '${sourceBranch}', so those changes are NOT included.")
+        }
+
+        def message = new File(temporaryDir, "release-message.txt")
+        message.setText("Release Version ${project.version}\n\n" + changes.getText('UTF-8').trim() + "\n", 'UTF-8')
+
+        def tree = gitHere(['rev-parse', "${sourceBranch}^{tree}"])
+
+        // Two different things: existingTip is what the ref points at now and is only used
+        // for the compare-and-swap below (empty means the branch is new), while parent is
+        // what the new commit is built on - which for a first release is the seed, not the
+        // ref's current value.
+        def existingTip = gitHere(['rev-parse', '-q', '--verify', "refs/heads/${releaseBranch}"], true)
+        def parent = existingTip
+
+        // First release on this branch: seed it from the previous version line so the
+        // release reads as a diff rather than as an import of every file.
+        if (!existingTip) {
+            def previousRef = (findProperty('previousRelease')
+                    ?: findProperty('previous_release_branch') ?: "") as String
+
+            if (previousRef.isEmpty()) {
+                throw new GradleException(
+                        "'${releaseBranch}' does not exist yet and no predecessor is configured, so the first\n" +
+                                "release would list every file in the repository as new.\n" +
+                                "Set 'previous_release_branch' in gradle.properties (or pass -PpreviousRelease=<ref>)\n" +
+                                "to the previous version line - typically the previous release branch - or set it to\n" +
+                                "'none' if this really is the very first release branch."
+                )
+            }
+
+            if (previousRef != 'none') {
+                def previous = gitHere(['rev-parse', '-q', '--verify', "${previousRef}^{commit}"], true)
+                if (!previous) {
+                    throw new GradleException(
+                            "The configured predecessor '${previousRef}' does not exist in this repository.\n" +
+                                    "Create that release branch first, point -PpreviousRelease= at something that exists,\n" +
+                                    "or set it to 'none' to start '${releaseBranch}' without a predecessor."
+                    )
+                }
+
+                parent = previous
+
+                // Everything reachable from the predecessor becomes part of the public
+                // branch. Report the size of that, and how much of it origin has never
+                // seen, so a predecessor aimed at an internal branch shows up here rather
+                // than after the push.
+                def inherited = gitHere(['rev-list', '--count', previous], true)
+                def unpublished = gitHere(['rev-list', '--count', previous, '--not', '--remotes=origin/*'], true)
+
+                println "Starting ${releaseBranch} from '${previousRef}' (${parent.take(9)})."
+                if (inherited) {
+                    println "  it inherits ${inherited} commit(s) from that branch, which become part of the release branch"
+                }
+                if (unpublished && unpublished != "0") {
+                    println "  ${unpublished} of them are not on origin yet and would be published by the first push"
+                }
+            }
+        }
+
+        def commitArgs = ['commit-tree', tree, '-F', message.absolutePath]
+        if (parent) commitArgs += ['-p', parent]
+        def commit = gitHere(commitArgs)
+
+        // Compare-and-swap against the tip we read, so a concurrent update is an error
+        // rather than a silent overwrite. An empty old value asserts the ref is new.
+        gitHere(['update-ref', "refs/heads/${releaseBranch}", commit, existingTip])
+
+        println "Release Version ${project.version} -> ${releaseBranch} (${commit.take(9)})"
+        if (existingTip) {
+            println "  on top of the previous release ${existingTip.take(9)}"
+        } else if (parent) {
+            println "  as the first release on that branch, on top of ${parent.take(9)}"
+        } else {
+            println "  as the first release on that branch, with no predecessor"
+        }
+        println "  push it with: git push origin ${releaseBranch}"
+    }
+}
+
+// 'changelog' rewrites CHANGES.md and 'nextVersion' rewrites mod_version in
+// gradle.properties - the two inputs this release commit is built from, and both
+// of them routinely carry manual edits. Refuse the combination rather than let a
+// generated file quietly replace an edited one mid-build; whenReady fires before
+// any task executes, so nothing has been overwritten by the time this throws.
+gradle.taskGraph.whenReady { graph ->
+    if (!graph.hasTask(mergeToRelease)) return
+    def regenerating = graph.allTasks.findAll { it.name in ['changelog', 'nextVersion'] }
+    if (!regenerating.isEmpty()) {
+        throw new GradleException(
+                "mergeToRelease was requested together with ${regenerating.collect { it.name }.join(' and ')}.\n" +
+                        "Those regenerate CHANGES.md / mod_version, which are what the release commit publishes,\n" +
+                        "and any manual edits in them would be lost. Run them first, review the result, commit,\n" +
+                        "then run 'gradlew :mergeToRelease' on its own."
+        )
+    }
+}
+
+afterEvaluate {
+    tasks.named('publishModrinth') {
+        finalizedBy tagRelease
+    }
+    tasks.named('tagRelease') {
+        onlyIf {
+            !isDryRun && tasks.named('publishModrinth').get().state.failure == null
+        }
+    }
+}

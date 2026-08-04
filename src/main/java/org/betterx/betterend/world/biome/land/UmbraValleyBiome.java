@@ -1,6 +1,9 @@
 package org.betterx.betterend.world.biome.land;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
@@ -11,8 +14,9 @@ import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.surface.UmbraSurfaceNoiseCondition;
-import org.betterx.wover.surface.api.SurfaceRuleBuilder;
-import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
+import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
+import de.ambertation.wover.surface.impl.BaseSurfaceRuleBuilder;
+import de.ambertation.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,11 +26,11 @@ import java.util.List;
 
 public class UmbraValleyBiome extends EndBiome.Config {
     private static final Block[] SURFACE_BLOCKS = new Block[]{
-            EndBlocks.PALLIDIUM_FULL,
-            EndBlocks.PALLIDIUM_HEAVY,
-            EndBlocks.PALLIDIUM_THIN,
-            EndBlocks.PALLIDIUM_TINY,
-            EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE)
+            EndTerrainBlocks.PALLIDIUM_FULL,
+            EndTerrainBlocks.PALLIDIUM_HEAVY,
+            EndTerrainBlocks.PALLIDIUM_THIN,
+            EndTerrainBlocks.PALLIDIUM_TINY,
+            EndStoneBlocks.UMBRALITH.getBlock(SlotType.SOURCE)
     };
 
     public UmbraValleyBiome() {
@@ -53,17 +57,17 @@ public class UmbraValleyBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE).defaultBlockState();
+                return EndStoneBlocks.UMBRALITH.getBlock(SlotType.SOURCE).defaultBlockState();
             }
 
             @Override
             public BlockState getUnderMaterial() {
-                return EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE).defaultBlockState();
+                return EndStoneBlocks.UMBRALITH.getBlock(SlotType.SOURCE).defaultBlockState();
             }
 
             @Override
             public BlockState getAltTopMaterial() {
-                return EndBlocks.PALLIDIUM_FULL.defaultBlockState();
+                return EndTerrainBlocks.PALLIDIUM_FULL.defaultBlockState();
             }
 
             @Override
@@ -86,7 +90,9 @@ public class UmbraValleyBiome extends EndBiome.Config {
                                                     SurfaceRules.state(surfaceMaterial().getTopMaterial())
                                             )
                                     )
-                            ), 2);
+                            // Must beat the FILLER priority or the switch is dead and only the filler
+                            // (umbralith) shows - the surface looked "umbralith only" for this reason.
+                            ), BaseSurfaceRuleBuilder.SUB_SURFACE_PRIORITY);
             }
         };
     }

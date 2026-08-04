@@ -1,8 +1,8 @@
 package org.betterx.datagen.betterend.recipes;
 
 import org.betterx.betterend.registry.EndEnchantments;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.WoverEnchantmentProvider;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.WoverEnchantmentProvider;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;

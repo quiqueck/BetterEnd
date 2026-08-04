@@ -2,7 +2,7 @@ package org.betterx.betterend.item;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.interfaces.BetterEndElytra;
-import org.betterx.wover.item.api.ItemDefinition;
+import de.ambertation.wover.item.api.ItemDefinition;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;

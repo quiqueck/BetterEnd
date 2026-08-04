@@ -1,20 +1,15 @@
 package org.betterx.betterend.item;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.item.material.EndArmorTier;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.complex.api.equipment.ArmorSlot;
-import org.betterx.wover.complex.api.equipment.ArmorTier;
+import de.ambertation.wover.complex.api.equipment.ArmorSlot;
+import de.ambertation.wover.complex.api.equipment.ArmorTier;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.Equippable;
 
 public class EndArmorItem extends Item {
@@ -24,6 +19,22 @@ public class EndArmorItem extends Item {
     public static final ResourceLocation TOUGHNESS_BOOST = BetterEnd.C.mk("toughness_boost");
     public static final ResourceLocation ARMOR_BOOST = BetterEnd.C.mk("armor_boost");
 
+    /**
+     * Attribute modifiers are keyed by id, and {@code LivingEntity#collectEquipmentChanges} applies each
+     * equipped piece with {@code removeModifier(id)} followed by {@code addTransientModifier}. Four
+     * pieces sharing one id therefore overwrite each other and only the last one survives - a full set
+     * would grant a single piece's worth of armor. Vanilla avoids this by giving every slot its own id
+     * ({@code minecraft:armor.helmet}, {@code armor.chestplate}, ...); these do the same.
+     */
+    public static ResourceLocation armorBoostId(ArmorSlot slot) {
+        return BetterEnd.C.mk("armor_boost_" + slot.name);
+    }
+
+    /** Per-slot toughness modifier id. See {@link #armorBoostId(ArmorSlot)} for why it must be unique. */
+    public static ResourceLocation toughnessBoostId(ArmorSlot slot) {
+        return BetterEnd.C.mk("toughness_boost_" + slot.name);
+    }
+
     public static Properties createDefaultEndArmorSettings(ArmorSlot slot, ArmorTier tier) {
         var values = tier.getValues(slot);
         if (values == null) {
@@ -31,67 +42,6 @@ public class EndArmorItem extends Item {
         }
 
         return EndItems.defaultSettings().durability(slot.armorType.getDurability(values.durability()));
-    }
-
-    public static ItemAttributeModifiers.Builder startAttributeBuilder(
-            ArmorSlot slot,
-            ArmorTier tier
-    ) {
-        return startAttributeBuilder(
-                slot, tier,
-                EndArmorTier.CRYSTALITE.armorMaterial
-                        .defense()
-                        .getOrDefault(slot.armorType, 0),
-                EndArmorTier.CRYSTALITE.armorMaterial
-                        .toughness(),
-                0.0f
-        );
-    }
-
-    public static ItemAttributeModifiers.Builder startAttributeBuilder(
-            ArmorSlot slot,
-            ArmorTier tier,
-            int defenseDivider,
-            float toughness,
-            float knockbackResistance
-    ) {
-        final ItemAttributeModifiers.Builder builder = ItemAttributeModifiers
-                .builder()
-                .add(
-                        Attributes.ARMOR,
-                        new AttributeModifier(
-                                ARMOR_BOOST,
-                                tier.armorMaterial
-                                        .defense()
-                                        .getOrDefault(ArmorType.CHESTPLATE, 0) / 1.25f,
-                                AttributeModifier.Operation.ADD_VALUE
-                        ),
-                        EquipmentSlotGroup.CHEST
-                )
-                .add(
-                        Attributes.ARMOR_TOUGHNESS,
-                        new AttributeModifier(
-                                TOUGHNESS_BOOST,
-                                EndArmorTier.CRYSTALITE.armorMaterial
-                                        .toughness() / 1.25f,
-                                AttributeModifier.Operation.ADD_VALUE
-                        ),
-                        EquipmentSlotGroup.CHEST
-                );
-
-        if (knockbackResistance > 0.0f) {
-            builder.add(
-                    Attributes.KNOCKBACK_RESISTANCE,
-                    new AttributeModifier(
-                            BASE_KNOCKBACK_RESISTANCE,
-                            knockbackResistance,
-                            AttributeModifier.Operation.ADD_VALUE
-                    ),
-                    EquipmentSlotGroup.MAINHAND
-            );
-        }
-
-        return builder;
     }
 
     public static Properties createDefaultEndArmorSettings(

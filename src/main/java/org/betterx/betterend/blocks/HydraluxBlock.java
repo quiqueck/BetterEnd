@@ -1,12 +1,17 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
 
-import org.betterx.betterend.blocks.basis.EndUnderwaterPlantBlock;
+
+import org.betterx.betterend.registry.block.EndSaplingBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.registry.item.EndResourceItems;
+import de.ambertation.wover.sets.api.blocks.SlotType;
+
+import org.betterx.bclib.blocks.UnderwaterPlantBlock;
 import org.betterx.betterend.blocks.EndBlockProperties.HydraluxShape;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.loot.api.LootLookupProvider;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
@@ -31,7 +36,7 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class HydraluxBlock extends EndUnderwaterPlantBlock {
+public class HydraluxBlock extends UnderwaterPlantBlock {
 
     public static final EnumProperty<HydraluxShape> SHAPE = EndBlockProperties.HYDRALUX_SHAPE;
 
@@ -51,7 +56,7 @@ public class HydraluxBlock extends EndUnderwaterPlantBlock {
         if (shape == HydraluxShape.FLOWER_BIG_TOP || shape == HydraluxShape.FLOWER_SMALL_TOP) {
             return down.is(this);
         } else if (shape == HydraluxShape.ROOTS) {
-            return down.is(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE)) && world.getBlockState(pos.above())
+            return down.is(EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE)) && world.getBlockState(pos.above())
                                                                                        .is(this);
         } else {
             return down.is(this) && world.getBlockState(pos.above()).is(this);
@@ -71,7 +76,7 @@ public class HydraluxBlock extends EndUnderwaterPlantBlock {
     @Override
     @Environment(EnvType.CLIENT)
     public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
-        return new ItemStack(EndBlocks.HYDRALUX_SAPLING);
+        return new ItemStack(EndSaplingBlocks.HYDRALUX_SAPLING);
     }
 
     /**
@@ -86,12 +91,12 @@ public class HydraluxBlock extends EndUnderwaterPlantBlock {
                         .when(AnyOfCondition.anyOf(
                                 shapeCond(block, HydraluxShape.FLOWER_BIG_BOTTOM),
                                 shapeCond(block, HydraluxShape.FLOWER_SMALL_BOTTOM)))
-                        .add(LootItem.lootTableItem(EndItems.HYDRALUX_PETAL)
+                        .add(LootItem.lootTableItem(EndResourceItems.HYDRALUX_PETAL)
                                      .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))))
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .when(shapeCond(block, HydraluxShape.ROOTS))
-                        .add(LootItem.lootTableItem(EndBlocks.HYDRALUX_SAPLING)
+                        .add(LootItem.lootTableItem(EndSaplingBlocks.HYDRALUX_SAPLING)
                                      .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))));
     }
 

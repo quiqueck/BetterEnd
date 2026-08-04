@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.trees;
 
+
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.*;
@@ -9,7 +11,8 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.blocks.JellyshroomCapBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.feature.api.WriteZone;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
@@ -37,8 +40,12 @@ public class JellyshroomFeature extends DefaultFeature {
         final WorldGenLevel world = featureConfig.level();
         if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
 
-        BlockState bark = EndBlocks.JELLYSHROOM.getBark().defaultBlockState();
-        BlockState membrane = EndBlocks.JELLYSHROOM_CAP_PURPLE.defaultBlockState();
+        // Small tree, but reuses the same unbounded BCLib primitives as the larger ones - clip them to the
+        // write zone for consistency/safety; see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+
+        BlockState bark = EndWoodBlocks.JELLYSHROOM.getBark().defaultBlockState();
+        BlockState membrane = EndWoodBlocks.JELLYSHROOM_CAP_PURPLE.defaultBlockState();
 
         int height = MHelper.randRange(5, 8, random);
         float radius = height * MHelper.randRange(0.15F, 0.25F, random);
@@ -56,11 +63,11 @@ public class JellyshroomFeature extends DefaultFeature {
         cap = new SDFTranslate().setTranslate(last.x(), last.y(), last.z()).setSource(cap);
         sdf = new SDFSmoothUnion().setRadius(3F).setSourceA(sdf).setSourceB(cap);
         sdf.setReplaceFunction(REPLACE).addPostProcess((info) -> {
-            if (EndBlocks.JELLYSHROOM.isTreeLog(info.getState())) {
-                if (EndBlocks.JELLYSHROOM.isTreeLog(info.getStateUp()) && EndBlocks.JELLYSHROOM.isTreeLog(info.getStateDown())) {
-                    return EndBlocks.JELLYSHROOM.getLog().defaultBlockState();
+            if (EndWoodBlocks.JELLYSHROOM.isTreeLog(info.getState())) {
+                if (EndWoodBlocks.JELLYSHROOM.isTreeLog(info.getStateUp()) && EndWoodBlocks.JELLYSHROOM.isTreeLog(info.getStateDown())) {
+                    return EndWoodBlocks.JELLYSHROOM.getLog().defaultBlockState();
                 }
-            } else if (info.getState().is(EndBlocks.JELLYSHROOM_CAP_PURPLE)) {
+            } else if (info.getState().is(EndWoodBlocks.JELLYSHROOM_CAP_PURPLE)) {
                 float dx = info.getPos().getX() - pos.getX() - last.x();
                 float dz = info.getPos().getZ() - pos.getZ() - last.z();
                 float distance = MHelper.length(dx, dz) / membraneRadius * 7F;
@@ -68,14 +75,22 @@ public class JellyshroomFeature extends DefaultFeature {
                 return info.getState().setValue(JellyshroomCapBlock.COLOR, color);
             }
             return info.getState();
-        }).fillRecursive(world, pos);
+        }).fillRecursive(world, pos, zone.toBoundingBox());
         radius = height * 0.5F;
-        makeRoots(world, pos.offset(0, 2, 0), radius, random, bark);
+        makeRoots(world, pos.offset(0, 2, 0), radius, random, bark, zone);
 
+        EndTreeHelper.waterlogSubmerged(world, pos, 12);
         return true;
     }
 
-    private void makeRoots(WorldGenLevel world, BlockPos pos, float radius, RandomSource random, BlockState wood) {
+    private void makeRoots(
+            WorldGenLevel world,
+            BlockPos pos,
+            float radius,
+            RandomSource random,
+            BlockState wood,
+            WriteZone zone
+    ) {
         int count = (int) (radius * 3.5F);
         for (int i = 0; i < count; i++) {
             float angle = (float) i / (float) count * MHelper.PI2;
@@ -87,7 +102,7 @@ public class JellyshroomFeature extends DefaultFeature {
             Vector3f last = branch.get(branch.size() - 1);
             if (world.getBlockState(pos.offset((int) last.x(), (int) last.y(), (int) last.z()))
                      .is(CommonBlockTags.END_STONES)) {
-                SplineHelper.fillSpline(branch, world, wood, pos, REPLACE);
+                SplineHelper.fillSpline(branch, world, wood, pos, REPLACE, zone.toBoundingBox());
             }
         }
     }

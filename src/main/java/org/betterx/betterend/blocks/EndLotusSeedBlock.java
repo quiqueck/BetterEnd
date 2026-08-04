@@ -1,10 +1,13 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndUnderwaterPlantWithAgeBlock;
+
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
+import org.betterx.betterend.registry.block.EndWoodBlocks;
+import org.betterx.bclib.blocks.UnderwaterPlantWithAgeBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -14,7 +17,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 
-public class EndLotusSeedBlock extends EndUnderwaterPlantWithAgeBlock {
+public class EndLotusSeedBlock extends UnderwaterPlantWithAgeBlock {
     public EndLotusSeedBlock(Properties properties) {
         super(properties);
     }
@@ -22,12 +25,12 @@ public class EndLotusSeedBlock extends EndUnderwaterPlantWithAgeBlock {
     @Override
     public void grow(WorldGenLevel world, RandomSource random, BlockPos pos) {
         if (canGrow(world, pos)) {
-            BlockState startLeaf = EndBlocks.END_LOTUS_STEM.defaultBlockState().setValue(EndLotusStemBlock.LEAF, true);
-            BlockState roots = EndBlocks.END_LOTUS_STEM.defaultBlockState()
+            BlockState startLeaf = EndWoodBlocks.END_LOTUS_STEM.defaultBlockState().setValue(EndLotusStemBlock.LEAF, true);
+            BlockState roots = EndWoodBlocks.END_LOTUS_STEM.defaultBlockState()
                                                        .setValue(EndLotusStemBlock.SHAPE, TripleShape.BOTTOM)
                                                        .setValue(EndLotusStemBlock.WATERLOGGED, true);
-            BlockState stem = EndBlocks.END_LOTUS_STEM.defaultBlockState();
-            BlockState flower = EndBlocks.END_LOTUS_FLOWER.defaultBlockState();
+            BlockState stem = EndWoodBlocks.END_LOTUS_STEM.defaultBlockState();
+            BlockState flower = EndWaterPlantBlocks.END_LOTUS_FLOWER.defaultBlockState();
 
             BlocksHelper.setWithoutUpdate(world, pos, roots);
             MutableBlockPos bpos = new MutableBlockPos().set(pos);
@@ -73,14 +76,14 @@ public class EndLotusSeedBlock extends EndUnderwaterPlantWithAgeBlock {
             BlocksHelper.setWithoutUpdate(world, bpos, flower);
             bpos.setY(bpos.getY() - 1);
             stem = world.getBlockState(bpos);
-            if (!stem.is(EndBlocks.END_LOTUS_STEM)) {
-                stem = EndBlocks.END_LOTUS_STEM.defaultBlockState();
+            if (!stem.is(EndWoodBlocks.END_LOTUS_STEM)) {
+                stem = EndWoodBlocks.END_LOTUS_STEM.defaultBlockState();
                 if (!world.getBlockState(bpos.north()).getFluidState().isEmpty()) {
                     stem = stem.setValue(EndLotusStemBlock.WATERLOGGED, true);
                 }
             }
 
-            if (world.getBlockState(bpos.relative(dir)).is(EndBlocks.END_LOTUS_LEAF)) {
+            if (world.getBlockState(bpos.relative(dir)).is(EndWaterPlantBlocks.END_LOTUS_LEAF)) {
                 stem = stem.setValue(EndLotusStemBlock.LEAF, true).setValue(EndLotusStemBlock.FACING, dir);
             }
 
@@ -99,7 +102,7 @@ public class EndLotusSeedBlock extends EndUnderwaterPlantWithAgeBlock {
 
     private void generateLeaf(WorldGenLevel world, BlockPos pos) {
         MutableBlockPos p = new MutableBlockPos();
-        BlockState leaf = EndBlocks.END_LOTUS_LEAF.defaultBlockState();
+        BlockState leaf = EndWaterPlantBlocks.END_LOTUS_LEAF.defaultBlockState();
         BlocksHelper.setWithoutUpdate(world, pos, leaf.setValue(EndLotusLeafBlock.SHAPE, TripleShape.BOTTOM));
         for (Direction move : BlocksHelper.HORIZONTAL) {
             BlocksHelper.setWithoutUpdate(
@@ -136,7 +139,7 @@ public class EndLotusSeedBlock extends EndUnderwaterPlantWithAgeBlock {
     }
 
     @Override
-    protected boolean isValidGround(BlockState state) {
+    protected boolean isTerrain(BlockState state) {
         return state.is(CommonBlockTags.END_STONES);
     }
 }

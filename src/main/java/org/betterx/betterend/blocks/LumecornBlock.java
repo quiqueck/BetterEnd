@@ -1,10 +1,13 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndBlockNotFull;
+
+
+import org.betterx.betterend.registry.block.EndMushroomBlocks;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class LumecornBlock extends EndBlockNotFull {
+public class LumecornBlock extends Block {
     public static final EnumProperty<EndBlockProperties.LumecornShape> SHAPE = EnumProperty.create(
             "shape",
             EndBlockProperties.LumecornShape.class
@@ -88,12 +91,12 @@ public class LumecornBlock extends EndBlockNotFull {
         EndBlockProperties.LumecornShape shape = state.getValue(SHAPE);
         if (shape == EndBlockProperties.LumecornShape.BOTTOM_BIG || shape == EndBlockProperties.LumecornShape.BOTTOM_SMALL || shape == EndBlockProperties.LumecornShape.MIDDLE) {
             return Collections.singletonList(new ItemStack(
-                    EndBlocks.LUMECORN_SEED,
+                    EndMushroomBlocks.LUMECORN_SEED,
                     MHelper.randRange(1, 2, MHelper.RANDOM_SOURCE)
             ));
         }
         return MHelper.RANDOM.nextBoolean()
-                ? Collections.singletonList(new ItemStack(EndItems.LUMECORN_ROD))
+                ? Collections.singletonList(new ItemStack(EndResourceItems.LUMECORN_ROD))
                 : Collections
                         .emptyList();
     }
@@ -103,8 +106,8 @@ public class LumecornBlock extends EndBlockNotFull {
     public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
         EndBlockProperties.LumecornShape shape = blockState.getValue(SHAPE);
         if (shape == EndBlockProperties.LumecornShape.BOTTOM_BIG || shape == EndBlockProperties.LumecornShape.BOTTOM_SMALL || shape == EndBlockProperties.LumecornShape.MIDDLE) {
-            return new ItemStack(EndBlocks.LUMECORN_SEED);
+            return new ItemStack(EndMushroomBlocks.LUMECORN_SEED);
         }
-        return new ItemStack(EndItems.LUMECORN_ROD);
+        return new ItemStack(EndResourceItems.LUMECORN_ROD);
     }
 }

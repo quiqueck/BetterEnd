@@ -1,10 +1,10 @@
 package org.betterx.betterend.trait.block;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.block.api.client.model.ModelTraitLibrary;
-import org.betterx.wover.block.api.trait.*;
-import org.betterx.wover.block.impl.trait.BlockTraitImpl;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.model.ModelTraitLibrary;
+import de.ambertation.wover.block.api.trait.*;
+import de.ambertation.wover.block.impl.trait.BlockTraitImpl;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;

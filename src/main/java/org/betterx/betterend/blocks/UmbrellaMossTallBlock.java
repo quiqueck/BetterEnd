@@ -1,6 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndDoublePlantBlock;
+
+import org.betterx.betterend.registry.block.EndPlantBlocks;
+import org.betterx.bclib.blocks.BaseDoublePlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -11,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class UmbrellaMossTallBlock extends EndDoublePlantBlock {
+public class UmbrellaMossTallBlock extends BaseDoublePlantBlock {
     public UmbrellaMossTallBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -23,7 +25,7 @@ public class UmbrellaMossTallBlock extends EndDoublePlantBlock {
                 pos.getX() + 0.5,
                 pos.getY() + 0.5,
                 pos.getZ() + 0.5,
-                new ItemStack(EndBlocks.UMBRELLA_MOSS)
+                new ItemStack(EndPlantBlocks.UMBRELLA_MOSS)
         );
         world.addFreshEntity(item);
     }

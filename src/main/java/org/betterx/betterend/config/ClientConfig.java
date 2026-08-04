@@ -2,7 +2,7 @@ package org.betterx.betterend.config;
 
 import de.ambertation.wunderlib.configs.ConfigFile;
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.config.api.MainConfig;
+import de.ambertation.wover.config.api.MainConfig;
 
 public class ClientConfig extends ConfigFile {
     public ClientConfig() {

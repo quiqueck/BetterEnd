@@ -1,17 +1,16 @@
 package org.betterx.betterend.complexmaterials.types;
 
-import org.betterx.bclib.blocks.BaseAnvilBlock;
 import org.betterx.bclib.blocks.LeveledAnvilBlock;
 import org.betterx.betterend.complexmaterials.MetalMaterial;
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.block.api.BlockRegistry;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.trait.BlockRecipeTrait;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.block.api.trait.BlockTraits;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.sets.api.blocks.BlockSet;
-import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.BlockRegistry;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.trait.BlockRecipeTrait;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.sets.api.blocks.SlotFromDefinition;
 
 import net.minecraft.tags.BlockTags;
 
@@ -62,7 +61,7 @@ public class Anvil extends SlotFromDefinition {
 
     @Override
     protected BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return BaseAnvilBlock.buildModel(set, traitLookup);
+        return LeveledAnvilBlock.buildModel(set, traitLookup);
     }
 
 

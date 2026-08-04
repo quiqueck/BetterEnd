@@ -1,12 +1,14 @@
 package org.betterx.betterend.world.features.bushes;
 
+
+import org.betterx.betterend.registry.block.EndMushroomBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.EndBlockProperties.LumecornShape;
 import org.betterx.betterend.blocks.LumecornBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -34,18 +36,18 @@ public class Lumecorn extends DefaultFeature {
             }
         }
         mut.set(pos);
-        BlockState topMiddle = EndBlocks.LUMECORN.defaultBlockState()
+        BlockState topMiddle = EndMushroomBlocks.LUMECORN.defaultBlockState()
                                                  .setValue(LumecornBlock.SHAPE, LumecornShape.LIGHT_TOP_MIDDLE);
-        BlockState middle = EndBlocks.LUMECORN.defaultBlockState()
+        BlockState middle = EndMushroomBlocks.LUMECORN.defaultBlockState()
                                               .setValue(LumecornBlock.SHAPE, LumecornShape.LIGHT_MIDDLE);
-        BlockState bottom = EndBlocks.LUMECORN.defaultBlockState()
+        BlockState bottom = EndMushroomBlocks.LUMECORN.defaultBlockState()
                                               .setValue(LumecornBlock.SHAPE, LumecornShape.LIGHT_BOTTOM);
-        BlockState top = EndBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.LIGHT_TOP);
+        BlockState top = EndMushroomBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.LIGHT_TOP);
         if (height == 4) {
             BlocksHelper.setWithoutUpdate(
                     world,
                     mut,
-                    EndBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.BOTTOM_SMALL)
+                    EndMushroomBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.BOTTOM_SMALL)
             );
             BlocksHelper.setWithoutUpdate(world, mut.move(Direction.UP), bottom);
             BlocksHelper.setWithoutUpdate(world, mut.move(Direction.UP), topMiddle);
@@ -56,18 +58,18 @@ public class Lumecorn extends DefaultFeature {
             BlocksHelper.setWithoutUpdate(
                     world,
                     mut,
-                    EndBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.BOTTOM_SMALL)
+                    EndMushroomBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.BOTTOM_SMALL)
             );
         } else {
             BlocksHelper.setWithoutUpdate(
                     world,
                     mut,
-                    EndBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.BOTTOM_BIG)
+                    EndMushroomBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.BOTTOM_BIG)
             );
             BlocksHelper.setWithoutUpdate(
                     world,
                     mut.move(Direction.UP),
-                    EndBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.MIDDLE)
+                    EndMushroomBlocks.LUMECORN.defaultBlockState().setValue(LumecornBlock.SHAPE, LumecornShape.MIDDLE)
             );
             height--;
         }

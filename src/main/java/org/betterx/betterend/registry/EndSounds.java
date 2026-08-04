@@ -18,6 +18,7 @@ public class EndSounds {
     public static final Holder<SoundEvent> MUSIC_DARK = register("music", "dark");
     public static final Holder<SoundEvent> MUSIC_OPENSPACE = register("music", "openspace");
     public static final Holder<SoundEvent> MUSIC_CAVES = register("music", "caves");
+    public static final Holder<SoundEvent> MUSIC_ENDER_HOLLOW = register("music", "ender_hollow");
 
     // Ambient
     public static final Holder<SoundEvent> AMBIENT_FOGGY_MUSHROOMLAND = register("ambient", "foggy_mushroomland");
@@ -44,11 +45,15 @@ public class EndSounds {
     public static final Holder.Reference<SoundEvent> RECORD_GRASPING_AT_STARS_SOUND = register("record", "grasping_at_stars");
     public static final Holder.Reference<SoundEvent> RECORD_ENDSEEKER_SOUND = register("record", "endseeker");
     public static final Holder.Reference<SoundEvent> RECORD_EO_DRACONA_SOUND = register("record", "eo_dracona");
+    public static final Holder.Reference<SoundEvent> RECORD_ENDER_HOLLOW_SOUND = register("record", "ender_hollow");
+    public static final Holder.Reference<SoundEvent> RECORD_MOONLIT_UNDERCURRENTS_SOUND = register("record", "moonlit_undercurrents");
 
     public static final ResourceKey<JukeboxSong> RECORD_STRANGE_AND_ALIEN = createSongKey("strange_and_alien");
     public static final ResourceKey<JukeboxSong> RECORD_GRASPING_AT_STARS = createSongKey("grasping_at_stars");
     public static final ResourceKey<JukeboxSong> RECORD_ENDSEEKER = createSongKey("endseeker");
     public static final ResourceKey<JukeboxSong> RECORD_EO_DRACONA = createSongKey("eo_dracona");
+    public static final ResourceKey<JukeboxSong> RECORD_ENDER_HOLLOW = createSongKey("ender_hollow");
+    public static final ResourceKey<JukeboxSong> RECORD_MOONLIT_UNDERCURRENTS = createSongKey("moonlit_undercurrents");
 
     public static void register() {
     }

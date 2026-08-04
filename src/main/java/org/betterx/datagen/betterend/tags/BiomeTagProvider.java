@@ -2,10 +2,10 @@ package org.betterx.datagen.betterend.tags;
 
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.EndTags;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.WoverTagProvider;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
-import org.betterx.wover.tag.api.predefined.CommonBiomeTags;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.WoverTagProvider;
+import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
+import de.ambertation.wover.tag.api.predefined.CommonBiomeTags;
 
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;

@@ -4,7 +4,7 @@ import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.entities.InfusionPedestalEntity;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.betterend.rituals.InfusionRitual;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
+import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;

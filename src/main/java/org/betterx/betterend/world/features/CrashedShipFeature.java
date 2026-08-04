@@ -5,7 +5,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.StructureErode;
 import org.betterx.bclib.util.StructureHelper;
 import org.betterx.betterend.util.BlockFixer;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

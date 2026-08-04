@@ -1,9 +1,11 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.loot.api.LootLookupProvider;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
@@ -114,7 +116,7 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Simp
                                         ageCondition(block, 3)
                                 ))
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(EndItems.CRYSTALLINE_SULPHUR)
+                                .add(LootItem.lootTableItem(EndResourceItems.CRYSTALLINE_SULPHUR)
                                              .apply(SetItemCountFunction
                                                      .setCount(UniformGenerator.between(1, 3))
                                              )

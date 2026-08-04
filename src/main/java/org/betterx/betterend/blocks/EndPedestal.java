@@ -3,11 +3,12 @@ package org.betterx.betterend.blocks;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.client.models.EndModels;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
 
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -77,7 +78,7 @@ public class EndPedestal extends PedestalBlock {
      * server actually has to verify.
      */
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
-        return ClientModel.build(set);
+        return ModCore.isDatagen() ? ClientModel.build(set) : null;
     }
 
     @Environment(EnvType.CLIENT)

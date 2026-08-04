@@ -1,0 +1,8 @@
+{
+  "comparator_output": 0,
+  "description": {
+    "translate": "jukebox_song.betterend.moonlit_undercurrents"
+  },
+  "length_in_seconds": 231.0,
+  "sound_event": "betterend:betterend.record.moonlit_undercurrents"
+}

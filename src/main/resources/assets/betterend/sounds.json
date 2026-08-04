@@ -124,6 +124,21 @@
 			}
 		]
 	},
+	"betterend.music.ender_hollow": {
+		"category": "music",
+		"sounds": [
+			{
+				"name": "betterend:music/ender_hollow",
+				"volume": 0.4,
+				"stream": true
+			},
+			{
+				"name": "betterend:music/moonlit_undercurrents",
+				"volume": 0.3,
+				"stream": true
+			}
+		]
+	},
 	
 	"betterend.ambient.foggy_mushroomland": {
 		"category": "ambient",
@@ -329,6 +344,26 @@
 		"sounds": [
 			{
 				"name": "betterend:records/firel-eo_dracona",
+				"stream": true,
+				"attenuation_distance": 16
+			}
+		]
+	},
+	"betterend.record.ender_hollow": {
+		"category": "record",
+		"sounds": [
+			{
+				"name": "betterend:music/ender_hollow",
+				"stream": true,
+				"attenuation_distance": 16
+			}
+		]
+	},
+	"betterend.record.moonlit_undercurrents": {
+		"category": "record",
+		"sounds": [
+			{
+				"name": "betterend:music/moonlit_undercurrents",
 				"stream": true,
 				"attenuation_distance": 16
 			}

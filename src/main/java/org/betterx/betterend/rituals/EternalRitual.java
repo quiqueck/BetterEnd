@@ -1,5 +1,8 @@
 package org.betterx.betterend.rituals;
 
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.advancements.BECriteria;
 import org.betterx.betterend.blocks.EndPortalBlock;
@@ -9,7 +12,7 @@ import org.betterx.betterend.network.RitualUpdate;
 import org.betterx.betterend.portal.PortalBuilder;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndPortals;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,7 +53,7 @@ public class EternalRitual {
             new Point(6, 0)
     );
 
-    private final static Block PEDESTAL = EndBlocks.ETERNAL_PEDESTAL;
+    private final static Block PEDESTAL = EndFunctionalBlocks.ETERNAL_PEDESTAL;
     public final static BooleanProperty ACTIVE = BlockProperties.ACTIVE;
 
     private Level world;
@@ -135,7 +138,7 @@ public class EternalRitual {
         if (world == null) return;
         updateActiveStateOnPedestals(center, axis, active, willActivate, world, this);
         if (world instanceof ServerLevel serverLevel) {
-            new RitualUpdate(this).sendToClient(serverLevel);
+            RitualUpdate.send(serverLevel, this);
         }
 
     }
@@ -527,7 +530,7 @@ public class EternalRitual {
             final var direction = state.getValue(NetherPortalBlock.AXIS) == Direction.Axis.X
                     ? Direction.EAST
                     : Direction.NORTH;
-            while (world.getBlockState(startPos.below()).is(EndBlocks.END_PORTAL_BLOCK)) {
+            while (world.getBlockState(startPos.below()).is(EndFunctionalBlocks.END_PORTAL_BLOCK)) {
                 startPos = startPos.below();
             }
 
@@ -538,22 +541,22 @@ public class EternalRitual {
             //     X X X
 
 
-            if (world.getBlockState(startPos.relative(direction, -1)).is(EndBlocks.FLAVOLITE_RUNED_ETERNAL))
+            if (world.getBlockState(startPos.relative(direction, -1)).is(EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL))
                 startPos = startPos.relative(direction, 1); //pos (a)
-            else if (world.getBlockState(startPos.relative(direction, 1)).is(EndBlocks.FLAVOLITE_RUNED_ETERNAL))
+            else if (world.getBlockState(startPos.relative(direction, 1)).is(EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL))
                 startPos = startPos.relative(direction, -1); //pos (b)
 
-            if (!world.getBlockState(startPos.below()).is(EndBlocks.FLAVOLITE_RUNED_ETERNAL))
+            if (!world.getBlockState(startPos.below()).is(EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL))
                 startPos = startPos.below(); //pos (c)
 
-            if (world.getBlockState(startPos.relative(direction, -1)).is(EndBlocks.FLAVOLITE_RUNED_ETERNAL))
+            if (world.getBlockState(startPos.relative(direction, -1)).is(EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL))
                 startPos = startPos.relative(direction, 1); //pos (a)
-            else if (world.getBlockState(startPos.relative(direction, 1)).is(EndBlocks.FLAVOLITE_RUNED_ETERNAL))
+            else if (world.getBlockState(startPos.relative(direction, 1)).is(EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL))
                 startPos = startPos.relative(direction, -1); //pos (b)
 
             startPos = startPos.relative(direction.getClockWise(), 6);
             state = world.getBlockState(startPos);
-            if (state.is(EndBlocks.ETERNAL_PEDESTAL) && world.getBlockEntity(startPos) instanceof EternalPedestalEntity pedestal) {
+            if (state.is(EndFunctionalBlocks.ETERNAL_PEDESTAL) && world.getBlockEntity(startPos) instanceof EternalPedestalEntity pedestal) {
                 return pedestal.getRitual();
             }
             return null;
@@ -563,7 +566,7 @@ public class EternalRitual {
     }
 
     private static boolean isActivePortalBlock(BlockState state) {
-        return state.is(EndBlocks.END_PORTAL_BLOCK)
+        return state.is(EndFunctionalBlocks.END_PORTAL_BLOCK)
                 && state.hasProperty(NetherPortalBlock.AXIS);
     }
 }

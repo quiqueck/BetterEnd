@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks.basis;
 
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,16 +26,18 @@ import net.minecraft.world.level.material.Fluids;
 
 import org.jetbrains.annotations.Nullable;
 
-public abstract class EndLanternBlock extends EndBlockNotFull implements SimpleWaterloggedBlock, LiquidBlockContainer {
+// Pass-through constructor (WP6.14): both overloads used to mutate the incoming Properties
+// (noOcclusion(), and the (Block source) overload also lightLevel()) - an R1 violation. Every real
+// registration site uses the (Properties) overload (see complexmaterials/types/StoneLantern.java and
+// BulbLantern.java), so noOcclusion()/lightLevel(15) move there; the (Block source) convenience overload
+// (never actually called - grep confirms no live `new EndLanternBlock(Block)`/subclass equivalent) is
+// removed rather than ported.
+public abstract class EndLanternBlock extends Block implements SimpleWaterloggedBlock, LiquidBlockContainer {
     public static final BooleanProperty IS_FLOOR = BlockProperties.IS_FLOOR;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public EndLanternBlock(Block source) {
-        this(BlockBehaviour.Properties.ofFullCopy(source).lightLevel((bs) -> 15).noOcclusion());
-    }
-
     public EndLanternBlock(Properties settings) {
-        super(settings.noOcclusion());
+        super(settings);
         this.registerDefaultState(getStateDefinition()
                 .any()
                 .setValue(IS_FLOOR, true)

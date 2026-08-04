@@ -6,7 +6,7 @@ import org.betterx.bclib.util.StructureHelper;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.world.structures.piece.NBTPiece;
-import org.betterx.wover.structure.api.StructureUtils;
+import de.ambertation.wover.structure.api.StructureUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

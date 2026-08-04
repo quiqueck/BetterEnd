@@ -1,10 +1,10 @@
 package org.betterx.datagen.betterend.tags;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.WoverTagProvider;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.WoverTagProvider;
+import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;

@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks.entities;
 
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.betterend.blocks.HydrothermalVentBlock;
 import org.betterx.betterend.registry.EndBlockEntities;
 import org.betterx.betterend.registry.EndBlocks;
@@ -33,7 +35,7 @@ public class BlockEntityHydrothermalVent extends BlockEntity {
             BlockState state,
             T uncastedEntity
     ) {
-        if (level != null && uncastedEntity instanceof BlockEntityHydrothermalVent && state.is(EndBlocks.HYDROTHERMAL_VENT)) {
+        if (level != null && uncastedEntity instanceof BlockEntityHydrothermalVent && state.is(EndStoneBlocks.HYDROTHERMAL_VENT)) {
             BlockEntityHydrothermalVent blockEntity = (BlockEntityHydrothermalVent) uncastedEntity;
             if (level.isClientSide()) {
                 clientTick(level, worldPosition, state, blockEntity);

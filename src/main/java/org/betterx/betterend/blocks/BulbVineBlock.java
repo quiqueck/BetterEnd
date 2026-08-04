@@ -1,11 +1,15 @@
 package org.betterx.betterend.blocks;
 
+
+
+import org.betterx.betterend.registry.block.EndVineBlocks;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
-import org.betterx.wover.loot.api.LootLookupProvider;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
@@ -20,11 +24,12 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 public class BulbVineBlock extends BaseVineBlock {
     public BulbVineBlock(BlockBehaviour.Properties props) {
-        super(props, 15, true);
+        super(props);
     }
 
     @Override
@@ -44,9 +49,9 @@ public class BulbVineBlock extends BaseVineBlock {
 //    @Override
 //    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 //        if (state.getValue(SHAPE) == TripleShape.BOTTOM) {
-//            return Lists.newArrayList(new ItemStack(EndItems.GLOWING_BULB));
+//            return Lists.newArrayList(new ItemStack(EndResourceItems.GLOWING_BULB));
 //        } else if (MHelper.RANDOM.nextInt(8) == 0) {
-//            return Lists.newArrayList(new ItemStack(EndBlocks.BULB_VINE_SEED));
+//            return Lists.newArrayList(new ItemStack(EndVineBlocks.BULB_VINE_SEED));
 //        } else {
 //            return Lists.newArrayList();
 //        }
@@ -59,22 +64,31 @@ public class BulbVineBlock extends BaseVineBlock {
                         .properties()
                         .hasProperty(SHAPE, BlockProperties.TripleShape.BOTTOM));
 
+        // Every other vine in the mod takes its loot from VineBlockTrait, which is
+        // dropWithSilkTouchOrHoeOrShears - vanilla's rule that a vine only yields to shears or silk touch.
+        // This block carries VineBlockTrait too, but the explicit LOOT_TABLE trait on its registration
+        // overrides the trait's table, so before this gate bulb_vine was the one vine in either mod that
+        // could be harvested bare-handed. The gate is the provider's own combined condition, so it stays
+        // identical to what the trait would have produced.
+        final LootItemCondition.Builder shearsOrHoeOrSilk = provider.shearsOrHoeSilkTouchCondition();
+
         return LootTable
                 .lootTable()
                 .withPool(
                         LootPool
                                 .lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
-                                .add(LootItem.lootTableItem(EndItems.GLOWING_BULB.asItem())
+                                .add(LootItem.lootTableItem(EndResourceItems.GLOWING_BULB.asItem())
                                              .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                                 )
+                                .when(shearsOrHoeOrSilk)
                                 .when(bottom)
                 )
                 .withPool(
                         LootPool
                                 .lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
-                                .add(LootItem.lootTableItem(EndBlocks.BULB_VINE_SEED.asItem())
+                                .add(LootItem.lootTableItem(EndVineBlocks.BULB_VINE_SEED.asItem())
                                              .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                                              .when(ExplosionCondition.survivesExplosion())
                                              .when(BonusLevelTableCondition.bonusLevelFlatChance(
@@ -82,6 +96,7 @@ public class BulbVineBlock extends BaseVineBlock {
                                                      LootLookupProvider.VANILLA_LEAVES_SAPLING_CHANCES
                                              ))
                                 )
+                                .when(shearsOrHoeOrSilk)
                                 .when(bottom.invert())
                 );
     }

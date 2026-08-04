@@ -1,18 +1,20 @@
 package org.betterx.betterend.complexmaterials.types;
 
+
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.betterend.blocks.BulbVineLanternBlock;
 import org.betterx.betterend.complexmaterials.MetalMaterial;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.block.api.BlockRegistry;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.block.api.trait.BlockRecipeTrait;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.block.api.trait.BlockTraits;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.sets.api.blocks.BlockSet;
-import org.betterx.wover.sets.api.blocks.SlotFromDefinition;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.BlockRegistry;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.trait.BlockRecipeTrait;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.sets.api.blocks.SlotFromDefinition;
 
 import net.minecraft.world.level.block.SoundType;
 
@@ -40,6 +42,8 @@ public class BulbLantern extends SlotFromDefinition {
         super.addSlotSpecificDefinitions(set, def);
         def.addTrait(ClientBlockTraits.RENDER_LAYER.cutout());
         def.addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe());
+        // noOcclusion() moved out of EndLanternBlock's constructor (R1, WP6.14) to here.
+        def.noOcclusion();
         def.getProperties()
            .destroyTime(1)
            .explosionResistance(1)
@@ -57,7 +61,7 @@ public class BulbLantern extends SlotFromDefinition {
                             .shape("C", "I", "#")
                             .addMaterial('C', set.getBlock(MetalMaterial.CHAIN))
                             .addMaterial('I', set.getItem(MetalMaterial.INGOT))
-                            .addMaterial('#', EndItems.GLOWING_BULB)
+                            .addMaterial('#', EndResourceItems.GLOWING_BULB)
                             .build(context);
                 });
     }

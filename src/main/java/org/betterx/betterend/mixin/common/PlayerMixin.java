@@ -1,10 +1,12 @@
 package org.betterx.betterend.mixin.common;
 
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,7 +42,7 @@ public abstract class PlayerMixin extends LivingEntity {
     ) {
         BlockPos pos = config.pos();
         BlockState blockState = world.getBlockState(pos);
-        if (blockState.is(EndBlocks.RESPAWN_OBELISK)) {
+        if (blockState.is(EndFunctionalBlocks.RESPAWN_OBELISK)) {
             info.setReturnValue(be_obeliskRespawnPosition(world, pos, config.angle(), blockState));
             info.cancel();
         }

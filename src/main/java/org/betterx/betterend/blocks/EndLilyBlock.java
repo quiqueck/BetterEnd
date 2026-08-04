@@ -1,11 +1,15 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndUnderwaterPlantBlock;
+
+
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
+import org.betterx.betterend.registry.item.EndResourceItems;
+import org.betterx.bclib.blocks.UnderwaterPlantBlock;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.block.api.BlockProperties;
-import org.betterx.wover.block.api.BlockProperties.TripleShape;
-import org.betterx.wover.loot.api.LootLookupProvider;
+import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
@@ -37,7 +41,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jetbrains.annotations.NotNull;
 
-public class EndLilyBlock extends EndUnderwaterPlantBlock {
+public class EndLilyBlock extends UnderwaterPlantBlock {
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     private static final VoxelShape SHAPE_BOTTOM = Block.box(4, 0, 4, 12, 16, 12);
     private static final VoxelShape SHAPE_TOP = Block.box(2, 0, 2, 14, 6, 14);
@@ -89,7 +93,7 @@ public class EndLilyBlock extends EndUnderwaterPlantBlock {
         if (state.getValue(SHAPE) == TripleShape.TOP) {
             return world.getBlockState(pos.below()).getBlock() == this;
         } else if (state.getValue(SHAPE) == TripleShape.BOTTOM) {
-            return isValidGround(world.getBlockState(pos.below()));
+            return isTerrain(world.getBlockState(pos.below()));
         } else {
             BlockState up = world.getBlockState(pos.above());
             BlockState down = world.getBlockState(pos.below());
@@ -107,12 +111,12 @@ public class EndLilyBlock extends EndUnderwaterPlantBlock {
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .when(isTop(block))
-                        .add(LootItem.lootTableItem(EndItems.END_LILY_LEAF)
+                        .add(LootItem.lootTableItem(EndResourceItems.END_LILY_LEAF)
                                      .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))))
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .when(isTop(block))
-                        .add(LootItem.lootTableItem(EndBlocks.END_LILY_SEED)
+                        .add(LootItem.lootTableItem(EndWaterPlantBlocks.END_LILY_SEED)
                                      .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))));
     }
 
@@ -124,7 +128,7 @@ public class EndLilyBlock extends EndUnderwaterPlantBlock {
 
     @Override
     public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
-        return new ItemStack(EndBlocks.END_LILY_SEED);
+        return new ItemStack(EndWaterPlantBlocks.END_LILY_SEED);
     }
 
     @Override

@@ -1,17 +1,34 @@
 package org.betterx.datagen.betterend.recipes;
 
+
+
+import org.betterx.betterend.registry.block.EndCropBlocks;
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
+import org.betterx.betterend.registry.block.EndDecorBlocks;
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.block.EndLightBlocks;
+import org.betterx.betterend.registry.block.EndMetalBlocks;
+import org.betterx.betterend.registry.block.EndPlantBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.registry.block.EndVineBlocks;
+import org.betterx.betterend.registry.block.EndWallPlantBlocks;
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
+import org.betterx.betterend.registry.block.EndWoodBlocks;
+import org.betterx.betterend.registry.item.EndEquipmentItems;
+import org.betterx.betterend.registry.item.EndFoodItems;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.complexmaterials.types.FlowerPot;
 import org.betterx.betterend.complexmaterials.types.Pedestal;
 import org.betterx.betterend.complexmaterials.types.StoneLantern;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
-import org.betterx.wover.recipe.api.CraftingRecipeBuilder;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.sets.api.blocks.SlotType;
-import org.betterx.wover.tag.api.predefined.CommonItemTags;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.WoverRecipeProvider;
+import de.ambertation.wover.recipe.api.CraftingRecipeBuilder;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.tag.api.predefined.CommonItemTags;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -34,67 +51,67 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
     protected void bootstrap(RecipeBuilder.Context context) {
         CraftingRecipeBuilder craftingRecipeBuilder62 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("ender_perl_to_block"),
-                EndBlocks.ENDER_BLOCK
+                EndMetalBlocks.ENDER_BLOCK
         );
         craftingRecipeBuilder62.shape("OO", "OO")
                                .addMaterial('O', Items.ENDER_PEARL)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder27 = RecipeBuilder
                 .crafting(BetterEnd.C.mk("ender_block_to_perl"), Items.ENDER_PEARL)
-                .addMaterial('#', EndBlocks.ENDER_BLOCK);
+                .addMaterial('#', EndMetalBlocks.ENDER_BLOCK);
         craftingRecipeBuilder27.outputCount(4)
                                .shapeless()
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder61 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("end_stone_smelter"),
-                EndBlocks.END_STONE_SMELTER
+                EndFunctionalBlocks.END_STONE_SMELTER
         );
         craftingRecipeBuilder61.shape("T#T", "V V", "T#T")
                                .addMaterial('#', Blocks.END_STONE_BRICKS)
-                               .addMaterial('T', EndBlocks.THALLASIUM.equipment.ingot)
+                               .addMaterial('T', EndMetalBlocks.THALLASIUM.equipment.ingot)
                                .addMaterial('V', CommonItemTags.FURNACES)
                                .build(context);
 
         registerPedestal(
                 context,
                 "andesite_pedestal",
-                EndBlocks.ANDESITE_SET.getBlock(Pedestal.SLOT),
+                EndStoneBlocks.ANDESITE_SET.getBlock(Pedestal.SLOT),
                 Blocks.POLISHED_ANDESITE_SLAB,
                 Blocks.POLISHED_ANDESITE
         );
         registerPedestal(
                 context,
                 "diorite_pedestal",
-                EndBlocks.DIORITE_SET.getBlock(Pedestal.SLOT),
+                EndStoneBlocks.DIORITE_SET.getBlock(Pedestal.SLOT),
                 Blocks.POLISHED_DIORITE_SLAB,
                 Blocks.POLISHED_DIORITE
         );
         registerPedestal(
                 context,
                 "granite_pedestal",
-                EndBlocks.GRANITE_SET.getBlock(Pedestal.SLOT),
+                EndStoneBlocks.GRANITE_SET.getBlock(Pedestal.SLOT),
                 Blocks.POLISHED_GRANITE_SLAB,
                 Blocks.POLISHED_GRANITE
         );
         registerPedestal(
                 context,
                 "quartz_pedestal",
-                EndBlocks.QUARTZ_SET.getBlock(Pedestal.SLOT),
+                EndStoneBlocks.QUARTZ_SET.getBlock(Pedestal.SLOT),
                 Blocks.QUARTZ_SLAB,
                 Blocks.QUARTZ_PILLAR
         );
         registerPedestal(
                 context,
-                "purpur_pedestal",
-                EndBlocks.PURPUR_SET.getBlock(Pedestal.SLOT),
+                "purple_pedestal",
+                EndStoneBlocks.PURPUR_SET.getBlock(Pedestal.SLOT),
                 Blocks.PURPUR_SLAB,
                 Blocks.PURPUR_PILLAR
         );
 
         CraftingRecipeBuilder craftingRecipeBuilder60 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("infusion_pedestal"),
-                EndBlocks.INFUSION_PEDESTAL
+                EndFunctionalBlocks.INFUSION_PEDESTAL
         );
         craftingRecipeBuilder60.shape(" Y ", "O#O", " # ")
                                .addMaterial('O', Items.ENDER_PEARL)
@@ -105,29 +122,29 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         String material = "aeternium";
         CraftingRecipeBuilder craftingRecipeBuilder59 = RecipeBuilder.crafting(
                 BetterEnd.C.mk(material + "_block"),
-                EndBlocks.AETERNIUM_BLOCK
+                EndMetalBlocks.AETERNIUM_BLOCK
         );
         craftingRecipeBuilder59.shape("III", "III", "III")
-                               .addMaterial('I', EndItems.AETERNIUM_SET.ingot)
+                               .addMaterial('I', EndEquipmentItems.AETERNIUM_SET.ingot)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder26 = RecipeBuilder
-                .crafting(BetterEnd.C.mk(material + "_block_to_ingot"), EndItems.AETERNIUM_SET.ingot)
-                .addMaterial('#', EndBlocks.AETERNIUM_BLOCK);
+                .crafting(BetterEnd.C.mk(material + "_block_to_ingot"), EndEquipmentItems.AETERNIUM_SET.ingot)
+                .addMaterial('#', EndMetalBlocks.AETERNIUM_BLOCK);
         craftingRecipeBuilder26.outputCount(9)
                                .shapeless()
                                .build(context);
 
         RecipeBuilder.crafting(BetterEnd.C.mk("blue_vine_seed_dye"), Items.BLUE_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.BLUE_VINE_SEED)
+                     .addMaterial('#', EndVineBlocks.BLUE_VINE_SEED)
                      .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("creeping_moss_dye"), Items.CYAN_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.CREEPING_MOSS)
+                     .addMaterial('#', EndPlantBlocks.CREEPING_MOSS)
                      .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("umbrella_moss_dye"), Items.YELLOW_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.UMBRELLA_MOSS)
+                     .addMaterial('#', EndPlantBlocks.UMBRELLA_MOSS)
                      .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder25 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("umbrella_moss_tall_dye"),
@@ -135,147 +152,147 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         );
         craftingRecipeBuilder25.outputCount(2)
                                .shapeless()
-                               .addMaterial('#', EndBlocks.UMBRELLA_MOSS_TALL)
+                               .addMaterial('#', EndPlantBlocks.UMBRELLA_MOSS_TALL)
                                .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("shadow_plant_dye"), Items.BLACK_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.SHADOW_PLANT)
+                     .addMaterial('#', EndPlantBlocks.SHADOW_PLANT)
                      .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder58 = RecipeBuilder.crafting(BetterEnd.C.mk("paper"), Items.PAPER);
         CraftingRecipeBuilder craftingRecipeBuilder24 = craftingRecipeBuilder58.shape("###")
                                                                                .addMaterial(
                                                                                        '#',
-                                                                                       EndItems.END_LILY_LEAF_DRIED
+                                                                                       EndResourceItems.END_LILY_LEAF_DRIED
                                                                                );
         craftingRecipeBuilder24.outputCount(3)
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder57 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("aurora_block"),
-                EndBlocks.AURORA_CRYSTAL
+                EndCrystalBlocks.AURORA_CRYSTAL
         );
         craftingRecipeBuilder57.shape("##", "##")
-                               .addMaterial('#', EndItems.CRYSTAL_SHARDS)
+                               .addMaterial('#', EndResourceItems.CRYSTAL_SHARDS)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder56 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("lotus_block"),
-                EndBlocks.END_LOTUS.getLog()
+                EndWoodBlocks.END_LOTUS.getLog()
         );
         craftingRecipeBuilder56.shape("##", "##")
-                               .addMaterial('#', EndBlocks.END_LOTUS_STEM)
+                               .addMaterial('#', EndWoodBlocks.END_LOTUS_STEM)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder23 = RecipeBuilder
                 .crafting(BetterEnd.C.mk("needlegrass_stick"), Items.STICK)
                 .shapeless();
         craftingRecipeBuilder23.outputCount(2)
-                               .addMaterial('#', EndBlocks.NEEDLEGRASS)
+                               .addMaterial('#', EndPlantBlocks.NEEDLEGRASS)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder22 = RecipeBuilder
-                .crafting(BetterEnd.C.mk("shadow_berry_seeds"), EndBlocks.SHADOW_BERRY)
+                .crafting(BetterEnd.C.mk("shadow_berry_seeds"), EndCropBlocks.SHADOW_BERRY)
                 .shapeless();
         craftingRecipeBuilder22.outputCount(4)
-                               .addMaterial('#', EndItems.SHADOW_BERRY_RAW)
+                               .addMaterial('#', EndFoodItems.SHADOW_BERRY_RAW)
                                .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("purple_polypore_dye"), Items.PURPLE_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.PURPLE_POLYPORE)
+                     .addMaterial('#', EndWallPlantBlocks.PURPLE_POLYPORE)
                      .build(context);
 
         registerLantern(
                 context,
                 "end_stone_lantern",
-                EndBlocks.END_STONE_SET.getBlock(StoneLantern.SLOT),
+                EndStoneBlocks.END_STONE_SET.getBlock(StoneLantern.SLOT),
                 Blocks.END_STONE_BRICK_SLAB
         );
         registerLantern(
                 context,
                 "andesite_lantern",
-                EndBlocks.ANDESITE_SET.getBlock(StoneLantern.SLOT),
+                EndStoneBlocks.ANDESITE_SET.getBlock(StoneLantern.SLOT),
                 Blocks.ANDESITE_SLAB
         );
         registerLantern(
                 context,
                 "diorite_lantern",
-                EndBlocks.DIORITE_SET.getBlock(StoneLantern.SLOT),
+                EndStoneBlocks.DIORITE_SET.getBlock(StoneLantern.SLOT),
                 Blocks.DIORITE_SLAB
         );
         registerLantern(
                 context,
                 "granite_lantern",
-                EndBlocks.GRANITE_SET.getBlock(StoneLantern.SLOT),
+                EndStoneBlocks.GRANITE_SET.getBlock(StoneLantern.SLOT),
                 Blocks.GRANITE_SLAB
         );
         registerLantern(
                 context,
                 "quartz_lantern",
-                EndBlocks.QUARTZ_SET.getBlock(StoneLantern.SLOT),
+                EndStoneBlocks.QUARTZ_SET.getBlock(StoneLantern.SLOT),
                 Blocks.QUARTZ_SLAB
         );
         registerLantern(
                 context,
-                "purpur_lantern",
-                EndBlocks.PURPUR_SET.getBlock(StoneLantern.SLOT),
+                "purple_lantern",
+                EndStoneBlocks.PURPUR_SET.getBlock(StoneLantern.SLOT),
                 Blocks.PURPUR_SLAB
         );
         registerLantern(
                 context,
                 "blackstone_lantern",
-                EndBlocks.BLACKSTONE_SET.getBlock(StoneLantern.SLOT),
+                EndStoneBlocks.BLACKSTONE_SET.getBlock(StoneLantern.SLOT),
                 Blocks.BLACKSTONE_SLAB
         );
 
         CraftingRecipeBuilder craftingRecipeBuilder55 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("amber_gem"),
-                EndItems.AMBER_GEM
+                EndResourceItems.AMBER_GEM
         );
         craftingRecipeBuilder55.shape("##", "##")
-                               .addMaterial('#', EndItems.RAW_AMBER)
+                               .addMaterial('#', EndResourceItems.RAW_AMBER)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder54 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("amber_block"),
-                EndBlocks.AMBER_BLOCK
+                EndMetalBlocks.AMBER_BLOCK
         );
         craftingRecipeBuilder54.shape("##", "##")
-                               .addMaterial('#', EndItems.AMBER_GEM)
+                               .addMaterial('#', EndResourceItems.AMBER_GEM)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder21 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("amber_gem_block"),
-                EndItems.AMBER_GEM
+                EndResourceItems.AMBER_GEM
         );
         craftingRecipeBuilder21.outputCount(4)
                                .shapeless()
-                               .addMaterial('#', EndBlocks.AMBER_BLOCK)
+                               .addMaterial('#', EndMetalBlocks.AMBER_BLOCK)
                                .build(context);
         // iron_bulb_lantern is generated from the BULB_LANTERN slot's recipe trait (Auto Recipe Provider).
         RecipeBuilder.crafting(BetterEnd.C.mk("twisted_moss_dye"), Items.PINK_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.TWISTED_MOSS)
+                     .addMaterial('#', EndWallPlantBlocks.TWISTED_MOSS)
                      .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("byshy_grass_dye"), Items.MAGENTA_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.BUSHY_GRASS)
+                     .addMaterial('#', EndPlantBlocks.BUSHY_GRASS)
                      .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("tail_moss_dye"), Items.GRAY_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.TAIL_MOSS)
+                     .addMaterial('#', EndWallPlantBlocks.TAIL_MOSS)
                      .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder52 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("petal_block"),
-                EndBlocks.HYDRALUX_PETAL_BLOCK
+                EndDecorBlocks.HYDRALUX_PETAL_BLOCK
         );
         craftingRecipeBuilder52.shape("##", "##")
-                               .addMaterial('#', EndItems.HYDRALUX_PETAL)
+                               .addMaterial('#', EndResourceItems.HYDRALUX_PETAL)
                                .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("petal_white_dye"), Items.WHITE_DYE)
                      .shapeless()
-                     .addMaterial('#', EndItems.HYDRALUX_PETAL)
+                     .addMaterial('#', EndResourceItems.HYDRALUX_PETAL)
                      .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder8 = RecipeBuilder
-                .crafting(BetterEnd.C.mk("sweet_berry_jelly_potion"), EndItems.SWEET_BERRY_JELLY)
+                .crafting(BetterEnd.C.mk("sweet_berry_jelly_potion"), EndFoodItems.SWEET_BERRY_JELLY)
                 .shapeless()
-                .addMaterial('J', EndItems.GELATINE)
+                .addMaterial('J', EndResourceItems.GELATINE)
                 .addMaterial('W', waterPotion())
                 .addMaterial('S', Items.SUGAR)
                 .addMaterial('B', Items.SWEET_BERRIES);
@@ -283,29 +300,29 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                               .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder7 = RecipeBuilder
-                .crafting(BetterEnd.C.mk("shadow_berry_jelly_potion"), EndItems.SHADOW_BERRY_JELLY)
+                .crafting(BetterEnd.C.mk("shadow_berry_jelly_potion"), EndFoodItems.SHADOW_BERRY_JELLY)
                 .shapeless()
-                .addMaterial('J', EndItems.GELATINE)
+                .addMaterial('J', EndResourceItems.GELATINE)
                 .addMaterial('W', waterPotion())
                 .addMaterial('S', Items.SUGAR)
-                .addMaterial('B', EndItems.SHADOW_BERRY_COOKED);
+                .addMaterial('B', EndFoodItems.SHADOW_BERRY_COOKED);
         craftingRecipeBuilder7.group("end_berries")
                               .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder6 = RecipeBuilder
-                .crafting(BetterEnd.C.mk("blossom_berry_jelly_potion"), EndItems.BLOSSOM_BERRY_JELLY)
+                .crafting(BetterEnd.C.mk("blossom_berry_jelly_potion"), EndFoodItems.BLOSSOM_BERRY_JELLY)
                 .shapeless()
-                .addMaterial('J', EndItems.GELATINE)
+                .addMaterial('J', EndResourceItems.GELATINE)
                 .addMaterial('W', waterPotion())
                 .addMaterial('S', Items.SUGAR)
-                .addMaterial('B', EndItems.BLOSSOM_BERRY);
+                .addMaterial('B', EndFoodItems.BLOSSOM_BERRY);
         craftingRecipeBuilder6.group("end_berries")
                               .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder5 = RecipeBuilder
-                .crafting(BetterEnd.C.mk("sweet_berry_jelly"), EndItems.SWEET_BERRY_JELLY)
+                .crafting(BetterEnd.C.mk("sweet_berry_jelly"), EndFoodItems.SWEET_BERRY_JELLY)
                 .shapeless()
-                .addMaterial('J', EndItems.GELATINE)
+                .addMaterial('J', EndResourceItems.GELATINE)
                 .addMaterial('W', CommonItemTags.WATER_BOTTLES)
                 .addMaterial('S', Items.SUGAR)
                 .addMaterial('B', Items.SWEET_BERRIES);
@@ -313,95 +330,95 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                               .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder4 = RecipeBuilder
-                .crafting(BetterEnd.C.mk("shadow_berry_jelly"), EndItems.SHADOW_BERRY_JELLY)
+                .crafting(BetterEnd.C.mk("shadow_berry_jelly"), EndFoodItems.SHADOW_BERRY_JELLY)
                 .shapeless()
-                .addMaterial('J', EndItems.GELATINE)
+                .addMaterial('J', EndResourceItems.GELATINE)
                 .addMaterial('W', CommonItemTags.WATER_BOTTLES)
                 .addMaterial('S', Items.SUGAR)
-                .addMaterial('B', EndItems.SHADOW_BERRY_COOKED);
+                .addMaterial('B', EndFoodItems.SHADOW_BERRY_COOKED);
         craftingRecipeBuilder4.group("end_berries")
                               .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder3 = RecipeBuilder
-                .crafting(BetterEnd.C.mk("blossom_berry_jelly"), EndItems.BLOSSOM_BERRY_JELLY)
+                .crafting(BetterEnd.C.mk("blossom_berry_jelly"), EndFoodItems.BLOSSOM_BERRY_JELLY)
                 .shapeless()
-                .addMaterial('J', EndItems.GELATINE)
+                .addMaterial('J', EndResourceItems.GELATINE)
                 .addMaterial('W', CommonItemTags.WATER_BOTTLES)
                 .addMaterial('S', Items.SUGAR)
-                .addMaterial('B', EndItems.BLOSSOM_BERRY);
+                .addMaterial('B', EndFoodItems.BLOSSOM_BERRY);
         craftingRecipeBuilder3.group("end_berries")
                               .build(context);
 
         RecipeBuilder.crafting(BetterEnd.C.mk("sulphur_gunpowder"), Items.GUNPOWDER)
                      .shapeless()
-                     .addMaterial('S', EndItems.CRYSTALLINE_SULPHUR)
+                     .addMaterial('S', EndResourceItems.CRYSTALLINE_SULPHUR)
                      .addMaterial('C', Items.COAL, Items.CHARCOAL)
                      .addMaterial('B', Items.BONE_MEAL)
                      .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder51 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("dense_emerald_ice"),
-                EndBlocks.DENSE_EMERALD_ICE
+                EndDecorBlocks.DENSE_EMERALD_ICE
         );
         craftingRecipeBuilder51.shape("##", "##")
-                               .addMaterial('#', EndBlocks.EMERALD_ICE)
+                               .addMaterial('#', EndDecorBlocks.EMERALD_ICE)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder50 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("ancient_emerald_ice"),
-                EndBlocks.ANCIENT_EMERALD_ICE
+                EndDecorBlocks.ANCIENT_EMERALD_ICE
         );
         craftingRecipeBuilder50.shape("###", "###", "###")
-                               .addMaterial('#', EndBlocks.DENSE_EMERALD_ICE)
+                               .addMaterial('#', EndDecorBlocks.DENSE_EMERALD_ICE)
                                .build(context);
 
         RecipeBuilder.crafting(BetterEnd.C.mk("charnia_cyan_dye"), Items.CYAN_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.CHARNIA_CYAN)
+                     .addMaterial('#', EndWaterPlantBlocks.CHARNIA_CYAN)
                      .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("charnia_green_dye"), Items.GREEN_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.CHARNIA_GREEN)
+                     .addMaterial('#', EndWaterPlantBlocks.CHARNIA_GREEN)
                      .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("charnia_light_blue_dye"), Items.LIGHT_BLUE_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.CHARNIA_LIGHT_BLUE)
+                     .addMaterial('#', EndWaterPlantBlocks.CHARNIA_LIGHT_BLUE)
                      .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("charnia_orange_dye"), Items.ORANGE_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.CHARNIA_ORANGE)
+                     .addMaterial('#', EndWaterPlantBlocks.CHARNIA_ORANGE)
                      .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("charnia_purple_dye"), Items.PURPLE_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.CHARNIA_PURPLE)
+                     .addMaterial('#', EndWaterPlantBlocks.CHARNIA_PURPLE)
                      .build(context);
         RecipeBuilder.crafting(BetterEnd.C.mk("charnia_red_dye"), Items.RED_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.CHARNIA_RED)
+                     .addMaterial('#', EndWaterPlantBlocks.CHARNIA_RED)
                      .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder49 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("respawn_obelisk"),
-                EndBlocks.RESPAWN_OBELISK
+                EndFunctionalBlocks.RESPAWN_OBELISK
         );
         craftingRecipeBuilder49.shape("CSC", "CSC", "AAA")
-                               .addMaterial('C', EndBlocks.AURORA_CRYSTAL)
-                               .addMaterial('S', EndItems.ETERNAL_CRYSTAL)
-                               .addMaterial('A', EndBlocks.AMBER_BLOCK)
+                               .addMaterial('C', EndCrystalBlocks.AURORA_CRYSTAL)
+                               .addMaterial('S', EndResourceItems.ETERNAL_CRYSTAL)
+                               .addMaterial('A', EndMetalBlocks.AMBER_BLOCK)
                                .build(context);
 
         RecipeBuilder.crafting(BetterEnd.C.mk("twisted_umbrella_moss_dye"), Items.PURPLE_DYE)
                      .shapeless()
-                     .addMaterial('#', EndBlocks.TWISTED_UMBRELLA_MOSS)
+                     .addMaterial('#', EndPlantBlocks.TWISTED_UMBRELLA_MOSS)
                      .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder20 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("twisted_umbrella_moss_dye_tall"), Items.PURPLE_DYE);
         craftingRecipeBuilder20.outputCount(2)
                                .shapeless()
-                               .addMaterial('#', EndBlocks.TWISTED_UMBRELLA_MOSS_TALL)
+                               .addMaterial('#', EndPlantBlocks.TWISTED_UMBRELLA_MOSS_TALL)
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder19 = RecipeBuilder
-                .crafting(BetterEnd.C.mk("leather_to_stripes"), EndItems.LEATHER_STRIPE)
+                .crafting(BetterEnd.C.mk("leather_to_stripes"), EndResourceItems.LEATHER_STRIPE)
                 .shapeless()
                 .addMaterial('L', Items.LEATHER);
         craftingRecipeBuilder19.outputCount(3)
@@ -411,12 +428,12 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 Items.LEATHER
         );
         craftingRecipeBuilder48.shape("SSS")
-                               .addMaterial('S', EndItems.LEATHER_STRIPE)
+                               .addMaterial('S', EndResourceItems.LEATHER_STRIPE)
                                .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("leather_wrapped_stick"), EndItems.LEATHER_WRAPPED_STICK)
+        RecipeBuilder.crafting(BetterEnd.C.mk("leather_wrapped_stick"), EndResourceItems.LEATHER_WRAPPED_STICK)
                      .shapeless()
                      .addMaterial('S', Items.STICK)
-                     .addMaterial('L', EndItems.LEATHER_STRIPE)
+                     .addMaterial('L', EndResourceItems.LEATHER_STRIPE)
                      .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder18 = RecipeBuilder.crafting(
@@ -425,7 +442,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         );
         CraftingRecipeBuilder craftingRecipeBuilder47 = craftingRecipeBuilder18.outputCount(6);
         craftingRecipeBuilder47.shape("#", "#", "#")
-                               .addMaterial('#', EndItems.SILK_FIBER)
+                               .addMaterial('#', EndResourceItems.SILK_FIBER)
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder46 = RecipeBuilder.crafting(
@@ -433,8 +450,8 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 Items.ENDER_EYE
         );
         craftingRecipeBuilder46.shape("SAS", "APA", "SAS")
-                               .addMaterial('S', EndItems.CRYSTAL_SHARDS)
-                               .addMaterial('A', EndItems.AMBER_GEM)
+                               .addMaterial('S', EndResourceItems.CRYSTAL_SHARDS)
+                               .addMaterial('A', EndResourceItems.AMBER_GEM)
                                .addMaterial('P', Items.ENDER_PEARL)
                                .build(context);
 
@@ -443,26 +460,26 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
 
         CraftingRecipeBuilder craftingRecipeBuilder17 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("missing_tile"),
-                EndBlocks.MISSING_TILE
+                EndStoneBlocks.MISSING_TILE
         );
         CraftingRecipeBuilder craftingRecipeBuilder43 = craftingRecipeBuilder17.outputCount(4);
         craftingRecipeBuilder43.shape("#P", "P#")
                                .addMaterial(
                                        '#',
-                                       EndBlocks.VIOLECITE.getBlock(SlotType.SOURCE),
-                                       EndBlocks.VIOLECITE.getBlock(SlotType.BRICK),
-                                       EndBlocks.VIOLECITE.getBlock(SlotType.TILES)
+                                       EndStoneBlocks.VIOLECITE.getBlock(SlotType.SOURCE),
+                                       EndStoneBlocks.VIOLECITE.getBlock(SlotType.BRICK),
+                                       EndStoneBlocks.VIOLECITE.getBlock(SlotType.TILES)
                                )
                                .addMaterial('P', Blocks.PURPUR_BLOCK)
                                .build(context);
 
-        registerHammer(context, "iron", Items.IRON_INGOT, EndItems.IRON_HAMMER);
-        registerHammer(context, "golden", Items.GOLD_INGOT, EndItems.GOLDEN_HAMMER);
-        registerHammer(context, "diamond", Items.DIAMOND, EndItems.DIAMOND_HAMMER);
+        registerHammer(context, "iron", Items.IRON_INGOT, EndEquipmentItems.IRON_HAMMER);
+        registerHammer(context, "golden", Items.GOLD_INGOT, EndEquipmentItems.GOLDEN_HAMMER);
+        registerHammer(context, "diamond", Items.DIAMOND, EndEquipmentItems.DIAMOND_HAMMER);
 
         CraftingRecipeBuilder craftingRecipeBuilder42 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("charcoal_block"),
-                EndBlocks.CHARCOAL_BLOCK
+                EndMetalBlocks.CHARCOAL_BLOCK
         );
         craftingRecipeBuilder42.shape("###", "###", "###")
                                .addMaterial('#', Items.CHARCOAL)
@@ -473,69 +490,69 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         );
         craftingRecipeBuilder16.outputCount(9)
                                .shapeless()
-                               .addMaterial('#', EndBlocks.CHARCOAL_BLOCK)
+                               .addMaterial('#', EndMetalBlocks.CHARCOAL_BLOCK)
                                .build(context);
         // end_stone_furnace is generated from the Furnace slot's recipe trait (Auto Recipe Provider), which
         // builds the identical recipe off the set's base block and adds the "end_stone_furnaces" group.
         CraftingRecipeBuilder craftingRecipeBuilder40 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("filalux_lantern"),
-                EndBlocks.FILALUX_LANTERN
+                EndLightBlocks.FILALUX_LANTERN
         );
         craftingRecipeBuilder40.shape("###", "###", "###")
-                               .addMaterial('#', EndBlocks.FILALUX)
+                               .addMaterial('#', EndVineBlocks.FILALUX)
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder39 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("silk_moth_hive"),
-                EndBlocks.SILK_MOTH_HIVE
+                EndFunctionalBlocks.SILK_MOTH_HIVE
         );
         craftingRecipeBuilder39.shape("#L#", "LML", "#L#")
-                               .addMaterial('#', EndBlocks.TENANEA.getBlock(SlotType.PLANKS))
-                               .addMaterial('L', EndBlocks.TENANEA_LEAVES)
-                               .addMaterial('M', EndItems.SILK_MOTH_MATRIX)
+                               .addMaterial('#', EndWoodBlocks.TENANEA.getBlock(SlotType.PLANKS))
+                               .addMaterial('L', EndWoodBlocks.TENANEA_LEAVES)
+                               .addMaterial('M', EndResourceItems.SILK_MOTH_MATRIX)
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder38 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("cave_pumpkin_pie"),
-                EndItems.CAVE_PUMPKIN_PIE
+                EndFoodItems.CAVE_PUMPKIN_PIE
         );
         craftingRecipeBuilder38.shape("SBS", "BPB", "SBS")
-                               .addMaterial('P', EndBlocks.CAVE_PUMPKIN)
-                               .addMaterial('B', EndItems.BLOSSOM_BERRY, EndItems.SHADOW_BERRY_RAW)
+                               .addMaterial('P', EndCropBlocks.CAVE_PUMPKIN)
+                               .addMaterial('B', EndFoodItems.BLOSSOM_BERRY, EndFoodItems.SHADOW_BERRY_RAW)
                                .addMaterial('S', Items.SUGAR)
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder15 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("cave_pumpkin_seeds"),
-                EndBlocks.CAVE_PUMPKIN_SEED
+                EndCropBlocks.CAVE_PUMPKIN_SEED
         );
         craftingRecipeBuilder15.outputCount(4)
                                .shapeless()
-                               .addMaterial('#', EndBlocks.CAVE_PUMPKIN)
+                               .addMaterial('#', EndCropBlocks.CAVE_PUMPKIN)
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder37 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("neon_cactus_block"),
-                EndBlocks.NEON_CACTUS_BLOCK
+                EndDecorBlocks.NEON_CACTUS_BLOCK
         );
         craftingRecipeBuilder37.shape("##", "##")
-                               .addMaterial('#', EndBlocks.NEON_CACTUS)
+                               .addMaterial('#', EndPlantBlocks.NEON_CACTUS)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder36 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("neon_cactus_block_slab"),
-                EndBlocks.NEON_CACTUS_BLOCK_SLAB
+                EndDecorBlocks.NEON_CACTUS_BLOCK_SLAB
         );
         CraftingRecipeBuilder craftingRecipeBuilder14 = craftingRecipeBuilder36.shape("###");
         craftingRecipeBuilder14.outputCount(6)
-                               .addMaterial('#', EndBlocks.NEON_CACTUS_BLOCK)
+                               .addMaterial('#', EndDecorBlocks.NEON_CACTUS_BLOCK)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder35 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("neon_cactus_block_stairs"),
-                EndBlocks.NEON_CACTUS_BLOCK_STAIRS
+                EndDecorBlocks.NEON_CACTUS_BLOCK_STAIRS
         );
         CraftingRecipeBuilder craftingRecipeBuilder13 = craftingRecipeBuilder35.shape("#  ", "## ", "###");
         craftingRecipeBuilder13.outputCount(4)
-                               .addMaterial('#', EndBlocks.NEON_CACTUS_BLOCK)
+                               .addMaterial('#', EndDecorBlocks.NEON_CACTUS_BLOCK)
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder34 = RecipeBuilder.crafting(
@@ -543,11 +560,11 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 Items.SUGAR
         );
         craftingRecipeBuilder34.shape("###")
-                               .addMaterial('#', EndItems.AMBER_ROOT_RAW)
+                               .addMaterial('#', EndFoodItems.AMBER_ROOT_RAW)
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder12 = RecipeBuilder.crafting(
-                BetterEnd.C.mk("endstone_flower_pot"),
-                EndBlocks.END_STONE_SET.getBlock(FlowerPot.SLOT)
+                BetterEnd.C.mk("end_stone_flower_pot"),
+                EndStoneBlocks.END_STONE_SET.getBlock(FlowerPot.SLOT)
         );
         CraftingRecipeBuilder craftingRecipeBuilder33 = craftingRecipeBuilder12.outputCount(3);
         CraftingRecipeBuilder craftingRecipeBuilder = craftingRecipeBuilder33.shape("# #", " # ")
@@ -557,7 +574,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
 
         CraftingRecipeBuilder craftingRecipeBuilder11 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("dragon_bone_block"),
-                EndBlocks.DRAGON_BONE_BLOCK
+                EndStoneBlocks.DRAGON_BONE_BLOCK
         );
         CraftingRecipeBuilder craftingRecipeBuilder32 = craftingRecipeBuilder11.outputCount(8);
         craftingRecipeBuilder32.shape("###", "#D#", "###")
@@ -570,16 +587,16 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
 
         CraftingRecipeBuilder craftingRecipeBuilder29 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("smaragdant_crystal"),
-                EndBlocks.SMARAGDANT_CRYSTAL
+                EndCrystalBlocks.SMARAGDANT_CRYSTAL
         );
         craftingRecipeBuilder29.shape("##", "##")
-                               .addMaterial('#', EndBlocks.SMARAGDANT_CRYSTAL_SHARD)
+                               .addMaterial('#', EndCrystalBlocks.SMARAGDANT_CRYSTAL_SHARD)
                                .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder28 = RecipeBuilder.crafting(
                 BetterEnd.C.mk("tined_glass_from_smaragdant"), Blocks.TINTED_GLASS);
         craftingRecipeBuilder28.shape(" # ", "#G#", " # ")
-                               .addMaterial('#', EndBlocks.SMARAGDANT_CRYSTAL_SHARD)
+                               .addMaterial('#', EndCrystalBlocks.SMARAGDANT_CRYSTAL_SHARD)
                                .addMaterial('G', Blocks.GLASS)
                                .build(context);
     }
@@ -587,7 +604,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
     private static void registerLantern(RecipeBuilder.Context context, String name, Block lantern, Block slab) {
         CraftingRecipeBuilder craftingRecipeBuilder1 = RecipeBuilder.crafting(BetterEnd.C.mk(name), lantern);
         CraftingRecipeBuilder craftingRecipeBuilder = craftingRecipeBuilder1.shape("S", "#", "S")
-                                                                            .addMaterial('#', EndItems.CRYSTAL_SHARDS)
+                                                                            .addMaterial('#', EndResourceItems.CRYSTAL_SHARDS)
                                                                             .addMaterial('S', slab);
         craftingRecipeBuilder.group("end_stone_lanterns")
                              .build(context);

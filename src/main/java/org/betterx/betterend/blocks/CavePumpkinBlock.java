@@ -1,8 +1,9 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndBlockNotFull;
+
+import org.betterx.betterend.registry.block.EndCropBlocks;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.Collections;
 import java.util.List;
 
-public class CavePumpkinBlock extends EndBlockNotFull {
+public class CavePumpkinBlock extends Block {
     public static final BooleanProperty SMALL = BlockProperties.SMALL;
     private static final VoxelShape SHAPE_SMALL;
     private static final VoxelShape SHAPE_BIG;
@@ -44,7 +45,7 @@ public class CavePumpkinBlock extends EndBlockNotFull {
     @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         return state.getValue(SMALL)
-                ? Collections.singletonList(new ItemStack(EndBlocks.CAVE_PUMPKIN_SEED))
+                ? Collections.singletonList(new ItemStack(EndCropBlocks.CAVE_PUMPKIN_SEED))
                 : Collections
                         .singletonList(new ItemStack(this));
     }

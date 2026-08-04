@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -21,7 +23,7 @@ public class MossyGlowshroomCapBlock extends Block {
         return this.defaultBlockState()
                    .setValue(
                            TRANSITION,
-                           EndBlocks.MOSSY_GLOWSHROOM.isTreeLog(ctx.getLevel()
+                           EndWoodBlocks.MOSSY_GLOWSHROOM.isTreeLog(ctx.getLevel()
                                                                    .getBlockState(ctx.getClickedPos().below()))
                    );
     }

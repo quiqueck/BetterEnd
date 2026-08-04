@@ -3,7 +3,7 @@
   "category": "misc",
   "group": "end_pots",
   "key": {
-    "#": "minecraft:end_stone"
+    "#": "minecraft:end_stone_bricks"
   },
   "pattern": [
     "# #",

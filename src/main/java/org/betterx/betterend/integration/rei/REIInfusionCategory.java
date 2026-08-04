@@ -1,5 +1,7 @@
 package org.betterx.betterend.integration.rei;
 
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
 //import org.betterx.betterend.BetterEnd;
 //import org.betterx.betterend.registry.EndBlocks;
 //
@@ -36,7 +38,7 @@ package org.betterx.betterend.integration.rei;
 //
 //    @Override
 //    public @NotNull Component getTitle() {
-//        return Component.translatable(EndBlocks.INFUSION_PEDESTAL.getDescriptionId());
+//        return Component.translatable(EndFunctionalBlocks.INFUSION_PEDESTAL.getDescriptionId());
 //    }
 //
 //    @Override

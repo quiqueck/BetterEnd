@@ -1,6 +1,8 @@
 package org.betterx.betterend.world.features;
 
-import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
+
+import org.betterx.betterend.registry.block.EndMushroomBlocks;
+import org.betterx.bclib.blocks.BasePlantWithAgeBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -21,14 +23,14 @@ public class GlowPillarFeature extends ScatterFeature<ScatterFeatureConfig> {
             BlockPos blockPos,
             float radius
     ) {
-        return EndBlocks.GLOWING_PILLAR_SEED.defaultBlockState().canSurvive(world, blockPos);
+        return EndMushroomBlocks.GLOWING_PILLAR_SEED.defaultBlockState().canSurvive(world, blockPos);
     }
 
     @Override
     public void generate(
             ScatterFeatureConfig cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos
     ) {
-        EndPlantWithAgeBlock seed = ((EndPlantWithAgeBlock) EndBlocks.GLOWING_PILLAR_SEED);
+        BasePlantWithAgeBlock seed = ((BasePlantWithAgeBlock) EndMushroomBlocks.GLOWING_PILLAR_SEED);
         seed.growAdult(world, random, blockPos);
     }
 

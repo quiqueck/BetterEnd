@@ -1,20 +1,21 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndTerrainBlock;
+import org.betterx.bclib.blocks.BaseTerrainBlock;
 import org.betterx.betterend.registry.EndParticles;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class ShadowGrassBlock extends EndTerrainBlock {
+public class ShadowGrassBlock extends BaseTerrainBlock {
     public ShadowGrassBlock(BlockBehaviour.Properties properties) {
-        super(properties);
+        super(properties, Blocks.END_STONE);
     }
 
     @Environment(EnvType.CLIENT)

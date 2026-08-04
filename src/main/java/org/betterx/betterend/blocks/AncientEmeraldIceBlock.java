@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndDecorBlocks;
 import net.minecraft.world.level.block.Block;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
@@ -32,7 +34,7 @@ public class AncientEmeraldIceBlock extends Block {
             int z = MHelper.randRange(-2, 2, random);
             BlockPos p = pos.offset(x, y, z);
             if (world.getBlockState(p).is(Blocks.WATER)) {
-                world.setBlockAndUpdate(p, EndBlocks.EMERALD_ICE.defaultBlockState());
+                world.setBlockAndUpdate(p, EndDecorBlocks.EMERALD_ICE.defaultBlockState());
                 makeParticles(world, p, random);
             }
         }
@@ -40,10 +42,10 @@ public class AncientEmeraldIceBlock extends Block {
         pos = pos.relative(dir);
         state = world.getBlockState(pos);
         if (state.is(Blocks.WATER)) {
-            world.setBlockAndUpdate(pos, EndBlocks.EMERALD_ICE.defaultBlockState());
+            world.setBlockAndUpdate(pos, EndDecorBlocks.EMERALD_ICE.defaultBlockState());
             makeParticles(world, pos, random);
-        } else if (state.is(EndBlocks.EMERALD_ICE)) {
-            world.setBlockAndUpdate(pos, EndBlocks.DENSE_EMERALD_ICE.defaultBlockState());
+        } else if (state.is(EndDecorBlocks.EMERALD_ICE)) {
+            world.setBlockAndUpdate(pos, EndDecorBlocks.DENSE_EMERALD_ICE.defaultBlockState());
             makeParticles(world, pos, random);
         }
     }

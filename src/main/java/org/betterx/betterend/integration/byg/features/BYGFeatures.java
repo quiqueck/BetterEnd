@@ -2,8 +2,8 @@ package org.betterx.betterend.integration.byg.features;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndFeatures;
-import org.betterx.wover.feature.api.placed.PlacedFeatureKey;
-import org.betterx.wover.feature.api.placed.PlacedFeatureManager;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureKey;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureManager;
 
 public class BYGFeatures {
     public static final NightshadeRedwoodTreeFeature NIGHTSHADE_REDWOOD_TREE_FEATURE = EndFeatures.inlineBuild("nightshade_redwood_tree", new NightshadeRedwoodTreeFeature());

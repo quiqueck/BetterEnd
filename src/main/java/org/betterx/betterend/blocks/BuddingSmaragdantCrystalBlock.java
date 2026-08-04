@@ -1,7 +1,8 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.betterend.blocks.basis.LitPillarBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
@@ -18,7 +20,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import java.util.Collections;
 import java.util.List;
 
-public class BuddingSmaragdantCrystalBlock extends LitPillarBlock {
+public class BuddingSmaragdantCrystalBlock extends RotatedPillarBlock {
     public BuddingSmaragdantCrystalBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -36,7 +38,7 @@ public class BuddingSmaragdantCrystalBlock extends LitPillarBlock {
         BlockState sideState = world.getBlockState(side);
         if (random.nextInt(20) == 0) {
             if (canShardGrowAtState(sideState)) {
-                BlockState shard = EndBlocks.SMARAGDANT_CRYSTAL_SHARD.defaultBlockState()
+                BlockState shard = EndCrystalBlocks.SMARAGDANT_CRYSTAL_SHARD.defaultBlockState()
                                                                      .setValue(
                                                                              SmaragdantCrystalShardBlock.WATERLOGGED,
                                                                              sideState.getFluidState()

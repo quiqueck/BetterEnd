@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFDisplacement;
@@ -10,7 +12,8 @@ import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.feature.api.WriteZone;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -52,7 +55,7 @@ public class FallenPillarFeature extends DefaultFeature {
         float angle = (float) random.nextGaussian() * 0.05F + (float) Math.PI;
         pillar = new SDFRotation().setRotation(vec, angle).setSource(pillar);
 
-        BlockState mossy = EndBlocks.MOSSY_OBSIDIAN.defaultBlockState();
+        BlockState mossy = EndStoneBlocks.MOSSY_OBSIDIAN.defaultBlockState();
         pillar.addPostProcess((info) -> {
             if (info.getStateUp().isAir() && random.nextFloat() > 0.1F) {
                 return mossy;
@@ -60,7 +63,9 @@ public class FallenPillarFeature extends DefaultFeature {
             return info.getState();
         }).setReplaceFunction((state) -> {
             return state.is(CommonBlockTags.END_STONES) || BlocksHelper.replaceableOrPlant(state);
-        }).fillRecursive(world, pos);
+        // height reaches 40 and the pillar tips near-horizontal (angle ~= PI around a horizontal axis) -
+        // clip the flood-fill to the write zone; see WriteZone.
+        }).fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
 
         return true;
     }

@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 public class IslandLayer {
-    private static final RandomSource RANDOM = new LegacyRandomSource(MHelper.RANDOM.nextLong());
     private final SDFRadialNoiseMap noise;
     private final SDF island;
 
@@ -70,10 +69,14 @@ public class IslandLayer {
                 for (int poz = -1; poz < 2; poz++) {
                     int pz = poz + iz;
                     if ((long) px * (long) px + (long) pz * (long) pz > options.centerDist) {
-                        RANDOM.setSeed(getSeed(px, pz));
-                        double posX = (px + RANDOM.nextFloat()) * options.distance;
-                        double posY = MHelper.randRange(options.minY, options.maxY, RANDOM) * maxHeight;
-                        double posZ = (pz + RANDOM.nextFloat()) * options.distance;
+                        // Local, not the shared static this used to seed and then immediately read: chunks
+                        // generate on several worker threads at once, so one thread's setSeed could land
+                        // between another's setSeed and its nextFloat and hand it the wrong island. Seeding
+                        // is unchanged, so the islands themselves are the same ones.
+                        final RandomSource random = new LegacyRandomSource(getSeed(px, pz));
+                        double posX = (px + random.nextFloat()) * options.distance;
+                        double posY = MHelper.randRange(options.minY, options.maxY, random) * maxHeight;
+                        double posZ = (pz + random.nextFloat()) * options.distance;
                         if (density.eval(posX * 0.01, posZ * 0.01) > options.coverage) {
                             positions.add(new BlockPos((int) posX, (int) posY, (int) posZ));
                         }
@@ -106,8 +109,8 @@ public class IslandLayer {
             if (pos.getX() == 0 && pos.getZ() == 0) {
                 island = new SDFScale().setScale(1.3F).setSource(this.island);
             } else {
-                RANDOM.setSeed(getSeed(pos.getX(), pos.getZ()));
-                island = new SDFScale().setScale(RANDOM.nextFloat() + 0.5F).setSource(this.island);
+                final RandomSource random = new LegacyRandomSource(getSeed(pos.getX(), pos.getZ()));
+                island = new SDFScale().setScale(random.nextFloat() + 0.5F).setSource(this.island);
             }
             islands.put(pos, island);
         }

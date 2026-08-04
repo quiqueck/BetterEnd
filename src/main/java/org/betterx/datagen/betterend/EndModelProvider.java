@@ -1,17 +1,21 @@
 package org.betterx.datagen.betterend;
 
+
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.BlockRegistry;
-import org.betterx.wover.block.api.client.trait.BlockModelTrait;
-import org.betterx.wover.block.api.client.trait.ClientBlockTraits;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.WoverModelProvider;
-import org.betterx.wover.item.api.ItemRegistry;
-import org.betterx.wover.item.api.client.trait.ClientItemTraits;
-import org.betterx.wover.item.api.client.trait.ItemModelTrait;
-import org.betterx.wover.sets.api.blocks.SlotType;
+import org.betterx.bclib.interfaces.CustomColorProvider;
+import de.ambertation.wover.block.api.BlockRegistry;
+import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.WoverModelProvider;
+import de.ambertation.wover.item.api.ItemRegistry;
+import de.ambertation.wover.item.api.client.trait.ClientItemTraits;
+import de.ambertation.wover.item.api.client.trait.ItemModelTrait;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ItemModelUtils;
@@ -77,9 +81,8 @@ public class EndModelProvider extends WoverModelProvider {
 
         // Blocks with an explicit ClientBlockTraits.MODEL trait are already fully handled by
         // BlockModelTrait.bootstrapModels() above - skip the legacy BlockModelProvider-interface
-        // fallback in addFromRegistry() for them, since BaseBlock implements that interface
-        // unconditionally (defaulting to a plain cube model) and running both would register the
-        // same model twice.
+        // fallback in addFromRegistry() for them, so a block carrying a MODEL trait does not also
+        // get a plain cube model registered by the fallback (which would register the same model twice).
         registry.allBlocks().forEach(block -> {
             if (!overrides.contain(block) && ClientBlockTraits.MODEL.getRuntimeTraits(block) != null) {
                 overrides.ignore(block);
@@ -95,11 +98,63 @@ public class EndModelProvider extends WoverModelProvider {
         return overrides
                              // Source blocks keep their hand-authored multi-variant blockstate (the generic
                              // SOURCE-slot cube model would overwrite it); the override only wires the item.
-                             .override(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE), generator::delegateItemModel)
+                             .override(EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE), generator::delegateItemModel)
                              .override(
-                                     EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE),
+                                     EndStoneBlocks.UMBRALITH.getBlock(SlotType.SOURCE),
                                      b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/umbralith_5"))
                              )
+                             // Violecite's brick wall keeps its hand-authored blockstate and models: the post is a
+                             // full-height pillar using the distinct violecite_post_side/_top textures, and the two
+                             // side models cap their top face with violecite_brick_wall_top. The generic BRICK_WALL
+                             // slot models (vanilla template_wall_*) can only put one texture on every face, so they
+                             // cannot express either. The override wires just the item, pointing it at the custom
+                             // post - which is what this block shipped with before the _bricks -> _brick rename
+                             // orphaned the old plural-named assets.
+                             .override(
+                                     EndStoneBlocks.VIOLECITE.getBlock(SlotType.BRICK_WALL),
+                                     b -> generator.delegateItemModel(
+                                             b,
+                                             BetterEnd.C.mk("block/violecite_brick_wall_post")
+                                     )
+                             )
+                             // Sulphuric rock's brick wall likewise keeps hand-authored models so its two side
+                             // models can cap their top face with sulphuric_rock_brick_wall_top - a texture that
+                             // had been drawn for this block but was never wired up to any model. Its post and
+                             // inventory models are byte-for-byte the vanilla template_wall_post / wall_inventory
+                             // ones datagen used to emit (there is no sulphuric_rock_post_* art to use instead),
+                             // so only the sides change; the item still points at the unchanged inventory model.
+                             .override(
+                                     EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.BRICK_WALL),
+                                     b -> generator.delegateItemModel(
+                                             b,
+                                             BetterEnd.C.mk("block/sulphuric_rock_brick_wall_inventory")
+                                     )
+                             )
+                             // Aurora crystal keeps its hand-authored blockstate/model; the override wires a
+                             // TINTED item model. The block's texture is near-grayscale and is colorized by its
+                             // CustomColorProvider tint. BCLib's client mixin still registers the in-world BLOCK
+                             // color, but in 1.21.6 the legacy runtime item-color API (ColorProviderRegistry.ITEM
+                             // / ItemColors) is gone - item tints are now data-driven through the item model's
+                             // `tints` list, so without one the item rendered untinted (grayscale). Emit a
+                             // constant tint equal to the block's own color at the origin (BlockPos.ZERO - the
+                             // value the pre-1.21.4 null-position item color path produced). Registering this as
+                             // an override makes BlockModelTrait.bootstrapModels skip the block's EXTERNAL_MODEL
+                             // item delegation, so there is exactly one (tinted) item model, not a duplicate.
+                             // (Systemic: every CustomColorProvider block whose item relies on the tint has this
+                             // same gap; aurora crystal is wired here because its item-model location is stable.)
+                             .override(EndCrystalBlocks.AURORA_CRYSTAL, b -> {
+                                 final int tint = ((CustomColorProvider) b)
+                                         .getProvider()
+                                         .getColor(b.defaultBlockState(), null, null, 0);
+                                 generator.vanillaGenerator.itemModelOutput.accept(
+                                         b.asItem(),
+                                         ItemModelUtils.tintedModel(
+                                                 BetterEnd.C.mk("item/aurora_crystal"),
+                                                 ItemModelUtils.constantTint(tint)
+                                         )
+                                 );
+                                 generator.markItemModelProvided(b);
+                             })
 ;
     }
 

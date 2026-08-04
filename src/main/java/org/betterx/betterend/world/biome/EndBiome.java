@@ -1,16 +1,19 @@
 package org.betterx.betterend.world.biome;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.biome.api.BiomeKey;
-import org.betterx.wover.biome.api.data.BiomeData;
-import org.betterx.wover.biome.api.data.BiomeGenerationDataContainer;
-import org.betterx.wover.generator.api.biomesource.WoverBiomeData;
-import org.betterx.wover.generator.api.biomesource.WoverBiomePicker;
-import org.betterx.wover.surface.api.SurfaceRuleBuilder;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.biome.api.BiomeKey;
+import de.ambertation.wover.biome.api.data.BiomeData;
+import de.ambertation.wover.biome.api.data.BiomeGenerationDataContainer;
+import de.ambertation.wover.generator.api.biomesource.WoverBiomeData;
+import de.ambertation.wover.generator.api.biomesource.WoverBiomePicker;
+import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -120,17 +123,17 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
         public static final SurfaceMaterialProvider DEFAULT_MATERIAL = new DefaultSurfaceMaterialProvider();
 
         protected static final SurfaceRules.RuleSource END_STONE = SurfaceRules.state(DefaultSurfaceMaterialProvider.END_STONE);
-        protected static final SurfaceRules.RuleSource END_MOSS = SurfaceRules.state(EndBlocks.END_MOSS.defaultBlockState());
-        protected static final SurfaceRules.RuleSource ENDSTONE_DUST = SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState());
-        protected static final SurfaceRules.RuleSource END_MYCELIUM = SurfaceRules.state(EndBlocks.END_MYCELIUM.defaultBlockState());
-        protected static final SurfaceRules.RuleSource FLAVOLITE = SurfaceRules.state(EndBlocks.FLAVOLITE.getBlock(SlotType.SOURCE).defaultBlockState());
-        protected static final SurfaceRules.RuleSource SULPHURIC_ROCK = SurfaceRules.state(EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE).defaultBlockState());
-        protected static final SurfaceRules.RuleSource BRIMSTONE = SurfaceRules.state(EndBlocks.BRIMSTONE.defaultBlockState());
-        protected static final SurfaceRules.RuleSource PALLIDIUM_FULL = SurfaceRules.state(EndBlocks.PALLIDIUM_FULL.defaultBlockState());
-        protected static final SurfaceRules.RuleSource PALLIDIUM_HEAVY = SurfaceRules.state(EndBlocks.PALLIDIUM_HEAVY.defaultBlockState());
-        protected static final SurfaceRules.RuleSource PALLIDIUM_THIN = SurfaceRules.state(EndBlocks.PALLIDIUM_THIN.defaultBlockState());
-        protected static final SurfaceRules.RuleSource PALLIDIUM_TINY = SurfaceRules.state(EndBlocks.PALLIDIUM_TINY.defaultBlockState());
-        protected static final SurfaceRules.RuleSource UMBRALITH = SurfaceRules.state(EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE).defaultBlockState());
+        protected static final SurfaceRules.RuleSource END_MOSS = SurfaceRules.state(EndTerrainBlocks.END_MOSS.defaultBlockState());
+        protected static final SurfaceRules.RuleSource ENDSTONE_DUST = SurfaceRules.state(EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState());
+        protected static final SurfaceRules.RuleSource END_MYCELIUM = SurfaceRules.state(EndTerrainBlocks.END_MYCELIUM.defaultBlockState());
+        protected static final SurfaceRules.RuleSource FLAVOLITE = SurfaceRules.state(EndStoneBlocks.FLAVOLITE.getBlock(SlotType.SOURCE).defaultBlockState());
+        protected static final SurfaceRules.RuleSource SULPHURIC_ROCK = SurfaceRules.state(EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE).defaultBlockState());
+        protected static final SurfaceRules.RuleSource BRIMSTONE = SurfaceRules.state(EndStoneBlocks.BRIMSTONE.defaultBlockState());
+        protected static final SurfaceRules.RuleSource PALLIDIUM_FULL = SurfaceRules.state(EndTerrainBlocks.PALLIDIUM_FULL.defaultBlockState());
+        protected static final SurfaceRules.RuleSource PALLIDIUM_HEAVY = SurfaceRules.state(EndTerrainBlocks.PALLIDIUM_HEAVY.defaultBlockState());
+        protected static final SurfaceRules.RuleSource PALLIDIUM_THIN = SurfaceRules.state(EndTerrainBlocks.PALLIDIUM_THIN.defaultBlockState());
+        protected static final SurfaceRules.RuleSource PALLIDIUM_TINY = SurfaceRules.state(EndTerrainBlocks.PALLIDIUM_TINY.defaultBlockState());
+        protected static final SurfaceRules.RuleSource UMBRALITH = SurfaceRules.state(EndStoneBlocks.UMBRALITH.getBlock(SlotType.SOURCE).defaultBlockState());
 
         protected Config() {
         }
@@ -222,7 +225,7 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
      * When you already hold a {@link Holder}{@code <}{@link Biome}{@code >} (e.g. a structure piece
      * that knows its biome, or a feature that picked one), prefer {@link #findTopMaterial(Holder)}.
      * When you need the true surface block at a position, sample the block already placed there
-     * (tagged {@link org.betterx.wover.tag.api.predefined.CommonBlockTags#TERRAIN}) — see
+     * (tagged {@link de.ambertation.wover.tag.api.predefined.CommonBlockTags#TERRAIN}) — see
      * {@code LakePiece} for the pattern.
      */
     public static BlockState findTopMaterial(WorldGenLevel world, BlockPos pos) {

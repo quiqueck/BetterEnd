@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+
+import org.betterx.betterend.registry.block.EndDecorBlocks;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFRotation;
 import org.betterx.bclib.sdf.operator.SDFTranslate;
@@ -7,6 +9,7 @@ import org.betterx.bclib.sdf.operator.SDFUnion;
 import org.betterx.bclib.sdf.primitive.SDFCappedCone;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
+import de.ambertation.wover.feature.api.WriteZone;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -33,6 +36,9 @@ public class IceStarFeature extends Feature<IceStarFeatureConfig> {
         BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         IceStarFeatureConfig cfg = featureConfig.config();
+        // If this log never appears, the placement pipeline (rarity/biome filter) is rejecting the
+        // feature before it runs; if it appears, the star is actually being built at that position.
+        org.betterx.betterend.util.WorldgenDebug.log("IceStarFeature: placing star at %s", pos);
         float size = MHelper.randRange(cfg.minSize, cfg.maxSize, random);
         int count = MHelper.randRange(cfg.minCount, cfg.maxCount, random);
         List<Vector3f> points = getFibonacciPoints(count);
@@ -40,7 +46,7 @@ public class IceStarFeature extends Feature<IceStarFeatureConfig> {
         SDF spike = new SDFCappedCone().setRadius1(3 + (size - 5) * 0.2F)
                                        .setRadius2(0)
                                        .setHeight(size)
-                                       .setBlock(EndBlocks.DENSE_SNOW);
+                                       .setBlock(EndDecorBlocks.DENSE_SNOW);
         spike = new SDFTranslate().setTranslate(0, size - 0.5F, 0).setSource(spike);
         for (Vector3f point : points) {
             SDF rotated = spike;
@@ -65,9 +71,9 @@ public class IceStarFeature extends Feature<IceStarFeatureConfig> {
         final float randScale = size * 0.3F;
 
         final BlockPos center = pos;
-        final BlockState ice = EndBlocks.EMERALD_ICE.defaultBlockState();
-        final BlockState dense = EndBlocks.DENSE_EMERALD_ICE.defaultBlockState();
-        final BlockState ancient = EndBlocks.ANCIENT_EMERALD_ICE.defaultBlockState();
+        final BlockState ice = EndDecorBlocks.EMERALD_ICE.defaultBlockState();
+        final BlockState dense = EndDecorBlocks.DENSE_EMERALD_ICE.defaultBlockState();
+        final BlockState ancient = EndDecorBlocks.ANCIENT_EMERALD_ICE.defaultBlockState();
         final SDF sdfCopy = sdf;
 
         sdf.addPostProcess((info) -> {
@@ -88,7 +94,10 @@ public class IceStarFeature extends Feature<IceStarFeatureConfig> {
                 return ice;
             }
             return info.getState();
-        }).fillRecursive(world, pos);
+        // The star's spikes fan out to `size` in any direction and size can be large; clip the flood-fill to
+        // the write zone - behaviour-neutral (writes out there were already dropped by WorldGenRegion) and
+        // it removes the "Detected unsafe terrain read during worldgen" spam. See WriteZone.
+        }).fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
 
         return true;
     }

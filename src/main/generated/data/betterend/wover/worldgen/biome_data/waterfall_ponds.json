@@ -1,0 +1,22 @@
+{
+  "type": "betterend:biome",
+  "biome": "betterend:waterfall_ponds",
+  "fogDensity": 1.1,
+  "genChance": 0.13,
+  "generation_data": {
+    "intended_placement": "wover:is_end/small_island"
+  },
+  "has_caves": false,
+  "surface": {
+    "alt": {
+      "Name": "betterend:end_moss"
+    },
+    "floor_rule": true,
+    "top": {
+      "Name": "betterend:end_moss"
+    },
+    "under": {
+      "Name": "minecraft:end_stone"
+    }
+  }
+}

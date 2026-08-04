@@ -1,13 +1,15 @@
 package org.betterx.betterend.world.features.terrain;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.HydrothermalVentBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -33,7 +35,7 @@ public class SurfaceVentFeature extends DefaultFeature {
 
         MutableBlockPos mut = new MutableBlockPos();
         int count = MHelper.randRange(15, 30, random);
-        BlockState vent = EndBlocks.HYDROTHERMAL_VENT.defaultBlockState()
+        BlockState vent = EndStoneBlocks.HYDROTHERMAL_VENT.defaultBlockState()
                                                      .setValue(HydrothermalVentBlock.WATERLOGGED, false);
         for (int i = 0; i < count; i++) {
             mut.set(pos)
@@ -49,9 +51,9 @@ public class SurfaceVentFeature extends DefaultFeature {
                     state = world.getBlockState(mut);
                 }
                 if (state.is(CommonBlockTags.END_STONES) && !world.getBlockState(mut.above())
-                                                                  .is(EndBlocks.HYDROTHERMAL_VENT)) {
+                                                                  .is(EndStoneBlocks.HYDROTHERMAL_VENT)) {
                     for (int j = 0; j <= dist; j++) {
-                        BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
+                        BlocksHelper.setWithoutUpdate(world, mut, EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE));
                         mut.setY(mut.getY() + 1);
                     }
                     BlocksHelper.setWithoutUpdate(world, mut, vent);

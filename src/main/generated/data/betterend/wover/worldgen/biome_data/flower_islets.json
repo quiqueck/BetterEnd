@@ -1,0 +1,22 @@
+{
+  "type": "betterend:biome",
+  "biome": "betterend:flower_islets",
+  "fogDensity": 1.2,
+  "genChance": 0.4,
+  "generation_data": {
+    "intended_placement": "wover:is_end/small_island"
+  },
+  "has_caves": false,
+  "surface": {
+    "alt": {
+      "Name": "betterend:end_moss"
+    },
+    "floor_rule": true,
+    "top": {
+      "Name": "betterend:end_moss"
+    },
+    "under": {
+      "Name": "minecraft:end_stone"
+    }
+  }
+}

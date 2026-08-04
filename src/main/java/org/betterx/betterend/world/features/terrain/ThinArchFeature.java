@@ -9,7 +9,7 @@ import org.betterx.bclib.sdf.operator.SDFUnion;
 import org.betterx.bclib.sdf.primitive.SDFTorus;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.math.Axis;
 import net.minecraft.core.BlockPos;

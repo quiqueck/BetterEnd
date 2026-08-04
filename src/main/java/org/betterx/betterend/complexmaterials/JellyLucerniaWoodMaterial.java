@@ -1,15 +1,17 @@
 package org.betterx.betterend.complexmaterials;
 
+
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.block.api.trait.BlockRecipeTrait;
-import org.betterx.wover.block.api.trait.BlockTraitLookup;
-import org.betterx.wover.block.api.trait.BlockTraits;
-import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.sets.api.blocks.BlockSet;
-import org.betterx.wover.sets.api.blocks.SlotMap;
-import org.betterx.wover.sets.api.blocks.SlotType;
-import org.betterx.wover.sets.api.blocks.slots.WoodSlots;
-import org.betterx.wover.sets.api.blocks.types.HangingSign;
+import de.ambertation.wover.block.api.trait.BlockRecipeTrait;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.sets.api.blocks.SlotMap;
+import de.ambertation.wover.sets.api.blocks.SlotType;
+import de.ambertation.wover.sets.api.blocks.slots.WoodSlots;
+import de.ambertation.wover.sets.api.blocks.types.HangingSign;
 
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.world.item.Items;
@@ -41,8 +43,8 @@ public class JellyLucerniaWoodMaterial extends EndWoodenComplexMaterial {
                                 .crafting(key.location(), block)
                                 .outputCount(3)
                                 .shape("I I", "o#o", "o#o")
-                                .addMaterial('#', EndBlocks.LUCERNIA.getBlock(WoodSlots.STRIPPED_LOG))
-                                .addMaterial('o', EndBlocks.JELLYSHROOM.getBlock(WoodSlots.LOG))
+                                .addMaterial('#', EndWoodBlocks.LUCERNIA.getBlock(WoodSlots.STRIPPED_LOG))
+                                .addMaterial('o', EndWoodBlocks.JELLYSHROOM.getBlock(WoodSlots.LOG))
                                 .addMaterial('I', Items.CHAIN)
                                 .group("sign")
                                 .category(RecipeCategory.DECORATIONS)
@@ -54,11 +56,11 @@ public class JellyLucerniaWoodMaterial extends EndWoodenComplexMaterial {
 
     @Override
     public @Nullable Block getBlock(@NotNull SlotType type) {
-        if (type == SlotType.PLANKS || type == SlotType.SLAB) return EndBlocks.LUCERNIA.getBlock(SlotType.PLANKS);
+        if (type == SlotType.PLANKS || type == SlotType.SLAB) return EndWoodBlocks.LUCERNIA.getBlock(SlotType.PLANKS);
         // This material defines no log of its own - the hanging sign's model needs a stripped-log texture
         // for its chain/particle model, so reuse Lucernia's, matching the material already used for this
         // sign's crafting recipe above.
-        if (type == SlotType.STRIPPED_LOG) return EndBlocks.LUCERNIA.getBlock(WoodSlots.STRIPPED_LOG);
+        if (type == SlotType.STRIPPED_LOG) return EndWoodBlocks.LUCERNIA.getBlock(WoodSlots.STRIPPED_LOG);
         return super.getBlock(type);
     }
 }

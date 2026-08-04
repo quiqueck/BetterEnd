@@ -1,11 +1,15 @@
 package org.betterx.betterend.world.structures.piece;
 
+
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
+import org.betterx.betterend.registry.block.EndPlantBlocks;
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.util.GlobalState;
 import org.betterx.betterend.world.surface.SplitNoiseCondition;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -27,16 +31,20 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
 public class CrystalMountainPiece extends MountainPiece {
+    // Chance for a crystal-moss surface column to still grow a crystal. End-stone columns always do
+    // (1.0); the moss cover shows through the remaining fraction. Tune here.
+    private static final float CRYSTAL_MOSS_CRYSTAL_CHANCE = 0.15F;
+
     private BlockState top;
 
     public CrystalMountainPiece(BlockPos center, float radius, float height, RandomSource random, Holder<Biome> biome) {
         super(EndStructures.MOUNTAIN_PIECE, center, radius, height, random, biome);
-        top = EndBlocks.CRYSTAL_MOSS.defaultBlockState(); //EndBiome.findTopMaterial(biome.value()); //biome.getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial();
+        top = EndTerrainBlocks.CRYSTAL_MOSS.defaultBlockState(); //EndBiome.findTopMaterial(biome.value()); //biome.getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial();
     }
 
     public CrystalMountainPiece(StructurePieceSerializationContext type, CompoundTag tag) {
         super(EndStructures.MOUNTAIN_PIECE, tag);
-        top = EndBlocks.CRYSTAL_MOSS.defaultBlockState();
+        top = EndTerrainBlocks.CRYSTAL_MOSS.defaultBlockState();
     }
 
     @Override
@@ -61,44 +69,39 @@ public class CrystalMountainPiece extends MountainPiece {
 
         placeMountain(world, chunkPos, chunk, pos);
 
-        // Big crystals
-        int count = (map.getFirstAvailable(8, 8) - (center.getY() + 24)) / 7;
-        count = Mth.clamp(count, 0, 8);
-        for (int i = 0; i < count; i++) {
-            int radius = MHelper.randRange(2, 3, random);
-            float fill = MHelper.randRange(0F, 1F, random);
-            int x = MHelper.randRange(radius, 15 - radius, random);
-            int z = MHelper.randRange(radius, 15 - radius, random);
-            int y = map.getFirstAvailable(x, z);
-            if (y > 60) {
-                pos.set(x, y, z);
-                if (chunk.getBlockState(pos.below()).is(Blocks.END_STONE)) {
-                    int height = MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F);
-                    crystal(chunk, pos, radius, height, fill, random);
+        // Crystals cover the mountain: EVERY exposed end-stone column grows a crystal, while the
+        // crystal-moss columns (placeMountain's noise-driven cover) grow one only
+        // CRYSTAL_MOSS_CRYSTAL_CHANCE of the time, so the moss shows through in patches. Historically
+        // the mountain cap was end stone and the peaks were fully crystal-covered; scattering a random
+        // count of spikes (the old approach) left them mostly bare once the cap became crystal moss.
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                int y = map.getFirstAvailable(x, z);
+                if (y <= 20) {
+                    continue;
                 }
-            }
-        }
-
-        // Small crystals
-        count = (map.getFirstAvailable(8, 8) - (center.getY() + 24)) / 2;
-        count = Mth.clamp(count, 4, 8);
-        for (int i = 0; i < count; i++) {
-            int radius = MHelper.randRange(1, 2, random);
-            float fill = random.nextBoolean() ? 0 : 1;
-            int x = MHelper.randRange(radius, 15 - radius, random);
-            int z = MHelper.randRange(radius, 15 - radius, random);
-            int y = map.getFirstAvailable(x, z);
-            if (y > 20) {
                 pos.set(x, y, z);
-                if (chunk.getBlockState(pos.below()).getBlock() == Blocks.END_STONE) {
-                    int height = MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F);
-                    crystal(chunk, pos, radius, height, fill, random);
+                BlockState below = chunk.getBlockState(pos.below());
+                boolean endStone = below.is(Blocks.END_STONE);
+                boolean moss = below.is(EndTerrainBlocks.CRYSTAL_MOSS);
+                if (!endStone && !moss) {
+                    continue;
                 }
+                if (moss && random.nextFloat() >= CRYSTAL_MOSS_CRYSTAL_CHANCE) {
+                    continue;
+                }
+                // Mostly small crystals, with occasional larger spikes higher up for variety.
+                boolean big = y > 60 && random.nextInt(4) == 0;
+                int radius = big ? MHelper.randRange(2, 3, random) : 1;
+                float fill = big ? MHelper.randRange(0F, 1F, random) : (random.nextBoolean() ? 0 : 1);
+                int height = MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F);
+                crystal(chunk, pos, radius, height, fill, random);
             }
         }
 
 
     }
+
 
     private void placeMountain(
             WorldGenLevel world,
@@ -158,7 +161,7 @@ public class CrystalMountainPiece extends MountainPiece {
                                 }
 //                                mossPos = pos.above();
 //                                if (needSurroundCover && chunk.getBlockState(mossPos).is(Blocks.AIR)) {
-//                                    BlockState coverState = EndBlocks.CRYSTAL_MOSS_COVER
+//                                    BlockState coverState = EndPlantBlocks.CRYSTAL_MOSS_COVER
 //                                            .defaultBlockState();
 //
 //                                    boolean didChange = false;
@@ -206,7 +209,7 @@ public class CrystalMountainPiece extends MountainPiece {
                             int h = coefX * x + coefZ * z + height;
                             for (int y = minY; y < h; y++) {
                                 mut.setY(y);
-                                chunk.setBlockState(mut, EndBlocks.AURORA_CRYSTAL.defaultBlockState(), 3);
+                                chunk.setBlockState(mut, EndCrystalBlocks.AURORA_CRYSTAL.defaultBlockState(), 3);
                             }
                         }
                     }

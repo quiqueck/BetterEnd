@@ -5,7 +5,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.util.GlobalState;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -19,6 +19,11 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
+/**
+ * @deprecated never constructed since the 1.16 port; piece type registration kept so chunks
+ * saved by very old worlds still deserialize; remove when old-save support is dropped.
+ */
+@Deprecated
 public class CavePiece extends BasePiece {
     private OpenSimplexNoise noise;
     private BlockPos center;

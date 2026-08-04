@@ -1,0 +1,6 @@
+{
+  "type": "betterend:end_bridge",
+  "biomes": "#betterend:has_structure/end_bridge",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

@@ -1,26 +1,6 @@
 {
   "type": "betterend:lush_smaragdant_cave_biome",
   "biome": "betterend:lush_smaragdant_cave",
-  "ceil_features": {
-    "configured_features": [
-      {
-        "configured_feature": "betterend:end_stone_stalactite",
-        "weight": 1.0
-      }
-    ]
-  },
-  "floor_features": {
-    "configured_features": [
-      {
-        "configured_feature": "betterend:smaragdant_crystal",
-        "weight": 1.0
-      },
-      {
-        "configured_feature": "betterend:smaragdant_crystal_shard",
-        "weight": 21.0
-      }
-    ]
-  },
   "fogDensity": 2.0,
   "generation_data": {
     "intended_placement": "betterend:is_end_cave"

@@ -1,5 +1,13 @@
 package org.betterx.datagen.betterend.advancement;
 
+
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.block.EndMetalBlocks;
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
+import org.betterx.betterend.registry.block.EndWoodBlocks;
+import org.betterx.betterend.registry.item.EndEquipmentItems;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.bclib.api.v2.advancement.AdvancementManager;
 import org.betterx.bclib.api.v3.datagen.AdvancementDataProvider;
 import org.betterx.betterend.BetterEnd;
@@ -9,9 +17,9 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.EndTemplates;
-import org.betterx.wover.complex.api.equipment.ArmorSlot;
-import org.betterx.wover.complex.api.equipment.ToolSlot;
-import org.betterx.wover.sets.api.blocks.slots.WoodSlots;
+import de.ambertation.wover.complex.api.equipment.ArmorSlot;
+import de.ambertation.wover.complex.api.equipment.ToolSlot;
+import de.ambertation.wover.sets.api.blocks.slots.WoodSlots;
 
 import net.minecraft.advancements.AdvancementRequirements.Strategy;
 import net.minecraft.advancements.AdvancementType;
@@ -49,7 +57,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
         final HolderLookup.RegistryLookup<Biome> biomeLookup = lookup.lookupOrThrow(Registries.BIOME);
         ResourceLocation root = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("root"))
-                .startDisplay(EndBlocks.END_MYCELIUM)
+                .startDisplay(EndTerrainBlocks.END_MYCELIUM)
                 .frame(AdvancementType.TASK)
                 .hideFromChat()
                 // 1.21.2+ resolves the advancement background through the GUI sprite atlas, so it needs a
@@ -65,7 +73,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
 
         ResourceLocation enterEnd = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("enter_end"))
-                .startDisplay(EndBlocks.CAVE_MOSS)
+                .startDisplay(EndTerrainBlocks.CAVE_MOSS)
                 .endDisplay()
                 .parent(root)
                 .addCriterion(
@@ -80,7 +88,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
         ResourceLocation portal = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("portal"))
                 .parent(enterEnd)
-                .startDisplay(EndBlocks.ETERNAL_PEDESTAL)
+                .startDisplay(EndFunctionalBlocks.ETERNAL_PEDESTAL)
                 .frame(AdvancementType.GOAL)
                 .endDisplay()
                 .addAtStructureCriterion("eternal_portal", EndStructures.ETERNAL_PORTAL.getHolder(structures))
@@ -90,7 +98,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
         ResourceLocation portalOn = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("portal_on"))
                 .parent(portal)
-                .startDisplay(EndItems.ETERNAL_CRYSTAL)
+                .startDisplay(EndResourceItems.ETERNAL_CRYSTAL)
                 .endDisplay()
                 .addCriterion("turn_on", BECriteria.PORTAL_ON_TRIGGER)
                 .requirements(Strategy.OR)
@@ -115,7 +123,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
             ResourceLocation allTheBiomes = AdvancementManager.Builder
                     .create(BetterEnd.C.mk("all_the_biomes"))
                     .parent(enterEnd)
-                    .startDisplay(EndItems.AETERNIUM_SET.get(ArmorSlot.BOOTS_SLOT))
+                    .startDisplay(EndEquipmentItems.AETERNIUM_SET.get(ArmorSlot.BOOTS_SLOT))
                     .frame(AdvancementType.CHALLENGE)
                     .endDisplay()
                     .addVisitBiomesCriterion(biomes
@@ -131,7 +139,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
             ResourceLocation village = AdvancementManager.Builder
                     .create(BetterEnd.C.mk("village"))
                     .parent(allTheBiomes)
-                    .startDisplay(EndBlocks.TENANEA.getBlock(WoodSlots.DOOR))
+                    .startDisplay(EndWoodBlocks.TENANEA.getBlock(WoodSlots.DOOR))
                     .frame(AdvancementType.GOAL)
                     .endDisplay()
                     .addAtStructureCriterion("end_village", EndStructures.END_VILLAGE.getHolder(structures))
@@ -142,21 +150,21 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
         ResourceLocation allElytras = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("all_elytras"))
                 .parent(enterEnd)
-                .startDisplay(EndItems.CRYSTALITE_ELYTRA)
+                .startDisplay(EndEquipmentItems.CRYSTALITE_ELYTRA)
                 .frame(AdvancementType.GOAL)
                 .endDisplay()
                 .addInventoryChangedCriterion("vanilla", Items.ELYTRA)
-                .addInventoryChangedCriterion("crystalite", EndItems.CRYSTALITE_ELYTRA)
-                .addInventoryChangedCriterion("armored", EndItems.ARMORED_ELYTRA)
+                .addInventoryChangedCriterion("crystalite", EndEquipmentItems.CRYSTALITE_ELYTRA)
+                .addInventoryChangedCriterion("armored", EndEquipmentItems.ARMORED_ELYTRA)
                 .requirements(Strategy.AND)
                 .build();
 
         ResourceLocation infusion = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("infusion"))
                 .parent(enterEnd)
-                .startDisplay(EndBlocks.INFUSION_PEDESTAL)
+                .startDisplay(EndFunctionalBlocks.INFUSION_PEDESTAL)
                 .endDisplay()
-                .addInventoryChangedCriterion("infusion_pedestal", EndBlocks.INFUSION_PEDESTAL)
+                .addInventoryChangedCriterion("infusion_pedestal", EndFunctionalBlocks.INFUSION_PEDESTAL)
                 .requirements(Strategy.OR)
                 .build();
 
@@ -192,57 +200,57 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
         ResourceLocation hammer = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("hammer"))
                 .parent(enterEnd)
-                .startDisplay(EndItems.DIAMOND_HAMMER)
+                .startDisplay(EndEquipmentItems.DIAMOND_HAMMER)
                 .endDisplay()
-                .addInventoryChangedCriterion("got_diamond_hammer", EndItems.DIAMOND_HAMMER)
-                .addInventoryChangedCriterion("got_thallasium_hammer", EndBlocks.THALLASIUM.equipment.get(ToolSlot.HAMMER_SLOT))
-                .addInventoryChangedCriterion("got_terminite_hammer", EndBlocks.TERMINITE.equipment.get(ToolSlot.HAMMER_SLOT))
+                .addInventoryChangedCriterion("got_diamond_hammer", EndEquipmentItems.DIAMOND_HAMMER)
+                .addInventoryChangedCriterion("got_thallasium_hammer", EndMetalBlocks.THALLASIUM.equipment.get(ToolSlot.HAMMER_SLOT))
+                .addInventoryChangedCriterion("got_terminite_hammer", EndMetalBlocks.TERMINITE.equipment.get(ToolSlot.HAMMER_SLOT))
                 .requirements(Strategy.OR)
                 .build();
 
         ResourceLocation thallasiumAnvil = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("thallasium_anvil"))
                 .parent(hammer)
-                .startDisplay(EndBlocks.THALLASIUM.getBlock(MetalMaterial.ANVIL))
+                .startDisplay(EndMetalBlocks.THALLASIUM.getBlock(MetalMaterial.ANVIL))
                 .endDisplay()
-                .addInventoryChangedCriterion("got_thallasium_anvil", EndBlocks.THALLASIUM.getBlock(MetalMaterial.ANVIL))
+                .addInventoryChangedCriterion("got_thallasium_anvil", EndMetalBlocks.THALLASIUM.getBlock(MetalMaterial.ANVIL))
                 .requirements(Strategy.OR)
                 .build();
 
         ResourceLocation thallasiumPlate = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("thallasium_plate"))
                 .parent(thallasiumAnvil)
-                .startDisplay(EndBlocks.THALLASIUM.equipment.forgedPlate)
+                .startDisplay(EndMetalBlocks.THALLASIUM.equipment.forgedPlate)
                 .endDisplay()
-                .addInventoryChangedCriterion("got_thallasium_plate", EndBlocks.THALLASIUM.equipment.forgedPlate)
+                .addInventoryChangedCriterion("got_thallasium_plate", EndMetalBlocks.THALLASIUM.equipment.forgedPlate)
                 .requirements(Strategy.OR)
                 .build();
 
         ResourceLocation terminiteAnvil = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("terminite_anvil"))
                 .parent(thallasiumAnvil)
-                .startDisplay(EndBlocks.TERMINITE.getBlock(MetalMaterial.ANVIL))
+                .startDisplay(EndMetalBlocks.TERMINITE.getBlock(MetalMaterial.ANVIL))
                 .endDisplay()
-                .addInventoryChangedCriterion("got_terminite_anvil", EndBlocks.TERMINITE.getBlock(MetalMaterial.ANVIL))
+                .addInventoryChangedCriterion("got_terminite_anvil", EndMetalBlocks.TERMINITE.getBlock(MetalMaterial.ANVIL))
                 .requirements(Strategy.OR)
                 .build();
 
         ResourceLocation terminitePlate = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("terminite_plate"))
                 .parent(terminiteAnvil)
-                .startDisplay(EndBlocks.TERMINITE.equipment.forgedPlate)
+                .startDisplay(EndMetalBlocks.TERMINITE.equipment.forgedPlate)
                 .endDisplay()
-                .addInventoryChangedCriterion("got_erminite_plate", EndBlocks.TERMINITE.equipment.forgedPlate)
+                .addInventoryChangedCriterion("got_erminite_plate", EndMetalBlocks.TERMINITE.equipment.forgedPlate)
                 .requirements(Strategy.OR)
                 .build();
 
         ResourceLocation aeterniumAnvil = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_anvil"))
                 .parent(terminiteAnvil)
-                .startDisplay(EndBlocks.AETERNIUM_ANVIL)
+                .startDisplay(EndFunctionalBlocks.AETERNIUM_ANVIL)
                 .frame(AdvancementType.CHALLENGE)
                 .endDisplay()
-                .addInventoryChangedCriterion("got_aeternium_anvil", EndBlocks.AETERNIUM_ANVIL)
+                .addInventoryChangedCriterion("got_aeternium_anvil", EndFunctionalBlocks.AETERNIUM_ANVIL)
                 .requirements(Strategy.OR)
                 .rewardXP(500)
                 .build();
@@ -250,58 +258,58 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
         ResourceLocation aeterniumHammerHead = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_hammer_head"))
                 .parent(aeterniumAnvil)
-                .startDisplay(EndItems.AETERNIUM_SET.hammerHead)
+                .startDisplay(EndEquipmentItems.AETERNIUM_SET.hammerHead)
                 .endDisplay()
-                .addInventoryChangedCriterion("got_aeternium_hammer_head", EndItems.AETERNIUM_SET.hammerHead)
+                .addInventoryChangedCriterion("got_aeternium_hammer_head", EndEquipmentItems.AETERNIUM_SET.hammerHead)
                 .requirements(Strategy.OR)
                 .build();
 
         ResourceLocation aeterniumHammer = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_hammer"))
                 .parent(aeterniumHammerHead)
-                .startDisplay(EndItems.AETERNIUM_SET.get(ToolSlot.HAMMER_SLOT))
+                .startDisplay(EndEquipmentItems.AETERNIUM_SET.get(ToolSlot.HAMMER_SLOT))
                 .endDisplay()
-                .addInventoryChangedCriterion("got_aeternium_hammer", EndItems.AETERNIUM_SET.get(ToolSlot.HAMMER_SLOT))
+                .addInventoryChangedCriterion("got_aeternium_hammer", EndEquipmentItems.AETERNIUM_SET.get(ToolSlot.HAMMER_SLOT))
                 .requirements(Strategy.OR)
                 .build();
 
         ResourceLocation aeterniumPlate = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_plate"))
                 .parent(aeterniumHammer)
-                .startDisplay(EndItems.AETERNIUM_SET.forgedPlate)
+                .startDisplay(EndEquipmentItems.AETERNIUM_SET.forgedPlate)
                 .frame(AdvancementType.GOAL)
                 .endDisplay()
-                .addInventoryChangedCriterion("got_aeternium_plate", EndItems.AETERNIUM_SET.forgedPlate)
+                .addInventoryChangedCriterion("got_aeternium_plate", EndEquipmentItems.AETERNIUM_SET.forgedPlate)
                 .requirements(Strategy.OR)
                 .rewardXP(200)
                 .build();
 
-        ResourceLocation thallasiumArmor = addArmor(EndBlocks.THALLASIUM)
+        ResourceLocation thallasiumArmor = addArmor(EndMetalBlocks.THALLASIUM)
                 .parent(thallasiumPlate)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation thallasiumHead = addToolHeads(EndBlocks.THALLASIUM)
+        ResourceLocation thallasiumHead = addToolHeads(EndMetalBlocks.THALLASIUM)
                 .parent(thallasiumAnvil)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation thallasium = addTools(EndBlocks.THALLASIUM)
+        ResourceLocation thallasium = addTools(EndMetalBlocks.THALLASIUM)
                 .parent(thallasiumHead)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation terminiteHead = addToolHeads(EndBlocks.TERMINITE)
+        ResourceLocation terminiteHead = addToolHeads(EndMetalBlocks.TERMINITE)
                 .parent(terminiteAnvil)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation terminite = addTools(EndBlocks.TERMINITE)
+        ResourceLocation terminite = addTools(EndMetalBlocks.TERMINITE)
                 .parent(terminiteHead)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation terminiteArmor = addArmor(EndBlocks.TERMINITE)
+        ResourceLocation terminiteArmor = addArmor(EndMetalBlocks.TERMINITE)
                 .parent(terminitePlate)
                 .requirements(Strategy.OR)
                 .build();
@@ -309,18 +317,18 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
 
         ResourceLocation aeterniumHead = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_tool_head"))
-                .startDisplay(EndItems.AETERNIUM_SET.pickaxeHead)
+                .startDisplay(EndEquipmentItems.AETERNIUM_SET.pickaxeHead)
                 .frame(AdvancementType.GOAL)
                 .endDisplay()
                 .parent(aeterniumHammer)
-                .addInventoryChangedCriterion("got_aeternium_pickaxe_head", EndItems.AETERNIUM_SET.pickaxeHead)
-                .addInventoryChangedCriterion("got_aeternium_hoe_head", EndItems.AETERNIUM_SET.hoeHead)
-                .addInventoryChangedCriterion("got_aeternium_axe_head", EndItems.AETERNIUM_SET.axeHead)
-                .addInventoryChangedCriterion("got_aeternium_shovel_head", EndItems.AETERNIUM_SET.shovelHead)
+                .addInventoryChangedCriterion("got_aeternium_pickaxe_head", EndEquipmentItems.AETERNIUM_SET.pickaxeHead)
+                .addInventoryChangedCriterion("got_aeternium_hoe_head", EndEquipmentItems.AETERNIUM_SET.hoeHead)
+                .addInventoryChangedCriterion("got_aeternium_axe_head", EndEquipmentItems.AETERNIUM_SET.axeHead)
+                .addInventoryChangedCriterion("got_aeternium_shovel_head", EndEquipmentItems.AETERNIUM_SET.shovelHead)
                 .addInventoryChangedCriterion(
                         "got_aeternium_sword_head",
-                        EndItems.AETERNIUM_SET.swordBlade,
-                        EndItems.AETERNIUM_SET.swordHandle
+                        EndEquipmentItems.AETERNIUM_SET.swordBlade,
+                        EndEquipmentItems.AETERNIUM_SET.swordHandle
                 )
                 .requirements(Strategy.AND)
                 .rewardXP(200)
@@ -328,29 +336,29 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
 
         ResourceLocation aeternium = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_tool"))
-                .startDisplay(EndItems.AETERNIUM_SET.pickaxe())
+                .startDisplay(EndEquipmentItems.AETERNIUM_SET.pickaxe())
                 .frame(AdvancementType.CHALLENGE)
                 .endDisplay()
                 .parent(aeterniumHead)
-                .addInventoryChangedCriterion("got_aeternium_pickaxe", EndItems.AETERNIUM_SET.pickaxe())
-                .addInventoryChangedCriterion("got_aeternium_hoe", EndItems.AETERNIUM_SET.get(ToolSlot.HOE_SLOT))
-                .addInventoryChangedCriterion("got_aeternium_axe", EndItems.AETERNIUM_SET.axe())
-                .addInventoryChangedCriterion("got_aeternium_shovel", EndItems.AETERNIUM_SET.get(ToolSlot.SHOVEL_SLOT))
-                .addInventoryChangedCriterion("got_aeternium_sword", EndItems.AETERNIUM_SET.get(ToolSlot.SWORD_SLOT))
+                .addInventoryChangedCriterion("got_aeternium_pickaxe", EndEquipmentItems.AETERNIUM_SET.pickaxe())
+                .addInventoryChangedCriterion("got_aeternium_hoe", EndEquipmentItems.AETERNIUM_SET.get(ToolSlot.HOE_SLOT))
+                .addInventoryChangedCriterion("got_aeternium_axe", EndEquipmentItems.AETERNIUM_SET.axe())
+                .addInventoryChangedCriterion("got_aeternium_shovel", EndEquipmentItems.AETERNIUM_SET.get(ToolSlot.SHOVEL_SLOT))
+                .addInventoryChangedCriterion("got_aeternium_sword", EndEquipmentItems.AETERNIUM_SET.get(ToolSlot.SWORD_SLOT))
                 .requirements(Strategy.AND)
                 .rewardXP(2000)
                 .build();
 
         ResourceLocation aeterniumArmor = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_armor"))
-                .startDisplay(EndItems.AETERNIUM_SET.get(ArmorSlot.CHESTPLATE_SLOT))
+                .startDisplay(EndEquipmentItems.AETERNIUM_SET.get(ArmorSlot.CHESTPLATE_SLOT))
                 .frame(AdvancementType.CHALLENGE)
                 .endDisplay()
                 .parent(aeterniumPlate)
-                .addInventoryChangedCriterion("got_aeternium_helmet", EndItems.AETERNIUM_SET.get(ArmorSlot.HELMET_SLOT))
-                .addInventoryChangedCriterion("got_aeternium_chestplate", EndItems.AETERNIUM_SET.get(ArmorSlot.CHESTPLATE_SLOT))
-                .addInventoryChangedCriterion("got_aeternium_leggings", EndItems.AETERNIUM_SET.get(ArmorSlot.LEGGINGS_SLOT))
-                .addInventoryChangedCriterion("got_aeternium_boots", EndItems.AETERNIUM_SET.get(ArmorSlot.BOOTS_SLOT))
+                .addInventoryChangedCriterion("got_aeternium_helmet", EndEquipmentItems.AETERNIUM_SET.get(ArmorSlot.HELMET_SLOT))
+                .addInventoryChangedCriterion("got_aeternium_chestplate", EndEquipmentItems.AETERNIUM_SET.get(ArmorSlot.CHESTPLATE_SLOT))
+                .addInventoryChangedCriterion("got_aeternium_leggings", EndEquipmentItems.AETERNIUM_SET.get(ArmorSlot.LEGGINGS_SLOT))
+                .addInventoryChangedCriterion("got_aeternium_boots", EndEquipmentItems.AETERNIUM_SET.get(ArmorSlot.BOOTS_SLOT))
                 .requirements(Strategy.AND)
                 .rewardXP(2000)
                 .build();

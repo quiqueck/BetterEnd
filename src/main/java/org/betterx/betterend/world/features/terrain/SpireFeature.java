@@ -11,8 +11,9 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
+import de.ambertation.wover.feature.api.WriteZone;
 import org.betterx.betterend.world.biome.EndBiome;
-import org.betterx.wover.tag.api.predefined.CommonBlockTags;
+import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -86,7 +87,7 @@ public class SpireFeature extends DefaultFeature {
 //							.getUnderMaterial();
             }
             return info.getState();
-        }).fillRecursive(world, center);
+        }).fillRecursive(world, center, WriteZone.of(world).toBoundingBox());
 
         support.forEach((bpos) -> {
             Holder<Biome> biome = world.getBiome(bpos);

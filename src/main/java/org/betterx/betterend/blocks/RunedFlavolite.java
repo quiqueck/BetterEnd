@@ -1,7 +1,7 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.wover.block.api.BlockProperties;
+import de.ambertation.wover.block.api.BlockProperties;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;

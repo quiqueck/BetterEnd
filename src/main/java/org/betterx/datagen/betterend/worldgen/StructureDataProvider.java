@@ -1,19 +1,24 @@
 package org.betterx.datagen.betterend.worldgen;
 
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndProcessors;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.world.structures.village.VillagePools;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.multi.WoverStructureProvider;
-import org.betterx.wover.sets.api.blocks.slots.StoneSlots;
-import org.betterx.wover.sets.api.blocks.slots.WoodSlots;
-import org.betterx.wover.structure.api.sets.StructureSetManager;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.multi.WoverStructureProvider;
+import de.ambertation.wover.sets.api.blocks.slots.StoneSlots;
+import de.ambertation.wover.sets.api.blocks.slots.WoodSlots;
+import de.ambertation.wover.structure.api.sets.StructureSetManager;
+import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -36,10 +41,16 @@ public class StructureDataProvider extends WoverStructureProvider {
         EndStructures.GIANT_MOSSY_GLOWSHROOM.bootstrap(context).register();
         EndStructures.MEGALAKE.bootstrap(context).register();
         EndStructures.MEGALAKE_SMALL.bootstrap(context).register();
+        EndStructures.END_LAKE.bootstrap(context).register();
+        EndStructures.END_LAKE_NORMAL.bootstrap(context).register();
+        EndStructures.END_LAKE_RARE.bootstrap(context).register();
+        EndStructures.END_BRIDGE.bootstrap(context).register();
         EndStructures.MOUNTAIN.bootstrap(context).register();
         EndStructures.PAINTED_MOUNTAIN.bootstrap(context).register();
         EndStructures.ETERNAL_PORTAL.bootstrap(context).register();
         EndStructures.GIANT_ICE_STAR.bootstrap(context).register();
+        EndStructures.SMALL_ISLAND.bootstrap(context).register();
+        EndStructures.SULPHURIC_CAVE.bootstrap(context).register();
         EndStructures.END_VILLAGE
                 .bootstrap(context)
                 .startPool(VillagePools.START)
@@ -61,6 +72,28 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .addStructure(EndStructures.MEGALAKE_SMALL)
                 .randomPlacement(4, 1)
                 .register();
+
+        // The three End lake variants replace the old EndLakeFeature (onceEvery 4/20/40). A
+        // RandomSpread with spacing S places roughly one structure per S*S chunks. The common variant's
+        // spacing was bumped past the naive sqrt(chance)=2 estimate: unlike the old chunk-decoration
+        // feature (real Bernoulli variance, its own rejection paths), a structure_set attempt nearly
+        // always succeeds, so the naive conversion read as far too dense in practice.
+        StructureSetManager
+                .bootstrap(EndStructures.END_LAKE, context)
+                .randomPlacement(6, 1)
+                .register();
+        StructureSetManager
+                .bootstrap(EndStructures.END_LAKE_NORMAL, context)
+                .randomPlacement(5, 2)
+                .register();
+        StructureSetManager
+                .bootstrap(EndStructures.END_LAKE_RARE, context)
+                .randomPlacement(6, 2)
+                .register();
+        StructureSetManager
+                .bootstrap(EndStructures.END_BRIDGE, context)
+                .randomPlacement(6, 2)
+                .register();
         StructureSetManager
                 .bootstrap(EndStructures.MOUNTAIN, context)
                 .addStructure(EndStructures.PAINTED_MOUNTAIN)
@@ -73,6 +106,24 @@ public class StructureDataProvider extends WoverStructureProvider {
         StructureSetManager
                 .bootstrap(EndStructures.GIANT_ICE_STAR, context)
                 .randomPlacement(16, 8)
+                .register();
+
+        // Spacing 5 / separation 2 (previously 2 / 1): ~6x fewer islands so a flower/pond patch reads
+        // as a handful of scattered islets rather than a dense, regular polka-dot grid. The larger
+        // in-cell separation also jitters each island off the lattice. Biome-gated via has_structure so
+        // it only spawns inside flower_islets / waterfall_ponds.
+        StructureSetManager
+                .bootstrap(EndStructures.SMALL_ISLAND, context)
+                .randomPlacement(5, 2)
+                .register();
+
+        // Replaces the legacy SulphuricCaveFeature's count(2)-per-chunk placement. Per the END_LAKE
+        // comment above, a structure_set attempt nearly always succeeds (no per-attempt Bernoulli
+        // rejection the way a feature had), so this starts noticeably wider than a naive sqrt(chance)
+        // translation of "2 per chunk" would suggest - tune from the manual smoke test.
+        StructureSetManager
+                .bootstrap(EndStructures.SULPHURIC_CAVE, context)
+                .randomPlacement(9, 4)
                 .register();
 
         StructureSetManager
@@ -307,7 +358,7 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .bootstrap(bootstapContext).startRule().add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.1f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState()
+                        EndStoneBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState()
                 )).endRule().register();
 
         EndProcessors
@@ -315,7 +366,7 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .bootstrap(bootstapContext).startRule().add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.2f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED_SOURCE).defaultBlockState()
+                        EndStoneBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED_SOURCE).defaultBlockState()
                 )).endRule().register();
 
         EndProcessors
@@ -324,12 +375,12 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.2f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED_SOURCE).defaultBlockState()
+                        EndStoneBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED_SOURCE).defaultBlockState()
                 ))
                 .add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.1f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState()
+                        EndStoneBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState()
                 ))
                 .endRule().register();
 
@@ -339,34 +390,39 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .add(new ProcessorRule(
                         new BlockMatchTest(Blocks.END_STONE_BRICKS),
                         new BlockMatchTest(Blocks.WATER),
-                        EndBlocks.PYTHADENDRON.getBlock(WoodSlots.PLANKS).defaultBlockState()
+                        EndWoodBlocks.PYTHADENDRON.getBlock(WoodSlots.PLANKS).defaultBlockState()
                 ))
                 .add(new ProcessorRule(
-                        new BlockMatchTest(EndBlocks.ENDSTONE_DUST),
+                        new BlockMatchTest(EndTerrainBlocks.ENDSTONE_DUST),
                         new BlockMatchTest(Blocks.WATER),
                         Blocks.WATER.defaultBlockState()
                 ))
                 .add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.03f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.SHADOW_GRASS_PATH.defaultBlockState()
+                        EndTerrainBlocks.SHADOW_GRASS_PATH.defaultBlockState()
                 ))
                 .add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.2f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED_SOURCE).defaultBlockState()
+                        EndStoneBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.CRACKED_SOURCE).defaultBlockState()
                 ))
                 .add(new ProcessorRule(
                         new RandomBlockMatchTest(Blocks.END_STONE_BRICKS, 0.1f),
                         AlwaysTrueTest.INSTANCE,
-                        EndBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState()
+                        EndStoneBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState()
                 ))
                 .endRule().register();
     }
 
     @Override
     protected void prepareBiomeTags(TagBootstrapContext<Biome> context) {
-
+        // The End bridge spawns in the small-island/void ring. The vanilla small-island biome is not a
+        // BetterEnd biome class (so it cannot call `.structure(END_BRIDGE)` itself), so we add it to the
+        // structure's `has_structure/end_bridge` biome tag here. Any BetterEnd biome tagged
+        // IS_SMALL_END_ISLAND can additionally opt in via `.structure(EndStructures.END_BRIDGE)` in its
+        // biome class; two dedicated void biomes arriving in a follow-up task will do exactly that.
+        context.add(EndStructures.END_BRIDGE.biomeTag(), Biomes.SMALL_END_ISLANDS);
     }
 
 }

@@ -1,8 +1,9 @@
 package org.betterx.betterend.world.biome.land;
 
+
+import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.*;
-import org.betterx.betterend.registry.features.EndLakeFeatures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
@@ -27,7 +28,7 @@ public class FoggyMushroomlandBiome extends EndBiome.Config {
                 .particles(EndParticles.GLOWING_SPHERE, 0.001F)
                 .loop(EndSounds.AMBIENT_FOGGY_MUSHROOMLAND)
                 .music(EndSounds.MUSIC_FOREST)
-                .feature(EndLakeFeatures.END_LAKE)
+                .structure(EndStructures.END_LAKE)
                 .feature(EndVegetationFeatures.MOSSY_GLOWSHROOM)
                 .feature(EndVegetationFeatures.BLUE_VINE)
                 .feature(EndVegetationFeatures.UMBRELLA_MOSS)
@@ -55,12 +56,12 @@ public class FoggyMushroomlandBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.END_MOSS.defaultBlockState();
+                return EndTerrainBlocks.END_MOSS.defaultBlockState();
             }
 
             @Override
             public BlockState getAltTopMaterial() {
-                return EndBlocks.END_MYCELIUM.defaultBlockState();
+                return EndTerrainBlocks.END_MYCELIUM.defaultBlockState();
             }
         };
 

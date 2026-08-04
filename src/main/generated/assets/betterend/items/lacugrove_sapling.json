@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:block/lacugrove_sapling"
+    "model": "betterend:item/lacugrove_sapling"
   }
 }

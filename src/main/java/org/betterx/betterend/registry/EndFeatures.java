@@ -7,12 +7,10 @@ import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.features.*;
 import org.betterx.betterend.world.features.bushes.*;
 import org.betterx.betterend.world.features.terrain.*;
-import org.betterx.betterend.world.features.terrain.caves.CaveChunkPopulatorFeature;
-import org.betterx.betterend.world.features.terrain.caves.RoundCaveFeature;
-import org.betterx.betterend.world.features.terrain.caves.TunelCaveFeature;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.betterend.world.features.trees.*;
-import org.betterx.wover.feature.api.FeatureManager;
-import org.betterx.wover.state.api.WorldState;
+import de.ambertation.wover.feature.api.FeatureManager;
+import de.ambertation.wover.state.api.WorldState;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -32,7 +30,6 @@ public class EndFeatures {
     public static final HydraluxFeature HYDRALUX_FEATURE = inlineBuild("hydralux_feature", new HydraluxFeature());
     public static final LanceleafFeature LANCELEAF_FEATURE = inlineBuild("lanceleaf_feature", new LanceleafFeature());
     public static final MengerSpongeFeature MENGER_SPONGE_FEATURE = inlineBuild("menger_sponge_feature", new MengerSpongeFeature());
-    public static final CaveChunkPopulatorFeature CAVE_CHUNK_POPULATOR = inlineBuild("cave_chunk_populator", new CaveChunkPopulatorFeature());
     public static final SinglePlantFeature SINGLE_PLANT_FEATURE = inlineBuild("single_plant_feature", new SinglePlantFeature());
     public static final SingleInvertedScatterFeature SINGLE_INVERTED_SCATTER_FEATURE = inlineBuild("single_inverted_scatter_feature", new SingleInvertedScatterFeature());
     public static final DoublePlantFeature DOUBLE_PLANT_FEATURE = inlineBuild("double_plant_feature", new DoublePlantFeature());
@@ -54,6 +51,7 @@ public class EndFeatures {
     public static final DragonTreeFeature DRAGON_TREE_FEATURE = inlineBuild("dragon_tree", new DragonTreeFeature());
     public static final TenaneaFeature TENANEA_FEATURE = inlineBuild("tenanea", new TenaneaFeature());
     public static final HelixTreeFeature HELIX_TREE_FEATURE = inlineBuild("helix_tree", new HelixTreeFeature());
+    public static final DragonHelixTreeFeature DRAGON_HELIX_TREE_FEATURE = inlineBuild("dragon_helix_tree", new DragonHelixTreeFeature());
     public static final UmbrellaTreeFeature UMBRELLA_TREE_FEATURE = inlineBuild("umbrella_tree", new UmbrellaTreeFeature());
     public static final JellyshroomFeature JELLYSHROOM_FEATURE = inlineBuild("jellyshroom", new JellyshroomFeature());
     public static final GiganticAmaranitaFeature GIGANTIC_AMARANITA_FEATURE = inlineBuild("gigantic_amaranita", new GiganticAmaranitaFeature());
@@ -61,13 +59,16 @@ public class EndFeatures {
     public static final TenaneaBushFeature TENANEA_BUSH_FEATURE = inlineBuild("tenanea_bush", new TenaneaBushFeature());
     public static final Lumecorn LUMECORN_FEATURE = inlineBuild("lumecorn", new Lumecorn());
     public static final LargeAmaranitaFeature LARGE_AMARANITA_FEATURE = inlineBuild("large_amaranita", new LargeAmaranitaFeature());
+    public static final AmaranitaPatchFeature AMARANITA_PATCH_FEATURE = inlineBuild("amaranita_patch", new AmaranitaPatchFeature());
     public static final NeonCactusFeature NEON_CACTUS_FEATURE = inlineBuild("neon_cactus", new NeonCactusFeature());
 
     //Ores
     public static final OreLayerFeature LAYERED_ORE_FEATURE = inlineBuild("ore_layer", new OreLayerFeature());
 
     //Lakes
-    public static final EndLakeFeature END_LAKE_FEATURE = inlineBuild("end_lake", new EndLakeFeature());
+    // The old EndLakeFeature is gone: End lakes are now the EndLakeStructure family (see
+    // EndStructures.END_LAKE*), which carves per-chunk during the LAKES step and no longer strands
+    // trees over the water.
     public static final DesertLakeFeature DESERT_LAKE_FEATURE = inlineBuild("desert_lake", new DesertLakeFeature());
     public static final SulphuricLakeFeature SULPHURIC_LAKE_FEATURE = inlineBuild("sulphuric_lake", new SulphuricLakeFeature());
 
@@ -80,18 +81,17 @@ public class EndFeatures {
     public static final CrashedShipFeature CRASHED_SHIP_FEATURE = inlineBuild("crashed_ship", new CrashedShipFeature());
     public static final SilkMothNestFeature SILK_MOTH_NEST_FEATURE = inlineBuild("silk_moth_nest", new SilkMothNestFeature());
     public static final IceStarFeature ICE_STAR_FEATURE = inlineBuild("ice_star", new IceStarFeature());
-    public static final RoundCaveFeature ROUND_CAVE_FEATURE = inlineBuild("round_cave", new RoundCaveFeature());
     public static final SpireFeature SPIRE_FEATURE = inlineBuild("spire", new SpireFeature());
     public static final FloatingSpireFeature FLOATING_SPIRE_FEATURE = inlineBuild("floating_spire", new FloatingSpireFeature());
     public static final GeyserFeature GEYSER_FEATURE = inlineBuild("geyser", new GeyserFeature());
+    public static final PondWithWaterfallFeature POND_WITH_WATERFALL_FEATURE = inlineBuild("pond_with_waterfall", new PondWithWaterfallFeature());
     public static final BiomeIslandFeature OVERWORLD_ISLAND = inlineBuild("overworld_island", new BiomeIslandFeature());
 
     // Caves
-    public static final SulphuricCaveFeature SULPHURIC_CAVE_FEATURE = inlineBuild("sulphuric_cave", new SulphuricCaveFeature());
-    public static final TunelCaveFeature TUNEL_CAVE_FEATURE = inlineBuild("tunel_cave", new TunelCaveFeature());
     public static final SmaragdantCrystalFeature SMARAGDANT_CRYSTAL_FEATURE = inlineBuild("smaragdant_crystal", new SmaragdantCrystalFeature());
     public static final BigAuroraCrystalFeature BIG_AURORA_CRYSTAL_FEATURE = inlineBuild("big_aurora_crystal", new BigAuroraCrystalFeature());
     public static final CavePumpkinFeature CAVE_PUMPKIN_FEATURE = inlineBuild("cave_pumpkin", new CavePumpkinFeature());
+    public static final StalactiteClusterFeature STALACTITE_CLUSTER = inlineBuild("stalactite_cluster", new StalactiteClusterFeature());
 
     public static <F extends Feature<FC>, FC extends FeatureConfiguration> F inlineBuild(String name, F feature) {
         ResourceLocation l = BetterEnd.C.mk(name);
@@ -111,45 +111,17 @@ public class EndFeatures {
         return FeatureManager.register(l, feature);
     }
 
-//    public static void addBiomeFeatures(ResourceLocation id, Holder<Biome> biome) {
-//        if (!BetterEnd.MOD_ID.equals(id.getNamespace())) {
-//            BiomeAPI.addBiomeFeature(biome, EndOreFeatures.FLAVOLITE_LAYER);
-//            BiomeAPI.addBiomeFeature(biome, EndOreFeatures.THALLASIUM_ORE);
-//            BiomeAPI.addBiomeFeature(biome, EndOreFeatures.ENDER_ORE);
-//            BiomeAPI.addBiomeFeature(biome, EndTerrainFeatures.CRASHED_SHIP);
-//            BCLBiome bclbiome = BiomeAPI.getBiome(id);
-//            if (!BCLBiomeRegistry.isEmptyBiome(bclbiome)) {
-//                BCLFeature<BuildingListFeature, BuildingListFeatureConfig> feature = getBiomeStructures(bclbiome.getID());
-//                if (feature != null) {
-//                    BiomeAPI.addBiomeFeature(biome, feature);
-//                }
-//            }
-//
-//            boolean hasCaves = !(bclbiome instanceof EndCaveBiome);
-//            if (!(bclbiome instanceof EndCaveBiome) && bclbiome instanceof EndBiome endBiome) {
-//                hasCaves = endBiome.hasCaves();
-//            }
-//            if (hasCaves && !BiomeAPI.wasRegisteredAsEndVoidBiome(id) /*!BiomeAPI.END_VOID_BIOME_PICKER.containsImmutable(id)*/) {
-//                if (Configs.BIOME_CONFIG.getBoolean(id, "hasCaves", true)) {
-//                    BiomeAPI.addBiomeFeature(biome, EndTerrainFeatures.ROUND_CAVE);
-//                    BiomeAPI.addBiomeFeature(biome, EndTerrainFeatures.TUNEL_CAVE);
-//                }
-//            }
-//        }
-//    }
-
-
+    // NOTE: hasCaves no longer selects any feature-based cave carving here (the legacy
+    // RoundCaveFeature/TunelCaveFeature pair was removed once real WorldCarvers landed, see
+    // EndCaveCarver/EndTunnelCarver + EndCarvers). The parameter is kept only because it mirrors
+    // the biome-data "hasCaves" flag that EndCaveBiomeDecider consumes when deciding whether a
+    // land biome gets a vertical cave-biome counterpart; it is intentionally unused in this method.
     public static void addDefaultFeatures(
             EndBiomeBuilder builder, boolean hasCaves
     ) {
         builder.feature(EndOreFeatures.THALLASIUM_ORE);
         builder.feature(EndOreFeatures.ENDER_ORE);
         builder.feature(EndTerrainFeatures.CRASHED_SHIP);
-
-        if (hasCaves) {
-            builder.feature(EndTerrainFeatures.ROUND_CAVE);
-            builder.feature(EndTerrainFeatures.TUNEL_CAVE);
-        }
     }
 
     public static void register() {

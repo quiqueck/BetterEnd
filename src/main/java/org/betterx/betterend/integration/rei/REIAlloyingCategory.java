@@ -1,6 +1,8 @@
 package org.betterx.betterend.integration.rei;
 
 
+
+import org.betterx.betterend.registry.block.EndFunctionalBlocks;
 //import org.betterx.betterend.registry.EndBlocks;
 //
 //import net.minecraft.network.chat.Component;
@@ -33,7 +35,7 @@ package org.betterx.betterend.integration.rei;
 //
 //    @Override
 //    public @NotNull Component getTitle() {
-//        return Component.translatable(EndBlocks.END_STONE_SMELTER.getDescriptionId());
+//        return Component.translatable(EndFunctionalBlocks.END_STONE_SMELTER.getDescriptionId());
 //    }
 //
 //    @Override

@@ -1,6 +1,6 @@
 package org.betterx.betterend;
 
-import de.ambertation.wunderlib.network.ClientBoundPacketHandler;
+import org.betterx.bclib.api.v2.datafixer.MigrationProfile;
 import org.betterx.betterend.advancements.BECriteria;
 import org.betterx.betterend.api.BetterEndPlugin;
 import org.betterx.betterend.commands.CommandRegistry;
@@ -13,17 +13,21 @@ import org.betterx.betterend.registry.*;
 import org.betterx.betterend.tab.CreativeTabs;
 import org.betterx.betterend.util.BonemealPlants;
 import org.betterx.betterend.util.LootTableUtil;
+import org.betterx.betterend.world.generator.EndCaveBiomeDecider;
 import org.betterx.betterend.world.generator.EndLandBiomeDecider;
 import org.betterx.betterend.world.generator.GeneratorOptions;
-import org.betterx.wover.core.api.Logger;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.generator.api.biomesource.end.BiomeDecider;
-import org.betterx.wover.state.api.WorldConfig;
+import de.ambertation.wover.core.api.Logger;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.generator.api.biomesource.end.BiomeDecider;
+import de.ambertation.wover.state.api.WorldConfig;
 
 import net.minecraft.resources.ResourceLocation;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
+
+import java.io.File;
 
 public class BetterEnd implements ModInitializer {
     public static final ModCore C = ModCore.create("betterend");
@@ -44,6 +48,18 @@ public class BetterEnd implements ModInitializer {
     @Override
     public void onInitialize() {
         WorldConfig.registerMod(C);
+        Patcher.register();
+
+        // Dev-only: rewrites the IDs inside our shipped .nbt templates using the registered patches.
+        // Run with -Dbetterend.fixStructures=<abs path to src/main/resources/data/betterend/structure>.
+        // Registered on SERVER_STARTING because every mod has to have registered its patches before
+        // the folder is walked, and BCLib's own initializer runs after this one.
+        final String fixStructures = System.getProperty("betterend.fixStructures");
+        if (fixStructures != null) {
+            ServerLifecycleEvents.SERVER_STARTING.register(server ->
+                    MigrationProfile.fixCustomFolder(new File(fixStructures))
+            );
+        }
 
         EndNumericProviders.register();
         EndPortals.loadPortals();
@@ -52,6 +68,7 @@ public class BetterEnd implements ModInitializer {
         EndBlockEntities.register();
         EndPoiTypes.register();
         EndFeatures.register();
+        EndCarvers.ensureStaticallyLoaded();
         EndEntities.register();
         EndBiomes.register();
         EndTags.register();
@@ -78,8 +95,18 @@ public class BetterEnd implements ModInitializer {
         if (GeneratorOptions.useNewGenerator()) {
             BiomeDecider.registerHighPriorityDecider(C.mk("end_land"), new EndLandBiomeDecider());
         }
+        // The cave decider is generator-agnostic (its canProvideFor accepts every WoverEndBiomeSource,
+        // vanilla and Paulevs alike), so it must register unconditionally - caves exist under both
+        // terrain options.
+        BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new EndCaveBiomeDecider());
 
-        ClientBoundPacketHandler.register(RitualUpdate.CHANNEL, RitualUpdate.Payload::new);
+        // NOTE: flower_islets / waterfall_ponds are placed as ordinary void small-island patches (via
+        // the IS_SMALL_END_ISLAND tag) and grow their own terrain through EndStructures.SMALL_ISLAND, so
+        // the old terrain-coupled small-island biome decider was removed.
+
+        // RitualUpdate registers itself with NetworkRegistry from its own KEY's static initializer;
+        // this just forces the class to load.
+        var ignored = RitualUpdate.KEY;
 
         //TODO: Trinkets integration disabled (dependency commented out in build.gradle)
 //        if (TRINKETS_CORE.isLoaded()) {

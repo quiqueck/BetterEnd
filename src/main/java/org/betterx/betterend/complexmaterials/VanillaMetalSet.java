@@ -1,13 +1,13 @@
 package org.betterx.betterend.complexmaterials;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.trait.block.CopyPropertiesBlockTrait;
-import org.betterx.wover.block.api.BlockDefinition;
-import org.betterx.wover.block.api.trait.BlockTraits;
-import org.betterx.wover.sets.api.blocks.BlockSet;
-import org.betterx.wover.sets.api.blocks.SlotFromBlock;
-import org.betterx.wover.sets.api.blocks.SlotMap;
-import org.betterx.wover.sets.api.blocks.SlotType;
+import org.betterx.bclib.trait.block.CopyPropertiesBlockTrait;
+import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.trait.BlockTraits;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
+import de.ambertation.wover.sets.api.blocks.SlotFromBlock;
+import de.ambertation.wover.sets.api.blocks.SlotMap;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;

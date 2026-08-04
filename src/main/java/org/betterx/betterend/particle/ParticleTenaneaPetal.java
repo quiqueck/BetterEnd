@@ -1,5 +1,7 @@
 package org.betterx.betterend.particle;
 
+
+import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
@@ -39,7 +41,7 @@ public class ParticleTenaneaPetal extends TextureSheetParticle {
         pickSprite(sprites);
 
         if (provider == null) {
-            CustomColorProvider block = (CustomColorProvider) EndBlocks.TENANEA_FLOWERS;
+            CustomColorProvider block = (CustomColorProvider) EndWoodBlocks.TENANEA_FLOWERS;
             provider = block.getProvider();
         }
         int color = provider.getColor(null, null, new BlockPos((int) x, (int) y, (int) z), 0);

@@ -1,8 +1,8 @@
 package org.betterx.betterend.item.material;
 
-import org.betterx.wover.complex.api.equipment.ToolTier;
-import org.betterx.wover.complex.api.equipment.ToolTiers;
-import org.betterx.wover.tag.api.predefined.MineableTags;
+import de.ambertation.wover.complex.api.equipment.ToolTier;
+import de.ambertation.wover.complex.api.equipment.ToolTiers;
+import de.ambertation.wover.tag.api.predefined.MineableTags;
 
 import net.minecraft.tags.BlockTags;
 

@@ -42,7 +42,17 @@ public class MegaLakeSmallStructure extends FeatureBaseStructure {
         if (y > 5) {
             float radius = MHelper.randRange(20, 40, random);
             float depth = MHelper.randRange(5, 10, random);
-            LakePiece piece = new LakePiece(new BlockPos(x, y, z), radius, depth, random, biome);
+            // Support gate (see MegaLakeStructure): reject when any lake corner sits more than 6
+            // blocks below the water level - the lake would hang over a drop.
+            final int dist = MHelper.floor(radius);
+            final int[][] corners = {{-dist, 0}, {dist, 0}, {0, -dist}, {0, dist}};
+            for (int[] o : corners) {
+                int h = chunkGenerator.getBaseHeight(x + o[0], z + o[1], Types.WORLD_SURFACE_WG, levelHeightAccessor, rState);
+                if (h < y - 6) return;
+            }
+            // Each lake keeps its own water level; overlapping bowls are kept from floating over one
+            // another by the piece's downward grounding, not by merging water levels.
+            LakePiece piece = new LakePiece(new BlockPos(x, y, z), radius, depth, random, biome, y);
             structurePiecesBuilder.addPiece(piece);
         }
 

@@ -1,10 +1,10 @@
 package org.betterx.datagen.betterend;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.pottable.api.PottableSoil;
-import org.betterx.wover.pottable.api.PottableSoilRegistry;
-import org.betterx.wover.pottable.api.datagen.WoverPottableSoilRegistryProvider;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.pottable.api.PottableSoil;
+import de.ambertation.wover.pottable.api.PottableSoilRegistry;
+import de.ambertation.wover.pottable.api.datagen.WoverPottableSoilRegistryProvider;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -18,7 +18,7 @@ import java.util.List;
  * Serializes the {@link PottableSoil} entries for BetterEnd.
  * <p>
  * In addition to every BetterEnd block carrying a
- * {@link org.betterx.wover.pottable.api.trait.PottableSoilBlockTrait} (handled by the
+ * {@link de.ambertation.wover.pottable.api.trait.PottableSoilBlockTrait} (handled by the
  * super class), this provider explicitly registers a set of VANILLA dirt-like blocks as
  * pottable soil. Those vanilla blocks have no BetterEnd trait, so they need to be added by
  * hand here.

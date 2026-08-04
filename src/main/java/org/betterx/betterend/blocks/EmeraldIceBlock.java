@@ -1,6 +1,6 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.wover.enchantment.api.EnchantmentUtils;
+import de.ambertation.wover.enchantment.api.EnchantmentUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

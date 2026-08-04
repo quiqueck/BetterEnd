@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+
+import org.betterx.betterend.registry.block.EndPlantBlocks;
 import org.betterx.betterend.registry.EndBlocks;
 
 import com.mojang.serialization.MapCodec;
@@ -60,7 +62,7 @@ public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements 
 
     @Override
     public boolean canBeReplaced(BlockState blockState, BlockPlaceContext blockPlaceContext) {
-        return !blockPlaceContext.getItemInHand().is(EndBlocks.CRYSTAL_MOSS_COVER.asItem()) || super.canBeReplaced(
+        return !blockPlaceContext.getItemInHand().is(EndPlantBlocks.CRYSTAL_MOSS_COVER.asItem()) || super.canBeReplaced(
                 blockState,
                 blockPlaceContext
         );

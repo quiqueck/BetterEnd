@@ -1,5 +1,8 @@
 {
-  "carvers": [],
+  "carvers": [
+    "betterend:round_cave",
+    "betterend:tunnel_cave"
+  ],
   "downfall": 0.5,
   "effects": {
     "ambient_sound": "betterend:betterend.ambient.caves",
@@ -48,7 +51,11 @@
       "betterend:ender_ore"
     ],
     [
-      "betterend:empty_smaragdant_cave_cave_populator"
+      "betterend:stalactite_cluster_plain",
+      "betterend:stalagmite_scatter",
+      "betterend:stalactite_scatter",
+      "betterend:smaragdant_crystal_placed",
+      "betterend:smaragdant_shard_scatter"
     ]
   ],
   "has_precipitation": false,

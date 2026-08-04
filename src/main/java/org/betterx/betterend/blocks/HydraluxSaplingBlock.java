@@ -1,6 +1,8 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.betterend.blocks.basis.EndUnderwaterPlantWithAgeBlock;
+
+import org.betterx.betterend.registry.block.EndWaterPlantBlocks;
+import org.betterx.bclib.blocks.UnderwaterPlantWithAgeBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
@@ -19,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public class HydraluxSaplingBlock extends EndUnderwaterPlantWithAgeBlock {
+public class HydraluxSaplingBlock extends UnderwaterPlantWithAgeBlock {
     public HydraluxSaplingBlock(BlockBehaviour.Properties props) {
         super(props);
     }
@@ -37,7 +39,7 @@ public class HydraluxSaplingBlock extends EndUnderwaterPlantWithAgeBlock {
         }
 
         mut.setY(pos.getY());
-        BlockState state = EndBlocks.HYDRALUX.defaultBlockState();
+        BlockState state = EndWaterPlantBlocks.HYDRALUX.defaultBlockState();
         BlocksHelper.setWithoutUpdate(
                 world,
                 pos,

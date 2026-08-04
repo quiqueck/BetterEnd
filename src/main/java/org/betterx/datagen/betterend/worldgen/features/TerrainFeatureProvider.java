@@ -1,6 +1,8 @@
 package org.betterx.datagen.betterend.worldgen.features;
 
-import org.betterx.wover.sets.api.blocks.SlotType;
+
+import org.betterx.betterend.registry.block.EndStoneBlocks;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndFeatures;
@@ -13,9 +15,9 @@ import org.betterx.betterend.world.features.terrain.IceStarFeatureConfig;
 import org.betterx.betterend.world.features.terrain.ThinArchFeatureConfig;
 import org.betterx.betterend.world.structures.village.VillagePools;
 import org.betterx.datagen.betterend.worldgen.EndBiomesProvider;
-import org.betterx.wover.core.api.ModCore;
-import org.betterx.wover.datagen.api.provider.multi.WoverFeatureProvider;
-import org.betterx.wover.feature.api.placed.PlacedFeatureKey;
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.provider.multi.WoverFeatureProvider;
+import de.ambertation.wover.feature.api.placed.PlacedFeatureKey;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -58,12 +60,15 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
         registerChanced(context, EndTerrainFeatures.OBSIDIAN_PILLAR_BASEMENT, EndFeatures.OBSIDIAN_PILLAR_FEATURE, FeatureConfiguration.NONE, 8);
         registerChanced(context, EndTerrainFeatures.OBSIDIAN_BOULDER, EndFeatures.OBSIDIAN_BOULDER_FEATURE, FeatureConfiguration.NONE, 10);
         registerChanced(context, EndTerrainFeatures.FALLEN_PILLAR, EndFeatures.FALLEN_PILLAR_FEATURE, FeatureConfiguration.NONE, 20);
-        registerChanced(context, EndTerrainFeatures.UMBRALITH_ARCH, EndFeatures.ARCH_FEATURE, new ArchFeatureConfig(EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE), ArchFeatureConfig.SurfaceFunction.UMBRA_VALLEY), 10);
-        registerChanced(context, EndTerrainFeatures.THIN_UMBRALITH_ARCH, EndFeatures.THIN_ARCH_FEATURE, new ThinArchFeatureConfig(EndBlocks.UMBRALITH.getBlock(SlotType.SOURCE)), 15);
+        // Arches: back to onceEvery, NOT count. ArchFeature ignores the placement XZ and always snaps
+        // to the chunk centre (see its getPosOnSurfaceWG at (x&~15)|7), so count(N) just stacks N arches
+        // at the same centre (looks like "too many"), while a chunk whose centre is over a void gap
+        // rejects entirely ("none"). onceEvery(N) gives one arch per ~N chunks, evenly, no stacking.
+        registerChanced(context, EndTerrainFeatures.UMBRALITH_ARCH, EndFeatures.ARCH_FEATURE, new ArchFeatureConfig(EndStoneBlocks.UMBRALITH.getBlock(SlotType.SOURCE), ArchFeatureConfig.SurfaceFunction.UMBRA_VALLEY), 3);
+        registerChanced(context, EndTerrainFeatures.THIN_UMBRALITH_ARCH, EndFeatures.THIN_ARCH_FEATURE, new ThinArchFeatureConfig(EndStoneBlocks.UMBRALITH.getBlock(SlotType.SOURCE)), 4);
         registerChanced(context, EndTerrainFeatures.CRASHED_SHIP, EndFeatures.CRASHED_SHIP_FEATURE, new NBTFeatureConfig(EndBiome.Config.DEFAULT_MATERIAL.getTopMaterial()), 500);
         registerChanced(context, EndTerrainFeatures.SILK_MOTH_NEST, EndFeatures.SILK_MOTH_NEST_FEATURE, FeatureConfiguration.NONE, 2);
 
-        registerChanced(context, EndTerrainFeatures.ROUND_CAVE, EndFeatures.ROUND_CAVE_FEATURE, FeatureConfiguration.NONE, 2);
         registerChanced(context, EndTerrainFeatures.SPIRE, EndFeatures.SPIRE_FEATURE, FeatureConfiguration.NONE, 4);
         registerChanced(context, EndTerrainFeatures.FLOATING_SPIRE, EndFeatures.FLOATING_SPIRE_FEATURE, FeatureConfiguration.NONE, 8);
         registerChanced(context, EndTerrainFeatures.GEYSER, EndFeatures.GEYSER_FEATURE, FeatureConfiguration.NONE, 8);
@@ -71,27 +76,25 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
         registerChanced(context, EndTerrainFeatures.ICE_STAR_SMALL, EndFeatures.ICE_STAR_FEATURE, new IceStarFeatureConfig(3, 5, 7, 12), 8);
 
 
+        // Rim pond + spill-over waterfall for the waterfall_ponds biome. No squarePlacement so the
+        // origin stays at the chunk corner and PondWithWaterfallFeature can centre on the chunk
+        // (origin + 8,8), keeping the whole bowl inside the origin chunk. Runs once EVERY chunk (no
+        // rarity_filter): the SDF islands are now much rarer, and the feature self-rejects on void
+        // chunks (WORLD_SURFACE_WG floor probe), so an every-chunk attempt just ensures that (almost)
+        // every island that IS present actually gets its pond instead of being thinned out again.
+        EndTerrainFeatures.POND_WITH_WATERFALL
+                .inlineConfiguration(context)
+                .withFeature(EndFeatures.POND_WITH_WATERFALL_FEATURE)
+                .configuration(FeatureConfiguration.NONE)
+                .inlinePlace()
+                .count(1)
+                .onlyInBiome()
+                .register();
+
         EndTerrainFeatures.BIOME_ISLAND
                 .inlineConfiguration(context)
                 .withFeature(EndFeatures.OVERWORLD_ISLAND)
                 .inlinePlace()
-                .register();
-
-        EndTerrainFeatures.SULPHURIC_CAVE
-                .inlineConfiguration(context)
-                .withFeature(EndFeatures.SULPHURIC_CAVE_FEATURE)
-                .inlinePlace()
-                .count(2)
-                .squarePlacement()
-                .onlyInBiome()
-                .register();
-
-        EndTerrainFeatures.TUNEL_CAVE
-                .inlineConfiguration(context)
-                .withFeature(EndFeatures.TUNEL_CAVE_FEATURE)
-                .inlinePlace()
-                .count(1)
-                .onlyInBiome()
                 .register();
 
         // Place chorus village
@@ -126,6 +129,20 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
            .configuration(config)
            .inlinePlace()
            .onceEvery(chance)
+           .squarePlacement()
+           .onlyInBiome()
+           .register();
+    }
+
+    private static <F extends Feature<FC>, FC extends FeatureConfiguration> void registerCounted(
+            BootstrapContext<PlacedFeature> context, PlacedFeatureKey key,
+            F feature, FC config, int count
+    ) {
+        key.inlineConfiguration(context)
+           .withFeature(feature)
+           .configuration(config)
+           .inlinePlace()
+           .count(count)
            .squarePlacement()
            .onlyInBiome()
            .register();

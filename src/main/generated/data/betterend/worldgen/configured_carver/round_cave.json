@@ -1,0 +1,26 @@
+{
+  "type": "betterend:end_round_cave",
+  "config": {
+    "lava_level": {
+      "above_bottom": 8
+    },
+    "probability": 0.4,
+    "radius": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 30,
+      "min_inclusive": 10
+    },
+    "replaceable": "#wover:surfaces/end/stones",
+    "vertical_squash": 1.6,
+    "y": {
+      "type": "minecraft:uniform",
+      "max_inclusive": {
+        "absolute": 56
+      },
+      "min_inclusive": {
+        "absolute": 8
+      }
+    },
+    "yScale": 1.0
+  }
+}

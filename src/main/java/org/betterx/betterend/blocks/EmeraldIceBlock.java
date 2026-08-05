@@ -5,6 +5,7 @@ import de.ambertation.wover.enchantment.api.EnchantmentUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -36,7 +37,7 @@ public class EmeraldIceBlock extends HalfTransparentBlock {
     ) {
         super.playerDestroy(world, player, pos, state, blockEntity, stack);
         if (EnchantmentUtils.getItemEnchantmentLevel(world, Enchantments.SILK_TOUCH, stack) == 0) {
-            if (world.dimensionType().ultraWarm()) {
+            if (world.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos)) {
                 world.removeBlock(pos, false);
                 return;
             }
@@ -51,14 +52,14 @@ public class EmeraldIceBlock extends HalfTransparentBlock {
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        if (world.getBrightness(LightLayer.BLOCK, pos) > 11 - state.getLightBlock()) {
+        if (world.getBrightness(LightLayer.BLOCK, pos) > 11 - state.getLightDampening()) {
             this.melt(world, pos);
         }
 
     }
 
     protected void melt(Level world, BlockPos pos) {
-        if (world.dimensionType().ultraWarm()) {
+        if (world.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos)) {
             world.removeBlock(pos, false);
         } else {
             world.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());

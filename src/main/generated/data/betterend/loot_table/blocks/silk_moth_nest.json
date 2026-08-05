@@ -5,7 +5,11 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:survives_explosion"
+          "block": "betterend:silk_moth_nest",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "active": "true"
+          }
         }
       ],
       "entries": [

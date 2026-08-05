@@ -94,7 +94,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ToolSlot.PICKAXE_SLOT,
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
-                                .smithing(key.location(), item)
+                                .smithing(key.identifier(), item)
                                 .template(handleTemplate.get())
                                 .base(pickaxeHead)
                                 .addon(handleItem)
@@ -105,7 +105,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ToolSlot.AXE_SLOT,
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
-                                .smithing(key.location(), item)
+                                .smithing(key.identifier(), item)
                                 .template(handleTemplate.get())
                                 .base(axeHead)
                                 .addon(handleItem)
@@ -116,7 +116,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ToolSlot.SHOVEL_SLOT,
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
-                                .smithing(key.location(), item)
+                                .smithing(key.identifier(), item)
                                 .template(handleTemplate.get())
                                 .base(shovelHead)
                                 .addon(handleItem)
@@ -127,7 +127,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ToolSlot.HOE_SLOT,
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
-                                .smithing(key.location(), item)
+                                .smithing(key.identifier(), item)
                                 .template(handleTemplate.get())
                                 .base(hoeHead)
                                 .addon(handleItem)
@@ -137,7 +137,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
         add(
                 ToolSlot.HAMMER_SLOT,
                 ItemTraits.RECIPE_ITEM.with(
-                        (key, item, context) -> RecipeBuilder.smithing(key.location(), item)
+                        (key, item, context) -> RecipeBuilder.smithing(key.identifier(), item)
                                                              .template(handleTemplate.get())
                                                              .base(hammerHead)
                                                              .addon(handleItem)
@@ -148,7 +148,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ToolSlot.SWORD_SLOT,
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
-                                .smithing(key.location(), item)
+                                .smithing(key.identifier(), item)
                                 .template(swordHandleTemplate.get())
                                 .base(swordBlade)
                                 .addon(swordHandle)
@@ -233,7 +233,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
             if (!hasAutoHeadRecipes()) return;
 
             BCLRecipeBuilder
-                    .anvil(key.location(), item)
+                    .anvil(key.identifier(), item)
                     .setPrimaryInput(ingot)
                     .setInputCount(inputCount)
                     .setAnvilLevel(toolTier.level)

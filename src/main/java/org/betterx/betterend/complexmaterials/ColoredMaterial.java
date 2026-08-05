@@ -10,8 +10,8 @@ import de.ambertation.wover.tag.api.event.context.ItemTagBootstrapContext;
 import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -116,7 +116,7 @@ public class ColoredMaterial implements MaterialManager.Material {
         for (DyeColor color : DyeColor.values()) {
             int colorRGB = color.getMapColor().col;
             COLORS.put(colorRGB, color.getName());
-            DYES.put(colorRGB, DyeItem.byColor(color));
+            DYES.put(colorRGB, BuiltInRegistries.ITEM.getValue(Identifier.withDefaultNamespace(color.getName() + "_dye")));
         }
     }
 

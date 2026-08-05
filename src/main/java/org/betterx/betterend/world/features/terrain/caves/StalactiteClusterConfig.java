@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.util.valueproviders.FloatProvider;
+import net.minecraft.util.valueproviders.FloatProviders;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
@@ -27,8 +29,8 @@ public record StalactiteClusterConfig(
 ) implements FeatureConfiguration {
     public static final Codec<StalactiteClusterConfig> CODEC = RecordCodecBuilder.create(instance -> instance
             .group(
-                    IntProvider.codec(0, 16).fieldOf("radius").forGetter(o -> o.radius),
-                    FloatProvider.codec(0.0F, 1.0F).fieldOf("density").forGetter(o -> o.density),
+                    IntProviders.codec(0, 16).fieldOf("radius").forGetter(o -> o.radius),
+                    FloatProviders.codec(0.0F, 1.0F).fieldOf("density").forGetter(o -> o.density),
                     Codec.floatRange(0.0F, 1.0F).fieldOf("pair_chance").forGetter(o -> o.pairChance),
                     ConfiguredFeature.CODEC.fieldOf("floor_feature").forGetter(o -> o.floorFeature),
                     ConfiguredFeature.CODEC.fieldOf("ceil_feature").forGetter(o -> o.ceilFeature)

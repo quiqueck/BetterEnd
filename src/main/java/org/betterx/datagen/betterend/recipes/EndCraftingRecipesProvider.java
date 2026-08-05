@@ -30,15 +30,8 @@ import de.ambertation.wover.recipe.api.RecipeBuilder;
 import de.ambertation.wover.sets.api.blocks.SlotType;
 import de.ambertation.wover.tag.api.predefined.CommonItemTags;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -293,7 +286,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 .crafting(BetterEnd.C.mk("sweet_berry_jelly_potion"), EndFoodItems.SWEET_BERRY_JELLY)
                 .shapeless()
                 .addMaterial('J', EndResourceItems.GELATINE)
-                .addMaterial('W', waterPotion())
+                .addMaterial('W', Items.POTION)
                 .addMaterial('S', Items.SUGAR)
                 .addMaterial('B', Items.SWEET_BERRIES);
         craftingRecipeBuilder8.group("end_berries")
@@ -303,7 +296,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 .crafting(BetterEnd.C.mk("shadow_berry_jelly_potion"), EndFoodItems.SHADOW_BERRY_JELLY)
                 .shapeless()
                 .addMaterial('J', EndResourceItems.GELATINE)
-                .addMaterial('W', waterPotion())
+                .addMaterial('W', Items.POTION)
                 .addMaterial('S', Items.SUGAR)
                 .addMaterial('B', EndFoodItems.SHADOW_BERRY_COOKED);
         craftingRecipeBuilder7.group("end_berries")
@@ -313,7 +306,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 .crafting(BetterEnd.C.mk("blossom_berry_jelly_potion"), EndFoodItems.BLOSSOM_BERRY_JELLY)
                 .shapeless()
                 .addMaterial('J', EndResourceItems.GELATINE)
-                .addMaterial('W', waterPotion())
+                .addMaterial('W', Items.POTION)
                 .addMaterial('S', Items.SUGAR)
                 .addMaterial('B', EndFoodItems.BLOSSOM_BERRY);
         craftingRecipeBuilder6.group("end_berries")
@@ -633,14 +626,4 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                              .build(context);
     }
 
-    private ItemStack waterPotion() {
-        return stackFor(Items.POTION, Potions.WATER);
-    }
-
-
-    private static ItemStack stackFor(ItemLike content, Holder<Potion> potion) {
-        final var stack = new ItemStack(content);
-        stack.set(DataComponents.POTION_CONTENTS, new PotionContents(potion));
-        return stack;
-    }
 }

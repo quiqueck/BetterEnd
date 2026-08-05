@@ -47,7 +47,7 @@ public class PallidiumBlock extends BaseTerrainBlock {
     ) {
         if (nextLevel == null) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
-        } else if (level.isClientSide) {
+        } else if (level.isClientSide()) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 

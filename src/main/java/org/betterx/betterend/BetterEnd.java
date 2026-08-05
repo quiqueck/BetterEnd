@@ -12,7 +12,6 @@ import org.betterx.betterend.recipe.builders.InfusionRecipe;
 import org.betterx.betterend.registry.*;
 import org.betterx.betterend.tab.CreativeTabs;
 import org.betterx.betterend.util.BonemealPlants;
-import org.betterx.betterend.util.LootTableUtil;
 import org.betterx.betterend.world.generator.EndCaveBiomeDecider;
 import org.betterx.betterend.world.generator.EndLandBiomeDecider;
 import org.betterx.betterend.world.generator.GeneratorOptions;
@@ -21,7 +20,7 @@ import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.generator.api.biomesource.end.BiomeDecider;
 import de.ambertation.wover.state.api.WorldConfig;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -40,10 +39,10 @@ public class BetterEnd implements ModInitializer {
     public static final ModCore FLAMBOYANT = ModCore.create("flamboyant");
     public static final ModCore PATCHOULI = ModCore.create("patchouli");
     public static final ModCore HYDROGEN = ModCore.create("hydrogen");
-    public static final ResourceLocation BYG_ADDITIONS_PACK = C.addDatapack(BYG);
-    public static final ResourceLocation NOURISH_ADDITIONS_PACK = C.addDatapack(NOURISH);
-    public static final ResourceLocation FLAMBOYANT_ADDITIONS_PACK = C.addDatapack(FLAMBOYANT);
-    public static final ResourceLocation PATCHOULI_ADDITIONS_PACK = C.addDatapack(PATCHOULI);
+    public static final Identifier BYG_ADDITIONS_PACK = C.addDatapack(BYG);
+    public static final Identifier NOURISH_ADDITIONS_PACK = C.addDatapack(NOURISH);
+    public static final Identifier FLAMBOYANT_ADDITIONS_PACK = C.addDatapack(FLAMBOYANT);
+    public static final Identifier PATCHOULI_ADDITIONS_PACK = C.addDatapack(PATCHOULI);
 
     @Override
     public void onInitialize() {
@@ -81,7 +80,6 @@ public class BetterEnd implements ModInitializer {
         EndStructures.register();
         BonemealPlants.init();
         GeneratorOptions.init();
-        LootTableUtil.init();
         CommandRegistry.register();
         EndParticles.ensureStaticallyLoadedServerside();
         BECriteria.register();

@@ -1,0 +1,99 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:any_of",
+          "terms": [
+            {
+              "block": "betterend:lumecorn",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "shape": "bottom_big"
+              }
+            },
+            {
+              "block": "betterend:lumecorn",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "shape": "bottom_small"
+              }
+            },
+            {
+              "block": "betterend:lumecorn",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "shape": "middle"
+              }
+            }
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "betterend:lumecorn_seed"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:inverted",
+          "term": {
+            "condition": "minecraft:any_of",
+            "terms": [
+              {
+                "block": "betterend:lumecorn",
+                "condition": "minecraft:block_state_property",
+                "properties": {
+                  "shape": "bottom_big"
+                }
+              },
+              {
+                "block": "betterend:lumecorn",
+                "condition": "minecraft:block_state_property",
+                "properties": {
+                  "shape": "bottom_small"
+                }
+              },
+              {
+                "block": "betterend:lumecorn",
+                "condition": "minecraft:block_state_property",
+                "properties": {
+                  "shape": "middle"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "chance": 0.5,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "betterend:lumecorn_rod"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

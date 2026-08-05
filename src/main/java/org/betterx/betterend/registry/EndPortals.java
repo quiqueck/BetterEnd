@@ -5,7 +5,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.ui.ColorUtil;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -19,7 +19,7 @@ import java.io.File;
 
 public class EndPortals {
 
-    public final static ResourceLocation OVERWORLD_ID = Level.OVERWORLD.location();
+    public final static Identifier OVERWORLD_ID = Level.OVERWORLD.identifier();
 
     private static PortalInfo[] portals;
 
@@ -57,14 +57,14 @@ public class EndPortals {
         return portals[portalId].getWorld(server);
     }
 
-    public static ResourceLocation getWorldId(int portalId) {
+    public static Identifier getWorldId(int portalId) {
         if (portalId < 0 || portalId >= portals.length) {
             return OVERWORLD_ID;
         }
         return portals[portalId].dimension;
     }
 
-    public static int getPortalIdByItem(ResourceLocation item) {
+    public static int getPortalIdByItem(Identifier item) {
         for (int i = 0; i < portals.length; i++) {
             if (portals[i].item.equals(item)) {
                 return i;
@@ -73,7 +73,7 @@ public class EndPortals {
         return 0;
     }
 
-    public static int getPortalIdByWorld(ResourceLocation world) {
+    public static int getPortalIdByWorld(Identifier world) {
         for (int i = 0; i < portals.length; i++) {
             if (portals[i].dimension.equals(world)) {
                 return i;
@@ -86,7 +86,7 @@ public class EndPortals {
         return portals[state].color;
     }
 
-    public static boolean isAvailableItem(ResourceLocation item) {
+    public static boolean isAvailableItem(Identifier item) {
         for (PortalInfo portal : portals) {
             if (portal.item.equals(item)) {
                 return true;
@@ -107,7 +107,7 @@ public class EndPortals {
 
     private static PortalInfo makeDefault() {
         return new PortalInfo(
-                ResourceLocation.withDefaultNamespace("overworld"),
+                Identifier.withDefaultNamespace("overworld"),
                 BetterEnd.C.mk("eternal_crystal"),
                 255,
                 255,
@@ -116,22 +116,22 @@ public class EndPortals {
     }
 
     private static class PortalInfo {
-        private final ResourceLocation dimension;
-        private final ResourceLocation item;
+        private final Identifier dimension;
+        private final Identifier item;
         private final int color;
         private ServerLevel world;
 
         PortalInfo(JsonObject obj) {
             this(
-                    ResourceLocation.parse(JsonFactory.getString(obj, "dimension", "minecraft:overworld")),
-                    ResourceLocation.parse(JsonFactory.getString(obj, "item", "betterend:eternal_crystal")),
+                    Identifier.parse(JsonFactory.getString(obj, "dimension", "minecraft:overworld")),
+                    Identifier.parse(JsonFactory.getString(obj, "item", "betterend:eternal_crystal")),
                     JsonFactory.getInt(obj, "colorRed", 255),
                     JsonFactory.getInt(obj, "colorGreen", 255),
                     JsonFactory.getInt(obj, "colorBlue", 255)
             );
         }
 
-        PortalInfo(ResourceLocation dimension, ResourceLocation item, int r, int g, int b) {
+        PortalInfo(Identifier dimension, Identifier item, int r, int g, int b) {
             this.dimension = dimension;
             this.item = item;
             this.color = ColorUtil.color(r, g, b);
@@ -142,7 +142,7 @@ public class EndPortals {
                 return world;
             }
             for (ServerLevel world : server.getAllLevels()) {
-                if (world.dimension().location().equals(dimension)) {
+                if (world.dimension().identifier().equals(dimension)) {
                     this.world = world;
                     return world;
                 }

@@ -1,41 +1,42 @@
 {
+  "attributes": {
+    "minecraft:audio/ambient_sounds": {
+      "loop": "betterend:betterend.ambient.caves",
+      "mood": {
+        "block_search_extent": 8,
+        "offset": 2.0,
+        "sound": "betterend:betterend.ambient.dust_wastelands",
+        "tick_delay": 6000
+      }
+    },
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "betterend:betterend.music.caves"
+      }
+    },
+    "minecraft:visual/ambient_particles": [
+      {
+        "particle": {
+          "type": "betterend:smaragdant_particle"
+        },
+        "probability": 0.001
+      }
+    ],
+    "minecraft:visual/fog_color": "#00fdb6",
+    "minecraft:visual/sky_color": "#000000",
+    "minecraft:visual/water_fog_color": "#1fa7d4"
+  },
   "carvers": [
     "betterend:round_cave",
     "betterend:tunnel_cave"
   ],
   "downfall": 0.5,
   "effects": {
-    "ambient_sound": "betterend:betterend.ambient.caves",
-    "fog_color": -16712266,
-    "foliage_color": -16743535,
-    "grass_color": -16743535,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": [
-      {
-        "data": {
-          "max_delay": 2400,
-          "min_delay": 600,
-          "replace_current_music": true,
-          "sound": "betterend:betterend.music.caves"
-        },
-        "weight": 1
-      }
-    ],
-    "music_volume": 1.0,
-    "particle": {
-      "options": {
-        "type": "betterend:smaragdant_particle"
-      },
-      "probability": 0.001
-    },
-    "sky_color": 0,
-    "water_color": -14702636,
-    "water_fog_color": -14702636
+    "foliage_color": "#008391",
+    "grass_color": "#008391",
+    "water_color": "#1fa7d4"
   },
   "features": [
     [],
@@ -55,7 +56,8 @@
       "betterend:stalagmite_scatter",
       "betterend:stalactite_scatter",
       "betterend:smaragdant_crystal_placed",
-      "betterend:smaragdant_shard_scatter"
+      "betterend:smaragdant_shard_scatter",
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

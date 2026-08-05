@@ -3,16 +3,17 @@ package org.betterx.betterend.client.render;
 import org.betterx.betterend.BetterEnd;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.block.Block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
-import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
+import net.fabricmc.fabric.api.client.model.loading.v1.FabricModelManager;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
@@ -52,7 +53,7 @@ public final class EndFlowerPotModels {
     );
 
     // Fully-qualified potted model id (e.g. betterend:block/amber_grass_potted) -> baking key.
-    private static final Map<ResourceLocation, ExtraModelKey<BlockStateModel>> POTTED_KEYS = new HashMap<>();
+    private static final Map<Identifier, ExtraModelKey<BlockStateModel>> POTTED_KEYS = new HashMap<>();
 
     private EndFlowerPotModels() {
     }
@@ -65,9 +66,10 @@ public final class EndFlowerPotModels {
     }
 
     // Runs off-thread during resource reload: collect every betterend "_potted" block model id.
-    private static CompletableFuture<Set<ResourceLocation>> scan(ResourceManager resourceManager, Executor executor) {
+    private static CompletableFuture<Set<Identifier>> scan(PreparableReloadListener.SharedState sharedState, Executor executor) {
+        ResourceManager resourceManager = sharedState.resourceManager();
         return CompletableFuture.supplyAsync(() -> {
-            Set<ResourceLocation> ids = new HashSet<>();
+            Set<Identifier> ids = new HashSet<>();
             resourceManager.listResources(
                     MODELS_DIR,
                     loc -> loc.getNamespace().equals(BetterEnd.C.modId)
@@ -76,16 +78,16 @@ public final class EndFlowerPotModels {
                 // betterend:models/block/foo_potted.json -> betterend:block/foo_potted
                 String path = loc.getPath();
                 path = path.substring(MODELS_PREFIX.length(), path.length() - JSON_SUFFIX.length());
-                ids.add(ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), path));
+                ids.add(Identifier.fromNamespaceAndPath(loc.getNamespace(), path));
             });
             return ids;
         }, executor);
     }
 
     // Runs on the model-loading thread: register each discovered model for baking.
-    private static void initialize(Set<ResourceLocation> ids, ModelLoadingPlugin.Context context) {
+    private static void initialize(Set<Identifier> ids, ModelLoadingPlugin.Context context) {
         POTTED_KEYS.clear();
-        for (ResourceLocation id : ids) {
+        for (Identifier id : ids) {
             ExtraModelKey<BlockStateModel> key = ExtraModelKey.create(id::toString);
             context.addModel(key, SimpleUnbakedExtraModel.blockStateModel(id));
             POTTED_KEYS.put(id, key);
@@ -102,10 +104,10 @@ public final class EndFlowerPotModels {
     public static BlockStateModel getPottedModel(Block plant) {
         if (plant == null) return null;
 
-        ResourceLocation plantId = BuiltInRegistries.BLOCK.getKey(plant);
+        Identifier plantId = BuiltInRegistries.BLOCK.getKey(plant);
         if (plantId == null) return null;
 
-        ResourceLocation modelId = ResourceLocation.fromNamespaceAndPath(
+        Identifier modelId = Identifier.fromNamespaceAndPath(
                 plantId.getNamespace(), "block/" + plantId.getPath() + POTTED_SUFFIX
         );
         ExtraModelKey<BlockStateModel> key = POTTED_KEYS.get(modelId);
@@ -114,7 +116,7 @@ public final class EndFlowerPotModels {
         Minecraft mc = Minecraft.getInstance();
         if (mc == null || mc.getModelManager() == null) return null;
 
-        return ((FabricBakedModelManager) mc.getModelManager()).getModel(key);
+        return ((FabricModelManager) mc.getModelManager()).getModel(key);
     }
 
     /**
@@ -124,7 +126,7 @@ public final class EndFlowerPotModels {
      * <p>Unlike BetterEnd's {@code _potted} models (bare plant geometry), a vanilla potted
      * model already contains the whole flower pot (pot walls + dirt + plant). There is no
      * public API in 1.21.8 to fetch a stand-alone {@code block/...} model by
-     * {@link ResourceLocation}; those models are only baked as the blockstate model of the
+     * {@link Identifier}; those models are only baked as the blockstate model of the
      * corresponding {@code potted_*} block. We therefore resolve it through the block-model
      * shaper via that potted block's default state (it references exactly
      * {@code block/potted_<name>}).

@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "wall",
   "ingredient": "betterend:flavolite",
   "result": {
-    "count": 1,
     "id": "betterend:flavolite_wall"
   }
 }

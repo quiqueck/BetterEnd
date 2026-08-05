@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "stairs",
   "ingredient": "betterend:thallasium_block",
   "result": {
-    "count": 1,
     "id": "betterend:thallasium_stairs"
   }
 }

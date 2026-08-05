@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 public class DragonflyEntityModel extends EntityModel<DragonflyRenderState> {
     private final ModelPart model;
@@ -92,7 +92,11 @@ public class DragonflyEntityModel extends EntityModel<DragonflyRenderState> {
     }
 
     public DragonflyEntityModel(ModelPart modelPart) {
-        super(modelPart, RenderType::entityCutout);
+        // entityCutoutCull (not entityCutout): in 26.1 RenderTypes.entityCutout maps to the
+        // non-culling vanilla entity_cutout pipeline. The wings are zero-thickness 2-sided
+        // quads whose coplanar front/back faces z-fight when not culled. Culling restores the
+        // pre-26.1 behaviour.
+        super(modelPart, RenderTypes::entityCutoutCull);
 
         model = modelPart.getChild(PartNames.BODY);
         head = model.getChild(PartNames.HEAD);

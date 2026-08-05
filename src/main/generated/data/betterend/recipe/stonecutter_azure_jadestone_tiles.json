@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "cracked",
   "ingredient": "betterend:azure_jadestone",
   "result": {
-    "count": 1,
     "id": "betterend:azure_jadestone_tiles"
   }
 }

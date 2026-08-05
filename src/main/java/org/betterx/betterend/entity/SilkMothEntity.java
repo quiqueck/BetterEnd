@@ -16,8 +16,8 @@ import de.ambertation.wover.enchantment.api.EnchantmentUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -62,7 +62,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
         this.moveControl = new FlyingMoveControl(this, 20, true);
         this.lookControl = new MothLookControl(this);
         this.setPathfindingMalus(PathType.WATER, -1.0F);
-        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, -1.0F);
         this.xpReward = 1;
     }
 
@@ -91,7 +91,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
         super.addAdditionalSaveData(output);
         if (hivePos != null) {
             output.store("HivePos", BlockPos.CODEC, hivePos);
-            output.putString("HiveWorld", hiveWorld.dimension().location().toString());
+            output.putString("HiveWorld", hiveWorld.dimension().identifier().toString());
         }
     }
 
@@ -100,7 +100,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
         super.readAdditionalSaveData(input);
         input.read("HivePos", BlockPos.CODEC).ifPresent(pos -> {
             hivePos = pos;
-            ResourceLocation worldID = ResourceLocation.parse(input.getStringOr("HiveWorld", ""));
+            Identifier worldID = Identifier.parse(input.getStringOr("HiveWorld", ""));
             try {
                 hiveWorld = level().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, worldID));
             } catch (Exception e) {

@@ -38,7 +38,7 @@ public class SourceBlock extends SlotFromDefinition {
     protected BlockRecipeTrait buildRecipe(BlockSet<?> set, BlockTraitLookup traitLookup) {
         return BlockTraits.RECIPE.with(
                 (key, block, context) -> {
-                    RecipeBuilder.crafting(key.location(), block)
+                    RecipeBuilder.crafting(key.identifier(), block)
                                  .shape("###", "###", "###")
                                  .addMaterial('#', metalMaterial.equipment.ingot)
                                  .group("end_metal_blocks")

@@ -6,8 +6,9 @@ import org.betterx.betterend.client.models.EndModels;
 
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -26,16 +27,16 @@ public class PedestalVanilla extends PedestalBlock {
     protected TextureMapping createTextureMapping() {
         final var parentTexture = BuiltInRegistries.BLOCK.getKey(parent);
         final var name = parentTexture.getPath().replace("_block", "");
-        final var baseTextureLocation = ResourceLocation.fromNamespaceAndPath(parentTexture.getNamespace(), name);
+        final var baseTextureLocation = Identifier.fromNamespaceAndPath(parentTexture.getNamespace(), name);
         final var polishedTexture = baseTextureLocation.withPrefix("block/polished_");
         final var pillarTexture = BetterEnd.C.convertNamespace(baseTextureLocation
                 .withPrefix("block/")
                 .withSuffix("_pillar"));
 
         return new TextureMapping()
-                .put(TextureSlot.TOP, polishedTexture)
-                .put(TextureSlot.BOTTOM, polishedTexture)
-                .put(EndModels.BASE, polishedTexture)
-                .put(EndModels.PILLAR, pillarTexture);
+                .put(TextureSlot.TOP, new Material(polishedTexture))
+                .put(TextureSlot.BOTTOM, new Material(polishedTexture))
+                .put(EndModels.BASE, new Material(polishedTexture))
+                .put(EndModels.PILLAR, new Material(pillarTexture));
     }
 }

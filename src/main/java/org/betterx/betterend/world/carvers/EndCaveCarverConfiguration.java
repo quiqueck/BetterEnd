@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.util.valueproviders.FloatProvider;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
@@ -27,7 +28,7 @@ public class EndCaveCarverConfiguration extends CarverConfiguration {
     public static final Codec<EndCaveCarverConfiguration> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     CarverConfiguration.CODEC.forGetter(cfg -> cfg),
-                    IntProvider.CODEC.fieldOf("radius").forGetter(cfg -> cfg.radius),
+                    IntProviders.CODEC.fieldOf("radius").forGetter(cfg -> cfg.radius),
                     Codec.FLOAT.fieldOf("vertical_squash").forGetter(cfg -> cfg.verticalSquash)
             ).apply(instance, EndCaveCarverConfiguration::new)
     );

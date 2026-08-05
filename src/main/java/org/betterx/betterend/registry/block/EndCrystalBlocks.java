@@ -145,7 +145,9 @@ public class EndCrystalBlocks {
             .randomTicks()
             .pushReaction(PushReaction.DESTROY)
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
-            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            // No LOOT_TABLE trait on purpose: a budding block is not obtainable, and a block with no table
+            // drops nothing. It used to carry dropSelf() alongside a getDrops override returning an empty
+            // list - the override won, so the generated dropSelf table was both dead and wrong.
             .addTags(CommonBlockTags.BUDDING_BLOCKS)
             .addTrait(EndModelTraits.rotatedPillar(() -> BetterEnd.C.mk("block/budding_smaragdant_crystal")))
             .buildAndRegister();

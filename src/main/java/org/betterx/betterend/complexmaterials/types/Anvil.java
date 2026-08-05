@@ -50,7 +50,7 @@ public class Anvil extends SlotFromDefinition {
         return BlockTraits.RECIPE.with(
                 (key, block, context) -> {
                     RecipeBuilder
-                            .crafting(key.location(), block)
+                            .crafting(key.identifier(), block)
                             .shape("###", " I ", "III")
                             .addMaterial('#', set.getBaseBlock(), set.getBlock(MetalMaterial.TILE))
                             .addMaterial('I', set.getItem(MetalMaterial.INGOT))

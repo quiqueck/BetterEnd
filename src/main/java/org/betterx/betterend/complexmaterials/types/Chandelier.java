@@ -52,7 +52,7 @@ public class Chandelier extends SlotFromDefinition {
         return BlockTraits.RECIPE.with(
                 (key, block, context) -> {
                     RecipeBuilder
-                            .crafting(key.location(), block)
+                            .crafting(key.identifier(), block)
                             .shape("I#I", " # ")
                             .addMaterial('#', set.getItem(MetalMaterial.INGOT))
                             .addMaterial('I', EndResourceItems.LUMECORN_ROD)

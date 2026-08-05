@@ -153,11 +153,7 @@ public class CrystaliteArmorGameTest {
             final ItemStack stack = new ItemStack(piece.item());
             final ItemAttributeModifiers modifiers = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
             if (modifiers == null) continue;
-            for (ItemAttributeModifiers.Entry entry : modifiers.modifiers()) {
-                if (entry.attribute().is(Attributes.ARMOR) && entry.slot().test(piece.slot())) {
-                    total += entry.modifier().amount();
-                }
-            }
+            total += modifiers.compute(Attributes.ARMOR, 0.0, piece.slot());
         }
         return total;
     }

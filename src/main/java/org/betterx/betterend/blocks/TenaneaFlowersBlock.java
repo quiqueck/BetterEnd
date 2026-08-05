@@ -6,7 +6,8 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndParticles;
 import org.betterx.ui.ColorUtil;
 
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockTintSource;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
@@ -27,27 +28,36 @@ public class TenaneaFlowersBlock extends BaseVineBlock implements CustomColorPro
     }
 
     @Override
-    public BlockColor getProvider() {
-        return (state, world, pos, tintIndex) -> {
-            if (pos == null) {
-                pos = BlockPos.ZERO;
+    @Environment(EnvType.CLIENT)
+    public BlockTintSource getProvider() {
+        return new BlockTintSource() {
+            @Override
+            public int color(BlockState state) {
+                return colorInWorld(state, null, BlockPos.ZERO);
             }
-            long i = (MHelper.getRandom(pos.getX(), pos.getZ()) & 63) + pos.getY();
-            double delta = i * 0.1;
-            int index = MHelper.floor(delta);
-            int index2 = (index + 1) & 3;
-            delta -= index;
-            index &= 3;
 
-            Vec3i color1 = COLORS[index];
-            Vec3i color2 = COLORS[index2];
+            @Override
+            public int colorInWorld(BlockState state, BlockAndTintGetter world, BlockPos pos) {
+                if (pos == null) {
+                    pos = BlockPos.ZERO;
+                }
+                long i = (MHelper.getRandom(pos.getX(), pos.getZ()) & 63) + pos.getY();
+                double delta = i * 0.1;
+                int index = MHelper.floor(delta);
+                int index2 = (index + 1) & 3;
+                delta -= index;
+                index &= 3;
 
-            int r = MHelper.floor(Mth.lerp(delta, color1.getX(), color2.getX()));
-            int g = MHelper.floor(Mth.lerp(delta, color1.getY(), color2.getY()));
-            int b = MHelper.floor(Mth.lerp(delta, color1.getZ(), color2.getZ()));
-            float[] hsb = ColorUtil.RGBtoHSB(r, g, b, new float[3]);
+                Vec3i color1 = COLORS[index];
+                Vec3i color2 = COLORS[index2];
 
-            return ColorUtil.HSBtoRGB(hsb[0], MHelper.max(0.5F, hsb[1]), hsb[2]);
+                int r = MHelper.floor(Mth.lerp(delta, color1.getX(), color2.getX()));
+                int g = MHelper.floor(Mth.lerp(delta, color1.getY(), color2.getY()));
+                int b = MHelper.floor(Mth.lerp(delta, color1.getZ(), color2.getZ()));
+                float[] hsb = ColorUtil.RGBtoHSB(r, g, b, new float[3]);
+
+                return ColorUtil.HSBtoRGB(hsb[0], MHelper.max(0.5F, hsb[1]), hsb[2]);
+            }
         };
     }
 

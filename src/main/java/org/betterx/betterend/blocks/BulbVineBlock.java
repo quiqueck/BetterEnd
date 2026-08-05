@@ -11,7 +11,7 @@ import de.ambertation.wover.block.api.BlockProperties;
 import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 import de.ambertation.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -46,17 +46,6 @@ public class BulbVineBlock extends BaseVineBlock {
                         pos.below()).is(this);
     }
 
-//    @Override
-//    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-//        if (state.getValue(SHAPE) == TripleShape.BOTTOM) {
-//            return Lists.newArrayList(new ItemStack(EndResourceItems.GLOWING_BULB));
-//        } else if (MHelper.RANDOM.nextInt(8) == 0) {
-//            return Lists.newArrayList(new ItemStack(EndVineBlocks.BULB_VINE_SEED));
-//        } else {
-//            return Lists.newArrayList();
-//        }
-//    }
-
     public static LootTable.Builder buildLoot(Block block, LootLookupProvider provider) {
         var bottom = LootItemBlockStatePropertyCondition
                 .hasBlockStateProperties(block)
@@ -65,7 +54,7 @@ public class BulbVineBlock extends BaseVineBlock {
                         .hasProperty(SHAPE, BlockProperties.TripleShape.BOTTOM));
 
         // Every other vine in the mod takes its loot from VineBlockTrait, which is
-        // dropWithSilkTouchOrHoeOrShears - vanilla's rule that a vine only yields to shears or silk touch.
+        // dropWithSilktouchOrHoeOrShears - vanilla's rule that a vine only yields to shears or silk touch.
         // This block carries VineBlockTrait too, but the explicit LOOT_TABLE trait on its registration
         // overrides the trait's table, so before this gate bulb_vine was the one vine in either mod that
         // could be harvested bare-handed. The gate is the provider's own combined condition, so it stays

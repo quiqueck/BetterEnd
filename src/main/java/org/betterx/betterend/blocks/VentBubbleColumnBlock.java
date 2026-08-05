@@ -126,15 +126,15 @@ public class VentBubbleColumnBlock extends Block implements BucketPickup, Liquid
         BlockState blockState = world.getBlockState(pos.above());
         if (blockState.isAir()) {
             entity.onAboveBubbleColumn(false, pos);
-            if (!world.isClientSide) {
+            if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel) world;
 
                 for (int i = 0; i < 2; ++i) {
                     serverWorld.sendParticles(
                             ParticleTypes.SPLASH,
-                            (double) pos.getX() + world.random.nextDouble(),
+                            (double) pos.getX() + world.getRandom().nextDouble(),
                             pos.getY() + 1,
-                            (double) pos.getZ() + world.random.nextDouble(),
+                            (double) pos.getZ() + world.getRandom().nextDouble(),
                             1,
                             0.0D,
                             0.0D,
@@ -143,9 +143,9 @@ public class VentBubbleColumnBlock extends Block implements BucketPickup, Liquid
                     );
                     serverWorld.sendParticles(
                             ParticleTypes.BUBBLE,
-                            (double) pos.getX() + world.random.nextDouble(),
+                            (double) pos.getX() + world.getRandom().nextDouble(),
                             pos.getY() + 1,
-                            (double) pos.getZ() + world.random.nextDouble(),
+                            (double) pos.getZ() + world.getRandom().nextDouble(),
                             1,
                             0.0D,
                             0.01D,

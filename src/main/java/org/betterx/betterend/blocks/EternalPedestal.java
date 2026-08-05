@@ -9,6 +9,7 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.entities.EternalPedestalEntity;
 import org.betterx.betterend.client.models.EndModels;
+import org.betterx.betterend.client.effects.EternalHint;
 import org.betterx.betterend.client.render.EternalCrystalRenderer;
 import org.betterx.betterend.client.render.PedestalItemRenderer;
 import org.betterx.betterend.registry.EndBlocks;
@@ -22,17 +23,22 @@ import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.client.renderer.block.model.Variant;
+import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.SpellParticleOption;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -48,6 +54,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -76,7 +83,7 @@ public class EternalPedestal extends PedestalBlock {
                     EternalRitual ritual = pedestal.getRitual();
                     if (ritual.isActive()) {
                         if (ritual.getWorld() == null) ritual.setWorld(sourceLevel);
-                        ResourceLocation targetWorld = ritual.getTargetWorldId();
+                        Identifier targetWorld = ritual.getTargetWorldId();
                         int portalId;
                         if (targetWorld != null) {
                             portalId = EndPortals.getPortalIdByWorld(targetWorld);
@@ -89,7 +96,7 @@ public class EternalPedestal extends PedestalBlock {
                 sourceLevel.setBlockAndUpdate(pos, updatedState.setValue(ACTIVATED, false).setValue(HAS_LIGHT, false));
             } else {
                 ItemStack itemStack = pedestal.getItem(0);
-                ResourceLocation id = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
+                Identifier id = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
                 if (EndPortals.isAvailableItem(id)) {
                     sourceLevel.setBlockAndUpdate(
                             pos,
@@ -187,6 +194,47 @@ public class EternalPedestal extends PedestalBlock {
     }
 
     @Environment(EnvType.CLIENT)
+    /**
+     * An empty hand on an empty eternal pedestal raises the vision of the portal it belongs to - the
+     * same gesture the infusion pedestal answers, for the same reason: nothing else in the game says
+     * where the other pedestals or the frame go.
+     */
+    @Override
+    public InteractionResult useItemOn(
+            ItemStack itemStack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit
+    ) {
+        if (itemStack.isEmpty() && state.is(this)) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof EternalPedestalEntity pedestal && pedestal.isEmpty()) {
+                if (level.isClientSide()) ClientHooks.showVision(level, pos);
+                return InteractionResult.CONSUME;
+            }
+        }
+        return super.useItemOn(itemStack, state, level, pos, player, hand, hit);
+    }
+
+    /**
+     * Same reasoning as {@code InfusionPedestal.ClientHooks}: the dedicated server strips
+     * {@code @Environment(CLIENT)} types, so the client-only vision is only ever reached through a
+     * holder resolved behind a client-side check.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class ClientHooks {
+        private static void showVision(Level level, BlockPos pos) {
+            EternalHint.trigger(level, pos);
+        }
+
+        private static void tickVision(Level level, BlockPos pos, RandomSource random) {
+            EternalHint.tickParticles(level, pos, random);
+        }
+    }
+
     private void dispatchParticles(Level level, BlockPos blockPos, RandomSource random) {
         if (level instanceof ClientLevelAccess clientLevel) {
             if (level.getBlockEntity(blockPos) instanceof EternalPedestalEntity pedestal
@@ -227,7 +275,6 @@ public class EternalPedestal extends PedestalBlock {
                                         0
                                 );
                                 if (particle == null) continue;
-                                particle.setColor(color[0], color[1], color[2]);
                                 particle.setParticleSpeed(rnd.x, rnd.y, rnd.z);
                             }
                         }
@@ -241,7 +288,8 @@ public class EternalPedestal extends PedestalBlock {
                                     random.nextFloat() * -0.1,
                                     random.nextFloat() * 0.3 - 0.15
                             ).add(dir.mul(powerUp ? random.nextFloat() * 4 : 1));
-                            SimpleParticleType particleOptions = ParticleTypes.EFFECT;
+                            ParticleOptions particleOptions = SpellParticleOption.create(
+                                    ParticleTypes.EFFECT, color[0], color[1], color[2], 1.0f);
                             final Particle particle = clientLevel.bcl_addParticle(
                                     particleOptions,
                                     start.x + 0.3 + random.nextFloat() * 0.4,
@@ -252,7 +300,6 @@ public class EternalPedestal extends PedestalBlock {
                                     0
                             );
                             if (particle == null) continue;
-                            particle.setColor(color[0], color[1], color[2]);
                             particle.setParticleSpeed(rnd.x, rnd.y, rnd.z);
                             if (powerUp) {
                                 particle.setLifetime(6 + random.nextInt(4));
@@ -274,21 +321,22 @@ public class EternalPedestal extends PedestalBlock {
     ) {
         super.animateTick(blockState, level, blockPos, randomSource);
         dispatchParticles(level, blockPos, randomSource);
+        ClientHooks.tickVision(level, blockPos, randomSource);
     }
 
     private static MultiVariant createVariants(
             WoverBlockModelGenerators generator,
             TextureMapping mapping,
-            ResourceLocation modelLocation,
+            Identifier modelLocation,
             ModelTemplate template,
-            ResourceLocation textureLocation,
+            Identifier textureLocation,
             int count
     ) {
         final WeightedList.Builder<Variant> variants = WeightedList.builder();
 
         for (int i = 0; i < count; i++) {
-            ResourceLocation topTexture = textureLocation.withSuffix("_" + (i + 1));
-            mapping.put(TextureSlot.TOP, topTexture);
+            Identifier topTexture = textureLocation.withSuffix("_" + (i + 1));
+            mapping.put(TextureSlot.TOP, new Material(topTexture));
 
             variants.add(new Variant(template.create(modelLocation.withSuffix("_" + (i + 1)), mapping, generator.modelOutput())));
         }
@@ -297,30 +345,30 @@ public class EternalPedestal extends PedestalBlock {
 
     @Environment(EnvType.CLIENT)
     public void provideBlockModelsInstance(WoverBlockModelGenerators generator) {
-        final ResourceLocation id = TextureMapping.getBlockTexture(this);
-        final ResourceLocation baseTexture = BetterEnd.C.mk("block/flavolite_polished");
-        final ResourceLocation pillarTexture = BetterEnd.C.mk("block/flavolite_pillar_side");
+        final Identifier id = TextureMapping.getBlockTexture(this).sprite();
+        final Identifier baseTexture = BetterEnd.C.mk("block/flavolite_polished");
+        final Identifier pillarTexture = BetterEnd.C.mk("block/flavolite_pillar_side");
         final TextureMapping mapping = new TextureMapping()
-                .put(EndModels.BASE, baseTexture)
-                .put(TextureSlot.BOTTOM, baseTexture)
-                .put(EndModels.PILLAR, pillarTexture);
+                .put(EndModels.BASE, new Material(baseTexture))
+                .put(TextureSlot.BOTTOM, new Material(baseTexture))
+                .put(EndModels.PILLAR, new Material(pillarTexture));
 
-        final ResourceLocation column = EndModels.PEDESTAL_COLUMN.create(
+        final Identifier column = EndModels.PEDESTAL_COLUMN.create(
                 id.withSuffix("_column"),
                 mapping,
                 generator.modelOutput()
         );
-        final ResourceLocation top = EndModels.PEDESTAL_COLUMN_TOP.create(
+        final Identifier top = EndModels.PEDESTAL_COLUMN_TOP.create(
                 id.withSuffix("_column_top"),
                 mapping,
                 generator.modelOutput()
         );
-        final ResourceLocation bottom = EndModels.PEDESTAL_BOTTOM.create(
+        final Identifier bottom = EndModels.PEDESTAL_BOTTOM.create(
                 id.withSuffix("_bottom"),
                 mapping,
                 generator.modelOutput()
         );
-        final ResourceLocation pillar = EndModels.PEDESTAL_PILLAR.create(
+        final Identifier pillar = EndModels.PEDESTAL_PILLAR.create(
                 id.withSuffix("_pillar"),
                 mapping,
                 generator.modelOutput()

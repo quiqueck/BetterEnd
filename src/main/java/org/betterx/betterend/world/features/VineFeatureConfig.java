@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -35,8 +36,8 @@ public class VineFeatureConfig extends ScatterFeatureConfig {
         this.maxLength = maxLength;
     }
 
-    public BlockState getPlantState(RandomSource rnd, BlockPos pos) {
-        return plant.getState(rnd, pos);
+    public BlockState getPlantState(WorldGenLevel level, RandomSource rnd, BlockPos pos) {
+        return plant.getState(level, rnd, pos);
     }
 
 }

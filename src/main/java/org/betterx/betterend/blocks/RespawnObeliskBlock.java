@@ -12,13 +12,16 @@ import org.betterx.betterend.registry.EndItems;
 import org.betterx.ui.ColorUtil;
 import de.ambertation.wover.block.api.BlockProperties;
 import de.ambertation.wover.block.api.BlockProperties.TripleShape;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -31,6 +34,9 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
@@ -39,14 +45,15 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -143,17 +150,32 @@ public class RespawnObeliskBlock extends Block implements CustomColorProvider {
         return super.playerWillDestroy(world, pos, state, player);
     }
 
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        if (state.getValue(SHAPE) == TripleShape.BOTTOM) {
-            return Lists.newArrayList(new ItemStack(this));
-        } else {
-            return Lists.newArrayList();
-        }
+    /**
+     * The obelisk is three blocks tall but one item: only the {@code bottom} segment drops it, so breaking
+     * any part of it yields exactly one obelisk rather than one per segment.
+     * <p>
+     * This replaces a {@code getDrops} override, which bypassed the loot table entirely - the generated
+     * table said "always drop self", which would have handed out three obelisks per structure had the
+     * override ever been removed. The override never consulted {@code survives_explosion}, so this table
+     * does not either.
+     */
+    public static LootTable.Builder buildLoot(Block block, LootLookupProvider provider) {
+        return LootTable
+                .lootTable()
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(LootItemBlockStatePropertyCondition
+                                .hasBlockStateProperties(block)
+                                .setProperties(StatePropertiesPredicate.Builder
+                                        .properties()
+                                        .hasProperty(SHAPE, TripleShape.BOTTOM)))
+                        .add(LootItem.lootTableItem(block)));
     }
 
     @Override
-    public BlockColor getProvider() {
+    @Environment(EnvType.CLIENT)
+    public BlockTintSource getProvider() {
         return ((CustomColorProvider) EndCrystalBlocks.AURORA_CRYSTAL).getProvider();
     }
 
@@ -169,21 +191,23 @@ public class RespawnObeliskBlock extends Block implements CustomColorProvider {
     ) {
         boolean canActivate = itemStack.getItem() == EndResourceItems.AMBER_GEM && itemStack.getCount() > 5;
         if (hand != InteractionHand.MAIN_HAND || !canActivate) {
-            if (!level.isClientSide && !(itemStack.getItem() instanceof BlockItem) && !player.isCreative()) {
+            if (!level.isClientSide() && !(itemStack.getItem() instanceof BlockItem) && !player.isCreative()) {
                 ServerPlayer serverPlayerEntity = (ServerPlayer) player;
-                serverPlayerEntity.displayClientMessage(
-                        Component.translatable("message.betterend.fail_spawn"),
-                        true
+                serverPlayerEntity.sendOverlayMessage(
+                        Component.translatable("message.betterend.fail_spawn")
                 );
             }
             return InteractionResult.FAIL;
-        } else if (!level.isClientSide) {
+        } else if (!level.isClientSide()) {
             ServerPlayer serverPlayerEntity = (ServerPlayer) player;
             serverPlayerEntity.setRespawnPosition(
-                    new ServerPlayer.RespawnConfig(level.dimension(), pos, 0.0F, false),
+                    new ServerPlayer.RespawnConfig(
+                            LevelData.RespawnData.of(level.dimension(), pos, 0.0F, 0.0F),
+                            false
+                    ),
                     false
             );
-            serverPlayerEntity.displayClientMessage(Component.translatable("message.betterend.set_spawn"), true);
+            serverPlayerEntity.sendOverlayMessage(Component.translatable("message.betterend.set_spawn"));
             double px = pos.getX() + 0.5;
             double py = pos.getY() + 0.5;
             double pz = pos.getZ() + 0.5;

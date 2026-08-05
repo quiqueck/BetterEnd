@@ -37,7 +37,7 @@ public class GuideBookItem extends Item {
     @Override
     public InteractionResult use(Level world, Player user, InteractionHand hand) {
         //TODO: 1.19.3 Re-Enable once patchouli is available
-//        if (!world.isClientSide && user instanceof ServerPlayer) {
+//        if (!world.isClientSide() && user instanceof ServerPlayer) {
 //            PatchouliAPI.get().openBookGUI((ServerPlayer) user, BOOK_ID);
 //            return InteractionResult.SUCCESS;
 //        }

@@ -5,7 +5,7 @@ import org.betterx.betterend.world.generator.GeneratorOptions;
 import de.ambertation.wover.state.api.WorldConfig;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.levelgen.feature.SpikeFeature.EndSpike;
+import net.minecraft.world.level.levelgen.feature.EndSpikeFeature.EndSpike;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

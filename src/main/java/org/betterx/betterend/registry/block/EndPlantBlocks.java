@@ -404,6 +404,7 @@ public class EndPlantBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_BROWN, true, false))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_AMBER_MOSS))
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(WeightedCrossModelTrait.propertyDispatch(LanceleafSeedBlock.AGE, List.of(
                             WeightedCrossModelTrait.Case.of(0, List.of(
                             WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lanceleaf_seed_0"))

@@ -79,7 +79,7 @@ public class PaintedMountainPiece extends MountainPiece {
         int sx = chunkPos.getMinBlockX();
         int sz = chunkPos.getMinBlockZ();
         final MutableBlockPos pos = GlobalState.stateForThread().POS;
-        ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
+        ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
         Heightmap map = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE);
         Heightmap map2 = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE_WG);
         for (int x = 0; x < 16; x++) {

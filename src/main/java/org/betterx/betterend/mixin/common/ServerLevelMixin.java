@@ -10,13 +10,11 @@ import org.betterx.betterend.world.generator.TerrainGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.progress.ChunkProgressListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.RandomSequences;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +29,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -59,13 +58,15 @@ public abstract class ServerLevelMixin extends Level {
         super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
     }
 
-    @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Holder;is(Lnet/minecraft/resources/ResourceKey;)Z"))
-    ResourceKey<DimensionType> be_dragonFight(ResourceKey<DimensionType> resourceKey) {
-        if (!GeneratorOptions.hasDragonFights()) {
-            //this object would pass the test for the End-Dimension, so make sure we compare against something else to disabled the Dragon-Fight
-            if (this.dimensionTypeRegistration().is(BuiltinDimensionTypes.END)) return BuiltinDimensionTypes.OVERWORLD;
+    // 26.1 retarget: the constructor no longer branches on Holder.is(ResourceKey) for the End
+    // dimension type - it now asks the DimensionType itself via hasEnderDragonFight(). Redirect
+    // that call instead of modifying an argument that no longer exists.
+    @Redirect(method = "<init>*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/DimensionType;hasEnderDragonFight()Z"))
+    private boolean be_hasEnderDragonFight(DimensionType dimensionType) {
+        if (!GeneratorOptions.hasDragonFights() && this.dimensionTypeRegistration().is(BuiltinDimensionTypes.END)) {
+            return false;
         }
-        return resourceKey;
+        return dimensionType.hasEnderDragonFight();
     }
 
     @Inject(method = "<init>*", at = @At("TAIL"))
@@ -76,12 +77,10 @@ public abstract class ServerLevelMixin extends Level {
             ServerLevelData serverLevelData,
             ResourceKey resourceKey,
             LevelStem levelStem,
-            ChunkProgressListener chunkProgressListener,
             boolean bl,
             long seed,
             List list,
             boolean bl2,
-            RandomSequences randomSequences,
             CallbackInfo ci
     ) {
         TerrainGenerator.onServerLevelInit(ServerLevel.class.cast(this), levelStem, seed);
@@ -90,7 +89,7 @@ public abstract class ServerLevelMixin extends Level {
     @ModifyArg(method = "tickPrecipitation", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"))
     private BlockState be_modifyTickState(BlockPos pos, BlockState state) {
         if (state.is(Blocks.ICE)) {
-            ResourceLocation biome = getBiome(pos).unwrapKey().orElseThrow().location();
+            Identifier biome = getBiome(pos).unwrapKey().orElseThrow().identifier();
             if (biome.getNamespace().equals(BetterEnd.MOD_ID)) {
                 state = EndDecorBlocks.EMERALD_ICE.defaultBlockState();
             }

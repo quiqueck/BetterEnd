@@ -4,22 +4,25 @@ package org.betterx.betterend.blocks;
 import org.betterx.betterend.registry.block.EndCropBlocks;
 import org.betterx.betterend.registry.EndBlocks;
 import de.ambertation.wover.block.api.BlockProperties;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import java.util.Collections;
-import java.util.List;
 
 public class CavePumpkinBlock extends Block {
     public static final BooleanProperty SMALL = BlockProperties.SMALL;
@@ -42,12 +45,30 @@ public class CavePumpkinBlock extends Block {
         return state.getValue(SMALL) ? SHAPE_SMALL : SHAPE_BIG;
     }
 
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        return state.getValue(SMALL)
-                ? Collections.singletonList(new ItemStack(EndCropBlocks.CAVE_PUMPKIN_SEED))
-                : Collections
-                        .singletonList(new ItemStack(this));
+    /**
+     * A small (unripe) cave pumpkin yields a seed; a full-grown one yields the pumpkin itself.
+     * <p>
+     * This replaces a {@code getDrops} override, which bypassed the loot table entirely - the generated
+     * table said "always drop self", so the two disagreed and only the override ran. The override never
+     * consulted {@code survives_explosion}, so this table does not either.
+     */
+    public static LootTable.Builder buildLoot(Block block, LootLookupProvider provider) {
+        final LootItemCondition.Builder small = LootItemBlockStatePropertyCondition
+                .hasBlockStateProperties(block)
+                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SMALL, true));
+
+        return LootTable
+                .lootTable()
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(small)
+                        .add(LootItem.lootTableItem(EndCropBlocks.CAVE_PUMPKIN_SEED)))
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(small.invert())
+                        .add(LootItem.lootTableItem(block)));
     }
 
     static {

@@ -13,7 +13,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -57,17 +57,17 @@ public class CommandRegistry {
     ) {
         dispatcher.register(
                 Commands.literal("be")
-                        .requires(source -> source.hasPermission(Commands.LEVEL_OWNERS))
+                        .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                         .then(Commands.literal("locate_portal")
-                                      .requires(source -> source.hasPermission(Commands.LEVEL_OWNERS))
+                                      .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                                       .executes(ctx -> find_poi(ctx, EndPoiTypes.ETERNAL_PORTAL))
                         )
                         .then(Commands.literal("locate_portal_frame")
-                                      .requires(source -> source.hasPermission(Commands.LEVEL_OWNERS))
+                                      .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                                       .executes(ctx -> find_poi(ctx, EndPoiTypes.ETERNAL_PORTAL_FRAME))
                         )
                         .then(Commands.literal("tpnext")
-                                      .requires(source -> source.hasPermission(Commands.LEVEL_OWNERS))
+                                      .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                                       .executes(CommandRegistry::teleportToNextBiome)
                         )
         );

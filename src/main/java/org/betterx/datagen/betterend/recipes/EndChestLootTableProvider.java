@@ -20,6 +20,7 @@ import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTemplates;
+import org.betterx.betterend.registry.EndEnchantments;
 import org.betterx.betterend.util.LootTableUtil;
 import de.ambertation.wover.biome.api.BiomeKey;
 import de.ambertation.wover.complex.api.equipment.ToolSlot;
@@ -27,18 +28,20 @@ import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.datagen.api.provider.WoverLootTableProvider;
 import de.ambertation.wover.sets.api.blocks.SlotType;
 
-import net.minecraft.advancements.critereon.LocationPredicate;
+import net.minecraft.advancements.criterion.LocationPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemDamageFunction;
@@ -57,6 +60,62 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
             ModCore modCore
     ) {
         super(modCore, LootContextParamSets.CHEST);
+    }
+
+    private LootPool.Builder endCityGhastTear() {
+        return LootPool
+                .lootPool()
+                .setRolls(ConstantValue.exactly(1))
+                .when(LootItemRandomChanceCondition.randomChance(0.2f))
+                .add(LootItem.lootTableItem(Items.GHAST_TEAR));
+    }
+
+    private LootPool.Builder endCityMusicDiscs() {
+        return LootPool
+                .lootPool()
+                .setRolls(UniformGenerator.between(0, 3))
+                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_STRANGE_AND_ALIEN))
+                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_GRASPING_AT_STARS))
+                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDSEEKER))
+                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_EO_DRACONA))
+                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDER_HOLLOW))
+                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_MOONLIT_UNDERCURRENTS));
+    }
+
+    private LootPool.Builder endCitySmithingTemplates() {
+        return LootPool
+                .lootPool()
+                .setRolls(UniformGenerator.between(2, 4))
+                .add(EmptyLootItem.emptyItem().setWeight(12))
+                .add(LootItem.lootTableItem(EndTemplates.NETHERITE_UPGRADE).setWeight(3))
+                .add(LootItem.lootTableItem(EndTemplates.HANDLE_ATTACHMENT).setWeight(2))
+                .add(LootItem.lootTableItem(EndTemplates.LEATHER_HANDLE_ATTACHMENT).setWeight(1))
+                .add(LootItem.lootTableItem(EndTemplates.TOOL_ASSEMBLY).setWeight(1))
+                .add(LootItem.lootTableItem(EndTemplates.AETERNIUM_UPGRADE).setWeight(1))
+                .add(LootItem.lootTableItem(EndTemplates.THALLASIUM_UPGRADE).setWeight(2))
+                .add(LootItem.lootTableItem(EndTemplates.TERMINITE_UPGRADE).setWeight(2));
+    }
+
+    /**
+     * End Veil is a head-armor enchantment with no other route into a survival world: BetterEnd emits no
+     * enchantment tags, so it is not in {@code #minecraft:in_enchanting_table} and an enchanting table can
+     * never roll it. This pool and the {@code end_veil_book} infusion recipe are the two ways to get it.
+     * <p>
+     * {@code EnchantRandomlyFunction} rather than a hand-built component: it is the vanilla path for
+     * "enchant this book with exactly this", and it knows to write {@code stored_enchantments} on a book
+     * instead of {@code enchantments}, which is the difference between a usable book and an inert one.
+     */
+    private LootPool.Builder endCityEndVeilBook(HolderLookup.@NotNull Provider lookup) {
+        return LootPool
+                .lootPool()
+                .setRolls(ConstantValue.exactly(1))
+                .when(LootItemRandomChanceCondition.randomChance(0.25f))
+                .add(LootItem.lootTableItem(Items.BOOK)
+                             .apply(EnchantRandomlyFunction
+                                     .randomEnchantment()
+                                     .withEnchantment(lookup
+                                             .lookupOrThrow(Registries.ENCHANTMENT)
+                                             .getOrThrow(EndEnchantments.END_VEIL.key()))));
     }
 
     private LootPool.Builder fishing() {
@@ -418,6 +477,15 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                          .withPool(plateUpgradeLootPool())
                          .withPool(villageBonusLoot())
                          .withPool(elytraLoot(0.2f))
+        );
+
+        biConsumer.accept(
+                LootTableUtil.END_CITY_EXTRA,
+                LootTable.lootTable()
+                         .withPool(endCityGhastTear())
+                         .withPool(endCityMusicDiscs())
+                         .withPool(endCitySmithingTemplates())
+                         .withPool(endCityEndVeilBook(lookup))
         );
 
         biConsumer.accept(

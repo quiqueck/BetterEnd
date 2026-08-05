@@ -20,7 +20,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -130,7 +130,7 @@ public class LakePiece extends BasePiece {
         tag.putFloat("depth", depth);
         tag.putInt("seed", seed);
         tag.putInt("water_level", waterLevel);
-        tag.putString("biome", biomeID.location().toString());
+        tag.putString("biome", biomeID.identifier().toString());
     }
 
     @Override
@@ -142,7 +142,7 @@ public class LakePiece extends BasePiece {
         waterLevel = tag.getIntOr("water_level", center.getY());
         noise = new OpenSimplexNoise(seed);
         aspect = radius / depth;
-        biomeID = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(tag.getStringOr("biome", "")));
+        biomeID = ResourceKey.create(Registries.BIOME, Identifier.parse(tag.getStringOr("biome", "")));
     }
 
     /**
@@ -192,10 +192,10 @@ public class LakePiece extends BasePiece {
     ) {
         int minY = carveMinY();
         int maxY = this.boundingBox.maxY();
-        int sx = SectionPos.sectionToBlockCoord(chunkPos.x);
-        int sz = SectionPos.sectionToBlockCoord(chunkPos.z);
+        int sx = SectionPos.sectionToBlockCoord(chunkPos.x());
+        int sz = SectionPos.sectionToBlockCoord(chunkPos.z());
         MutableBlockPos mut = new MutableBlockPos();
-        ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
+        ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
         for (int x = 0; x < 16; x++) {
             mut.setX(x);
             int wx = x | sx;

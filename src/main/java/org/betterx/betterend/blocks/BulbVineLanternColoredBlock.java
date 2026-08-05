@@ -4,8 +4,11 @@ import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.ui.ColorUtil;
 
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class BulbVineLanternColoredBlock extends BulbVineLanternBlock implements CustomColorProvider {
     public BulbVineLanternColoredBlock(BlockBehaviour.Properties settings) {
@@ -13,8 +16,9 @@ public class BulbVineLanternColoredBlock extends BulbVineLanternBlock implements
     }
 
     @Override
-    public BlockColor getProvider() {
-        return (state, world, pos, tintIndex) -> getColor();
+    @Environment(EnvType.CLIENT)
+    public BlockTintSource getProvider() {
+        return (state) -> getColor();
     }
 
     private int getColor() {

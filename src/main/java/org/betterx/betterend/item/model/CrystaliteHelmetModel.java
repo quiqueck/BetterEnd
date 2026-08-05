@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
 import net.fabricmc.api.EnvType;
@@ -52,7 +52,7 @@ public class CrystaliteHelmetModel extends HumanoidModel<HumanoidRenderState> {
 
 
     public CrystaliteHelmetModel(ModelPart modelPart) {
-        super(modelPart, RenderType::entityTranslucent);
+        super(modelPart, RenderTypes::entityTranslucent);
 
         myHat = this.head.getChild(PartNames.HAT);
     }

@@ -9,7 +9,9 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.entity.SilkMothEntity;
 import org.betterx.betterend.registry.EndEntities;
 import org.betterx.betterend.registry.EndItems;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -34,15 +36,17 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.Collections;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 public class SilkMothNestBlock extends Block {
@@ -112,9 +116,23 @@ public class SilkMothNestBlock extends Block {
         return BlocksHelper.mirrorHorizontal(state, mirror, FACING);
     }
 
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        return state.getValue(ACTIVE) ? Collections.singletonList(new ItemStack(this)) : Collections.emptyList();
+    /**
+     * Only an {@code active} nest drops itself; a spent one drops nothing.
+     * <p>
+     * This replaces a {@code getDrops} override, which bypassed the loot table entirely - the generated
+     * table said "always drop self", so a spent nest would have dropped one had the override ever been
+     * removed. The override never consulted {@code survives_explosion}, so this table does not either.
+     */
+    public static LootTable.Builder buildLoot(Block block, LootLookupProvider provider) {
+        return LootTable
+                .lootTable()
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(LootItemBlockStatePropertyCondition
+                                .hasBlockStateProperties(block)
+                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ACTIVE, true)))
+                        .add(LootItem.lootTableItem(block)));
     }
 
     @Override

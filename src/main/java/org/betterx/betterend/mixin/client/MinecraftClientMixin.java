@@ -8,13 +8,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.WinScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.sounds.MusicInfo;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
-import net.minecraft.util.random.WeightedList;
+import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.Level;
-
-import java.util.Optional;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,23 +37,27 @@ public class MinecraftClientMixin {
     public ClientLevel level;
 
     @Inject(method = "getSituationalMusic", at = @At("HEAD"), cancellable = true)
-    private void be_getEndMusic(CallbackInfoReturnable<MusicInfo> info) {
+    private void be_getEndMusic(CallbackInfoReturnable<Music> info) {
         if (!(this.screen instanceof WinScreen) && this.player != null) {
             if (this.player.level().dimension() == Level.END) {
                 if (this.gui.getBossOverlay().shouldPlayMusic() && MHelper.lengthSqr(
                         this.player.getX(),
                         this.player.getZ()
                 ) < 250000) {
-                    info.setReturnValue(new MusicInfo(Musics.END_BOSS));
+                    info.setReturnValue(Musics.END_BOSS);
                 } else {
-                    Optional<WeightedList<Music>> tracks = this.level.getBiomeManager()
-                                                                     .getNoiseBiomeAtPosition(this.player.blockPosition())
-                                                                     .value()
-                                                                     .getBackgroundMusic();
-                    Music sound = tracks
-                            .flatMap(list -> list.getRandom(this.level.random))
-                            .orElse(Musics.END);
-                    info.setReturnValue(new MusicInfo(sound));
+                    // 26.1: biome background music moved out of Biome onto the BACKGROUND_MUSIC environment
+                    // attribute; read the biome's configured value (default over the EMPTY base).
+                    BackgroundMusic backgroundMusic = this.level.getBiomeManager()
+                                                                .getNoiseBiomeAtPosition(this.player.blockPosition())
+                                                                .value()
+                                                                .getAttributes()
+                                                                .applyModifier(
+                                                                        EnvironmentAttributes.BACKGROUND_MUSIC,
+                                                                        BackgroundMusic.EMPTY
+                                                                );
+                    Music sound = backgroundMusic.select(false, false).orElse(Musics.END);
+                    info.setReturnValue(sound);
                 }
                 info.cancel();
             }

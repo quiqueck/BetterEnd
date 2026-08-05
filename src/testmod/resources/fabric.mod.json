@@ -14,7 +14,8 @@
       "org.betterx.betterend.testmod.gametest.CrystaliteArmorGameTest",
       "org.betterx.betterend.testmod.gametest.CrystaliteEffectGameTest",
       "org.betterx.betterend.testmod.gametest.EndVeilGameTest",
-      "org.betterx.betterend.testmod.gametest.EndVeilObtainableGameTest"
+      "org.betterx.betterend.testmod.gametest.EndVeilObtainableGameTest",
+      "org.betterx.betterend.testmod.gametest.MapColorGameTest"
     ]
   },
   "mixins": [

@@ -11,7 +11,7 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndPoiTypes;
 import org.betterx.betterend.rituals.EternalRitual;
 
-import net.minecraft.BlockUtil;
+import net.minecraft.util.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -188,7 +188,7 @@ public class PortalBuilder {
         );
 
         return oPos.map(poiPos -> {
-            this.targetLevel.getChunkSource().addTicketWithRadius(TicketType.PORTAL, new ChunkPos(poiPos), 3);
+            this.targetLevel.getChunkSource().addTicketWithRadius(TicketType.PORTAL, ChunkPos.containing(poiPos), 3);
             BlockState blockState = this.targetLevel.getBlockState(poiPos);
             return new FoundPortalRect(BlockUtil.getLargestRectangleAround(
                     poiPos,

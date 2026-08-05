@@ -54,7 +54,7 @@ public class StalactiteFeature extends Feature<StalactiteFeatureConfig> {
             mut.setY(pos.getY() + i * dir);
             int size = stalagnate ? Mth.clamp((int) (Mth.abs(i - center) + 1), 1, 7) : height - i - 1;
             boolean waterlogged = !world.getFluidState(mut).isEmpty();
-            BlockState base = cfg.block.getState(random, mut)
+            BlockState base = cfg.block.getState(world, random, mut)
                                        .setValue(StalactiteBlock.SIZE, size)
                                        .setValue(BlockStateProperties.WATERLOGGED, waterlogged);
             BlockState state = stalagnate ? base.setValue(

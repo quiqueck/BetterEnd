@@ -9,6 +9,7 @@
     "BiomeColorsMixin",
     "BlockStateModelLoaderMixin",
     "CapeLayerMixin",
+    "GameRendererMixin",
     "HumanoidMobRendererMixin",
     "ItemStackMixin",
     "MinecraftClientMixin",

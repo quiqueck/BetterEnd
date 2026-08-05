@@ -2,8 +2,8 @@ package org.betterx.betterend.interfaces;
 
 import org.betterx.bclib.items.elytra.BCLElytraItem;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface BetterEndElytra extends BCLElytraItem {
-    ResourceLocation getModelTexture();
+    Identifier getModelTexture();
 }

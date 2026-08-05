@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_unpowered",
+  "textures": {
+    "all": "betterend:block/tenanea_shelf",
+    "particle": "betterend:block/tenanea_planks"
+  }
+}

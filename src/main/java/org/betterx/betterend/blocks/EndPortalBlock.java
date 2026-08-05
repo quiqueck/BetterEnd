@@ -7,8 +7,8 @@ import org.betterx.betterend.portal.PortalBuilder;
 import org.betterx.betterend.registry.EndParticles;
 import org.betterx.betterend.registry.EndPortals;
 
-import net.minecraft.BlockUtil;
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.util.BlockUtil;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
@@ -104,7 +104,7 @@ public class EndPortalBlock extends NetherPortalBlock implements CustomColorProv
 
 
     @Override
-    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier insideBlockEffectApplier) {
+    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier insideBlockEffectApplier, boolean flag) {
         //if (entity instanceof TravelingEntity te && te.be_getTravelerState() != null) {
         if (validate(entity)) {
             //te.be_getTravelerState().handleInsidePortal(pos);
@@ -118,8 +118,9 @@ public class EndPortalBlock extends NetherPortalBlock implements CustomColorProv
     }
 
     @Override
-    public BlockColor getProvider() {
-        return (state, world, pos, tintIndex) -> EndPortals.getColor(state.getValue(PORTAL));
+    @Environment(EnvType.CLIENT)
+    public BlockTintSource getProvider() {
+        return (state) -> EndPortals.getColor(state.getValue(PORTAL));
     }
 
     @Override

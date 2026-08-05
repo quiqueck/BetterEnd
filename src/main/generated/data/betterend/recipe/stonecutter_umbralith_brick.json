@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "brick",
   "ingredient": "betterend:umbralith",
   "result": {
-    "count": 1,
     "id": "betterend:umbralith_brick"
   }
 }

@@ -72,8 +72,7 @@ public class BrimstoneBlock extends Block {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         boolean deactivate = true;
         for (Direction dir : BlocksHelper.DIRECTIONS) {
             if (world.getFluidState(pos.relative(dir)).getType().equals(Fluids.WATER)) {

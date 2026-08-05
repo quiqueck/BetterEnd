@@ -6,12 +6,13 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.client.models.EndModels;
 import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
 
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -24,18 +25,19 @@ public class HydraluxPetalColoredBlock extends HydraluxPetalBlock implements Cus
     }
 
     @Override
-    public BlockColor getProvider() {
-        return (state, world, pos, tintIndex) -> BlocksHelper.getBlockColor(this);
+    @Environment(EnvType.CLIENT)
+    public BlockTintSource getProvider() {
+        return (state) -> BlocksHelper.getBlockColor(this);
     }
 
-    private static ResourceLocation PETAL_MODEL;
+    private static Identifier PETAL_MODEL;
 
     @Environment(EnvType.CLIENT)
     public static void provideBlockModel(WoverBlockModelGenerators generator, Block block) {
         final var modelLocation = BetterEnd.C.mk("block/hydralux_petal_block_colored");
         final var mapping = new TextureMapping().put(
                 TextureSlot.TEXTURE,
-                BetterEnd.C.mk("block/hydralux_petal_block_colored")
+                new Material(BetterEnd.C.mk("block/hydralux_petal_block_colored"))
         );
         if (PETAL_MODEL == null)
             PETAL_MODEL = EndModels.PETAL_COLORED.create(modelLocation, mapping, generator.modelOutput());
@@ -45,7 +47,7 @@ public class HydraluxPetalColoredBlock extends HydraluxPetalBlock implements Cus
         // rendered untinted (white/grayscale) - in 1.21.6 item tinting is data-driven via the item model's
         // `tints` list, it no longer follows BlockColors automatically. Emit a constant tint from this
         // block's own CustomColorProvider instead (same fix as EndModelProvider's aurora crystal override).
-        final int tint = ((CustomColorProvider) block).getProvider().getColor(block.defaultBlockState(), null, null, 0);
+        final int tint = ((CustomColorProvider) block).getProvider().color(block.defaultBlockState());
         generator.vanillaGenerator.itemModelOutput.accept(
                 block.asItem(),
                 ItemModelUtils.tintedModel(modelLocation, ItemModelUtils.constantTint(tint))

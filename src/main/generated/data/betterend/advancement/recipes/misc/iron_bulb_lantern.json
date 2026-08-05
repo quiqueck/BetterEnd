@@ -1,21 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_chain": {
-      "conditions": {
-        "items": [
-          {
-            "items": "minecraft:chain"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_glowing_bulb": {
       "conditions": {
         "items": [
           {
             "items": "betterend:glowing_bulb"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_iron_chain": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:iron_chain"
           }
         ]
       },
@@ -42,7 +42,7 @@
     [
       "has_the_recipe",
       "has_glowing_bulb",
-      "has_chain",
+      "has_iron_chain",
       "has_iron_ingot"
     ]
   ],

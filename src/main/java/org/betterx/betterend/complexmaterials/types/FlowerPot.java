@@ -49,7 +49,7 @@ public class FlowerPot extends SlotFromDefinition {
     private static BlockRecipeTrait.RecipeFactory potRecipe(RecipeMaterial brick) {
         return (key, block, context) -> {
             RecipeBuilder
-                    .crafting(key.location(), block)
+                    .crafting(key.identifier(), block)
                     .outputCount(3)
                     .shape("# #", " # ")
                     .addMaterial('#', brick)

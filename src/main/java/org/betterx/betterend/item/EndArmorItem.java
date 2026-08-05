@@ -6,18 +6,18 @@ import de.ambertation.wover.complex.api.equipment.ArmorSlot;
 import de.ambertation.wover.complex.api.equipment.ArmorTier;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.Equippable;
 
 public class EndArmorItem extends Item {
-    public static final ResourceLocation BASE_BLINDNESS_RESISTANCE = BetterEnd.C.mk("base_blindness_resistance");
-    public static final ResourceLocation BASE_KNOCKBACK_RESISTANCE = BetterEnd.C.mk("base_knockback_resistance");
-    public static final ResourceLocation MAX_HEALTH_BOOST = BetterEnd.C.mk("max_health_boost");
-    public static final ResourceLocation TOUGHNESS_BOOST = BetterEnd.C.mk("toughness_boost");
-    public static final ResourceLocation ARMOR_BOOST = BetterEnd.C.mk("armor_boost");
+    public static final Identifier BASE_BLINDNESS_RESISTANCE = BetterEnd.C.mk("base_blindness_resistance");
+    public static final Identifier BASE_KNOCKBACK_RESISTANCE = BetterEnd.C.mk("base_knockback_resistance");
+    public static final Identifier MAX_HEALTH_BOOST = BetterEnd.C.mk("max_health_boost");
+    public static final Identifier TOUGHNESS_BOOST = BetterEnd.C.mk("toughness_boost");
+    public static final Identifier ARMOR_BOOST = BetterEnd.C.mk("armor_boost");
 
     /**
      * Attribute modifiers are keyed by id, and {@code LivingEntity#collectEquipmentChanges} applies each
@@ -26,12 +26,12 @@ public class EndArmorItem extends Item {
      * would grant a single piece's worth of armor. Vanilla avoids this by giving every slot its own id
      * ({@code minecraft:armor.helmet}, {@code armor.chestplate}, ...); these do the same.
      */
-    public static ResourceLocation armorBoostId(ArmorSlot slot) {
+    public static Identifier armorBoostId(ArmorSlot slot) {
         return BetterEnd.C.mk("armor_boost_" + slot.name);
     }
 
     /** Per-slot toughness modifier id. See {@link #armorBoostId(ArmorSlot)} for why it must be unique. */
-    public static ResourceLocation toughnessBoostId(ArmorSlot slot) {
+    public static Identifier toughnessBoostId(ArmorSlot slot) {
         return BetterEnd.C.mk("toughness_boost_" + slot.name);
     }
 

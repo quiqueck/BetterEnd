@@ -6,15 +6,16 @@ import org.betterx.betterend.entity.model.DragonflyEntityModel;
 import org.betterx.betterend.entity.render.state.DragonflyRenderState;
 import org.betterx.betterend.registry.EndEntitiesRenders;
 
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 
 public class RendererEntityDragonfly extends MobRenderer<DragonflyEntity, DragonflyRenderState, DragonflyEntityModel> {
-    private static final ResourceLocation TEXTURE = BetterEnd.C.mk("textures/entity/dragonfly.png");
-    private static final RenderType GLOW = RenderType.eyes(BetterEnd.C.mk("textures/entity/dragonfly_glow.png"));
+    private static final Identifier TEXTURE = BetterEnd.C.mk("textures/entity/dragonfly.png");
+    private static final RenderType GLOW = RenderTypes.eyes(BetterEnd.C.mk("textures/entity/dragonfly_glow.png"));
 
     public RendererEntityDragonfly(EntityRendererProvider.Context ctx) {
         super(ctx, new DragonflyEntityModel(ctx.bakeLayer(EndEntitiesRenders.DRAGONFLY_MODEL)), 0.5f);
@@ -32,7 +33,7 @@ public class RendererEntityDragonfly extends MobRenderer<DragonflyEntity, Dragon
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DragonflyRenderState state) {
+    public Identifier getTextureLocation(DragonflyRenderState state) {
         return TEXTURE;
     }
 }

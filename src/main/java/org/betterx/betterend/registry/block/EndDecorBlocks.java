@@ -127,7 +127,7 @@ public class EndDecorBlocks {
             .buildAndRegister();
 
     public static final Block HYDRALUX_PETAL_BLOCK = EndBlocks.defineBlock("hydralux_petal_block", HydraluxPetalBlock::new)
-            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PODZOL, true, false))
+            .addTrait(PlantBlockTrait.compostableWithColor(MapColor.PODZOL, true, false, OffsetType.NONE))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(BlockTraits.MINEABLE_WITH.needsAxe())
             .addTrait(ModelTraitLibrary.cube())

@@ -31,13 +31,13 @@ import net.fabricmc.api.Environment;
 
 public class CrystalSubblocksMaterial implements MaterialManager.Material {
     /** The shared, hand-authored emissive stair templates every lit-crystal stair child model parents from. */
-    private static final net.minecraft.resources.ResourceLocation LIT_STAIRS = BetterEnd.C.mk("block/lit_stairs");
-    private static final net.minecraft.resources.ResourceLocation LIT_STAIRS_INNER = BetterEnd.C.mk("block/lit_stairs_inner");
-    private static final net.minecraft.resources.ResourceLocation LIT_STAIRS_OUTER = BetterEnd.C.mk("block/lit_stairs_outer");
+    private static final net.minecraft.resources.Identifier LIT_STAIRS = BetterEnd.C.mk("block/lit_stairs");
+    private static final net.minecraft.resources.Identifier LIT_STAIRS_INNER = BetterEnd.C.mk("block/lit_stairs_inner");
+    private static final net.minecraft.resources.Identifier LIT_STAIRS_OUTER = BetterEnd.C.mk("block/lit_stairs_outer");
     /** The shared, hand-authored emissive wall templates the lit-crystal bricks wall child models parent from. */
-    private static final net.minecraft.resources.ResourceLocation LIT_WALL_POST = BetterEnd.C.mk("block/lit_wall_post");
-    private static final net.minecraft.resources.ResourceLocation LIT_WALL_SIDE = BetterEnd.C.mk("block/lit_wall_side");
-    private static final net.minecraft.resources.ResourceLocation LIT_WALL_SIDE_TALL = BetterEnd.C.mk("block/lit_wall_side_tall");
+    private static final net.minecraft.resources.Identifier LIT_WALL_POST = BetterEnd.C.mk("block/lit_wall_post");
+    private static final net.minecraft.resources.Identifier LIT_WALL_SIDE = BetterEnd.C.mk("block/lit_wall_side");
+    private static final net.minecraft.resources.Identifier LIT_WALL_SIDE_TALL = BetterEnd.C.mk("block/lit_wall_side_tall");
 
     public final Block polished;
     public final Block tiles;

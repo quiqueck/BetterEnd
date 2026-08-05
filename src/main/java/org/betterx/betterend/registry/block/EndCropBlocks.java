@@ -77,6 +77,7 @@ public class EndCropBlocks {
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_SHADOW_GRASS))
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
 
@@ -89,6 +90,7 @@ public class EndCropBlocks {
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_PINK_MOSS))
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
 
@@ -101,6 +103,7 @@ public class EndCropBlocks {
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_AMBER_MOSS))
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(WeightedCrossModelTrait.propertyDispatch(PottableCropBlock.AGE, List.of(
                             WeightedCrossModelTrait.Case.of(0, List.of(
                             WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/amber_root_0")),
@@ -131,6 +134,7 @@ public class EndCropBlocks {
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> ((PottableCropBlock) block).buildLoot(provider)))
             .addTrait(PottablePlantBlockTrait.withSoils(EndTags.SURVIVES_ON_CHORUS_NYLIUM))
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(WeightedCrossModelTrait.propertyDispatch(PottableCropBlock.AGE, List.of(
                             WeightedCrossModelTrait.Case.of(0, List.of(
                             WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/crop_block"), BetterEnd.C.mk("block/chorus_mushroom_0")),
@@ -157,6 +161,7 @@ public class EndCropBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.TERRACOTTA_ORANGE, false, false))
             .addTrait(VegetationTagTrait.plant())
             .addTrait(SurvivesOnSolidTrait.DEFAULT)
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(WeightedCrossModelTrait.propertyDispatch(CavePumpkinVineBlock.AGE, List.of(
                             WeightedCrossModelTrait.Case.of(0, List.of(
                             WeightedCrossModelTrait.cross(BetterEnd.C.mk("block/cave_pumpkin_stem_0")),
@@ -181,7 +186,9 @@ public class EndCropBlocks {
     public static final Block CAVE_PUMPKIN = EndBlocks.defineBlock("cave_pumpkin", CavePumpkinBlock::new)
             .lightLevel(state -> state.getValue(BlockProperties.SMALL) ? 10 : 15)
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
-            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> CavePumpkinBlock.buildLoot(block, provider)
+            ))
             .addTrait(ModelTraitLibrary.externalModelDelegatedItem())
             .buildAndRegister();
 

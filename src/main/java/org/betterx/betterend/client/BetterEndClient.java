@@ -22,12 +22,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
-import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 
 public class BetterEndClient implements ClientModInitializer {
     @Override
@@ -35,7 +32,7 @@ public class BetterEndClient implements ClientModInitializer {
         EndBlockEntityRenders.register();
         EndFlowerPotModels.register();
         EndScreens.register();
-        EndParticles.register();
+        EndParticleProviders.register();
         EndEntitiesRenders.register();
         EndModelProviders.register();
         MultiModelItem.register();
@@ -61,9 +58,8 @@ public class BetterEndClient implements ClientModInitializer {
         // "load a different model by id" helper. Re-enable the custom chorus flower/plant
         // model swap (GeneratorOptions.changeChorusPlant()) once a working replacement is found.
 
-        if (Configs.CLIENT_CONFIG.customSky.get()) {
-            DimensionRenderingRegistry.registerSkyRenderer(Level.END, new BetterEndSkyRenderer());
-        }
+        BetterEndSkyRenderer.register();
+
         //TODO: Trinkets integration disabled (dependency commented out in build.gradle)
 //        if (BetterEnd.TRINKETS_CORE.isLoaded()) {
 //            org.betterx.betterend.integration.trinkets.ElytraClient.register();

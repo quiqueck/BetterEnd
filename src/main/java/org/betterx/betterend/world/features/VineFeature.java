@@ -27,7 +27,7 @@ public class VineFeature extends InvertedScatterFeature<VineFeatureConfig> {
             BlockPos blockPos,
             float radius
     ) {
-        plant = cfg.getPlantState(random, blockPos);
+        plant = cfg.getPlantState(world, random, blockPos);
 
         BlockState state = world.getBlockState(blockPos);
         return state.canBeReplaced() && canPlaceBlock(state, world, blockPos);

@@ -2,11 +2,11 @@ package org.betterx.betterend.client.gui;
 
 import org.betterx.betterend.BetterEnd;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 import net.fabricmc.api.EnvType;
@@ -14,7 +14,7 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public class EndStoneSmelterScreen extends AbstractContainerScreen<EndStoneSmelterMenu> {
-    private final static ResourceLocation BACKGROUND_TEXTURE = BetterEnd.C.mk("textures/gui/smelter_gui.png");
+    private final static Identifier BACKGROUND_TEXTURE = BetterEnd.C.mk("textures/gui/smelter_gui.png");
 
     public EndStoneSmelterScreen(EndStoneSmelterMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -26,15 +26,7 @@ public class EndStoneSmelterScreen extends AbstractContainerScreen<EndStoneSmelt
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        renderBackground(guiGraphics, mouseX, mouseY, delta);
-        super.render(guiGraphics, mouseX, mouseY, delta);
-        renderTooltip(guiGraphics, mouseX, mouseY);
-    }
-
-    @Override
-    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
-        if (minecraft == null) return;
+    public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.blit(
                 RenderPipelines.GUI_TEXTURED,
                 BACKGROUND_TEXTURE,
@@ -76,5 +68,7 @@ public class EndStoneSmelterScreen extends AbstractContainerScreen<EndStoneSmelt
                 256,
                 256
         );
+
+        super.extractContents(guiGraphics, mouseX, mouseY, partialTick);
     }
 }

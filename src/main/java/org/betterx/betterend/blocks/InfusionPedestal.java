@@ -2,16 +2,24 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.entities.InfusionPedestalEntity;
+import org.betterx.betterend.client.effects.InfusionHint;
+import org.betterx.betterend.client.gui.InfusionRecipeScreen;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.betterend.rituals.InfusionRitual;
 import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -20,6 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -57,6 +66,53 @@ public class InfusionPedestal extends PedestalBlock {
                 ritual.checkRecipe();
             }
         }
+    }
+
+    /**
+     * Shows the socket hint as soon as the pedestal is placed - the ritual layout is the one thing a
+     * player cannot discover from the block itself.
+     * <p>
+     * Runs client-side only. {@code setPlacedBy} is invoked on both sides (the client places the
+     * block predictively), so the hint needs no packet; {@code ClientHooks} keeps the client-only
+     * classes off the dedicated server's resolution path.
+     */
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (level.isClientSide() && isPlaceable(state) && !InfusionRitual.allSocketsPresent(level, pos)) {
+            ClientHooks.showHint(level, pos);
+        }
+    }
+
+    /**
+     * An empty hand on an empty infusion pedestal is the mod's "tell me about this thing" gesture:
+     * with the ring incomplete it replays the socket hint, and with the ring in place it opens the
+     * infusion recipe book.
+     */
+    @Override
+    public InteractionResult useItemOn(
+            ItemStack itemStack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit
+    ) {
+        if (itemStack.isEmpty() && state.is(this) && isPlaceable(state)) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof InfusionPedestalEntity pedestal && pedestal.isEmpty()) {
+                if (level.isClientSide()) {
+                    if (InfusionRitual.allSocketsPresent(level, pos)) {
+                        ClientHooks.showRecipes();
+                    } else {
+                        ClientHooks.showHint(level, pos);
+                    }
+                }
+                return InteractionResult.CONSUME;
+            }
+        }
+        return super.useItemOn(itemStack, state, level, pos, player, hand, hit);
     }
 
     @Override
@@ -115,14 +171,30 @@ public class InfusionPedestal extends PedestalBlock {
         );
     }
 
+    /**
+     * Same reasoning as {@link Models}: the dedicated server strips {@code @Environment(CLIENT)}
+     * types, so every touch of the client-only hint/GUI classes goes through this holder, which is
+     * only ever resolved behind a {@code level.isClientSide()} check.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class ClientHooks {
+        private static void showHint(Level level, BlockPos pos) {
+            InfusionHint.trigger(level, pos);
+        }
+
+        private static void showRecipes() {
+            Minecraft.getInstance().setScreen(new InfusionRecipeScreen());
+        }
+    }
+
     @Environment(EnvType.CLIENT)
     protected TextureMapping createTextureMapping() {
-        final var parentTexture = TextureMapping.getBlockTexture(this);
+        final var parentTexture = TextureMapping.getBlockTexture(this).sprite();
         return new TextureMapping()
-                .put(TextureSlot.TOP, parentTexture.withSuffix("_top"))
-                .put(TextureSlot.BOTTOM, parentTexture.withSuffix("_base"))
-                .put(EndModels.BASE, parentTexture.withSuffix("_base"))
-                .put(EndModels.PILLAR, parentTexture.withSuffix("_pillar"));
+                .put(TextureSlot.TOP, new Material(parentTexture.withSuffix("_top")))
+                .put(TextureSlot.BOTTOM, new Material(parentTexture.withSuffix("_base")))
+                .put(EndModels.BASE, new Material(parentTexture.withSuffix("_base")))
+                .put(EndModels.PILLAR, new Material(parentTexture.withSuffix("_pillar")));
     }
 
     @Environment(EnvType.CLIENT)

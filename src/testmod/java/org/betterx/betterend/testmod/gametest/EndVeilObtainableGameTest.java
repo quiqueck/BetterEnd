@@ -3,18 +3,18 @@ package org.betterx.betterend.testmod.gametest;
 import org.betterx.betterend.recipe.builders.InfusionRecipe;
 import org.betterx.betterend.registry.EndEnchantments;
 import org.betterx.betterend.registry.block.EndStoneBlocks;
+import org.betterx.betterend.util.LootTableUtil;
 import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -36,7 +36,7 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
  * exactly the state this suite was written to catch.
  */
 public class EndVeilObtainableGameTest {
-    private static final ResourceLocation RECIPE_ID = ResourceLocation.parse("betterend:end_veil_book");
+    private static final Identifier RECIPE_ID = Identifier.parse("betterend:end_veil_book");
 
     /** 0.25 chance per roll, so 40 rolls put a false negative at about one in ten thousand. */
     private static final int LOOT_ROLLS = 40;
@@ -66,7 +66,7 @@ public class EndVeilObtainableGameTest {
                                              .recipeAccess()
                                              .getRecipes()
                                              .stream()
-                                             .filter(r -> r.id().location().equals(RECIPE_ID))
+                                             .filter(r -> r.id().identifier().equals(RECIPE_ID))
                                              .findFirst()
                                              .orElse(null);
 
@@ -75,7 +75,7 @@ public class EndVeilObtainableGameTest {
         } else if (!(holder.value() instanceof InfusionRecipe infusion)) {
             failures.add(RECIPE_ID + " is no longer an infusion recipe: " + holder.value().getClass());
         } else {
-            final ItemStack result = infusion.assemble(null, helper.getLevel().registryAccess());
+            final ItemStack result = infusion.assemble(null);
             if (!isEndVeilBook(result)) {
                 failures.add(RECIPE_ID + " assembled into " + result
                         + " rather than a book carrying betterend:end_veil"
@@ -93,7 +93,7 @@ public class EndVeilObtainableGameTest {
         final LootTable table = helper.getLevel()
                                       .getServer()
                                       .reloadableRegistries()
-                                      .getLootTable(BuiltInLootTables.END_CITY_TREASURE);
+                                      .getLootTable(LootTableUtil.END_CITY_EXTRA);
 
         final LootParams params = new LootParams.Builder(helper.getLevel())
                 .withParameter(
@@ -109,7 +109,7 @@ public class EndVeilObtainableGameTest {
 
         if (!sawBook) {
             helper.fail(Component.literal(
-                    "rolled the End City treasure table " + LOOT_ROLLS
+                    "rolled the End City extra table " + LOOT_ROLLS
                             + " times without ever seeing an End Veil book"
             ));
             return;

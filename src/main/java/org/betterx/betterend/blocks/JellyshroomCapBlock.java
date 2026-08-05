@@ -8,9 +8,10 @@ import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.ui.ColorUtil;
 import de.ambertation.wover.block.api.model.WoverBlockModelGenerators;
 
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -55,14 +56,15 @@ public class JellyshroomCapBlock extends SlimeBlock implements CustomColorProvid
         final var location = generator.createSimpleTemplatedBlock(
                 block,
                 EndModels.PETAL_COLORED,
-                new TextureMapping().put(TextureSlot.TEXTURE, BetterEnd.C.mk("block/jellyshroom_cap"))
+                new TextureMapping().put(TextureSlot.TEXTURE, new Material(BetterEnd.C.mk("block/jellyshroom_cap")))
         );
         generator.delegateItemModel(block, location);
     }
 
     @Override
-    public BlockColor getProvider() {
-        return (state, world, pos, tintIndex) -> {
+    @Environment(EnvType.CLIENT)
+    public BlockTintSource getProvider() {
+        return (state) -> {
             float delta = (float) state.getValue(COLOR) / 7F;
             int r = Mth.floor(Mth.lerp(delta, colorStart.getX() / 255F, colorEnd.getX() / 255F) * 255F);
             int g = Mth.floor(Mth.lerp(delta, colorStart.getY() / 255F, colorEnd.getY() / 255F) * 255F);

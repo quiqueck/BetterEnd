@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "cracked",
   "ingredient": "betterend:violecite",
   "result": {
-    "count": 1,
     "id": "betterend:violecite_tiles"
   }
 }

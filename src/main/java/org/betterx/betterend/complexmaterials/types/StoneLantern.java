@@ -57,7 +57,7 @@ public class StoneLantern extends SlotFromDefinition {
                     if (set.getBlock(SlotType.SLAB) == null) return;
 
                     RecipeBuilder
-                            .crafting(key.location(), block)
+                            .crafting(key.identifier(), block)
                             .shape("S", "#", "S")
                             .addMaterial('#', EndResourceItems.CRYSTAL_SHARDS)
                             .addMaterial('S', set.recipeMaterial(SlotType.SLAB))

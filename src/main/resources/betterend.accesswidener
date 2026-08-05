@@ -1,8 +1,7 @@
-accessWidener   v1  named
+accessWidener   v1  official
 
 # Classes
 accessible	class	net/minecraft/world/level/levelgen/SurfaceRules$SurfaceRule
-accessible class net/minecraft/server/level/ServerPlayer$RespawnPosAngle
 
 # Used from TravelerState
 # Fields
@@ -16,4 +15,3 @@ accessible class net/minecraft/server/level/ServerPlayer$RespawnPosAngle
 #accessible method net/minecraft/server/level/ServerPlayer triggerDimensionChangeTriggers (Lnet/minecraft/server/level/ServerLevel;)V
 #accessible method net/minecraft/world/entity/Entity unsetRemoved ()V
 #accessible method net/minecraft/world/entity/Entity removeAfterChangingDimensions ()V
-accessible method net/minecraft/server/level/ServerPlayer$RespawnPosAngle <init> (Lnet/minecraft/world/phys/Vec3;F)V

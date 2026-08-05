@@ -43,11 +43,11 @@ public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
         final RandomSource random = featureConfig.random();
         final BlockPos pos = featureConfig.origin();
         BushWithOuterFeatureConfig cfg = featureConfig.config();
-        BlockState outer_leaves = cfg.outer_leaves.getState(random, pos);
-        Block leaves = cfg.leaves.getState(random, pos).getBlock();
-        BlockState stem = cfg.stem.getState(random, pos);
-
         final WorldGenLevel world = featureConfig.level();
+        BlockState outer_leaves = cfg.outer_leaves.getState(world, random, pos);
+        Block leaves = cfg.leaves.getState(world, random, pos).getBlock();
+        BlockState stem = cfg.stem.getState(world, random, pos);
+
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES) && !world.getBlockState(pos.above())
                                                                                       .is(CommonBlockTags.END_STONES))
             return false;

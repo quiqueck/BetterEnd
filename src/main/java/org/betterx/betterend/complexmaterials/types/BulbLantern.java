@@ -57,7 +57,7 @@ public class BulbLantern extends SlotFromDefinition {
         return BlockTraits.RECIPE.with(
                 (key, block, context) -> {
                     RecipeBuilder
-                            .crafting(key.location(), block)
+                            .crafting(key.identifier(), block)
                             .shape("C", "I", "#")
                             .addMaterial('C', set.getBlock(MetalMaterial.CHAIN))
                             .addMaterial('I', set.getItem(MetalMaterial.INGOT))

@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "stairs",
   "ingredient": "betterend:terminite_block",
   "result": {
-    "count": 1,
     "id": "betterend:terminite_stairs"
   }
 }

@@ -40,12 +40,12 @@ public class JellyLucerniaWoodMaterial extends EndWoodenComplexMaterial {
             protected BlockRecipeTrait buildRecipe(BlockSet<?> set, BlockTraitLookup traitLookup) {
                 return BlockTraits.RECIPE.with(
                         (key, block, context) -> RecipeBuilder
-                                .crafting(key.location(), block)
+                                .crafting(key.identifier(), block)
                                 .outputCount(3)
                                 .shape("I I", "o#o", "o#o")
                                 .addMaterial('#', EndWoodBlocks.LUCERNIA.getBlock(WoodSlots.STRIPPED_LOG))
                                 .addMaterial('o', EndWoodBlocks.JELLYSHROOM.getBlock(WoodSlots.LOG))
-                                .addMaterial('I', Items.CHAIN)
+                                .addMaterial('I', Items.IRON_CHAIN)
                                 .group("sign")
                                 .category(RecipeCategory.DECORATIONS)
                                 .build(context)

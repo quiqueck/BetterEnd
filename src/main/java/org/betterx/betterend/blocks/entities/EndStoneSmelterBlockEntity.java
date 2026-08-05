@@ -457,7 +457,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
                         Item item = fuelStack.getItem();
                         fuelStack.shrink(1);
                         if (fuelStack.isEmpty()) {
-                            smelterEntity.inventory.set(EndStoneSmelterMenu.FUEL_SLOT, item.getCraftingRemainder());
+                            smelterEntity.inventory.set(EndStoneSmelterMenu.FUEL_SLOT, item.getCraftingRemainder().create());
                         }
                     }
                 }
@@ -515,7 +515,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
     ) {
         if (recipeInfo != null) {
             ItemStack resultItem
-                    = recipeInfo.holder().value().assemble(recipeInfo.input(), access);
+                    = recipeInfo.holder().value().assemble(recipeInfo.input());
             createResultItem(inventory, resultItem, recipeInfo.growsResultBy());
 
             inputState.inputA().shrink(1);
@@ -534,7 +534,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
             NonNullList<ItemStack> inventory
     ) {
         if (recipeInfo != null) {
-            ItemStack resultItem = recipeInfo.holder().value().assemble(recipeInfo.input(), access);
+            ItemStack resultItem = recipeInfo.holder().value().assemble(recipeInfo.input());
             createResultItem(inventory, resultItem, recipeInfo.growsResultBy());
 
             if (inputState.singleInput().is(Blocks.WET_SPONGE.asItem())
@@ -578,7 +578,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
             int maxStackSize
     ) {
         if (recipeInfo.holder() != null && inputState.hasBothInputs()) {
-            ItemStack resultItem = recipeInfo.holder().value().assemble(recipeInfo.input(), lookup);
+            ItemStack resultItem = recipeInfo.holder().value().assemble(recipeInfo.input());
             return canStore(inventory, maxStackSize, resultItem, 3);
         } else {
             return false;
@@ -593,7 +593,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
             int maxStackSize
     ) {
         if (recipeInfo.holder() != null && inputState.hasOneInput()) {
-            ItemStack resultItem = recipeInfo.holder().value().assemble(recipeInfo.input(), lookup);
+            ItemStack resultItem = recipeInfo.holder().value().assemble(recipeInfo.input());
             return canStore(inventory, maxStackSize, resultItem, 1);
         } else {
             return false;

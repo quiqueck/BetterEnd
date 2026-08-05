@@ -13,7 +13,7 @@ import de.ambertation.wover.item.impl.trait.ItemTraitImpl;
 import de.ambertation.wover.tag.api.predefined.CommonItemTags;
 import de.ambertation.wover.tag.api.predefined.MineableTags;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class HammerTraitBuilder extends AbstractItemTraitBuilder.Generic {
-    public final static ResourceLocation ATTACK_KNOCKBACK_MODIFIER_ID = BetterEnd.C.mk("base_knockback");
+    public final static Identifier ATTACK_KNOCKBACK_MODIFIER_ID = BetterEnd.C.mk("base_knockback");
     public static final HammerTraitBuilder BUILDER = new HammerTraitBuilder();
 
     private HammerTraitBuilder() {

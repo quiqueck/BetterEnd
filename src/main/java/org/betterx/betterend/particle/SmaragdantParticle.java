@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -76,11 +77,6 @@ public class SmaragdantParticle extends SimpleAnimatedParticle {
         super.tick();
     }
 
-    @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
     @Environment(EnvType.CLIENT)
     public static class SmaragdantParticleFactory implements ParticleProvider<SimpleParticleType> {
 
@@ -99,7 +95,8 @@ public class SmaragdantParticle extends SimpleAnimatedParticle {
                 double z,
                 double vX,
                 double vY,
-                double vZ
+                double vZ,
+                RandomSource randomSource
         ) {
             return new SmaragdantParticle(world, x, y, z, 1, 1, 1, sprites);
         }

@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "wall",
   "ingredient": "betterend:end_stone_brick_cracked",
   "result": {
-    "count": 1,
     "id": "betterend:end_stone_brick_cracked_wall"
   }
 }

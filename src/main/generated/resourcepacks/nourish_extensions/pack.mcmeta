@@ -3,6 +3,10 @@
     "description": {
       "translate": "pack.betterend.nourish_extensions.description"
     },
-    "pack_format": 81
+    "max_format": 101,
+    "min_format": [
+      101,
+      1
+    ]
   }
 }

@@ -24,7 +24,7 @@ public class Tile extends SlotFromDefinition {
         return BlockTraits.RECIPE.with(
                 (key, block, context) -> {
                     RecipeBuilder
-                            .crafting(key.location(), block)
+                            .crafting(key.identifier(), block)
                             .outputCount(4)
                             .shape("##", "##")
                             .addMaterial('#', metalMaterial.getBaseBlock())
@@ -32,7 +32,7 @@ public class Tile extends SlotFromDefinition {
                             .build(context);
 
                     RecipeBuilder
-                            .stonecutting(key.location().withPrefix("_stonecutting"), block)
+                            .stonecutting(key.identifier().withPrefix("_stonecutting"), block)
                             .input(metalMaterial.getBaseBlock())
                             .group("end_metal_tiles")
                             .build(context);

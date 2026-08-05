@@ -3,20 +3,20 @@ package org.betterx.betterend.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 import org.joml.Matrix4f;
 
 public class BeamRenderer {
-    private static final ResourceLocation BEAM_TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/end_gateway_beam.png");
+    private static final Identifier BEAM_TEXTURE = Identifier.withDefaultNamespace("textures/entity/end_gateway_beam.png");
 
     public static void renderLightBeam(
             PoseStack matrices,
-            MultiBufferSource vertexConsumers,
+            SubmitNodeCollector submitNodeCollector,
             int age,
             float tick,
             int minY,
@@ -38,62 +38,63 @@ public class BeamRenderer {
         float maxV = (float) maxY * (0.5F / beamIn) + minV;
         float rotation = (age + tick) / 25.0F + 6.0F;
 
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.beaconBeam(BEAM_TEXTURE, true));
-
         matrices.pushPose();
         matrices.mulPose(Axis.YP.rotation(-rotation));
-        renderBeam(
-                matrices,
-                vertexConsumer,
-                red,
-                green,
-                blue,
-                alpha,
-                minY,
-                maxBY,
-                beamIn,
-                0.0F,
-                0.0F,
-                beamIn,
-                0.0F,
-                xIn,
-                xIn,
-                0.0F,
-                0.0F,
-                1.0F,
-                minV,
-                maxV
-        );
 
-        float xOut = -beamOut;
-        maxV = (float) maxY + minV;
-        renderBeam(
-                matrices,
-                vertexConsumer,
-                red,
-                green,
-                blue,
-                alpha,
-                minY,
-                maxBY,
-                xOut,
-                xOut,
-                beamOut,
-                xOut,
-                xOut,
-                beamOut,
-                beamOut,
-                beamOut,
-                0.0F,
-                1.0F,
-                minV,
-                maxV
-        );
+        submitNodeCollector.submitCustomGeometry(matrices, RenderTypes.beaconBeam(BEAM_TEXTURE, true), (pose, buffer) -> {
+            renderBeam(
+                    pose,
+                    buffer,
+                    red,
+                    green,
+                    blue,
+                    alpha,
+                    minY,
+                    maxBY,
+                    beamIn,
+                    0.0F,
+                    0.0F,
+                    beamIn,
+                    0.0F,
+                    xIn,
+                    xIn,
+                    0.0F,
+                    0.0F,
+                    1.0F,
+                    minV,
+                    maxV
+            );
+
+            float xOut = -beamOut;
+            float outMaxV = (float) maxY + minV;
+            renderBeam(
+                    pose,
+                    buffer,
+                    red,
+                    green,
+                    blue,
+                    alpha,
+                    minY,
+                    maxBY,
+                    xOut,
+                    xOut,
+                    beamOut,
+                    xOut,
+                    xOut,
+                    beamOut,
+                    beamOut,
+                    beamOut,
+                    0.0F,
+                    1.0F,
+                    minV,
+                    outMaxV
+            );
+        });
         matrices.popPose();
     }
 
     private static void renderBeam(
-            PoseStack matrices,
+            PoseStack.Pose entry,
             VertexConsumer vertexConsumer,
             float red,
             float green,
@@ -114,12 +115,10 @@ public class BeamRenderer {
             float minV,
             float maxV
     ) {
-        PoseStack.Pose entry = matrices.last();
         Matrix4f matrix4f = entry.pose();
-        PoseStack.Pose matrix3f = entry;
         renderBeam(
                 matrix4f,
-                matrix3f,
+                entry,
                 vertexConsumer,
                 red,
                 green,
@@ -138,7 +137,7 @@ public class BeamRenderer {
         );
         renderBeam(
                 matrix4f,
-                matrix3f,
+                entry,
                 vertexConsumer,
                 red,
                 green,
@@ -157,7 +156,7 @@ public class BeamRenderer {
         );
         renderBeam(
                 matrix4f,
-                matrix3f,
+                entry,
                 vertexConsumer,
                 red,
                 green,
@@ -176,7 +175,7 @@ public class BeamRenderer {
         );
         renderBeam(
                 matrix4f,
-                matrix3f,
+                entry,
                 vertexConsumer,
                 red,
                 green,

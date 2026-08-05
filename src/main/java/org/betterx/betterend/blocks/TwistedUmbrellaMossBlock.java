@@ -40,7 +40,7 @@ public class TwistedUmbrellaMossBlock extends BasePlantBlock {
 
     @Override
     public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
-        int rot = world.random.nextInt(4);
+        int rot = world.getRandom().nextInt(4);
         BlockState bs = EndPlantBlocks.TWISTED_UMBRELLA_MOSS_TALL.defaultBlockState()
                                                             .setValue(BaseDoublePlantBlock.ROTATION, rot);
         BlocksHelper.setWithoutUpdate(world, pos, bs);

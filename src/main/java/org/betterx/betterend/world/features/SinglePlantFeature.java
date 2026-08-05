@@ -35,7 +35,7 @@ public class SinglePlantFeature extends ScatterFeature<SinglePlantFeatureConfig>
             BlockPos blockPos,
             float radius
     ) {
-        this.plant = cfg.getPlantState(random, blockPos);
+        this.plant = cfg.getPlantState(world, random, blockPos);
         //noinspection deprecation
         return plant.canSurvive(world, blockPos);
     }

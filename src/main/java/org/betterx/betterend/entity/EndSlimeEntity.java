@@ -29,7 +29,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
@@ -136,7 +136,7 @@ public class EndSlimeEntity extends Slime {
     @Override
     public void remove(RemovalReason reason) {
         int i = this.getSize();
-        if (!this.level().isClientSide && i > 1 && this.isDeadOrDying()) {
+        if (!this.level().isClientSide() && i > 1 && this.isDeadOrDying()) {
             Component text = this.getCustomName();
             boolean bl = this.isNoAi();
             float f = (float) i / 4.0F;
@@ -251,7 +251,7 @@ public class EndSlimeEntity extends Slime {
             // finalizeSpawn, but are dry, so the water-near fallback below almost never fires there
             // - especially Amber Land. Give them a low waterless spawn rate so those variants
             // actually appear. Tune the 1-in-8 chance to taste.
-            if (biome.equals(EndBiomes.FOGGY_MUSHROOMLAND) || biome.equals(EndBiomes.AMBER_LAND)) {
+            if (biome.is(EndBiomes.FOGGY_MUSHROOMLAND.key) || biome.is(EndBiomes.AMBER_LAND.key)) {
                 return random.nextInt(8) == 0;
             }
         }

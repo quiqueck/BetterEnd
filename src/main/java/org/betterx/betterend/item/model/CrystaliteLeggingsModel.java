@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
 public class CrystaliteLeggingsModel extends HumanoidModel<HumanoidRenderState> {
@@ -61,7 +61,7 @@ public class CrystaliteLeggingsModel extends HumanoidModel<HumanoidRenderState> 
     }
 
     public CrystaliteLeggingsModel(ModelPart modelPart) {
-        super(modelPart, RenderType::entityTranslucent);
+        super(modelPart, RenderTypes::entityTranslucent);
 
         myBody = modelPart.getChild(PartNames.BODY);
         myLeftLeg = modelPart.getChild(PartNames.LEFT_LEG);

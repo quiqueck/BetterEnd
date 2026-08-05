@@ -1,5 +1,6 @@
 package org.betterx.betterend.blocks.entities;
 
+import org.betterx.betterend.client.effects.InfusionHint;
 import org.betterx.betterend.registry.EndBlockEntities;
 import org.betterx.betterend.rituals.InfusionRitual;
 
@@ -10,6 +11,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class InfusionPedestalEntity extends PedestalBlockEntity {
     private InfusionRitual linkedRitual;
@@ -75,6 +79,25 @@ public class InfusionPedestalEntity extends PedestalBlockEntity {
                 blockEntity.linkedRitual.tick();
             }
             //PedestalBlockEntity.tick(level, blockPos, blockState, blockEntity);
+
+            // Driven from the ticker rather than the renderer so the mist spawns at a fixed rate
+            // instead of once per frame.
+            if (level.isClientSide()) {
+                ClientHooks.spawnHintMist(level, blockPos);
+            }
+        }
+    }
+
+    /**
+     * Same reasoning as {@code InfusionPedestal.ClientHooks}: the dedicated server strips
+     * {@code @Environment(CLIENT)} types, so the client-only hint is only ever reached through a
+     * holder resolved behind a {@code level.isClientSide()} check.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class ClientHooks {
+        private static void spawnHintMist(Level level, BlockPos pos) {
+            InfusionHint.spawnMist(level, pos);
+            InfusionHint.tickFlash(level, pos);
         }
     }
 }

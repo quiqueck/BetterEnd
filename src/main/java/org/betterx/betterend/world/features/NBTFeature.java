@@ -13,7 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.WorldGenLevel;
@@ -55,7 +55,7 @@ public abstract class NBTFeature<FC extends NBTFeatureConfig> extends Feature<FC
 
     protected BlockPos getGround(WorldGenLevel world, BlockPos center) {
         Holder<Biome> biome = world.getBiome(center);
-        ResourceLocation id = biome.unwrapKey().map(ResourceKey::location).orElse(null);
+        Identifier id = biome.unwrapKey().map(ResourceKey::identifier).orElse(null);
         if (id != null && (id.getNamespace().contains("moutain") || id.getNamespace().contains("lake"))) {
             int y = getAverageY(world, center);
             return new BlockPos(center.getX(), y, center.getZ());

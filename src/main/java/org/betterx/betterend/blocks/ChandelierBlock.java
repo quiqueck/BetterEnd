@@ -12,6 +12,7 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -35,7 +36,7 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal {
     public ChandelierBlock(Block source) {
         super(BlockBehaviour.Properties.ofFullCopy(source)
                                        .lightLevel((bs) -> 15)
-                                       .noCollission()
+                                       .noCollision()
                                        .noOcclusion()
                                        .requiresCorrectToolForDrops());
     }
@@ -65,11 +66,11 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal {
         private static BlockModelTrait build() {
             return ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> {
-                        final var baseTexture = TextureMapping.getBlockTexture(block);
+                        final var baseTexture = TextureMapping.getBlockTexture(block).sprite();
                         final var mapping = new TextureMapping()
-                                .put(EndModels.WALL, baseTexture.withSuffix("_wall"))
-                                .put(EndModels.FLOOR, baseTexture.withSuffix("_floor"))
-                                .put(EndModels.CEIL, baseTexture.withSuffix("_ceil"));
+                                .put(EndModels.WALL, new Material(baseTexture.withSuffix("_wall")))
+                                .put(EndModels.FLOOR, new Material(baseTexture.withSuffix("_floor")))
+                                .put(EndModels.CEIL, new Material(baseTexture.withSuffix("_ceil")));
 
                         final var modelCeil = EndModels.CHANDELIER_CEIL.createWithSuffix(
                                 block,
@@ -130,7 +131,7 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal {
                         // ceiling block model: chandeliers are thin/complex blocks that read better as a flat
                         // item icon. (There is no block/<name>.png, only the _wall/_floor/_ceil variants, so
                         // the flat item must be pointed at the item texture explicitly.)
-                        generator.createFlatItem(block, TextureMapping.getItemTexture(block.asItem()));
+                        generator.createFlatItem(block, TextureMapping.getItemTexture(block.asItem()).sprite());
                     });
         }
     }

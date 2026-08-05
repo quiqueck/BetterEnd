@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.entity.HumanoidArm;
 
@@ -111,7 +111,7 @@ public class CrystaliteChestplateModel extends HumanoidModel<HumanoidRenderState
     }
 
     protected CrystaliteChestplateModel(ModelPart modelPart, boolean thinArms) {
-        super(modelPart, RenderType::entityTranslucent);
+        super(modelPart, RenderTypes::entityTranslucent);
         this.thinArms = thinArms;
         localBody = modelPart.getChild(PartNames.BODY);
         this.leftShoulder = modelPart.getChild("leftShoulder");
@@ -121,12 +121,12 @@ public class CrystaliteChestplateModel extends HumanoidModel<HumanoidRenderState
 
     @Override
     public void copyExtraState() {
-        this.leftShoulder.copyFrom(leftArm);
-        this.rightShoulder.copyFrom(rightArm);
+        this.leftShoulder.loadPose(leftArm.storePose());
+        this.rightShoulder.loadPose(rightArm.storePose());
     }
 
     @Override
-    public void translateToHand(HumanoidArm arm, PoseStack matrices) {
+    public void translateToHand(HumanoidRenderState renderState, HumanoidArm arm, PoseStack matrices) {
         ModelPart modelPart = this.getArm(arm);
         if (this.thinArms) {
             float f = 0.5F * (float) (arm == HumanoidArm.RIGHT ? 1 : -1);

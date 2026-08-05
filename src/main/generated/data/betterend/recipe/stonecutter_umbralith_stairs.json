@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "stairs",
   "ingredient": "betterend:umbralith",
   "result": {
-    "count": 1,
     "id": "betterend:umbralith_stairs"
   }
 }

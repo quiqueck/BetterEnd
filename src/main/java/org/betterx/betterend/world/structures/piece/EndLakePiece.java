@@ -18,7 +18,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -97,7 +97,7 @@ public class EndLakePiece extends BasePiece {
         tag.putInt("water_level", waterLevel);
         tag.putFloat("radius", radius);
         tag.putFloat("depth", depth);
-        tag.putString("biome", biomeID == null ? "" : biomeID.location().toString());
+        tag.putString("biome", biomeID == null ? "" : biomeID.identifier().toString());
     }
 
     @Override
@@ -106,7 +106,7 @@ public class EndLakePiece extends BasePiece {
         waterLevel = tag.getIntOr("water_level", center.getY());
         radius = tag.getFloatOr("radius", 0);
         depth = tag.getFloatOr("depth", 0);
-        biomeID = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(tag.getStringOr("biome", "")));
+        biomeID = ResourceKey.create(Registries.BIOME, Identifier.parse(tag.getStringOr("biome", "")));
     }
 
     private void makeBoundingBox() {
@@ -325,9 +325,9 @@ public class EndLakePiece extends BasePiece {
             ChunkPos chunkPos,
             BlockPos blockPos
     ) {
-        final ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
-        final int sx = SectionPos.sectionToBlockCoord(chunkPos.x);
-        final int sz = SectionPos.sectionToBlockCoord(chunkPos.z);
+        final ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
+        final int sx = SectionPos.sectionToBlockCoord(chunkPos.x());
+        final int sz = SectionPos.sectionToBlockCoord(chunkPos.z());
 
         final double radius = this.radius;
         final double depth = this.depth;

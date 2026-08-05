@@ -21,7 +21,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -53,12 +53,21 @@ public class EternalRitual {
             new Point(6, 0)
     );
 
+    /**
+     * The pedestal offsets the ritual checks, for anything that needs to show the same layout without
+     * re-stating it - see {@code EternalHint}. Reading the ritual's own set means a vision can never
+     * teach a structure {@code checkStructure} would reject.
+     */
+    public static Set<Point> pedestalOffsets() {
+        return java.util.Collections.unmodifiableSet(PEDESTAL_POSITIONS);
+    }
+
     private final static Block PEDESTAL = EndFunctionalBlocks.ETERNAL_PEDESTAL;
     public final static BooleanProperty ACTIVE = BlockProperties.ACTIVE;
 
     private Level world;
     private Direction.Axis axis;
-    private ResourceLocation targetWorldId;
+    private Identifier targetWorldId;
     private BlockPos center;
     private BlockPos exit;
     private boolean active = false;
@@ -90,7 +99,7 @@ public class EternalRitual {
     }
 
     @Nullable
-    public ResourceLocation getTargetWorldId() {
+    public Identifier getTargetWorldId() {
         return targetWorldId;
     }
 
@@ -210,10 +219,10 @@ public class EternalRitual {
         willActivate = true;
         updateActiveStateOnPedestals();
 
-        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(keyItem);
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(keyItem);
         int portalId = EndPortals.getPortalIdByItem(itemId);
         Level targetWorld = getTargetWorld(portalId);
-        ResourceLocation worldId = targetWorld.dimension().location();
+        Identifier worldId = targetWorld.dimension().identifier();
         try {
             if (exit == null) {
                 initPortal(player, worldId, portalId);
@@ -243,7 +252,7 @@ public class EternalRitual {
         }
     }
 
-    private void initPortal(Player player, ResourceLocation worldId, int portalId) {
+    private void initPortal(Player player, Identifier worldId, int portalId) {
         targetWorldId = worldId;
         if (world instanceof ServerLevel sourceWorld) {
             ServerLevel targetLevel = (ServerLevel) getTargetWorld(portalId);
@@ -511,7 +520,7 @@ public class EternalRitual {
             exit = tag.read("exit", BlockPos.CODEC).orElse(BlockPos.ZERO);
         }
         if (tag.contains("key_item")) {
-            targetWorldId = ResourceLocation.parse(tag.getStringOr("key_item", ""));
+            targetWorldId = Identifier.parse(tag.getStringOr("key_item", ""));
         }
     }
 

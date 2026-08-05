@@ -9,7 +9,7 @@ import org.betterx.betterend.world.biome.EndBiome;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public class NBTPiece extends BasePiece {
-    private ResourceLocation structureID;
+    private Identifier structureID;
     private Rotation rotation;
     private Mirror mirror;
     private StructureTemplate structure;
@@ -32,7 +32,7 @@ public class NBTPiece extends BasePiece {
     private boolean cover;
 
     public NBTPiece(
-            ResourceLocation structureID,
+            Identifier structureID,
             StructureTemplate structure,
             BlockPos pos,
             int erosion,
@@ -68,7 +68,7 @@ public class NBTPiece extends BasePiece {
 
     @Override
     protected void fromNbt(CompoundTag tag) {
-        structureID = ResourceLocation.parse(tag.getStringOr("structureID", ""));
+        structureID = Identifier.parse(tag.getStringOr("structureID", ""));
         rotation = Rotation.values()[tag.getIntOr("rotation", 0)];
         mirror = Mirror.values()[tag.getIntOr("mirror", 0)];
         erosion = tag.getIntOr("erosion", 0);

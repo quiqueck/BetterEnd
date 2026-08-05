@@ -64,7 +64,7 @@ public class CrystalMountainPiece extends MountainPiece {
             BlockPos blockPos
     ) {
         final MutableBlockPos pos = GlobalState.stateForThread().POS;
-        ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
+        ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
         Heightmap map = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE);
 
         placeMountain(world, chunkPos, chunk, pos);

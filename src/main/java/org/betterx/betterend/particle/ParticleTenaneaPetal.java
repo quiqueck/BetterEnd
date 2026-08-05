@@ -6,19 +6,20 @@ import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-public class ParticleTenaneaPetal extends TextureSheetParticle {
-    private static BlockColor provider;
+public class ParticleTenaneaPetal extends SingleQuadParticle {
+    private static BlockTintSource provider;
 
     private double preVX;
     private double preVY;
@@ -37,14 +38,13 @@ public class ParticleTenaneaPetal extends TextureSheetParticle {
             double b,
             SpriteSet sprites
     ) {
-        super(world, x, y, z, r, g, b);
-        pickSprite(sprites);
+        super(world, x, y, z, r, g, b, sprites.get(world.getRandom()));
 
         if (provider == null) {
             CustomColorProvider block = (CustomColorProvider) EndWoodBlocks.TENANEA_FLOWERS;
             provider = block.getProvider();
         }
-        int color = provider.getColor(null, null, new BlockPos((int) x, (int) y, (int) z), 0);
+        int color = provider.colorInWorld(null, null, new BlockPos((int) x, (int) y, (int) z));
         this.rCol = ((color >> 16) & 255) / 255F;
         this.gCol = ((color >> 8) & 255) / 255F;
         this.bCol = ((color) & 255) / 255F;
@@ -63,7 +63,7 @@ public class ParticleTenaneaPetal extends TextureSheetParticle {
     }
 
     @Override
-    public int getLightColor(float tint) {
+    public int getLightCoords(float tint) {
         return 15728880;
     }
 
@@ -98,8 +98,8 @@ public class ParticleTenaneaPetal extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    protected SingleQuadParticle.Layer getLayer() {
+        return SingleQuadParticle.Layer.TRANSLUCENT;
     }
 
     @Environment(EnvType.CLIENT)
@@ -120,7 +120,8 @@ public class ParticleTenaneaPetal extends TextureSheetParticle {
                 double z,
                 double vX,
                 double vY,
-                double vZ
+                double vZ,
+                RandomSource randomSource
         ) {
             return new ParticleTenaneaPetal(world, x, y, z, 1, 1, 1, sprites);
         }

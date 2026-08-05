@@ -77,7 +77,9 @@ public class EndFunctionalBlocks {
             .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
             .addTrait(ModelTraitLibrary.externalModel())
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
-            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> SilkMothNestBlock.buildLoot(block, provider)
+            ))
             .buildAndRegister();
 
     public static final Block SILK_MOTH_HIVE = EndBlocks.defineBlock("silk_moth_hive", SilkMothHiveBlock::new)
@@ -97,7 +99,9 @@ public class EndFunctionalBlocks {
             .addTrait(BlockTraits.STONE_BLOCK)
             .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
             .addTrait(ModelTraitLibrary.externalModel())
-            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            .addTrait(BlockTraits.LOOT_TABLE.with(
+                    (tableKey, blockKey, block, provider) -> RespawnObeliskBlock.buildLoot(block, provider)
+            ))
             .buildAndRegister();
 
     public static final Block END_STONE_SMELTER = EndBlocks.defineBlock("end_stone_smelter", EndStoneSmelter::new)

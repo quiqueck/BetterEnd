@@ -12,11 +12,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -38,7 +39,7 @@ public class MengerSpongeWetBlock extends Block {
 
     @Override
     public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
-        if (world.dimensionType().ultraWarm()) {
+        if (world.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos)) {
             world.setBlock(pos, EndDecorBlocks.MENGER_SPONGE.defaultBlockState(), 3);
             world.levelEvent(2009, pos, 0);
             world.playSound(
@@ -98,7 +99,7 @@ public class MengerSpongeWetBlock extends Block {
             world.levelEvent(2001, pos, getId(state));
         }
         if (world instanceof ServerLevel serverLevel
-                && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
+                && serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)
                 && (player == null || !player.isCreative())) {
             ItemEntity drop = new ItemEntity(
                     world,

@@ -89,7 +89,7 @@ public abstract class FeatureBaseStructure extends Structure {
             LevelHeightAccessor levelHeightAccessor,
             RandomState rState
     ) {
-        LegacyRandomSource random = new LegacyRandomSource(chunkPos.x + chunkPos.z * 10387313);
+        LegacyRandomSource random = new LegacyRandomSource(chunkPos.x() + chunkPos.z() * 10387313);
         Rotation blockRotation = Rotation.getRandom(random);
 
         int offsetX = 5;

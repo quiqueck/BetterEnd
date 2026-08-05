@@ -5,7 +5,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.ui.ColorUtil;
 
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +13,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class HelixTreeLeavesBlock extends Block implements CustomColorProvider {
     public static final IntegerProperty COLOR = EndBlockProperties.COLOR;
@@ -28,8 +31,9 @@ public class HelixTreeLeavesBlock extends Block implements CustomColorProvider {
     }
 
     @Override
-    public BlockColor getProvider() {
-        return (state, world, pos, tintIndex) -> ColorUtil.color(237, getGreen(state.getValue(COLOR)), 20);
+    @Environment(EnvType.CLIENT)
+    public BlockTintSource getProvider() {
+        return (state) -> ColorUtil.color(237, getGreen(state.getValue(COLOR)), 20);
     }
 
     @Override

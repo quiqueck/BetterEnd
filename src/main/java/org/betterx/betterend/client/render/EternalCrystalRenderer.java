@@ -6,7 +6,6 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.AuroraCrystalBlock;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,10 +13,12 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 // TODO make crystals bright
@@ -30,39 +31,56 @@ public class EternalCrystalRenderer {
             int age,
             float tickDelta,
             PoseStack matrices,
-            MultiBufferSource vertexConsumerProvider,
+            SubmitNodeCollector submitNodeCollector,
             int light
     ) {
-        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RENDER_LAYER);
-        int color = colors(age);
+        render(age, tickDelta, matrices, submitNodeCollector, light, 1.0F);
+    }
+
+    /**
+     * Renders the crystal at {@code alpha}, for the ghosts the eternal portal vision hangs above its
+     * pedestals. The layer is already {@code entityTranslucent}, so the alpha only had to be carried
+     * into the tint colour - it just was not, and a ghost crystal appeared at full opacity the instant
+     * the vision started rather than fading in with it.
+     */
+    public static void render(
+            int age,
+            float tickDelta,
+            PoseStack matrices,
+            SubmitNodeCollector submitNodeCollector,
+            int light,
+            float alpha
+    ) {
+        int color = ARGB.color((int) (Mth.clamp(alpha, 0.0F, 1.0F) * 255), colors(age));
         float rotation = (age + tickDelta) / 25.0F + 6.0F;
-        matrices.pushPose();
-        matrices.scale(0.6F, 0.6F, 0.6F);
-        matrices.mulPose(Axis.YP.rotation(rotation));
+        submitNodeCollector.submitCustomGeometry(matrices, RENDER_LAYER, (pose, buffer) -> {
+            PoseStack local = new PoseStack();
+            local.mulPose(pose.pose());
+            local.scale(0.6F, 0.6F, 0.6F);
+            local.mulPose(Axis.YP.rotation(rotation));
 
-        CORE.render(
-                matrices,
-                vertexConsumer,
-                light,
-                OverlayTexture.NO_OVERLAY,
-                color
-        );
-
-        for (int i = 0; i < 4; i++) {
-            matrices.pushPose();
-            float offset = Mth.sin(rotation * 2 + i) * 0.15F;
-            matrices.translate(0, offset, 0);
-            SHARDS[i].render(
-                    matrices,
-                    vertexConsumer,
+            CORE.render(
+                    local,
+                    buffer,
                     light,
                     OverlayTexture.NO_OVERLAY,
                     color
             );
-            matrices.popPose();
-        }
 
-        matrices.popPose();
+            for (int i = 0; i < 4; i++) {
+                local.pushPose();
+                float offset = Mth.sin(rotation * 2 + i) * 0.15F;
+                local.translate(0, offset, 0);
+                SHARDS[i].render(
+                        local,
+                        buffer,
+                        light,
+                        OverlayTexture.NO_OVERLAY,
+                        color
+                );
+                local.popPose();
+            }
+        });
     }
 
     public static int colors(int age) {
@@ -119,7 +137,7 @@ public class EternalCrystalRenderer {
     }
 
     static {
-        RENDER_LAYER = RenderType.itemEntityTranslucentCull(BetterEnd.C.mk("textures/entity/eternal_crystal.png"));
+        RENDER_LAYER = RenderTypes.entityTranslucent(BetterEnd.C.mk("textures/entity/eternal_crystal.png"));
         SHARDS = new ModelPart[4];
 
         ModelPart root = getTexturedModelData().bakeRoot();

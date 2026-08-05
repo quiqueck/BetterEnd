@@ -9,8 +9,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
-import net.minecraft.world.level.dimension.end.DragonRespawnAnimation;
-import net.minecraft.world.level.dimension.end.EndDragonFight;
+import net.minecraft.world.level.dimension.end.DragonRespawnStage;
+import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.phys.AABB;
 
 import com.google.common.collect.Lists;
@@ -24,14 +24,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(EndDragonFight.class)
+@Mixin(EnderDragonFight.class)
 public class EndDragonFightMixin {
     @Shadow
-    private DragonRespawnAnimation respawnStage;
+    private DragonRespawnStage respawnStage;
     @Shadow
     private boolean dragonKilled;
     @Shadow
-    private BlockPos portalLocation;
+    private BlockPos exitPortalLocation;
     @Shadow
     @Final
     private static Logger LOGGER;
@@ -55,7 +55,7 @@ public class EndDragonFightMixin {
     @Inject(method = "tryRespawn", at = @At("HEAD"), cancellable = true)
     private void be_tryRespawnDragon(CallbackInfo info) {
         if (GeneratorOptions.replacePortal() && GeneratorOptions.hasDragonFights() && this.dragonKilled && this.respawnStage == null) {
-            BlockPos blockPos = portalLocation;
+            BlockPos blockPos = exitPortalLocation;
             if (blockPos == null) {
                 LOGGER.debug("Tried to respawn, but need to find the portal first.");
                 BlockPattern.BlockPatternMatch blockPatternMatch = this.findExitPortal();

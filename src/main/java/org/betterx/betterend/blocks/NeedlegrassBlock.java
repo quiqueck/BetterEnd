@@ -26,7 +26,7 @@ public class NeedlegrassBlock extends BasePlantBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier insideBlockEffectApplier) {
+    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier insideBlockEffectApplier, boolean flag) {
         if (entity instanceof LivingEntity) {
             entity.hurt(world.damageSources().cactus(), 0.1F);
         }

@@ -4,7 +4,7 @@
   "group": "hanging_sign",
   "key": {
     "#": "betterend:dragon_tree_stripped_log",
-    "I": "minecraft:chain"
+    "I": "minecraft:iron_chain"
   },
   "pattern": [
     "I I",

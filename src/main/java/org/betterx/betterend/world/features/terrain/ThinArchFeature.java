@@ -35,7 +35,7 @@ public class ThinArchFeature extends Feature<ThinArchFeatureConfig> {
         final WorldGenLevel world = featurePlaceContext.level();
         BlockPos origin = featurePlaceContext.origin();
         RandomSource random = featurePlaceContext.random();
-        BlockState state = cfg.block.getState(random, origin);
+        BlockState state = cfg.block.getState(world, random, origin);
         Block block = state.getBlock();
 
         BlockPos pos = DefaultFeature.getPosOnSurfaceWG(

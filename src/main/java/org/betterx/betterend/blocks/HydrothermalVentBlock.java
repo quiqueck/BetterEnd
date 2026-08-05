@@ -142,7 +142,7 @@ public class HydrothermalVentBlock extends Block implements EntityBlock, LiquidB
     ) {
         if (world instanceof ServerLevel && state.getValue(WATERLOGGED) && world.getBlockState(pos.above())
                                                                                 .is(Blocks.WATER)) {
-            tick(state, (ServerLevel) world, pos, world.random);
+            tick(state, (ServerLevel) world, pos, world.getRandom());
         }
     }
 

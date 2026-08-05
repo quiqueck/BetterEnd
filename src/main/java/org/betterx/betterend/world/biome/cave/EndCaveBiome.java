@@ -113,7 +113,7 @@ public class EndCaveBiome extends EndBiome {
 
     }
 
-    // Runtime hooks used by CaveSurfaceCoater to coat exposed End-stone surfaces per cave biome.
+    // Runtime hooks used by CaveSurfaceCoatFeature to coat exposed End-stone surfaces per cave biome.
     public BlockState getCeil(BlockPos pos) {
         return null;
     }

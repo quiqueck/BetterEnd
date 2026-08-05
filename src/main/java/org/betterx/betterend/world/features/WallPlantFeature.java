@@ -27,7 +27,7 @@ public class WallPlantFeature extends WallScatterFeature<WallPlantFeatureConfig>
             BlockPos pos,
             Direction dir
     ) {
-        plant = cfg.getPlantState(random, pos);
+        plant = cfg.getPlantState(world, random, pos);
         Block block = plant.getBlock();
         if (block instanceof BaseWallPlantBlock) {
             BlockState state = plant.setValue(BaseWallPlantBlock.FACING, dir);

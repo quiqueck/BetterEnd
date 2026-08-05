@@ -29,7 +29,7 @@ public class DoublePlantFeature extends ScatterFeature<DoublePlantFeatureConfig>
                 center.getX() - blockPos.getX(),
                 center.getZ() - blockPos.getZ()
         ) / radius * 0.6F + random.nextFloat() * 0.4F;
-        plant = d < 0.5F ? cfg.getLargePlantState(random, blockPos) : cfg.getSmallPlantState(random, blockPos);
+        plant = d < 0.5F ? cfg.getLargePlantState(world, random, blockPos) : cfg.getSmallPlantState(world, random, blockPos);
         //noinspection deprecation
         return plant.canSurvive(world, blockPos);
     }

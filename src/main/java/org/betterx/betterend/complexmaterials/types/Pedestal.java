@@ -60,7 +60,7 @@ public class Pedestal extends SlotFromDefinition {
                     if (set.getBlock(SlotType.SLAB) == null || set.getBlock(SlotType.PILLAR) == null) return;
 
                     RecipeBuilder
-                            .crafting(key.location(), block)
+                            .crafting(key.identifier(), block)
                             .shape("S", "#", "S")
                             .addMaterial('S', set.recipeMaterial(SlotType.SLAB))
                             .addMaterial('#', set.recipeMaterial(SlotType.PILLAR))

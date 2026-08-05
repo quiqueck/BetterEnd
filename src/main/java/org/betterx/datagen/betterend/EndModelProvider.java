@@ -145,7 +145,7 @@ public class EndModelProvider extends WoverModelProvider {
                              .override(EndCrystalBlocks.AURORA_CRYSTAL, b -> {
                                  final int tint = ((CustomColorProvider) b)
                                          .getProvider()
-                                         .getColor(b.defaultBlockState(), null, null, 0);
+                                         .color(b.defaultBlockState());
                                  generator.vanillaGenerator.itemModelOutput.accept(
                                          b.asItem(),
                                          ItemModelUtils.tintedModel(

@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -34,11 +35,11 @@ public class DoublePlantFeatureConfig extends ScatterFeatureConfig {
         this.largePlant = largePlant;
     }
 
-    BlockState getLargePlantState(RandomSource rnd, BlockPos pos) {
-        return largePlant.getState(rnd, pos);
+    BlockState getLargePlantState(WorldGenLevel level, RandomSource rnd, BlockPos pos) {
+        return largePlant.getState(level, rnd, pos);
     }
 
-    BlockState getSmallPlantState(RandomSource rnd, BlockPos pos) {
-        return smallPlant.getState(rnd, pos);
+    BlockState getSmallPlantState(WorldGenLevel level, RandomSource rnd, BlockPos pos) {
+        return smallPlant.getState(level, rnd, pos);
     }
 }

@@ -5,7 +5,7 @@ import org.betterx.betterend.world.generator.GeneratorOptions;
 
 import net.minecraft.client.resources.model.BlockStateModelLoader;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -22,14 +22,16 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * <p>
  * The {@code fileToId} call lives inside the per-entry lambda passed to
  * {@code CompletableFuture.supplyAsync} in {@code loadBlockStates}, not in {@code loadBlockStates}
- * itself, so the mixin must target that synthetic lambda method ({@code method_65720} as of 1.21.7)
+ * itself, so the mixin must target that synthetic lambda method ({@code lambda$loadBlockStates$2}
+ * as of 26.1.2 - this is a compiler-generated name, not covered by official Mojang mappings, so it
+ * can and does shift between builds; verify via javap if this mixin ever fails to apply again)
  * rather than {@code loadBlockStates} directly.
  */
 @Mixin(BlockStateModelLoader.class)
 public abstract class BlockStateModelLoaderMixin {
-    @Redirect(method = "method_65720", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/FileToIdConverter;fileToId(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/resources/ResourceLocation;"))
-    private static ResourceLocation be_switchModelOnLoad(FileToIdConverter instance, ResourceLocation file) {
-        ResourceLocation id = instance.fileToId(file);
+    @Redirect(method = "lambda$loadBlockStates$2", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/FileToIdConverter;fileToId(Lnet/minecraft/resources/Identifier;)Lnet/minecraft/resources/Identifier;"))
+    private static Identifier be_switchModelOnLoad(FileToIdConverter instance, Identifier file) {
+        Identifier id = instance.fileToId(file);
         if (GeneratorOptions.changeChorusPlant()) {
             if (id.getNamespace().equals("minecraft") && be_isChorusPath(id.getPath())) {
                 return BetterEnd.C.mk("discarded_" + id.getPath());
@@ -37,7 +39,7 @@ public abstract class BlockStateModelLoaderMixin {
             if (id.getNamespace().equals(BetterEnd.MOD_ID) && id.getPath().startsWith("custom_")) {
                 String path = id.getPath().substring("custom_".length());
                 if (be_isChorusPath(path)) {
-                    return ResourceLocation.withDefaultNamespace(path);
+                    return Identifier.withDefaultNamespace(path);
                 }
             }
         }

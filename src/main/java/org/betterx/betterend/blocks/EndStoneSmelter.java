@@ -59,7 +59,7 @@ public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements Alloyi
             Player player,
             BlockHitResult blockHitResult
     ) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
         this.openScreen(level, blockPos, player);
@@ -107,7 +107,7 @@ public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements Alloyi
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
+    public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos, Direction direction) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(world.getBlockEntity(pos));
     }
 

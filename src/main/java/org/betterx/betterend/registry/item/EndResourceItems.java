@@ -22,6 +22,7 @@ import de.ambertation.wover.tag.api.predefined.CommonItemTags;
 
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -94,9 +95,12 @@ public class EndResourceItems {
 
     public final static Item SILK_MOTH_MATRIX = EndItems.registerEndItem("silk_moth_matrix");
 
+    // Borrows the phantom membrane's texture, so the glint is the only thing telling the two apart
+    // in an inventory - the same trick vanilla plays with the enchanted golden apple.
     public final static Item ENCHANTED_MEMBRANE = EndItems.defineEndItem("enchanted_membrane")
             .stacksTo(16)
             .rarity(Rarity.RARE)
+            .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)
             .addTrait(ModelTraitLibrary.itemModel(() -> Items.PHANTOM_MEMBRANE))
             .buildAndRegister();
 

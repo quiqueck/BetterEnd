@@ -7,7 +7,7 @@ import org.betterx.betterend.events.PlayerAdvancementsCallback;
 import org.betterx.betterend.integration.byg.BYGIntegration;
 import org.betterx.betterend.item.GuideBookItem;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 public class Integrations {
@@ -17,7 +17,7 @@ public class Integrations {
     public static void init() {
         if (BetterEnd.PATCHOULI.isLoaded()) {
             GuideBookItem.register();
-            ResourceLocation advId = ResourceLocation.withDefaultNamespace("end/enter_end_gateway");
+            Identifier advId = Identifier.withDefaultNamespace("end/enter_end_gateway");
 
             PlayerAdvancementsCallback.PLAYER_ADVANCEMENT_COMPLETE.register((player, advancement, criterionName) -> {
                 if (advId.equals(advancement.id())) {

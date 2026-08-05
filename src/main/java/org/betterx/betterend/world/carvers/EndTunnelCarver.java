@@ -8,7 +8,7 @@ import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -21,7 +21,6 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 
-import it.unimi.dsi.fastutil.longs.LongArrayList;
 
 import java.util.function.Function;
 
@@ -35,7 +34,7 @@ import java.util.function.Function;
  * built in the exact same order as the legacy feature: {@code new LegacyRandomSource(seed)} then
  * three {@code nextInt()} draws. The seed is derived from the world seed via the carving context's
  * {@link net.minecraft.world.level.levelgen.RandomState} (a positional random factory keyed on a
- * fixed {@link ResourceLocation}), so no accessor mixin is needed &ndash; see {@link #getNoises}.
+ * fixed {@link Identifier}), so no accessor mixin is needed &ndash; see {@link #getNoises}.
  * <p>
  * The legacy per-corner density lerp is preserved, but the four corner factors are now sourced from
  * biomes instead of the old {@code hasCaves} land flags: a corner is {@code 1.0} when its biome
@@ -44,7 +43,7 @@ import java.util.function.Function;
  * not ported).
  */
 public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
-    private static final ResourceLocation NOISE_SEED_KEY = BetterEnd.C.mk("tunnel_cave_noise");
+    private static final Identifier NOISE_SEED_KEY = BetterEnd.C.mk("tunnel_cave_noise");
 
     private record Noises3(long seed, OpenSimplexNoise h, OpenSimplexNoise v, OpenSimplexNoise d) {}
 
@@ -114,8 +113,6 @@ public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
         final float threshold = cfg.threshold;
 
         boolean carved = false;
-        // Positions this invocation turns into cave air, in carve-loop order; coated after the loop.
-        final LongArrayList carvedPositions = new LongArrayList();
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         final BlockPos.MutableBlockPos neighbor = new BlockPos.MutableBlockPos();
 
@@ -148,7 +145,6 @@ public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
                                 && !EndCaveCarver.isWaterNear(chunk, cp, pos, neighbor, minGenY, maxGenY)) {
                             chunk.setBlockState(pos, CAVE_AIR);
                             mask.set(lx, y, lz);
-                            carvedPositions.add(BlockPos.asLong(wx, y, wz));
                             carved = true;
                         }
                     }
@@ -156,10 +152,11 @@ public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
             }
         }
 
-        // Coat the exposed End-stone faces of the blocks THIS invocation carved with the per-column cave
-        // biome's materials. This carver makes no geometry-relevant random draws, so the wall-shell draws
-        // made inside the coater cannot affect the tunnel shape (see CaveSurfaceCoater).
-        CaveSurfaceCoater.coat(context, chunk, biomeGetter, random, carvedPositions);
+        // The cave's surface materials are NOT applied here any more: 26.3 rebuilt the carver API so that
+        // carvers cannot write blocks at all, which forced the coat to become a decoration-time feature
+        // (CaveSurfaceCoatFeature). That feature is backported here and the carve-time CaveSurfaceCoater is
+        // deleted, so a world generated on this branch and later opened on 26.3 keeps generating the same
+        // caves instead of switching coat algorithms mid-world.
 
         return carved;
     }

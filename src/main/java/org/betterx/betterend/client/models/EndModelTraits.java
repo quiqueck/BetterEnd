@@ -19,9 +19,10 @@ import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.client.renderer.block.model.Variant;
+import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -65,7 +66,7 @@ public class EndModelTraits {
      *
      * @param texture supplies the base texture location (without suffix)
      */
-    public static BlockModelTrait rotatedPillar(Supplier<ResourceLocation> texture) {
+    public static BlockModelTrait rotatedPillar(Supplier<Identifier> texture) {
         return ModCore.isDatagen() ? Impl.rotatedPillar(texture) : null;
     }
 
@@ -83,7 +84,7 @@ public class EndModelTraits {
      *
      * @param texture supplies the base texture location (without suffix)
      */
-    public static BlockModelTrait litStairs(Supplier<ResourceLocation> texture) {
+    public static BlockModelTrait litStairs(Supplier<Identifier> texture) {
         return ModCore.isDatagen() ? Impl.litStairs(texture) : null;
     }
 
@@ -94,7 +95,7 @@ public class EndModelTraits {
      * @param source  supplies the full block the double slab mirrors
      * @param texture supplies the base texture location (without suffix)
      */
-    public static BlockModelTrait slabFrom(Supplier<Block> source, Supplier<ResourceLocation> texture) {
+    public static BlockModelTrait slabFrom(Supplier<Block> source, Supplier<Identifier> texture) {
         return ModCore.isDatagen() ? Impl.slabFrom(source, texture) : null;
     }
 
@@ -171,7 +172,7 @@ public class EndModelTraits {
      * bulb_moss template at the given {@code y} rotation.
      */
     private static java.util.List<WeightedTemplateModelTrait.Layer> bulbMossMeshMembers(
-            net.minecraft.resources.ResourceLocation texture, int y
+            net.minecraft.resources.Identifier texture, int y
     ) {
         final var swap = java.util.Map.of("texture", texture, "texture2", texture);
         final java.util.List<WeightedTemplateModelTrait.Layer> out = new java.util.ArrayList<>();
@@ -231,8 +232,8 @@ public class EndModelTraits {
      * two-texture sibling of {@link #bulbMossMeshMembers} (used by the single-texture ruscus/glowing-pillar families).
      */
     private static java.util.List<WeightedTemplateModelTrait.Layer> bulbMossTwoTexMembers(
-            net.minecraft.resources.ResourceLocation texture,
-            net.minecraft.resources.ResourceLocation texture2,
+            net.minecraft.resources.Identifier texture,
+            net.minecraft.resources.Identifier texture2,
             int y
     ) {
         final var swap = java.util.Map.of("texture", texture, "texture2", texture2);
@@ -348,7 +349,7 @@ public class EndModelTraits {
     }
 
     /** A texture-swap child of the creeping_moss "up-leaf" mesh template, binding all slots to {@code tex}. */
-    private static WeightedTemplateModelTrait.Layer upLeafChild(net.minecraft.resources.ResourceLocation tex) {
+    private static WeightedTemplateModelTrait.Layer upLeafChild(net.minecraft.resources.Identifier tex) {
         return WeightedTemplateModelTrait.child(BetterEnd.C.mk("block/creeping_moss"),
                 java.util.Map.of("texture", tex, "spore", tex, "particle", tex));
     }
@@ -359,7 +360,7 @@ public class EndModelTraits {
      * {@code x=90} with the matching Y).
      */
     public static BlockModelTrait upLeaf(
-            net.minecraft.resources.ResourceLocation tex,
+            net.minecraft.resources.Identifier tex,
             WeightedTemplateModelTrait.Item item
     ) {
         final var child = upLeafChild(tex);
@@ -464,7 +465,7 @@ public class EndModelTraits {
 
     @Environment(EnvType.CLIENT)
     private static class Impl {
-        private static void buildRotated(WoverBlockModelGenerators generator, Block block, List<ResourceLocation> models) {
+        private static void buildRotated(WoverBlockModelGenerators generator, Block block, List<Identifier> models) {
             final WeightedList.Builder<Variant> variants = WeightedList.builder();
             models.forEach(model -> {
                 variants.add(new Variant(model));
@@ -512,12 +513,12 @@ public class EndModelTraits {
             });
         }
 
-        private static BlockModelTrait rotatedPillar(Supplier<ResourceLocation> texture) {
+        private static BlockModelTrait rotatedPillar(Supplier<Identifier> texture) {
             return ClientBlockTraits.MODEL.with((key, block, generator) -> {
                 final var t = texture.get();
                 generator.createRotatedPillar(block, new TextureMapping()
-                        .put(TextureSlot.END, t.withSuffix("_top"))
-                        .put(TextureSlot.SIDE, t.withSuffix("_side")));
+                        .put(TextureSlot.END, new Material(t.withSuffix("_top")))
+                        .put(TextureSlot.SIDE, new Material(t.withSuffix("_side"))));
             });
         }
 
@@ -527,14 +528,14 @@ public class EndModelTraits {
             );
         }
 
-        private static BlockModelTrait litStairs(Supplier<ResourceLocation> texture) {
+        private static BlockModelTrait litStairs(Supplier<Identifier> texture) {
             return ClientBlockTraits.MODEL.with((key, block, generator) -> {
-                final var id = TextureMapping.getBlockTexture(block);
+                final var id = TextureMapping.getBlockTexture(block).sprite();
                 final var t = texture.get();
                 final var mapping = new TextureMapping()
-                        .put(TextureSlot.TOP, t.withSuffix("_top"))
-                        .put(TextureSlot.BOTTOM, t.withSuffix("_top"))
-                        .put(TextureSlot.SIDE, t.withSuffix("_side"));
+                        .put(TextureSlot.TOP, new Material(t.withSuffix("_top")))
+                        .put(TextureSlot.BOTTOM, new Material(t.withSuffix("_top")))
+                        .put(TextureSlot.SIDE, new Material(t.withSuffix("_side")));
                 final var stairs = EndModels.LIT_STAIRS.create(id, mapping, generator.modelOutput());
                 final var stairsOuter = EndModels.LIT_STAIRS_OUTER.create(
                         id.withSuffix("_outer"), mapping, generator.modelOutput());
@@ -544,13 +545,13 @@ public class EndModelTraits {
             });
         }
 
-        private static BlockModelTrait slabFrom(Supplier<Block> source, Supplier<ResourceLocation> texture) {
+        private static BlockModelTrait slabFrom(Supplier<Block> source, Supplier<Identifier> texture) {
             return ClientBlockTraits.MODEL.with((key, block, generator) -> {
                 final var t = texture.get();
                 generator.createSlab(block, source.get(), new TextureMapping()
-                        .put(TextureSlot.TOP, t.withSuffix("_top"))
-                        .put(TextureSlot.BOTTOM, t.withSuffix("_top"))
-                        .put(TextureSlot.SIDE, t.withSuffix("_side")));
+                        .put(TextureSlot.TOP, new Material(t.withSuffix("_top")))
+                        .put(TextureSlot.BOTTOM, new Material(t.withSuffix("_top")))
+                        .put(TextureSlot.SIDE, new Material(t.withSuffix("_side"))));
             });
         }
 
@@ -580,7 +581,7 @@ public class EndModelTraits {
                                               .select(BlockProperties.TripleShape.BOTTOM,
                                                       new MultiVariant(WeightedList.<Variant>builder()
                                                               .add(new Variant(bottom1)).add(new Variant(bottom2)).build()))));
-                generator.createFlatItem(block, itemTextureLocation);
+                generator.createFlatItem(block, itemTextureLocation.sprite());
             });
         }
     }

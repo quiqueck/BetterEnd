@@ -1,6 +1,5 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "slab",
   "ingredient": "betterend:thallasium_block",
   "result": {
     "count": 2,

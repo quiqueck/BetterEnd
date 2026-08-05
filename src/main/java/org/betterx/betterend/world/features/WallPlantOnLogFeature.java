@@ -16,7 +16,7 @@ public class WallPlantOnLogFeature extends WallPlantFeature {
             BlockPos pos,
             Direction dir
     ) {
-        plant = cfg.getPlantState(random, pos);
+        plant = cfg.getPlantState(world, random, pos);
         BlockPos blockPos = pos.relative(dir.getOpposite());
         BlockState blockState = world.getBlockState(blockPos);
         return blockState.is(BlockTags.LOGS);

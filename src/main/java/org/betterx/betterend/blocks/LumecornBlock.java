@@ -4,11 +4,12 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.betterend.registry.block.EndMushroomBlocks;
 import org.betterx.betterend.registry.item.EndResourceItems;
-import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
+import de.ambertation.wover.loot.api.LootLookupProvider;
 import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -23,15 +24,20 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import java.util.Collections;
-import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class LumecornBlock extends Block {
@@ -86,19 +92,45 @@ public class LumecornBlock extends Block {
         }
     }
 
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        EndBlockProperties.LumecornShape shape = state.getValue(SHAPE);
-        if (shape == EndBlockProperties.LumecornShape.BOTTOM_BIG || shape == EndBlockProperties.LumecornShape.BOTTOM_SMALL || shape == EndBlockProperties.LumecornShape.MIDDLE) {
-            return Collections.singletonList(new ItemStack(
-                    EndMushroomBlocks.LUMECORN_SEED,
-                    MHelper.randRange(1, 2, MHelper.RANDOM_SOURCE)
-            ));
-        }
-        return MHelper.RANDOM.nextBoolean()
-                ? Collections.singletonList(new ItemStack(EndResourceItems.LUMECORN_ROD))
-                : Collections
-                        .emptyList();
+    /**
+     * The lower three segments yield 1-2 lumecorn seeds; every other segment has a one-in-two chance of a
+     * single lumecorn rod.
+     * <p>
+     * This replaces a {@code getDrops} override, which bypassed the loot table entirely and drew its
+     * randomness from {@code MHelper.RANDOM}. {@code MHelper.randRange} is inclusive at both ends, so it
+     * maps onto {@link UniformGenerator#between} unchanged, and {@code nextBoolean()} onto a flat 0.5
+     * chance. The override never consulted {@code survives_explosion}, so this table does not either.
+     */
+    public static LootTable.Builder buildLoot(Block block, LootLookupProvider provider) {
+        final LootItemCondition.Builder seedBearing =
+                shapeIs(provider, block, EndBlockProperties.LumecornShape.BOTTOM_BIG)
+                        .or(shapeIs(provider, block, EndBlockProperties.LumecornShape.BOTTOM_SMALL))
+                        .or(shapeIs(provider, block, EndBlockProperties.LumecornShape.MIDDLE));
+
+        return LootTable
+                .lootTable()
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(seedBearing)
+                        .add(LootItem.lootTableItem(EndMushroomBlocks.LUMECORN_SEED)
+                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))))
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(seedBearing.invert())
+                        .when(LootItemRandomChanceCondition.randomChance(0.5F))
+                        .add(LootItem.lootTableItem(EndResourceItems.LUMECORN_ROD)));
+    }
+
+    private static LootItemCondition.Builder shapeIs(
+            LootLookupProvider provider,
+            Block block,
+            EndBlockProperties.LumecornShape shape
+    ) {
+        return LootItemBlockStatePropertyCondition
+                .hasBlockStateProperties(block)
+                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SHAPE, shape));
     }
 
     @Override

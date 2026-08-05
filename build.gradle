@@ -1,12 +1,12 @@
 plugins {
-    id 'fabric-loom' version "${loom_version}"
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
     id "me.modmuss50.mod-publish-plugin" version "2.1.1"
 }
 
-sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_25
+java.targetCompatibility = JavaVersion.VERSION_25
 
-archivesBaseName = project.archives_base_name
+base.archivesName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
@@ -101,35 +101,37 @@ subprojects { subproject ->
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
 
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // https://mvnrepository.com/artifact/javax.annotation/jsr305
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     // run against the full jar
-    modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
+    runtimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
 
     //1.19.3 modApi "vazkii.patchouli:Patchouli:${project.patchouli_version}"
     // alsoInclude=false: BetterEnd doesn't bundle BCLib into its own jar.
     gradle.modApiOrLocal(dependencies, ':BCLib', "org.betterx:bclib:${project.bclib_version}", false)
-//    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
-//    modLocalRuntime "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
+//    compileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+//    localRuntime "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
 
     //needed for trinkets, otherwise BetterEnd would require users to install trinkets
-    //modApi "org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}"
-//    modLocalRuntime "org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}"
-//    modCompileOnly "dev.emi:trinkets:${project.trinkets_version}"
-//    modLocalRuntime "dev.emi:trinkets:${project.trinkets_version}"
+    //api "org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}"
+//    localRuntime "org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}"
+//    compileOnly "dev.emi:trinkets:${project.trinkets_version}"
+//    localRuntime "dev.emi:trinkets:${project.trinkets_version}"
 
-//    modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
-//    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
+//    compileOnly "dev.emi:emi-fabric:${emi_version}:api"
+//    localRuntime "dev.emi:emi-fabric:${emi_version}"
 
-    modLocalRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
+    compileOnly "mezz.jei:jei-${project.minecraft_version}-fabric-api:${project.jei_version}" // compile against the API
+    localRuntime "mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}" // run against the full jar
+
+    localRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     // alsoInclude=false: BetterEnd doesn't bundle wunderlib into its own jar.
     gradle.modApiOrLocal(dependencies, ':wunderlib', "de.ambertation:wunderlib:${project.wunderlib_version}", false)
@@ -138,14 +140,14 @@ dependencies {
         implementation project(path: ":WorldWeaver", configuration: 'localDev')
 
         gradle.knownWoverModules.each {
-            implementation project(path: ":WorldWeaver:$it", configuration: 'localDev')
+            implementation project(path: ":WorldWeaver:$it", configuration: 'dev')
             // BetterEnd doesn't split its own client/common sources, so its single sourceSet needs
             // each wover module's client output too (WorldWeaver itself now enforces the split - see
             // WorldWeaver/common.gradle's devClient configuration).
             implementation project(path: ":WorldWeaver:$it", configuration: 'devClient')
         }
     } else {
-        modImplementation "org.betterx:worldweaver:${project.wover_version}"
+        implementation "org.betterx:worldweaver:${project.wover_version}"
     }
 }
 
@@ -154,8 +156,10 @@ repositories {
     mavenCentral()
     //mavenLocal()
     maven { url "https://maven.shedaniel.me" }
+    maven { url "https://maven.blamejared.com" }
     maven { url 'https://jitpack.io' }
     maven { url "https://maven.bai.lol" }
+    maven { url 'https://maven.terraformersmc.com/releases' }
     maven { url 'https://maven.terraformersmc.com' }
     maven { url 'https://maven.ambertation.de/releases' }
     maven {
@@ -186,7 +190,7 @@ processResources {
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
-    it.options.release = 21
+    it.options.release = 25
 }
 
 // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task

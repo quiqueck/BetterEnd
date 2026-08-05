@@ -2,11 +2,12 @@ package org.betterx.betterend.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.util.RandomSource;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class InfusionParticle extends TextureSheetParticle {
+public class InfusionParticle extends SingleQuadParticle {
 
     private final SpriteSet spriteProvider;
 
@@ -21,7 +22,7 @@ public class InfusionParticle extends TextureSheetParticle {
             float[] palette,
             SpriteSet spriteProvider
     ) {
-        super(clientWorld, x, y, z, 0.0, 0.0, 0.0);
+        super(clientWorld, x, y, z, 0.0, 0.0, 0.0, spriteProvider.first());
         this.setSpriteFromAge(spriteProvider);
         this.spriteProvider = spriteProvider;
         this.setColor(palette[0], palette[1], palette[2]);
@@ -34,8 +35,8 @@ public class InfusionParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    protected SingleQuadParticle.Layer getLayer() {
+        return SingleQuadParticle.Layer.TRANSLUCENT;
     }
 
     @Override
@@ -70,7 +71,8 @@ public class InfusionParticle extends TextureSheetParticle {
                 double f,
                 double g,
                 double h,
-                double i
+                double i,
+                RandomSource randomSource
         ) {
             return new InfusionParticle(clientWorld, d, e, f, g, h, i, particleType.getPalette(), this.spriteProvider);
         }

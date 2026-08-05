@@ -6,26 +6,26 @@ import org.betterx.betterend.BetterEnd;
 import de.ambertation.wover.item.api.SmithingTemplateDefinition;
 import de.ambertation.wover.item.api.smithing.SmithingTemplates;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.SmithingTemplateItem;
 
 import java.util.List;
 
 public class EndTemplates {
-    static final ResourceLocation EMPTY_SLOT_STICK = BetterEnd.C.mk("item/empty_slot_stick");
-    static final ResourceLocation EMPTY_SLOT_HANDLE = BetterEnd.C.mk("item/empty_slot_handle");
-    static final ResourceLocation EMPTY_SLOT_SWORD_HANDLE = BetterEnd.C.mk("item/empty_slot_sword_handle");
-    static final ResourceLocation EMPTY_SLOT_SWORD_BLADE = BetterEnd.C.mk("item/empty_slot_sword_blade");
-    static final ResourceLocation EMPTY_SLOT_PLATE = BetterEnd.C.mk("item/empty_slot_plate");
-    static final ResourceLocation EMPTY_SLOT_HAMMER = BetterEnd.C.mk("item/empty_slot_hammer");
+    static final Identifier EMPTY_SLOT_STICK = BetterEnd.C.mk("item/empty_slot_stick");
+    static final Identifier EMPTY_SLOT_HANDLE = BetterEnd.C.mk("item/empty_slot_handle");
+    static final Identifier EMPTY_SLOT_SWORD_HANDLE = BetterEnd.C.mk("item/empty_slot_sword_handle");
+    static final Identifier EMPTY_SLOT_SWORD_BLADE = BetterEnd.C.mk("item/empty_slot_sword_blade");
+    static final Identifier EMPTY_SLOT_PLATE = BetterEnd.C.mk("item/empty_slot_plate");
+    static final Identifier EMPTY_SLOT_HAMMER = BetterEnd.C.mk("item/empty_slot_hammer");
 
-    static final ResourceLocation EMPTY_SLOT_HAMMER_HEAD = BetterEnd.C.mk("item/empty_slot_hammer_head");
-    static final ResourceLocation EMPTY_SLOT_PICKAXE_HEAD = BetterEnd.C.mk("item/empty_slot_pickaxe_head");
-    static final ResourceLocation EMPTY_SLOT_AXE_HEAD = BetterEnd.C.mk("item/empty_slot_axe_head");
-    static final ResourceLocation EMPTY_SLOT_HOE_HEAD = BetterEnd.C.mk("item/empty_slot_hoe_head");
-    static final ResourceLocation EMPTY_SLOT_SHOVEL_HEAD = BetterEnd.C.mk("item/empty_slot_shovel_head");
-    static final ResourceLocation EMPTY_SLOT_ANVIL = BetterEnd.C.mk("item/empty_slot_anvil");
-    static final ResourceLocation EMPTY_SLOT_ELYTRA = BetterEnd.C.mk("item/empty_slot_elytra");
+    static final Identifier EMPTY_SLOT_HAMMER_HEAD = BetterEnd.C.mk("item/empty_slot_hammer_head");
+    static final Identifier EMPTY_SLOT_PICKAXE_HEAD = BetterEnd.C.mk("item/empty_slot_pickaxe_head");
+    static final Identifier EMPTY_SLOT_AXE_HEAD = BetterEnd.C.mk("item/empty_slot_axe_head");
+    static final Identifier EMPTY_SLOT_HOE_HEAD = BetterEnd.C.mk("item/empty_slot_hoe_head");
+    static final Identifier EMPTY_SLOT_SHOVEL_HEAD = BetterEnd.C.mk("item/empty_slot_shovel_head");
+    static final Identifier EMPTY_SLOT_ANVIL = BetterEnd.C.mk("item/empty_slot_anvil");
+    static final Identifier EMPTY_SLOT_ELYTRA = BetterEnd.C.mk("item/empty_slot_elytra");
 
 
     // LEATHER_HANDLE_ATTACHMENT and TOOL_ASSEMBLY must be declared before HANDLE_ATTACHMENT:

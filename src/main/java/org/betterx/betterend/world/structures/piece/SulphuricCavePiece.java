@@ -149,9 +149,9 @@ public class SulphuricCavePiece extends BasePiece {
             ChunkPos chunkPos,
             BlockPos blockPos
     ) {
-        final ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
-        final int sx = SectionPos.sectionToBlockCoord(chunkPos.x);
-        final int sz = SectionPos.sectionToBlockCoord(chunkPos.z);
+        final ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
+        final int sx = SectionPos.sectionToBlockCoord(chunkPos.x());
+        final int sz = SectionPos.sectionToBlockCoord(chunkPos.z());
 
         final int cx = center.getX();
         final int cy = center.getY();

@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 
 import java.util.LinkedHashMap;
@@ -133,7 +133,7 @@ public class SilkMothEntityModel extends EntityModel<SilkMothRenderState> {
     }
 
     public SilkMothEntityModel(ModelPart modelPart) {
-        super(buildRenderRoot(modelPart), RenderType::entityCutout);
+        super(buildRenderRoot(modelPart), RenderTypes::entityCutout);
 
         root = this.root();
         legsL = modelPart.getChild(PartNames.LEFT_LEG);

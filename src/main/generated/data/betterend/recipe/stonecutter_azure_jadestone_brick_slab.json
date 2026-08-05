@@ -1,6 +1,5 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "slab",
   "ingredient": "betterend:azure_jadestone_brick",
   "result": {
     "count": 2,

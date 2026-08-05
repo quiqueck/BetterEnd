@@ -29,6 +29,10 @@ import org.jetbrains.annotations.NotNull;
  * list (an intrinsic {@code mayPlaceOn}, since it's per-instance config, not a shared trait); the crop loot
  * (a raw drop plus a chance of seeds at full age) is built by {@link #buildLoot} and attached as a
  * {@code LOOT_TABLE} trait at registration.
+ * <p>
+ * Passive growth ({@link #performBonemeal} on a 1-in-8 chance) runs from {@link #randomTick}, so a block
+ * registered with this class needs a random-ticking {@code Properties} to ever grow on its own - attach
+ * {@code org.betterx.bclib.trait.block.RandomTicksTrait} at the registration site.
  */
 public class PottableCropBlock extends BushBlock {
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
@@ -73,8 +77,8 @@ public class PottableCropBlock extends BushBlock {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-        super.tick(state, world, pos, random);
+    protected void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+        super.randomTick(state, world, pos, random);
         if (isBonemealSuccess(world, random, pos, state) && random.nextInt(8) == 0) {
             performBonemeal(world, random, pos, state);
         }

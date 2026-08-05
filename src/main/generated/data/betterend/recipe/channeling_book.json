@@ -1,24 +1,24 @@
 {
   "type": "betterend:infusion",
   "catalysts": {
-    "east": "minecraft:chain",
+    "east": "minecraft:iron_chain",
     "north": "betterend:enchanted_petal",
     "north_east": "minecraft:lapis_lazuli",
     "north_west": "minecraft:lapis_lazuli",
     "south": "minecraft:heart_of_the_sea",
     "south_east": "minecraft:lapis_lazuli",
     "south_west": "minecraft:lapis_lazuli",
-    "west": "minecraft:chain"
+    "west": "minecraft:iron_chain"
   },
   "group": "enchantment",
   "input": "minecraft:book",
   "result": {
-    "item": "minecraft:enchanted_book",
-    "nbt": {
+    "components": {
       "minecraft:stored_enchantments": {
         "minecraft:channeling": 1
       }
-    }
+    },
+    "item": "minecraft:enchanted_book"
   },
   "time": 375
 }

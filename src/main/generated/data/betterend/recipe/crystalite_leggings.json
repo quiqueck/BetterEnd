@@ -8,32 +8,7 @@
   },
   "input": "betterend:terminite_leggings",
   "result": {
-    "item": "betterend:crystalite_leggings",
-    "nbt": {
-      "minecraft:attribute_modifiers": [
-        {
-          "type": "minecraft:max_health",
-          "amount": 4.0,
-          "id": "betterend:max_health_boost",
-          "operation": "add_value",
-          "slot": "legs"
-        },
-        {
-          "type": "minecraft:armor",
-          "amount": 6.0,
-          "id": "betterend:armor_boost_leggings",
-          "operation": "add_value",
-          "slot": "legs"
-        },
-        {
-          "type": "minecraft:armor_toughness",
-          "amount": 1.2000000476837158,
-          "id": "betterend:toughness_boost_leggings",
-          "operation": "add_value",
-          "slot": "legs"
-        }
-      ]
-    }
+    "item": "betterend:crystalite_leggings"
   },
   "time": 225
 }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "chiseled_bookshelf",
+  "key": {
+    "#": "betterend:mossy_glowshroom_planks",
+    "S": "betterend:mossy_glowshroom_slab"
+  },
+  "pattern": [
+    "###",
+    "SSS",
+    "###"
+  ],
+  "result": {
+    "id": "betterend:mossy_glowshroom_chiseled_bookshelf"
+  }
+}

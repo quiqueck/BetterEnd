@@ -7,7 +7,6 @@ import de.ambertation.wover.biome.api.BiomeManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.client.sounds.MusicInfo;
 import net.minecraft.client.sounds.MusicManager;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.Music;
@@ -46,8 +45,8 @@ public abstract class MusicTrackerMixin {
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void be_onTick(CallbackInfo info) {
         if (Configs.CLIENT_CONFIG.blendBiomeMusic.get()) {
-            MusicInfo musicInfo = minecraft.getSituationalMusic();
-            Music musicSound = musicInfo.music();
+            Music musicInfo = minecraft.getSituationalMusic();
+            Music musicSound = musicInfo;
             if (be_checkNullSound(musicSound) && volume > 0 && be_shouldChangeSound(musicSound) && be_isCorrectBiome()) {
                 if (volume > 0) {
                     if (srcVolume < 0) {
@@ -57,7 +56,7 @@ public abstract class MusicTrackerMixin {
                         ((AbstractSoundInstanceAccessor) currentMusic).setVolume(volume);
                     }
                     minecraft.getSoundManager()
-                             .updateSourceVolume(currentMusic.getSource(), currentMusic.getVolume() * volume);
+                             .updateCategoryVolume(currentMusic.getSource(), currentMusic.getVolume() * volume);
                     long t = System.currentTimeMillis();
                     if (volume == 1 && time == 0) {
                         time = t;
@@ -98,17 +97,17 @@ public abstract class MusicTrackerMixin {
     @Unique
     private boolean be_shouldChangeSound(Music musicSound) {
         return currentMusic != null && !musicSound
-                .event()
+                .sound()
                 .value()
                 .location()
-                .equals(this.currentMusic.getLocation()) && musicSound.replaceCurrentMusic();
+                .equals(this.currentMusic.getIdentifier()) && musicSound.replaceCurrentMusic();
     }
 
     @Unique
     private boolean be_checkNullSound(Music musicSound) {
-        return musicSound != null && musicSound.event() != null;
+        return musicSound != null && musicSound.sound() != null;
     }
 
     @Shadow
-    public abstract void startPlaying(MusicInfo musicInfo);
+    public abstract void startPlaying(Music musicInfo);
 }

@@ -1,10 +1,12 @@
 // Shared publishing helper: changelog generation, version bumping, and
 // publishing to Modrinth + CurseForge (via mod-publish-plugin).
-// Copy-paste this file identically into every library/mod repo.
-// Everything here is driven by that repo's own gradle.properties.
+// Copy-paste this file identically into every library/mod repo's 26.1
+// checkout. Everything here is driven by that repo's own gradle.properties.
+// Not interchangeable with the 1.21.6 copy: this Loom version has no
+// separate remap step, so the published artifact is `jar`, not `remapJar`.
 //
-// Libraries additionally apply publish-maven.gradle (publishing to our
-// Ambertation maven repo). Mods do not - see the project's build.gradle.
+// Libraries additionally apply common-publish-maven.gradle (publishing to
+// our Ambertation maven repo). Mods do not - see the project's build.gradle.
 //
 // This includes WorldWeaver, which used to keep its own fork of this file
 // under the name helper.gradle. The only thing that fork actually needed was
@@ -85,12 +87,12 @@ def optionalDependencies = evaluate(project.optional_dependencies)
 // Modrinth slug is "rei" but its CurseForge slug is "roughly-enough-items".
 // Map those exceptions here; anything not listed is assumed to match on both.
 def curseforgeSlugOverrides = [
-    "rei": "roughly-enough-items",
+        "rei": "roughly-enough-items",
 ]
 
 publishMods {
     dryRun = project.hasProperty("dryRun") ? (project.property("dryRun").toString().toLowerCase() in ["true", "", "1", "yes"]) : false
-    file = remapJar.archiveFile
+    file = jar.archiveFile
     def changes = new File(projectDir, "CHANGES.md")
     changelog = changes.exists() ? changes.getText('UTF-8') : ""
 
@@ -176,6 +178,38 @@ task nextVersion() {
         indexedVersionList[2] = indexedVersionList[2].value + 1
         def updatedVersion = indexedVersionList.join(".")
 
+        // A local mod_version that is already ahead of what Modrinth implies is an
+        // intentional bump - opening a new minor line (26.100.x -> 26.101.0) is the
+        // usual reason. Modrinth only knows what was published, so deriving the next
+        // version from it alone would silently drag such a bump back down every time
+        // this task runs, and it runs a lot (prepare-release, and runDatagenClient).
+        // Take the higher of the two instead: the result is never a version that is
+        // already published, and the local value stops winning on its own as soon as
+        // the new line has had its first release.
+        def versionNumbers = { String s ->
+            def parts = s == null ? new String[0] : s.trim().split(/\./)
+            if (parts.length != 3) return null
+            try {
+                return parts.collect { it.toInteger() }
+            } catch (NumberFormatException ignored) {
+                return null
+            }
+        }
+        def localVersion = findProperty('mod_version')?.toString()
+        def localNumbers = versionNumbers(localVersion)
+        def derivedNumbers = versionNumbers(updatedVersion)
+        // Element-wise on purpose: Gradle's Groovy refuses `<=>` between two Lists.
+        def isNewer = { List a, List b ->
+            for (int i = 0; i < 3; i++) {
+                if (a[i] != b[i]) return a[i] > b[i]
+            }
+            return false
+        }
+        def keepLocal = localNumbers != null && derivedNumbers != null && isNewer(localNumbers, derivedNumbers)
+        if (keepLocal) {
+            updatedVersion = localVersion
+        }
+
         println "\n\n"
         println "------------- CURRENT VERSION -------------"
         println "Last Published Version: " + version
@@ -185,7 +219,8 @@ task nextVersion() {
         println "            Downloaded: " + json[0].downloads
         println "\n"
         println "-------------- NEXT VERSION ---------------"
-        println "Next Version: " + updatedVersion
+        println "Local Version: " + (localVersion ?: "(unset)")
+        println " Next Version: " + updatedVersion + (keepLocal ? "   <- kept the local bump" : "")
         println "\n\n"
 
 
@@ -228,4 +263,171 @@ task nextVersion() {
             fabricFile.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(fabricJson))
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+// WunderVault music
+//
+// Some tracks are too large to keep in a mod repository, so they live in the
+// WunderVault support repo (git-lfs) alongside the version workspaces:
+//
+//     <root>/Tools/WunderVault/music/<mod_id>/*.ogg
+//
+// When that folder exists its tracks are packed into the jar under
+// assets/<mod_id>/sounds/music/. The hook is processResources rather than an
+// extra resources srcDir, because the vault's layout is music/<mod_id>/x.ogg,
+// not the full asset path - and because processResources' output is what the
+// Loom runs put on the classpath, so `runClient` sees the tracks too, while
+// the sources jar (built from allSource) stays free of them.
+//
+// A repo without a mod_id (all the libraries) or without a folder in the vault
+// is unaffected: everything below no-ops.
+// ---------------------------------------------------------------------------
+
+// Located the way WunderVault's own workspace.py does it:
+//   1. -PwunderVaultDir=<path>, or wunder_vault_dir in gradle.properties
+//   2. $WUNDER_VAULT
+//   3. the nearest enclosing Tools/WunderVault, walking up from this project -
+//      the workspaces live at <root>/Entwicklung/<mc-version>/<repo>, the vault
+//      at <root>/Tools/WunderVault
+def wunderVaultDir = {
+    def configured = findProperty('wunderVaultDir') ?: findProperty('wunder_vault_dir') ?: System.getenv('WUNDER_VAULT')
+    if (configured) {
+        def dir = file(configured)
+        if (!dir.isDirectory()) {
+            throw new GradleException("WunderVault was pointed at '${configured}', which is not a directory.")
+        }
+        return dir
+    }
+    for (def dir = projectDir.canonicalFile; dir != null; dir = dir.parentFile) {
+        def candidate = new File(dir, "Tools/WunderVault")
+        if (candidate.isDirectory()) {
+            return candidate
+        }
+    }
+    return null
+}
+
+def vaultMusicDir = {
+    def modId = findProperty('mod_id')
+    if (modId == null) {
+        return null
+    }
+    def vault = wunderVaultDir()
+    if (vault == null) {
+        return null
+    }
+    def dir = new File(vault, "music/${modId}")
+    return dir.isDirectory() ? dir : null
+}()
+
+// Relative paths of the tracks the vault holds for this mod, e.g. "gloomsculk.ogg".
+def vaultTracks = vaultMusicDir == null ? [] as Set : fileTree(vaultMusicDir).include("**/*.ogg").files.collect {
+    vaultMusicDir.toPath().relativize(it.toPath()).toString()
+} as Set
+
+if (vaultMusicDir != null) {
+    logger.lifecycle("Packing ${vaultTracks.size()} WunderVault track(s) for ${project.mod_id} from ${vaultMusicDir}")
+    processResources {
+        from(vaultMusicDir) {
+            into "assets/${project.mod_id}/sounds/music"
+            include "**/*.ogg"
+        }
+
+        // The vault owns every track it holds. Drop a repo copy of the same track from
+        // the resources source set so exactly one candidate reaches the jar - relying on
+        // duplicatesStrategy instead would silently hand the win to the repo copy (it is
+        // copied first) and an edit made in the vault would never ship.
+        exclude vaultTracks.collect { "assets/${project.mod_id}/sounds/music/${it}" }
+    }
+}
+
+// The build must not quietly ship a jar whose sounds.json points at tracks that
+// are not in it. The vault is a separate checkout, so it can be missing entirely,
+// and its git-lfs files can be unfetched pointer stubs - either would produce a
+// jar with broken music events. Both are build failures here instead.
+tasks.register("checkVaultAssets") {
+    description = "Verifies that every music track sounds.json references is actually packed."
+    group = "verification"
+
+    doLast {
+        def modId = findProperty('mod_id')
+        if (modId == null) {
+            return
+        }
+
+        def problems = []
+        def repoMusicDir = file("src/main/resources/assets/${modId}/sounds/music")
+
+        vaultTracks.each { relative ->
+            def track = new File(vaultMusicDir, relative)
+
+            // An unfetched git-lfs file is a ~130 byte text pointer that would pack
+            // into the jar looking like a perfectly valid asset.
+            if (track.length() < 1024 && track.getText('UTF-8').startsWith("version https://git-lfs")) {
+                problems << "  - ${relative}: unfetched git-lfs pointer (run 'git lfs pull' in the vault)"
+            }
+
+            // Not fatal - the vault copy is the one that ships either way (see the
+            // exclude above) - but the repo copy is dead weight that will drift.
+            if (new File(repoMusicDir, relative).exists()) {
+                logger.warn("WARNING: ${relative} exists in both the vault and src/main/resources. " +
+                        "The vault copy is what ships; delete the repo copy.")
+            }
+        }
+
+        def soundsJson = file("src/main/resources/assets/${modId}/sounds.json")
+        if (soundsJson.exists()) {
+            def referenced = new TreeSet<String>()
+            new groovy.json.JsonSlurper().parseText(soundsJson.text).each { eventName, event ->
+                (event.sounds ?: []).each { entry ->
+                    // An entry is either a bare name or an object; objects with
+                    // type 'event' point at another event, not at a file.
+                    if (entry instanceof Map && entry.type == 'event') {
+                        return
+                    }
+                    def name = (entry instanceof Map) ? entry.name : entry
+                    if (name == null) {
+                        return
+                    }
+                    name = name.toString()
+                    if (name.contains(':')) {
+                        def parts = name.split(':', 2)
+                        if (parts[0] != modId) {
+                            return
+                        }
+                        name = parts[1]
+                    }
+                    if (name.startsWith('music/')) {
+                        referenced << name.substring('music/'.length())
+                    }
+                }
+            }
+
+            referenced.each { track ->
+                def inRepo = new File(repoMusicDir, "${track}.ogg").exists()
+                def inVault = vaultMusicDir != null && new File(vaultMusicDir, "${track}.ogg").exists()
+                if (!inRepo && !inVault) {
+                    problems << "  - music/${track}.ogg: referenced by sounds.json but found neither in the repo nor in the vault"
+                }
+            }
+        }
+
+        if (!problems.isEmpty()) {
+            throw new GradleException(
+                    "${problems.size()} problem(s) with this mod's music assets" +
+                            (vaultMusicDir == null ? " (no WunderVault checkout was found)" : " (vault: ${vaultMusicDir})") + ":\n" +
+                            problems.join("\n")
+            )
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn 'checkVaultAssets'
+}
+
+// Publishing is the one place where a missing vault must never pass quietly.
+tasks.matching { it.name in ['publishMods', 'publishModrinth', 'publishCurseforge'] }.configureEach {
+    dependsOn 'checkVaultAssets'
 }

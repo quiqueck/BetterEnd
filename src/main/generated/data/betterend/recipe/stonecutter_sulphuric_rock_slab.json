@@ -1,6 +1,5 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "slab",
   "ingredient": "betterend:sulphuric_rock",
   "result": {
     "count": 2,

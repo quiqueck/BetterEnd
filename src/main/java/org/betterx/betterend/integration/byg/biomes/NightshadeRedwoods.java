@@ -11,10 +11,12 @@ import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.attribute.AmbientSounds;
+import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.EnvironmentAttributeMap;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
@@ -47,27 +49,23 @@ public class NightshadeRedwoods extends EndBiome.Config {
 
         Holder<Biome> biome = Integrations.BYG.getBiome("nightshade_forest");
         if (biome == null) return;
-        BiomeSpecialEffects effects = biome.value().getSpecialEffects();
 
         if (BCLib.isClient()) {
-            Holder<SoundEvent> loop = effects.getAmbientLoopSoundEvent()
-                                             .get();
-            Holder<SoundEvent> music = effects.getBackgroundMusic()
-                                              .get()
-                                              .unwrap()
-                                              .getFirst()
-                                              .value()
-                                              .event();
-            Holder<SoundEvent> additions = effects.getAmbientAdditionsSettings()
-                                                  .get()
-                                                  .getSoundEvent();
-            Holder<SoundEvent> mood = effects.getAmbientMoodSettings()
-                                             .get()
-                                             .getSoundEvent();
-            builder.loop(loop)
-                   .music(music)
-                   .additions(additions)
-                   .mood(mood);
+            EnvironmentAttributeMap attributes = biome.value().getAttributes();
+
+            AmbientSounds sounds = attributes.contains(EnvironmentAttributes.AMBIENT_SOUNDS)
+                    ? attributes.get(EnvironmentAttributes.AMBIENT_SOUNDS)
+                                .applyModifier(EnvironmentAttributes.AMBIENT_SOUNDS.defaultValue())
+                    : EnvironmentAttributes.AMBIENT_SOUNDS.defaultValue();
+            BackgroundMusic music = attributes.contains(EnvironmentAttributes.BACKGROUND_MUSIC)
+                    ? attributes.get(EnvironmentAttributes.BACKGROUND_MUSIC)
+                                .applyModifier(EnvironmentAttributes.BACKGROUND_MUSIC.defaultValue())
+                    : EnvironmentAttributes.BACKGROUND_MUSIC.defaultValue();
+
+            sounds.loop().ifPresent(builder::loop);
+            music.defaultMusic().ifPresent(m -> builder.music(m.sound()));
+            sounds.additions().stream().findFirst().ifPresent(a -> builder.additions(a.soundEvent()));
+            sounds.mood().ifPresent(m -> builder.mood(m.soundEvent()));
         }
         biome.value().getGenerationSettings()
              .features()

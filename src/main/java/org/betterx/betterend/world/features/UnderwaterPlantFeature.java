@@ -25,7 +25,7 @@ public class UnderwaterPlantFeature extends UnderwaterPlantScatter<SinglePlantFe
             BlockPos blockPos,
             float radius
     ) {
-        plant = cfg.getPlantState(random, blockPos);
+        plant = cfg.getPlantState(world, random, blockPos);
         //noinspection deprecation
         return super.canSpawn(cfg, world, blockPos) && plant.canSurvive(world, blockPos);
     }

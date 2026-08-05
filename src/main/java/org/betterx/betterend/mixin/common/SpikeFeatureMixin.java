@@ -20,9 +20,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.levelgen.feature.EndSpikeFeature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.SpikeFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.SpikeConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.EndSpikeConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
@@ -32,11 +32,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(SpikeFeature.class)
+@Mixin(EndSpikeFeature.class)
 public class SpikeFeatureMixin {
     @Inject(method = "place", at = @At("HEAD"), cancellable = true)
     private void be_place(
-            FeaturePlaceContext<SpikeConfiguration> featurePlaceContext,
+            FeaturePlaceContext<EndSpikeConfiguration> featurePlaceContext,
             CallbackInfoReturnable<Boolean> info
     ) {
         if (!GeneratorOptions.hasPillars()) {
@@ -48,8 +48,8 @@ public class SpikeFeatureMixin {
     private void be_placeSpike(
             ServerLevelAccessor world,
             RandomSource random,
-            SpikeConfiguration config,
-            SpikeFeature.EndSpike spike,
+            EndSpikeConfiguration config,
+            EndSpikeFeature.EndSpike spike,
             CallbackInfo info
     ) {
         int x = spike.getCenterX();

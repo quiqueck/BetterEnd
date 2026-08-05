@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_unconnected",
+  "textures": {
+    "all": "betterend:block/jellyshroom_shelf",
+    "particle": "betterend:block/jellyshroom_planks"
+  }
+}

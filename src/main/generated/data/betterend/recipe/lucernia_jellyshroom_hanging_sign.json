@@ -4,7 +4,7 @@
   "group": "sign",
   "key": {
     "#": "betterend:lucernia_stripped_log",
-    "I": "minecraft:chain",
+    "I": "minecraft:iron_chain",
     "o": "betterend:jellyshroom_log"
   },
   "pattern": [

@@ -29,7 +29,7 @@ public class SingleInvertedScatterFeature extends InvertedScatterFeature<SingleP
         if (!world.isEmptyBlock(blockPos)) {
             return false;
         }
-        block = cfg.getPlantState(random, blockPos);
+        block = cfg.getPlantState(world, random, blockPos);
         BlockState state = block;
         if (block.getBlock() instanceof BaseAttachedBlock) {
             state = state.setValue(BlockStateProperties.FACING, Direction.DOWN);

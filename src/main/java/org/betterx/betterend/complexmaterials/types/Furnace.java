@@ -54,7 +54,7 @@ public class Furnace extends SlotFromDefinition {
         return BlockTraits.RECIPE.with(
                 (key, block, context) -> {
                     RecipeBuilder
-                            .crafting(key.location(), block)
+                            .crafting(key.identifier(), block)
                             .shape("###", "# #", "###")
                             .addMaterial('#', set.getBaseBlock())
                             .group("end_stone_furnaces")

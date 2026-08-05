@@ -3,7 +3,7 @@ package org.betterx.betterend.world.biome;
 import de.ambertation.wover.biome.api.BiomeKey;
 import de.ambertation.wover.biome.api.builder.BiomeBootstrapContext;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
@@ -17,7 +17,7 @@ public class EndBiomeKey<C extends EndBiome.Config, PC extends EndBiome.Config> 
 
     private final @Nullable EndBiomeKey<PC, ?> parentOrNull;
 
-    protected EndBiomeKey(@NotNull ResourceLocation location, @Nullable EndBiomeKey<PC, ?> parentOrNull) {
+    protected EndBiomeKey(@NotNull Identifier location, @Nullable EndBiomeKey<PC, ?> parentOrNull) {
         super(location);
         this.parentOrNull = parentOrNull;
     }

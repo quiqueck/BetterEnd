@@ -5,7 +5,33 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:survives_explosion"
+          "block": "betterend:cave_pumpkin",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "small": "true"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "betterend:cave_pumpkin_seed"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:inverted",
+          "term": {
+            "block": "betterend:cave_pumpkin",
+            "condition": "minecraft:block_state_property",
+            "properties": {
+              "small": "true"
+            }
+          }
         }
       ],
       "entries": [

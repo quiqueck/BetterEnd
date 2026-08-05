@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_body",
+  "textures": {
+    "all": "betterend:block/umbrella_tree_shelf",
+    "particle": "betterend:block/umbrella_tree_planks"
+  }
+}

@@ -33,6 +33,13 @@ public class CarverProvider extends WoverRegistryContentProvider<ConfiguredWorld
         final HolderSet<Block> endStones = blocks.getOrThrow(CommonBlockTags.END_STONES);
 
         // Round cavern: legacy RoundCaveFeature -> uniform radius 10..30, vertical squash 1.6.
+        // Top tracks WoverEndConfig#DEFAULT_CAVE_BIOMES_TOP_Y (32 -> 56 -> 48): carving is hard-capped at
+        // the cave-biome band ceiling anyway (see EndCaveCarver#caveBandCeiling), so a cavern-center range
+        // that stopped short of the ceiling left the band's upper reaches biome territory but rarely
+        // actually carved. 56 (matching the band's first raise) fixed missing floors but let caves breach
+        // island surfaces with only a block or two of roof in many places, since small islands can center
+        // as low as Y40; 56 pulled back to match the band's own correction to 48. Bottom kept at 8 - this
+        // widens the band upward rather than shifting it, so existing low-elevation caves are unaffected.
         context.register(
                 EndCarvers.ROUND_CAVE,
                 EndCarvers.END_ROUND_CAVE.configured(new EndCaveCarverConfiguration(

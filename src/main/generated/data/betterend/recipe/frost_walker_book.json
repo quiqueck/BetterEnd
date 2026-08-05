@@ -11,12 +11,12 @@
   "group": "enchantment",
   "input": "minecraft:book",
   "result": {
-    "item": "minecraft:enchanted_book",
-    "nbt": {
+    "components": {
       "minecraft:stored_enchantments": {
         "minecraft:frost_walker": 1
       }
-    }
+    },
+    "item": "minecraft:enchanted_book"
   },
   "time": 300
 }

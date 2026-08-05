@@ -15,10 +15,11 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -94,7 +95,7 @@ public class FlowerPotBlock extends Block implements EntityBlock {
             @NotNull InteractionHand interactionHand,
             @NotNull BlockHitResult blockHitResult
     ) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResult.CONSUME;
         }
         if (!(level.getBlockEntity(pos) instanceof FlowerPotBlockEntity flowerPot)) {
@@ -241,8 +242,8 @@ public class FlowerPotBlock extends Block implements EntityBlock {
         private static BlockModelTrait build() {
             return ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> {
-                        final ResourceLocation texture = TextureMapping.getBlockTexture(block);
-                        final ResourceLocation location = EndModels.FLOWER_POT.create(
+                        final Material texture = TextureMapping.getBlockTexture(block);
+                        final Identifier location = EndModels.FLOWER_POT.create(
                                 block,
                                 new TextureMapping().put(TextureSlot.TEXTURE, texture),
                                 generator.modelOutput()

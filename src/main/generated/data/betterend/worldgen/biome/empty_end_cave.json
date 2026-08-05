@@ -1,33 +1,32 @@
 {
+  "attributes": {
+    "minecraft:audio/ambient_sounds": {
+      "loop": "betterend:betterend.ambient.caves",
+      "mood": {
+        "block_search_extent": 8,
+        "offset": 2.0,
+        "sound": "betterend:betterend.ambient.dust_wastelands",
+        "tick_delay": 6000
+      }
+    },
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "betterend:betterend.music.caves"
+      }
+    },
+    "minecraft:visual/fog_color": "#a080a0",
+    "minecraft:visual/sky_color": "#000000",
+    "minecraft:visual/water_fog_color": "#050533"
+  },
   "carvers": [
     "betterend:round_cave",
     "betterend:tunnel_cave"
   ],
   "downfall": 0.5,
   "effects": {
-    "ambient_sound": "betterend:betterend.ambient.caves",
-    "fog_color": 10518688,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": [
-      {
-        "data": {
-          "max_delay": 2400,
-          "min_delay": 600,
-          "replace_current_music": true,
-          "sound": "betterend:betterend.music.caves"
-        },
-        "weight": 1
-      }
-    ],
-    "music_volume": 1.0,
-    "sky_color": 0,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "water_color": "#3f76e4"
   },
   "features": [
     [],
@@ -45,7 +44,8 @@
     [
       "betterend:stalactite_cluster_plain",
       "betterend:stalagmite_scatter",
-      "betterend:stalactite_scatter"
+      "betterend:stalactite_scatter",
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

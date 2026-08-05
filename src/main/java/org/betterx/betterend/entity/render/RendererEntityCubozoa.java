@@ -7,17 +7,17 @@ import org.betterx.betterend.entity.render.state.CubozoaRenderState;
 import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class RendererEntityCubozoa extends MobRenderer<CubozoaEntity, CubozoaRenderState, CubozoaEntityModel> {
-    private static final ResourceLocation[] TEXTURE = new ResourceLocation[2];
+    private static final Identifier[] TEXTURE = new Identifier[2];
     private static final RenderType[] GLOW = new RenderType[2];
 
     public RendererEntityCubozoa(EntityRendererProvider.Context ctx) {
@@ -29,23 +29,24 @@ public class RendererEntityCubozoa extends MobRenderer<CubozoaEntity, CubozoaRen
             }
 
             @Override
-            public void render(
-                    PoseStack matrices,
-                    MultiBufferSource vertexConsumers,
+            public void submit(
+                    PoseStack poseStack,
+                    SubmitNodeCollector submitNodeCollector,
                     int light,
                     CubozoaRenderState state,
                     float yRot,
                     float xRot
             ) {
-                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(GLOW[state.variant]);
-                this.getParentModel()
-                    .renderToBuffer(
-                            matrices,
-                            vertexConsumer,
-                            15728640,
-                            OverlayTexture.NO_OVERLAY,
-                            0xffffffff
-                    );
+                submitNodeCollector.submitModel(
+                        this.getParentModel(),
+                        state,
+                        poseStack,
+                        GLOW[state.variant],
+                        15728640,
+                        OverlayTexture.NO_OVERLAY,
+                        0xffffffff,
+                        null
+                );
             }
         });
     }
@@ -62,7 +63,7 @@ public class RendererEntityCubozoa extends MobRenderer<CubozoaEntity, CubozoaRen
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CubozoaRenderState state) {
+    public Identifier getTextureLocation(CubozoaRenderState state) {
         return TEXTURE[state.variant];
     }
 
@@ -70,7 +71,7 @@ public class RendererEntityCubozoa extends MobRenderer<CubozoaEntity, CubozoaRen
         TEXTURE[0] = BetterEnd.C.mk("textures/entity/cubozoa/cubozoa.png");
         TEXTURE[1] = BetterEnd.C.mk("textures/entity/cubozoa/cubozoa_sulphur.png");
 
-        GLOW[0] = RenderType.eyes(BetterEnd.C.mk("textures/entity/cubozoa/cubozoa_glow.png"));
-        GLOW[1] = RenderType.eyes(BetterEnd.C.mk("textures/entity/cubozoa/cubozoa_sulphur_glow.png"));
+        GLOW[0] = RenderTypes.eyes(BetterEnd.C.mk("textures/entity/cubozoa/cubozoa_glow.png"));
+        GLOW[1] = RenderTypes.eyes(BetterEnd.C.mk("textures/entity/cubozoa/cubozoa_sulphur_glow.png"));
     }
 }

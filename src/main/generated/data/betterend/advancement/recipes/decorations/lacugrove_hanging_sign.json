@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_chain": {
+    "has_iron_chain": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:chain"
+            "items": "minecraft:iron_chain"
           }
         ]
       },
@@ -31,8 +31,8 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_chain",
-      "has_lacugrove_stripped_log"
+      "has_lacugrove_stripped_log",
+      "has_iron_chain"
     ]
   ],
   "rewards": {

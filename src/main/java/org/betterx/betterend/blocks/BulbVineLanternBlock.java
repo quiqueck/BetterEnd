@@ -13,9 +13,10 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,7 +40,7 @@ public class BulbVineLanternBlock extends EndLanternBlock {
         return state.getValue(IS_FLOOR) ? SHAPE_FLOOR : SHAPE_CEIL;
     }
 
-    protected static String getMetalTexture(ResourceLocation blockId) {
+    protected static String getMetalTexture(Identifier blockId) {
         String name = blockId.getPath();
         name = name.substring(0, name.indexOf('_'));
         return name + "_bulb_vine_lantern_metal";
@@ -69,8 +70,8 @@ public class BulbVineLanternBlock extends EndLanternBlock {
                         final var id = BuiltInRegistries.BLOCK.getKey(block);
 
                         final var mapping = new TextureMapping()
-                                .put(BCLModels.GLOW, BetterEnd.C.mk("bulb_vine_lantern_bulb").withPrefix("block/"))
-                                .put(BCLModels.METAL, BetterEnd.C.mk(getMetalTexture(id)).withPrefix("block/"));
+                                .put(BCLModels.GLOW, new Material(BetterEnd.C.mk("bulb_vine_lantern_bulb").withPrefix("block/")))
+                                .put(BCLModels.METAL, new Material(BetterEnd.C.mk(getMetalTexture(id)).withPrefix("block/")));
 
                         final var floorModel = BCLModels.BULB_LANTERN_FLOOR.createWithSuffix(
                                 block,

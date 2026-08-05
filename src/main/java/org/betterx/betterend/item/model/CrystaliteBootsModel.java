@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
 public class CrystaliteBootsModel extends HumanoidModel<HumanoidRenderState> implements CrystaliteArmorRenderer.CopyExtraState {
@@ -55,7 +55,7 @@ public class CrystaliteBootsModel extends HumanoidModel<HumanoidRenderState> imp
     }
 
     public CrystaliteBootsModel(ModelPart modelPart) {
-        super(modelPart, RenderType::entityTranslucent);
+        super(modelPart, RenderTypes::entityTranslucent);
 
         leftBoot = modelPart.getChild("leftBoot");
         rightBoot = modelPart.getChild("rightBoot");
@@ -63,7 +63,7 @@ public class CrystaliteBootsModel extends HumanoidModel<HumanoidRenderState> imp
 
     @Override
     public void copyExtraState() {
-        this.leftBoot.copyFrom(leftLeg);
-        this.rightBoot.copyFrom(rightLeg);
+        this.leftBoot.loadPose(leftLeg.storePose());
+        this.rightBoot.loadPose(rightLeg.storePose());
     }
 }

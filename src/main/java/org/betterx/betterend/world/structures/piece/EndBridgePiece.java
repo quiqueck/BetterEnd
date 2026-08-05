@@ -119,9 +119,9 @@ public class EndBridgePiece extends BasePiece {
             ChunkPos chunkPos,
             BlockPos blockPos
     ) {
-        final ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
-        final int sx = SectionPos.sectionToBlockCoord(chunkPos.x);
-        final int sz = SectionPos.sectionToBlockCoord(chunkPos.z);
+        final ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
+        final int sx = SectionPos.sectionToBlockCoord(chunkPos.x());
+        final int sz = SectionPos.sectionToBlockCoord(chunkPos.z());
         final int chunkMinY = chunk.getMinY();
 
         final int x0 = Math.max(boundingBox.minX(), sx);

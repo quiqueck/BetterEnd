@@ -19,6 +19,10 @@ import java.util.List;
 @Mixin(NoiseChunk.class)
 public class NoiseChunkMixin implements BETargetChecker {
     private boolean be_isEndGenerator;
+    // 26.1: NoiseChunk no longer keeps the NoiseSettings it was constructed with as a field (its
+    // relevant values get baked into other fields instead), so there's no target left for an
+    // @Accessor to read. Captured directly from the constructor param instead.
+    private NoiseSettings be_noiseSettings;
 
     @Inject(method = "<init>*", at = @At("TAIL"))
     private void be_onNoiseChunkInit(
@@ -33,6 +37,7 @@ public class NoiseChunkMixin implements BETargetChecker {
             Blender blender,
             CallbackInfo ci
     ) {
+        this.be_noiseSettings = noiseSettings;
         var o = BETargetChecker.class.cast(noiseGeneratorSettings);
         if (o != null) be_isEndGenerator = o.be_isTarget();
         else BCLib.LOGGER.warn(noiseGeneratorSettings + " has unknown implementation.");
@@ -59,9 +64,8 @@ public class NoiseChunkMixin implements BETargetChecker {
         info.cancel();
 
         NoiseChunkAccessor accessor = (NoiseChunkAccessor) this;
-        NoiseSettings noiseSettings = accessor.bnv_getNoiseSettings();
 
-        TerrainGenerator.fillSlice(primarySlice, x, interpolators, accessor, noiseSettings);
+        TerrainGenerator.fillSlice(primarySlice, x, interpolators, accessor, be_noiseSettings);
     }
 
 }

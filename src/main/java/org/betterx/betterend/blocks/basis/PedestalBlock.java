@@ -5,6 +5,7 @@ import org.betterx.betterend.blocks.EndBlockProperties.PedestalState;
 import org.betterx.betterend.blocks.InfusionPedestal;
 import org.betterx.betterend.blocks.entities.InfusionPedestalEntity;
 import org.betterx.betterend.blocks.entities.PedestalBlockEntity;
+import org.betterx.betterend.client.effects.InfusionHint;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.betterend.rituals.InfusionRitual;
 import de.ambertation.wover.block.api.BlockProperties;
@@ -21,15 +22,17 @@ import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -143,6 +146,47 @@ public class PedestalBlock extends Block implements EntityBlock {
             }
         }
         return InteractionResult.PASS;
+    }
+
+    /**
+     * Confirms a pedestal dropped onto one of an infusion pedestal's catalyst sockets with a puff of
+     * mist, so getting the ring right is acknowledged the moment it happens rather than only once the
+     * eighth one lands.
+     * <p>
+     * Client-side only, and deliberately not tied to whether a hint is running - {@code setPlacedBy}
+     * is invoked on both sides, so this needs no packet. {@code ClientHooks} keeps the client-only
+     * effect off the dedicated server's resolution path.
+     */
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (!level.isClientSide()) return;
+
+        InfusionRitual.Socket socket = InfusionRitual.socketAt(level, pos);
+        if (socket != null) {
+            ClientHooks.onSocketFilled(level, pos, socket);
+        }
+    }
+
+    /**
+     * See {@code InfusionPedestal.ClientHooks}: the dedicated server strips
+     * {@code @Environment(CLIENT)} types, so the client-only effect is only ever reached through a
+     * holder resolved behind a {@code level.isClientSide()} check.
+     */
+    @Environment(EnvType.CLIENT)
+    private static class ClientHooks {
+        private static void onSocketFilled(Level level, BlockPos pos, InfusionRitual.Socket socket) {
+            InfusionHint.burstAtSocket(level, pos, socket.index());
+
+            if (InfusionRitual.allSocketsPresent(level, socket.pedestal())) {
+                // The pedestal only speaks up once the ring closes, and the outlines go with it: there
+                // is nothing left to point at, and leaving them fading would undercut the flash.
+                InfusionHint.beginFlash(level, socket.pedestal());
+                InfusionHint.dismiss(level);
+            } else {
+                InfusionHint.triggerSubtle(level, socket.pedestal());
+            }
+        }
     }
 
     @Override
@@ -343,6 +387,14 @@ public class PedestalBlock extends Block implements EntityBlock {
         return getDropPos(world, pos.above());
     }
 
+    /**
+     * Outline of a free-standing pedestal, drawn as a ghost where a catalyst pedestal is still
+     * missing (see {@code InfusionHint}).
+     */
+    public static VoxelShape defaultShape() {
+        return SHAPE_DEFAULT;
+    }
+
     public boolean isPlaceable(BlockState state) {
         if (!state.is(this)) return false;
         PedestalState currentState = state.getValue(STATE);
@@ -389,7 +441,7 @@ public class PedestalBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState state, @NotNull Level world, @NotNull BlockPos pos) {
+    public int getAnalogOutputSignal(BlockState state, @NotNull Level world, @NotNull BlockPos pos, Direction direction) {
         return state.getValue(HAS_ITEM) ? 15 : 0;
     }
 
@@ -428,16 +480,16 @@ public class PedestalBlock extends Block implements EntityBlock {
             Block pedestalBlock,
             Map<PedestalState, ModelTemplate> pedestalModels
     ) {
-        final ResourceLocation id = TextureMapping.getBlockTexture(pedestalBlock);
+        final Identifier id = TextureMapping.getBlockTexture(pedestalBlock).sprite();
 
         var properties = PropertyDispatch.modify(STATE);
         // The first model built also serves as the default for dispatch - build each model
         // exactly once, since generator.vanillaGenerator.modelOutput rejects duplicates.
-        ResourceLocation defaultModel = null;
+        Identifier defaultModel = null;
 
         for (var entry : pedestalModels.entrySet()) {
             final String suffix = "_" + entry.getKey();
-            ResourceLocation model = entry
+            Identifier model = entry
                     .getValue()
                     .createWithSuffix(pedestalBlock, suffix, mapping, generator.vanillaGenerator.modelOutput);
             properties = properties.select(entry.getKey(), (variant) -> BlockModelGenerators.plainModel(model));
@@ -454,12 +506,12 @@ public class PedestalBlock extends Block implements EntityBlock {
 
     @Environment(EnvType.CLIENT)
     protected static TextureMapping createTextureMapping(Block sourceBlock) {
-        final var parentTexture = TextureMapping.getBlockTexture(sourceBlock);
+        final var parentTexture = TextureMapping.getBlockTexture(sourceBlock).sprite();
         return new TextureMapping()
-                .put(TextureSlot.TOP, parentTexture.withSuffix("_top"))
-                .put(TextureSlot.BOTTOM, parentTexture.withSuffix("_bottom"))
-                .put(EndModels.BASE, parentTexture.withSuffix("_base"))
-                .put(EndModels.PILLAR, parentTexture.withSuffix("_pillar"));
+                .put(TextureSlot.TOP, new Material(parentTexture.withSuffix("_top")))
+                .put(TextureSlot.BOTTOM, new Material(parentTexture.withSuffix("_bottom")))
+                .put(EndModels.BASE, new Material(parentTexture.withSuffix("_base")))
+                .put(EndModels.PILLAR, new Material(parentTexture.withSuffix("_pillar")));
     }
 
     public static BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {

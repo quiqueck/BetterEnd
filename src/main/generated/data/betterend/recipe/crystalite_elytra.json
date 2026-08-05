@@ -12,32 +12,7 @@
   },
   "input": "minecraft:elytra",
   "result": {
-    "item": "betterend:elytra_crystalite",
-    "nbt": {
-      "minecraft:attribute_modifiers": [
-        {
-          "type": "minecraft:armor",
-          "amount": 6.666666401757145,
-          "id": "betterend:armor_boost_chestplate",
-          "operation": "add_value",
-          "slot": "chest"
-        },
-        {
-          "type": "minecraft:armor_toughness",
-          "amount": 0.9600000381469727,
-          "id": "betterend:toughness_boost_chestplate",
-          "operation": "add_value",
-          "slot": "chest"
-        },
-        {
-          "type": "minecraft:knockback_resistance",
-          "amount": 0.5,
-          "id": "betterend:base_knockback_resistance",
-          "operation": "add_value",
-          "slot": "mainhand"
-        }
-      ]
-    }
+    "item": "betterend:elytra_crystalite"
   },
   "time": 500
 }

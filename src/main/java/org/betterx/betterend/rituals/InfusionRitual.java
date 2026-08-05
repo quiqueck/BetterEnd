@@ -1,6 +1,8 @@
 package org.betterx.betterend.rituals;
 
 import org.betterx.betterend.advancements.BECriteria;
+import org.betterx.betterend.blocks.InfusionPedestal;
+import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.entities.InfusionPedestalEntity;
 import org.betterx.betterend.blocks.entities.PedestalBlockEntity;
 import org.betterx.betterend.particle.InfusionParticleType;
@@ -16,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk.EntityCreationType;
@@ -25,6 +28,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class InfusionRitual implements Container {
     public class InfusionInput implements RecipeInput {
@@ -72,7 +76,7 @@ public class InfusionRitual implements Container {
         for (int i = 0; i < catalysts.length; i++) {
             Point point = PEDESTALS_MAP[i];
             MutableBlockPos checkPos = worldPos.mutable().move(Direction.EAST, point.x).move(Direction.NORTH, point.y);
-            BlockEntity catalystEntity = world.isClientSide
+            BlockEntity catalystEntity = world.isClientSide()
                     ? world.getChunkAt(checkPos).getBlockEntity(checkPos, EntityCreationType.CHECK)
                     : world.getBlockEntity(checkPos);
             if (catalystEntity instanceof PedestalBlockEntity) {
@@ -134,7 +138,7 @@ public class InfusionRitual implements Container {
         progress++;
         if (progress == time) {
             clearContent();
-            input.setItem(0, activeRecipe.value().assemble(new InfusionInput(), world.registryAccess()));
+            input.setItem(0, activeRecipe.value().assemble(new InfusionInput()));
             if (world instanceof ServerLevel sl) {
                 sl.getPlayers(p -> p.position()
                                     .subtract(new Vec3(worldPos.getX(), worldPos.getY(), worldPos.getZ()))
@@ -279,5 +283,61 @@ public class InfusionRitual implements Container {
 
     public static Point[] getMap() {
         return PEDESTALS_MAP;
+    }
+
+    /**
+     * Position of the catalyst socket {@code index} for an infusion pedestal at {@code pedestalPos}.
+     */
+    public static BlockPos socketPos(BlockPos pedestalPos, int index) {
+        Point point = PEDESTALS_MAP[index];
+        return pedestalPos.offset(point.x, 0, -point.y);
+    }
+
+    /**
+     * Which of the 8 catalyst sockets around {@code pedestalPos} already carry a pedestal. Tests the
+     * block state rather than the block entity, so - unlike {@link #configure()} - it needs no linked
+     * ritual and never forces a block entity into existence; the client can call it straight from a
+     * block interaction or a block entity renderer. Every {@link PedestalBlock} carries a
+     * {@link PedestalBlockEntity}, so this agrees with what {@link #isValid()} accepts.
+     */
+    public static boolean[] socketsPresent(BlockGetter world, BlockPos pedestalPos) {
+        boolean[] present = new boolean[PEDESTALS_MAP.length];
+        for (int i = 0; i < present.length; i++) {
+            present[i] = world.getBlockState(socketPos(pedestalPos, i)).getBlock() instanceof PedestalBlock;
+        }
+        return present;
+    }
+
+    /**
+     * A catalyst socket: which infusion pedestal it belongs to, and its index in
+     * {@link #getMap()} (0 = north, going clockwise).
+     */
+    public record Socket(BlockPos pedestal, int index) {
+        public boolean isNorth() {
+            return index == InfusionRecipe.CatalystSlot.NORTH.index;
+        }
+    }
+
+    /**
+     * The catalyst socket {@code pos} occupies, or {@code null} if no infusion pedestal has a socket
+     * there. The inverse of {@link #socketPos(BlockPos, int)}, so the index it reports is the one the
+     * recipes are keyed by - which is what makes "is this the north one" answerable.
+     */
+    public static @Nullable Socket socketAt(BlockGetter world, BlockPos pos) {
+        for (int i = 0; i < PEDESTALS_MAP.length; i++) {
+            Point point = PEDESTALS_MAP[i];
+            BlockPos candidate = pos.offset(-point.x, 0, point.y);
+            if (world.getBlockState(candidate).getBlock() instanceof InfusionPedestal) {
+                return new Socket(candidate, i);
+            }
+        }
+        return null;
+    }
+
+    public static boolean allSocketsPresent(BlockGetter world, BlockPos pedestalPos) {
+        for (boolean present : socketsPresent(world, pedestalPos)) {
+            if (!present) return false;
+        }
+        return true;
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.EntityType.EntityFactory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -119,7 +119,7 @@ public class EndEntities {
             float height,
             EntityFactory<T> entity
     ) {
-        ResourceLocation id = BetterEnd.C.mk(name);
+        Identifier id = BetterEnd.C.mk(name);
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
         EntityType<T> type = FabricEntityTypeBuilder
                 .create(group, entity)
@@ -140,7 +140,7 @@ public class EndEntities {
             int eggColor,
             int dotsColor
     ) {
-        ResourceLocation id = BetterEnd.C.mk(name);
+        Identifier id = BetterEnd.C.mk(name);
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
         EntityType<T> type = FabricEntityTypeBuilder
                 .create(group, entity)

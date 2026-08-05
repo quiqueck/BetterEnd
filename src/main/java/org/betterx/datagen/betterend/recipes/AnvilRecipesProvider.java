@@ -8,6 +8,7 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.item.material.EndToolTier;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTags;
+import org.betterx.betterend.registry.block.EndMetalBlocks;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.datagen.api.provider.WoverRecipeProvider;
 import de.ambertation.wover.recipe.api.RecipeBuilder;
@@ -33,6 +34,19 @@ public class AnvilRecipesProvider extends WoverRecipeProvider {
                         .setAnvilLevel(EndToolTier.THALLASIUM.level)
                         .setAllowedTools(EndTags.ANVIL_IRON_TOOL)
                         .setDamage(3)
+                        .build(context);
+
+        BCLRecipeBuilder.anvil(BetterEnd.C.mk("thallasium_forged_plate"), EndMetalBlocks.THALLASIUM.equipment.forgedPlate)
+                        .setPrimaryInputAndUnlock(EndMetalBlocks.THALLASIUM.equipment.ingot)
+                        .setAnvilLevel(EndToolTier.THALLASIUM.level)
+                        .setAllowedTools(EndTags.ANVIL_IRON_TOOL)
+                        .setDamage(EndToolTier.THALLASIUM.level)
+                        .build(context);
+        BCLRecipeBuilder.anvil(BetterEnd.C.mk("terminite_forged_plate"), EndMetalBlocks.TERMINITE.equipment.forgedPlate)
+                        .setPrimaryInputAndUnlock(EndMetalBlocks.TERMINITE.equipment.ingot)
+                        .setAnvilLevel(EndToolTier.TERMINITE.level)
+                        .setAllowedTools(EndTags.ANVIL_DIAMOND_TOOL)
+                        .setDamage(EndToolTier.TERMINITE.level)
                         .build(context);
 
         final int anvilLevel = EndToolTier.AETERNIUM.level;

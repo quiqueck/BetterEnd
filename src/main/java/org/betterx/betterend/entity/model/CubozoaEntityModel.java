@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 
 public class CubozoaEntityModel extends EntityModel<CubozoaRenderState> {
@@ -54,7 +54,7 @@ public class CubozoaEntityModel extends EntityModel<CubozoaRenderState> {
     }
 
     public CubozoaEntityModel(ModelPart modelPart) {
-        super(modelPart, RenderType::entityTranslucent);
+        super(modelPart, RenderTypes::entityTranslucent);
         tentacle = new ModelPart[TENTACLE_COUNT];
         tentacle_center = new ModelPart[TENTACLE_COUNT];
 

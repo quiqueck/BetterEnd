@@ -317,7 +317,7 @@ public class NeonCactusPlantBlock extends Block implements SimpleWaterloggedBloc
     }
 
     @Override
-    public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier insideBlockEffectApplier) {
+    public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier insideBlockEffectApplier, boolean flag) {
         entity.hurt(level.damageSources().cactus(), 1.0F);
     }
 

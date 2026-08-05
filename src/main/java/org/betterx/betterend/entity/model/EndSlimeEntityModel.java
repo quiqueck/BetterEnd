@@ -15,7 +15,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -111,7 +111,7 @@ public class EndSlimeEntityModel extends EntityModel<EndSlimeRenderState> {
     }
 
     private EndSlimeEntityModel(ModelPart modelPart, boolean onlyShell) {
-        super(buildRenderRoot(modelPart, onlyShell), RenderType::entityCutout);
+        super(buildRenderRoot(modelPart, onlyShell), RenderTypes::entityCutoutCull);
 
         innerCube = modelPart.getChild(PartNames.BODY);
         if (!onlyShell) {
@@ -130,7 +130,7 @@ public class EndSlimeEntityModel extends EntityModel<EndSlimeRenderState> {
     }
 
     // Builds a synthetic root containing only the parts that should be part of the
-    // regular renderToBuffer() pass; "flower" and "crop" are rendered separately on demand.
+    // regular render pass; "flower" and "crop" are rendered separately on demand.
     private static ModelPart buildRenderRoot(ModelPart modelPart, boolean onlyShell) {
         Map<String, ModelPart> children = new LinkedHashMap<>();
         children.put(PartNames.BODY, modelPart.getChild(PartNames.BODY));

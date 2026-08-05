@@ -30,7 +30,7 @@ public class ArchFeature extends Feature<ArchFeatureConfig> {
         final WorldGenLevel world = featurePlaceContext.level();
         BlockPos origin = featurePlaceContext.origin();
         RandomSource random = featurePlaceContext.random();
-        BlockState cfgBlockState = cfg.block.getState(random, origin);
+        BlockState cfgBlockState = cfg.block.getState(world, random, origin);
         Block cfgBlock = cfgBlockState.getBlock();
         BlockPos pos = DefaultFeature.getPosOnSurfaceWG(
                 world,

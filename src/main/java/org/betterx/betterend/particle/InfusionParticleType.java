@@ -3,14 +3,13 @@ package org.betterx.betterend.particle;
 import org.betterx.betterend.registry.EndParticles;
 import org.betterx.ui.ColorUtil;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,34 +17,33 @@ import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
 
 public class InfusionParticleType extends ParticleType<InfusionParticleType> implements ParticleOptions {
-    public static final MapCodec<InfusionParticleType> CODEC = Codec
-            .withAlternative(ItemStack.SINGLE_ITEM_CODEC, Item.CODEC, ItemStack::new)
-            .xmap((itemStack) -> new InfusionParticleType(EndParticles.INFUSION, itemStack), (itemParticleOption) -> itemParticleOption.itemStack)
+    public static final MapCodec<InfusionParticleType> CODEC = ItemStackTemplate.CODEC
+            .xmap((template) -> new InfusionParticleType(EndParticles.INFUSION, template), (itemParticleOption) -> itemParticleOption.itemStackTemplate)
             .fieldOf("item");
 
-    public static final StreamCodec<? super RegistryFriendlyByteBuf, InfusionParticleType> STREAM_CODEC = ItemStack.STREAM_CODEC
+    public static final StreamCodec<? super RegistryFriendlyByteBuf, InfusionParticleType> STREAM_CODEC = ItemStackTemplate.STREAM_CODEC
             .map(
-                    (itemStack) -> new InfusionParticleType(EndParticles.INFUSION, itemStack),
-                    (itemParticleOption) -> itemParticleOption.itemStack
+                    (template) -> new InfusionParticleType(EndParticles.INFUSION, template),
+                    (itemParticleOption) -> itemParticleOption.itemStackTemplate
             );
 
 
     private final ParticleType<InfusionParticleType> type;
-    private final ItemStack itemStack;
+    private final ItemStackTemplate itemStackTemplate;
 
-    private InfusionParticleType(ParticleType<InfusionParticleType> particleType, ItemStack stack) {
+    private InfusionParticleType(ParticleType<InfusionParticleType> particleType, ItemStackTemplate template) {
         super(true);
         this.type = particleType;
-        this.itemStack = stack;
+        this.itemStackTemplate = template;
     }
 
     public InfusionParticleType(ItemStack stack) {
-        this(EndParticles.INFUSION, stack);
+        this(EndParticles.INFUSION, ItemStackTemplate.fromNonEmptyStack(stack));
     }
 
     @Environment(EnvType.CLIENT)
     public float[] getPalette() {
-        int color = ColorUtil.extractColor(itemStack.getItem());
+        int color = ColorUtil.extractColor(itemStackTemplate.item().value());
         return ColorUtil.toFloatArray(color);
     }
 

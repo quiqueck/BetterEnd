@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/chain",
+  "parent": "minecraft:block/template_chain",
   "textures": {
-    "all": "betterend:block/thallasium_chain"
+    "texture": "betterend:block/thallasium_chain"
   }
 }

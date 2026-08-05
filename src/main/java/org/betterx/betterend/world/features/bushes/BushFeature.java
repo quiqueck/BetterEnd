@@ -46,8 +46,8 @@ public class BushFeature extends Feature<BushFeatureConfig> {
         if (!world.getFluidState(pos).isEmpty()) return false;
 
         BushFeatureConfig cfg = featureConfig.config();
-        Block leaves = cfg.leaves.getState(random, pos).getBlock();
-        BlockState stem = cfg.stem.getState(random, pos);
+        Block leaves = cfg.leaves.getState(world, random, pos).getBlock();
+        BlockState stem = cfg.stem.getState(world, random, pos);
         float radius = MHelper.randRange(1.8F, 3.5F, random);
         OpenSimplexNoise noise = new OpenSimplexNoise(random.nextInt());
         SDF sphere = new SDFSphere().setRadius(radius).setBlock(leaves);

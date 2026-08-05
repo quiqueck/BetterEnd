@@ -1,37 +1,38 @@
 {
+  "attributes": {
+    "minecraft:audio/ambient_sounds": {
+      "mood": {
+        "block_search_extent": 8,
+        "offset": 2.0,
+        "sound": "betterend:betterend.ambient.dust_wastelands",
+        "tick_delay": 6000
+      }
+    },
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "betterend:betterend.music.openspace"
+      }
+    },
+    "minecraft:visual/ambient_particles": [
+      {
+        "particle": {
+          "type": "betterend:tenanea_petal"
+        },
+        "probability": 7.0E-4
+      }
+    ],
+    "minecraft:visual/fog_color": "#d7a5f0",
+    "minecraft:visual/sky_color": "#000000",
+    "minecraft:visual/water_fog_color": "#96d2e6"
+  },
   "carvers": [],
   "downfall": 0.5,
   "effects": {
-    "fog_color": -2644496,
-    "foliage_color": -7550856,
-    "grass_color": -7550856,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": [
-      {
-        "data": {
-          "max_delay": 2400,
-          "min_delay": 600,
-          "replace_current_music": true,
-          "sound": "betterend:betterend.music.openspace"
-        },
-        "weight": 1
-      }
-    ],
-    "music_volume": 1.0,
-    "particle": {
-      "options": {
-        "type": "betterend:tenanea_petal"
-      },
-      "probability": 7.0E-4
-    },
-    "sky_color": 0,
-    "water_color": -6892826,
-    "water_fog_color": -6892826
+    "foliage_color": "#8cc878",
+    "grass_color": "#8cc878",
+    "water_color": "#96d2e6"
   },
   "features": [
     [],
@@ -47,7 +48,9 @@
       "betterend:thallasium_ore",
       "betterend:ender_ore"
     ],
-    [],
+    [
+      "betterend:cave_surface_coat"
+    ],
     [],
     [
       "betterend:blooming_cooksonia",

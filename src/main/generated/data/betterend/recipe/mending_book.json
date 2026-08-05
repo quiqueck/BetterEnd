@@ -13,12 +13,12 @@
   "group": "enchantment",
   "input": "minecraft:book",
   "result": {
-    "item": "minecraft:enchanted_book",
-    "nbt": {
+    "components": {
       "minecraft:stored_enchantments": {
         "minecraft:mending": 1
       }
-    }
+    },
+    "item": "minecraft:enchanted_book"
   },
   "time": 375
 }

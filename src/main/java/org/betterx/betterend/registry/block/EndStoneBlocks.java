@@ -270,7 +270,10 @@ public class EndStoneBlocks {
             .lightLevel(state -> state.getValue(RunedFlavolite.ACTIVATED) ? 8 : 0)
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(EndModelTraits.flavoliteRuned())
-            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            // No LOOT_TABLE trait: the negative strength above makes this variant unbreakable, so it is not
+            // obtainable and a block with no table drops nothing. RunedFlavolite used to say that with a
+            // getDrops override testing its own hardness - but the two variants are separate registrations,
+            // so the distinction belongs here rather than in code both of them share.
             .buildAndRegister();
 
     public static final Block HYDROTHERMAL_VENT = EndBlocks.defineBlock("hydrothermal_vent", HydrothermalVentBlock::new)

@@ -4,17 +4,17 @@ import org.betterx.betterend.BetterEnd;
 
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.advancements.critereon.PlayerTrigger;
+import net.minecraft.advancements.criterion.PlayerTrigger;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Optional;
 
 public class BECriteria {
-    public static ResourceLocation PORTAL_ON_ID = BetterEnd.C.mk("portal_on");
-    public static ResourceLocation PORTAL_TRAVEL_ID = BetterEnd.C.mk("portal_travel");
-    public static ResourceLocation INFUSION_FINISHED_ID = BetterEnd.C.mk("infusion_finished");
+    public static Identifier PORTAL_ON_ID = BetterEnd.C.mk("portal_on");
+    public static Identifier PORTAL_TRAVEL_ID = BetterEnd.C.mk("portal_travel");
+    public static Identifier INFUSION_FINISHED_ID = BetterEnd.C.mk("infusion_finished");
 
 
     public static PlayerTrigger PORTAL_ON;
@@ -36,7 +36,7 @@ public class BECriteria {
         INFUSION_FINISHED_TRIGGER = INFUSION_FINISHED.createCriterion(new PlayerTrigger.TriggerInstance(Optional.empty()));
     }
 
-    public static <T extends CriterionTrigger<?>> T register(ResourceLocation id, T criterionTrigger) {
+    public static <T extends CriterionTrigger<?>> T register(Identifier id, T criterionTrigger) {
         return Registry.register(BuiltInRegistries.TRIGGER_TYPES, id, criterionTrigger);
     }
 }

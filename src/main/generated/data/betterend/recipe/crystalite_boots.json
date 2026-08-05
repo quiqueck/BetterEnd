@@ -7,25 +7,7 @@
   },
   "input": "betterend:terminite_boots",
   "result": {
-    "item": "betterend:crystalite_boots",
-    "nbt": {
-      "minecraft:attribute_modifiers": [
-        {
-          "type": "minecraft:armor",
-          "amount": 3.0,
-          "id": "betterend:armor_boost_boots",
-          "operation": "add_value",
-          "slot": "feet"
-        },
-        {
-          "type": "minecraft:armor_toughness",
-          "amount": 1.2000000476837158,
-          "id": "betterend:toughness_boost_boots",
-          "operation": "add_value",
-          "slot": "feet"
-        }
-      ]
-    }
+    "item": "betterend:crystalite_boots"
   },
   "time": 150
 }

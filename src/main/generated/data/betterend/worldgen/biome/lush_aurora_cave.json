@@ -1,41 +1,42 @@
 {
+  "attributes": {
+    "minecraft:audio/ambient_sounds": {
+      "loop": "betterend:betterend.ambient.caves",
+      "mood": {
+        "block_search_extent": 8,
+        "offset": 2.0,
+        "sound": "betterend:betterend.ambient.dust_wastelands",
+        "tick_delay": 6000
+      }
+    },
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "betterend:betterend.music.caves"
+      }
+    },
+    "minecraft:visual/ambient_particles": [
+      {
+        "particle": {
+          "type": "betterend:glowing_sphere"
+        },
+        "probability": 0.001
+      }
+    ],
+    "minecraft:visual/fog_color": "#961e44",
+    "minecraft:visual/sky_color": "#000000",
+    "minecraft:visual/water_fog_color": "#ba4ded"
+  },
   "carvers": [
     "betterend:round_cave",
     "betterend:tunnel_cave"
   ],
   "downfall": 0.5,
   "effects": {
-    "ambient_sound": "betterend:betterend.ambient.caves",
-    "fog_color": -6939068,
-    "foliage_color": -9692882,
-    "grass_color": -9692882,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": [
-      {
-        "data": {
-          "max_delay": 2400,
-          "min_delay": 600,
-          "replace_current_music": true,
-          "sound": "betterend:betterend.music.caves"
-        },
-        "weight": 1
-      }
-    ],
-    "music_volume": 1.0,
-    "particle": {
-      "options": {
-        "type": "betterend:glowing_sphere"
-      },
-      "probability": 0.001
-    },
-    "sky_color": 0,
-    "water_color": -4567571,
-    "water_fog_color": -4567571
+    "foliage_color": "#6c192e",
+    "grass_color": "#6c192e",
+    "water_color": "#ba4ded"
   },
   "features": [
     [],
@@ -57,7 +58,8 @@
       "betterend:cave_lush_ceiling_patch",
       "betterend:cave_grass_scatter",
       "betterend:cave_bush_scatter",
-      "betterend:cave_pumpkin_placed"
+      "betterend:cave_pumpkin_placed",
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

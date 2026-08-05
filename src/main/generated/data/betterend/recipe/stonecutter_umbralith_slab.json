@@ -1,6 +1,5 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "slab",
   "ingredient": "betterend:umbralith",
   "result": {
     "count": 2,

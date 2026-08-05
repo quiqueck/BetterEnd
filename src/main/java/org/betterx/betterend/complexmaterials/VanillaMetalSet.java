@@ -50,7 +50,7 @@ public class VanillaMetalSet extends BlockSet<VanillaMetalSet> {
     @Override
     public @Nullable Block getBlock(@NotNull SlotType type) {
         if (type == MetalMaterial.CHAIN) {
-            return Blocks.CHAIN;
+            return Blocks.IRON_CHAIN;
         }
         return super.getBlock(type);
     }

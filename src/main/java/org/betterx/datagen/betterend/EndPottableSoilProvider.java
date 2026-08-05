@@ -8,7 +8,7 @@ import de.ambertation.wover.pottable.api.datagen.WoverPottableSoilRegistryProvid
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -54,7 +54,7 @@ public class EndPottableSoilProvider extends WoverPottableSoilRegistryProvider {
 
         // Register the vanilla dirt-like soils explicitly (they have no trait).
         for (Block soil : VANILLA_SOILS) {
-            ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(soil);
+            Identifier blockId = BuiltInRegistries.BLOCK.getKey(soil);
             PottableSoilRegistry.register(
                     context,
                     PottableSoilRegistry.createKey(BetterEnd.C.id(blockId.getPath())),

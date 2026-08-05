@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "id": "betterend",
-    "version": "21.800.0",
+    "version": "26.101.0",
     "name": "Better End",
     "description": "More content for The End dimension, including new biomes, plants, mobs, mechanics, terrain generation and more.\nMade by:\n- paulevs (code & art)\n- Bulldog83 (code & art)\n- Edos (building)\n- Yuki (art)\n- Seaward (art)\n- Firel (music)\n",
     "authors": [
@@ -36,6 +36,9 @@
         ],
         "emi_diabled": [
             "org.betterx.betterend.integration.emi.EMIPlugin"
+        ],
+        "jei_mod_plugin": [
+            "org.betterx.betterend.integration.jei.JeiPlugin"
         ]
     },
     "accessWidener": "betterend.accesswidener",
@@ -44,24 +47,25 @@
         "betterend.mixins.client.json"
     ],
     "depends": {
-        "fabricloader": ">=0.15.11",
-        "fabric-api": ">=0.100.0",
-        "java": ">=21",
+        "fabricloader": ">=0.19.0",
+        "fabric-api": ">=0.155.0",
+        "java": ">=25",
         "minecraft": [
-            "1.21.6",
-            "1.21.7",
-            "1.21.8"
+            "26.1",
+            "26.1.1",
+            "26.1.2"
         ],
-        "bclib": "21.800.x",
-        "wover": "21.800.x",
-        "wunderlib": "21.800.x"
+        "bclib": "26.101.x",
+        "wover": "26.101.x",
+        "wunderlib": "26.101.x"
     },
     "breaks": {
-        "bclib": "<21.800.0",
-        "wover": "<21.800.0",
-        "wunderlib": "<21.800.0"
+        "bclib": "<26.101.0",
+        "wover": "<26.101.0",
+        "wunderlib": "<26.101.0"
     },
     "suggests": {
+        "jei": ">=29.0.0",
         "byg": ">=2.0.0",
         "blockus": ">=2.0.2",
         "nourish": ">=1.2.0",

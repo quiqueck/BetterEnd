@@ -37,7 +37,7 @@ public class AeterniumSet extends ToolsWithHeadsSet {
 //                ArmorSlot.HELMET_SLOT,
 //                ItemTraits.RECIPE_ITEM.with(
 //                        (key, item, context) -> {
-//                            RecipeBuilder.smithing(key.location(), item)
+//                            RecipeBuilder.smithing(key.identifier(), item)
 //                                         .template(EndTemplates.PLATE_UPGRADE)
 //                                         .base(EndMetalBlocks.TERMINITE.helmet)
 //                                         .addon(EndItems.AETERNIUM_FORGED_PLATE)
@@ -49,7 +49,7 @@ public class AeterniumSet extends ToolsWithHeadsSet {
 //                ArmorSlot.CHESTPLATE_SLOT,
 //                ItemTraits.RECIPE_ITEM.with(
 //                        (key, item, context) -> {
-//                            RecipeBuilder.smithing(key.location(), item)
+//                            RecipeBuilder.smithing(key.identifier(), item)
 //                                         .template(EndTemplates.PLATE_UPGRADE)
 //                                         .base(EndMetalBlocks.TERMINITE.chestplate)
 //                                         .addon(EndItems.AETERNIUM_FORGED_PLATE)
@@ -61,7 +61,7 @@ public class AeterniumSet extends ToolsWithHeadsSet {
 //                ArmorSlot.LEGGINGS_SLOT,
 //                ItemTraits.RECIPE_ITEM.with(
 //                        (key, item, context) -> {
-//                            RecipeBuilder.smithing(key.location(), item)
+//                            RecipeBuilder.smithing(key.identifier(), item)
 //                                         .template(EndTemplates.PLATE_UPGRADE)
 //                                         .base(EndMetalBlocks.TERMINITE.leggings)
 //                                         .addon(EndItems.AETERNIUM_FORGED_PLATE)
@@ -73,7 +73,7 @@ public class AeterniumSet extends ToolsWithHeadsSet {
 //                ArmorSlot.BOOTS_SLOT,
 //                ItemTraits.RECIPE_ITEM.with(
 //                        (key, item, context) -> {
-//                            RecipeBuilder.smithing(key.location(), item)
+//                            RecipeBuilder.smithing(key.identifier(), item)
 //                                         .template(EndTemplates.PLATE_UPGRADE)
 //                                         .base(EndMetalBlocks.TERMINITE.boots)
 //                                         .addon(EndItems.AETERNIUM_FORGED_PLATE)

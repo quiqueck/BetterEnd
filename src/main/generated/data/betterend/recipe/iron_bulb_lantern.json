@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": "betterend:glowing_bulb",
-    "C": "minecraft:chain",
+    "C": "minecraft:iron_chain",
     "I": "minecraft:iron_ingot"
   },
   "pattern": [
@@ -12,7 +12,6 @@
     "#"
   ],
   "result": {
-    "count": 1,
     "id": "betterend:iron_bulb_lantern"
   }
 }

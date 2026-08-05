@@ -1,5 +1,10 @@
 // Shared settings-phase helper for local sibling library inclusion.
-// Copy-paste this file identically into every library/mod repo's settings.gradle.
+// Copy-paste this file identically into every library/mod repo's settings.gradle
+// FOR THIS MINECRAFT VERSION (26.1). Not interchangeable with the 1.21.6 copy:
+// this Loom version (1.15.x) dropped the mod*-prefixed configurations
+// (modApi/modImplementation/...) in favor of plain configurations + an
+// explicit loom.mods{} block, so the Maven-fallback branch below uses 'api',
+// not 'modApi'.
 //
 // Includes a sibling project's folder as a real Gradle subproject (plain
 // multi-project include, not includeBuild - see modApiOrLocal below for why:
@@ -32,7 +37,8 @@ ext.includeLocalLib = { String moduleName, String path, String buildFileName, bo
 // local subproject (via includeLocalLib above, not includeBuild), consumes
 // its 'dev' configuration directly as a plain Gradle project dependency -
 // Gradle's own incremental task tracking always rebuilds it fresh on source
-// changes. Otherwise falls back to the published artifact via modApi.
+// changes. Otherwise falls back to the published artifact via 'api' (this
+// Loom version has no modApi - see the note at the fallback below).
 // alsoInclude controls whether the artifact is also embedded via Loom's
 // include(...) - true for the project/mod that actually ships it, false for
 // sub-modules of a multi-module library that just need it on the compile
@@ -66,7 +72,9 @@ gradle.ext.modApiOrLocal = { deps, String localProjectPath, String coordinate, b
             deps.add('include', deps.project(path: localProjectPath))
         }
     } else {
-        deps.add('modApi', coordinate)
+        // Loom 1.15 dropped the mod*-prefixed configurations; mod-awareness now
+        // comes from loom.mods{}, not the configuration name, so this is plain 'api'.
+        deps.add('api', coordinate)
         if (alsoInclude) {
             deps.add('include', coordinate)
         }

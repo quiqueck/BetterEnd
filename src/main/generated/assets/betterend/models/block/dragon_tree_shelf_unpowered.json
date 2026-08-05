@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_shelf_unpowered",
+  "textures": {
+    "all": "betterend:block/dragon_tree_shelf",
+    "particle": "betterend:block/dragon_tree_planks"
+  }
+}

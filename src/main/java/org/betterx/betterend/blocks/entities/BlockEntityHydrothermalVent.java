@@ -53,10 +53,10 @@ public class BlockEntityHydrothermalVent extends BlockEntity {
             BlockEntityHydrothermalVent blockEntity
     ) {
         boolean active = state.getValue(HydrothermalVentBlock.ACTIVATED);
-        if (active && level.random.nextInt(20) == 0 && state.getValue(HydrothermalVentBlock.WATERLOGGED)) {
-            double x = worldPosition.getX() + level.random.nextDouble();
-            double y = worldPosition.getY() + 0.9 + level.random.nextDouble() * 0.3;
-            double z = worldPosition.getZ() + level.random.nextDouble();
+        if (active && level.getRandom().nextInt(20) == 0 && state.getValue(HydrothermalVentBlock.WATERLOGGED)) {
+            double x = worldPosition.getX() + level.getRandom().nextDouble();
+            double y = worldPosition.getY() + 0.9 + level.getRandom().nextDouble() * 0.3;
+            double z = worldPosition.getZ() + level.getRandom().nextDouble();
             level.addParticle(EndParticles.GEYSER_PARTICLE, x, y, z, 0, 0, 0);
         }
     }

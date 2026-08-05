@@ -3,6 +3,7 @@ package org.betterx.betterend.client.render;
 import org.betterx.bclib.util.BackgroundInfo;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.config.Configs;
 
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
@@ -16,15 +17,18 @@ import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 
-import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelTerrainRenderContext;
 
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
@@ -33,7 +37,20 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRenderer {
+/**
+ * Fabric's {@code DimensionRenderingRegistry.SkyRenderer} (a per-dimension sky-render callback)
+ * was removed with the 26.1 render pipeline rework in favor of the generic
+ * {@link LevelRenderEvents}. There is no longer a dedicated "replace the sky" extension point, so
+ * this hooks {@link LevelRenderEvents#START_MAIN} and manually checks for the End dimension.
+ * <p>
+ * START_MAIN fires at the very start of the main (terrain) framegraph pass, i.e. right after the
+ * separate sky pass ({@code SkyRenderer.renderEndSky()}) and immediately before opaque terrain is
+ * drawn. That reproduces vanilla's ordering: our custom sky paints over the vanilla End sky, and
+ * the opaque terrain drawn afterwards paints over ours — so terrain occludes the sky naturally at
+ * every distance, with no depth test needed (the vanilla END_SKY/STARS pipelines carry no
+ * depth-stencil state precisely because they are meant to run before terrain).
+ */
+public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
     private record SkyMesh(GpuBuffer buffer, int indexCount) {
     }
 
@@ -42,11 +59,11 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
         MeshData make(BufferBuilder builder, float minSize, float maxSize, int count, long seed);
     }
 
-    private static final ResourceLocation NEBULA_1 = BetterEnd.C.mk("textures/sky/nebula_2.png");
-    private static final ResourceLocation NEBULA_2 = BetterEnd.C.mk("textures/sky/nebula_3.png");
-    private static final ResourceLocation HORIZON = BetterEnd.C.mk("textures/sky/nebula_1.png");
-    private static final ResourceLocation STARS = BetterEnd.C.mk("textures/sky/stars.png");
-    private static final ResourceLocation FOG = BetterEnd.C.mk("textures/sky/fog.png");
+    private static final Identifier NEBULA_1 = BetterEnd.C.mk("textures/sky/nebula_2.png");
+    private static final Identifier NEBULA_2 = BetterEnd.C.mk("textures/sky/nebula_3.png");
+    private static final Identifier HORIZON = BetterEnd.C.mk("textures/sky/nebula_1.png");
+    private static final Identifier STARS = BetterEnd.C.mk("textures/sky/stars.png");
+    private static final Identifier FOG = BetterEnd.C.mk("textures/sky/fog.png");
 
     private SkyMesh nebula1;
     private SkyMesh nebula2;
@@ -79,18 +96,29 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
         }
     }
 
+    public static void register() {
+        LevelRenderEvents.START_MAIN.register(new BetterEndSkyRenderer());
+    }
+
     @Override
-    public void render(WorldRenderContext context) {
-        if (context.world() == null || context.matrixStack() == null) {
+    public void startMain(LevelTerrainRenderContext context) {
+        ClientLevel world = Minecraft.getInstance().level;
+        if (world == null || world.dimension() != Level.END || !Configs.CLIENT_CONFIG.customSky.get()) {
+            return;
+        }
+
+        CameraRenderState cameraRenderState = context.levelState().cameraRenderState;
+        if (cameraRenderState == null || cameraRenderState.viewRotationMatrix == null) {
             return;
         }
 
         initialise();
 
-        PoseStack matrices = context.matrixStack();
+        PoseStack matrices = new PoseStack();
+        matrices.mulPose(cameraRenderState.viewRotationMatrix);
 
-        float time = ((context.world().getDayTime() + context
-                .tickCounter()
+        float time = ((world.getOverworldClockTime() + Minecraft.getInstance()
+                .getDeltaTracker()
                 .getRealtimeDeltaTicks()) % 360000) * 0.000017453292f;
         float time2 = time * 2;
         float time3 = time * 3;
@@ -156,7 +184,7 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
     private void renderTexturedMesh(
             PoseStack matrices,
             SkyMesh mesh,
-            ResourceLocation texture,
+            Identifier texture,
             float r,
             float g,
             float b,
@@ -170,8 +198,7 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
                                                         matrices.last().pose(),
                                                         new Vector4f(r, g, b, a),
                                                         new Vector3f(),
-                                                        new Matrix4f(),
-                                                        0.0F
+                                                        new Matrix4f()
                                                 );
 
         RenderSystem.AutoStorageIndexBuffer indexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
@@ -189,7 +216,7 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
             pass.setPipeline(RenderPipelines.END_SKY);
             RenderSystem.bindDefaultUniforms(pass);
             pass.setUniform("DynamicTransforms", transform);
-            pass.bindSampler("Sampler0", abstractTexture.getTextureView());
+            pass.bindTexture("Sampler0", abstractTexture.getTextureView(), abstractTexture.getSampler());
             pass.setVertexBuffer(0, mesh.buffer());
             pass.setIndexBuffer(indices, indexBuffer.type());
             pass.drawIndexed(0, 0, mesh.indexCount(), 1);
@@ -204,8 +231,7 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
                                                         matrices.last().pose(),
                                                         new Vector4f(r, g, b, a),
                                                         new Vector3f(),
-                                                        new Matrix4f(),
-                                                        0.0F
+                                                        new Matrix4f()
                                                 );
 
         RenderSystem.AutoStorageIndexBuffer indexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);

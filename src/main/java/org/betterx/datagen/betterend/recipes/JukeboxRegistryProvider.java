@@ -4,13 +4,13 @@ import org.betterx.betterend.registry.EndSounds;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.datagen.api.WoverRegistryContentProvider;
 
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.JukeboxSong;
 
 public class JukeboxRegistryProvider extends WoverRegistryContentProvider<JukeboxSong> {
@@ -27,7 +27,7 @@ public class JukeboxRegistryProvider extends WoverRegistryContentProvider<Jukebo
             int lengthInSeconds,
             int comparatorOutput
     ) {
-        bootstrapContext.register(resourceKey, new JukeboxSong(reference, Component.translatable(Util.makeDescriptionId("jukebox_song", resourceKey.location())), (float) lengthInSeconds, comparatorOutput));
+        bootstrapContext.register(resourceKey, new JukeboxSong(reference, Component.translatable(Util.makeDescriptionId("jukebox_song", resourceKey.identifier())), (float) lengthInSeconds, comparatorOutput));
     }
 
     @Override

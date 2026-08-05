@@ -9,7 +9,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -65,7 +65,7 @@ public abstract class MountainPiece extends BasePiece {
         tag.store("center", BlockPos.CODEC, center);
         tag.putFloat("radius", radius);
         tag.putFloat("height", height);
-        tag.putString("biome", biomeID.location().toString());
+        tag.putString("biome", biomeID.identifier().toString());
         tag.putInt("seed1", seed1);
         tag.putInt("seed2", seed2);
     }
@@ -75,7 +75,7 @@ public abstract class MountainPiece extends BasePiece {
         center = tag.read("center", BlockPos.CODEC).orElse(BlockPos.ZERO);
         radius = tag.getFloatOr("radius", 0);
         height = tag.getFloatOr("height", 0);
-        biomeID = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(tag.getStringOr("biome", "")));
+        biomeID = ResourceKey.create(Registries.BIOME, Identifier.parse(tag.getStringOr("biome", "")));
         r2 = radius * radius;
         seed1 = tag.getIntOr("seed1", 0);
         seed2 = tag.getIntOr("seed2", 0);

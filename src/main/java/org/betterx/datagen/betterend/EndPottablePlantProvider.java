@@ -9,7 +9,7 @@ import de.ambertation.wover.pottable.api.datagen.WoverPottablePlantRegistryProvi
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -93,7 +93,7 @@ public class EndPottablePlantProvider extends WoverPottablePlantRegistryProvider
         // Register the vanilla flower-pot plant set explicitly (they have no trait), all
         // restricted to the vanilla dirt-like soils.
         for (Block plant : VANILLA_PLANTS) {
-            ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(plant);
+            Identifier blockId = BuiltInRegistries.BLOCK.getKey(plant);
             PottablePlantRegistry.register(
                     context,
                     PottablePlantRegistry.createKey(BetterEnd.C.id(blockId.getPath())),

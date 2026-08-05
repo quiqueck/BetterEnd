@@ -27,7 +27,7 @@ public class SingleBlockFeature extends Feature<SimpleBlockConfiguration> {
             return false;
         }
 
-        BlockState state = cfg.toPlace().getState(random, pos);
+        BlockState state = cfg.toPlace().getState(world, random, pos);
         if (state.getBlock().getStateDefinition().getProperty("waterlogged") != null) {
             boolean waterlogged = !world.getFluidState(pos).isEmpty();
             state = state.setValue(BlockStateProperties.WATERLOGGED, waterlogged);

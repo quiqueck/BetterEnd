@@ -10,12 +10,11 @@ import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,33 +24,50 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
+// 26.1 retarget: the private static findRespawnAndUseSpawnBlock(ServerLevel, RespawnConfig, boolean) it
+// used to hook returns the package-private ServerPlayer.RespawnPosAngle, which is no longer constructible
+// from here (its old (Vec3, float) constructor was replaced by a private (Vec3, float, float) one). We hook
+// the public wrapper findRespawnPositionAndUseSpawnBlock instead and build a TeleportTransition (public)
+// directly - the wrapper is the sole caller of the private helper, so every respawn path is still covered.
 @Mixin(value = ServerPlayer.class, priority = 200)
-public abstract class PlayerMixin extends LivingEntity {
-    protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
-        super(entityType, level);
-    }
-
+public abstract class PlayerMixin {
     private static Direction[] horizontal;
 
-    @Inject(method = "findRespawnAndUseSpawnBlock", at = @At(value = "HEAD"), cancellable = true)
-    private static void be_findRespawnAndUseSpawnBlock(
-            ServerLevel world,
-            ServerPlayer.RespawnConfig config,
-            boolean bl2,
-            CallbackInfoReturnable<Optional<ServerPlayer.RespawnPosAngle>> info
+    @Inject(method = "findRespawnPositionAndUseSpawnBlock", at = @At(value = "HEAD"), cancellable = true)
+    private void be_findRespawnAndUseSpawnBlock(
+            boolean useSpawnBlock,
+            TeleportTransition.PostTeleportTransition postTeleportTransition,
+            CallbackInfoReturnable<TeleportTransition> info
     ) {
-        BlockPos pos = config.pos();
-        BlockState blockState = world.getBlockState(pos);
+        final ServerPlayer self = (ServerPlayer) (Object) this;
+        final ServerPlayer.RespawnConfig config = self.getRespawnConfig();
+        if (config == null) return;
+
+        final MinecraftServer server = self.level().getServer();
+        if (server == null) return;
+
+        final ServerLevel world = server.getLevel(config.respawnData().dimension());
+        if (world == null) return;
+
+        final BlockPos pos = config.respawnData().pos();
+        final BlockState blockState = world.getBlockState(pos);
         if (blockState.is(EndFunctionalBlocks.RESPAWN_OBELISK)) {
-            info.setReturnValue(be_obeliskRespawnPosition(world, pos, config.angle(), blockState));
-            info.cancel();
+            Optional<Vec3> op = be_obeliskRespawnPosition(world, pos, blockState);
+            if (op.isEmpty()) return;
+            info.setReturnValue(new TeleportTransition(
+                    world,
+                    op.get(),
+                    Vec3.ZERO,
+                    config.respawnData().yaw(),
+                    0.0F,
+                    postTeleportTransition
+            ));
         }
     }
 
-    private static Optional<ServerPlayer.RespawnPosAngle> be_obeliskRespawnPosition(
+    private static Optional<Vec3> be_obeliskRespawnPosition(
             ServerLevel world,
             BlockPos pos,
-            float angle,
             BlockState state
     ) {
         if (state.getValue(BlockProperties.TRIPLE_SHAPE) == TripleShape.TOP) {
@@ -67,7 +83,7 @@ public abstract class PlayerMixin extends LivingEntity {
             BlockPos p = pos.relative(dir);
             BlockState state2 = world.getBlockState(p);
             if (!state2.blocksMotion() && state2.getCollisionShape(world, pos).isEmpty()) {
-                return Optional.of(new ServerPlayer.RespawnPosAngle(Vec3.atLowerCornerOf(p).add(0.5, 0, 0.5), angle));
+                return Optional.of(Vec3.atLowerCornerOf(p).add(0.5, 0, 0.5));
             }
         }
         return Optional.empty();

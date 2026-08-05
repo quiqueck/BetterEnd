@@ -1,5 +1,9 @@
 package org.betterx.datagen.betterend;
 
+import de.ambertation.wover.core.api.ModCore;
+import de.ambertation.wover.datagen.api.PackBuilder;
+import de.ambertation.wover.datagen.api.WoverDataGenEntryPoint;
+import de.ambertation.wover.datagen.api.provider.*;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
@@ -14,14 +18,6 @@ import org.betterx.datagen.betterend.worldgen.EndBiomeModificationProvider;
 import org.betterx.datagen.betterend.worldgen.EndBiomesProvider;
 import org.betterx.datagen.betterend.worldgen.StructureDataProvider;
 import org.betterx.datagen.betterend.worldgen.features.*;
-import de.ambertation.wover.core.api.ModCore;
-import de.ambertation.wover.datagen.api.PackBuilder;
-import de.ambertation.wover.datagen.api.WoverDataGenEntryPoint;
-import de.ambertation.wover.datagen.api.provider.BlockPropertiesProvider;
-import de.ambertation.wover.datagen.api.provider.WoverBlockRegistrationsProvider;
-import de.ambertation.wover.datagen.api.provider.WoverBlockShapesProvider;
-import de.ambertation.wover.datagen.api.provider.WoverEquipmentAssetProvider;
-import de.ambertation.wover.datagen.api.provider.WoverItemRegistrationsProvider;
 
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.worldgen.features.EndFeatures;
@@ -63,8 +59,12 @@ public class BetterEndDatagen extends WoverDataGenEntryPoint {
         globalPack.addProvider(EndMaterialRecipesProvider::new);
         globalPack.addProvider(EndEnchantmentProvider::new);
         globalPack.addProvider(EndChestLootTableProvider::new);
+        globalPack.addProvider(EndLootAdditionProvider::new);
         globalPack.addProvider(EndModelProvider::new);
         globalPack.addProvider(WoverEquipmentAssetProvider::new);
+        // These four audit the mod's own namespace. The vanilla-namespace snapshots used to be
+        // produced from here too, by swapping in a 'minecraft' ModCore by hand; that now lives in
+        // BCLib as "gradlew :runMinecraftAudit" (see MinecraftAuditDatagen).
         globalPack.addProvider(BlockPropertiesProvider::new);
         globalPack.addProvider(WoverBlockRegistrationsProvider::new);
         globalPack.addProvider(WoverItemRegistrationsProvider::new);

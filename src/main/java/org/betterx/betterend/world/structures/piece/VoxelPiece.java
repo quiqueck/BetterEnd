@@ -65,7 +65,7 @@ public class VoxelPiece extends BasePiece {
             // ponds, waterfalls or plants ever appeared on the islands. Re-prime the WG heightmaps from
             // the now-populated chunk sections so those features find the island surface. This lives in
             // VoxelPiece so every SDF structure (islands, giant ice stars, glowshrooms) benefits.
-            ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
+            ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
             Heightmap.primeHeightmaps(
                     chunk,
                     EnumSet.of(Heightmap.Types.WORLD_SURFACE_WG, Heightmap.Types.OCEAN_FLOOR_WG)

@@ -7,17 +7,17 @@ import org.betterx.betterend.entity.render.state.EndFishRenderState;
 import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class RendererEntityEndFish extends MobRenderer<EndFishEntity, EndFishRenderState, EndFishEntityModel> {
-    private static final ResourceLocation[] TEXTURE = new ResourceLocation[EndFishEntity.VARIANTS];
+    private static final Identifier[] TEXTURE = new Identifier[EndFishEntity.VARIANTS];
     private static final RenderType[] GLOW = new RenderType[EndFishEntity.VARIANTS];
 
     public RendererEntityEndFish(EntityRendererProvider.Context ctx) {
@@ -29,23 +29,24 @@ public class RendererEntityEndFish extends MobRenderer<EndFishEntity, EndFishRen
             }
 
             @Override
-            public void render(
-                    PoseStack matrices,
-                    MultiBufferSource vertexConsumers,
+            public void submit(
+                    PoseStack poseStack,
+                    SubmitNodeCollector submitNodeCollector,
                     int light,
                     EndFishRenderState state,
                     float yRot,
                     float xRot
             ) {
-                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(GLOW[state.variant]);
-                this.getParentModel()
-                    .renderToBuffer(
-                            matrices,
-                            vertexConsumer,
-                            15728640,
-                            OverlayTexture.NO_OVERLAY,
-                            0xffffffff
-                    );
+                submitNodeCollector.submitModel(
+                        this.getParentModel(),
+                        state,
+                        poseStack,
+                        GLOW[state.variant],
+                        15728640,
+                        OverlayTexture.NO_OVERLAY,
+                        0xffffffff,
+                        null
+                );
             }
         });
     }
@@ -62,14 +63,14 @@ public class RendererEntityEndFish extends MobRenderer<EndFishEntity, EndFishRen
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EndFishRenderState state) {
+    public Identifier getTextureLocation(EndFishRenderState state) {
         return TEXTURE[state.variant];
     }
 
     static {
         for (int i = 0; i < EndFishEntity.VARIANTS; i++) {
             TEXTURE[i] = BetterEnd.C.mk("textures/entity/end_fish/end_fish_" + i + ".png");
-            GLOW[i] = RenderType.eyes(BetterEnd.C.mk("textures/entity/end_fish/end_fish_" + i + "_glow.png"));
+            GLOW[i] = RenderTypes.eyes(BetterEnd.C.mk("textures/entity/end_fish/end_fish_" + i + "_glow.png"));
         }
     }
 }

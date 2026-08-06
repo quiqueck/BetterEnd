@@ -23,7 +23,6 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -35,7 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 import org.jetbrains.annotations.NotNull;
 
-public class DragonflyEntity extends DespawnableAnimal implements FlyingAnimal {
+public class DragonflyEntity extends DespawnableAnimal {
     public DragonflyEntity(EntityType<DragonflyEntity> entityType, Level world) {
         super(entityType, world);
         this.moveControl = new FlyingMoveControl(this, 20, true);
@@ -109,8 +108,11 @@ public class DragonflyEntity extends DespawnableAnimal implements FlyingAnimal {
         return Entity.MovementEmission.EVENTS;
     }
 
+    // 26.2 removed FlyingAnimal. Its single method had exactly two readers, both in LivingEntity (the
+    // air-friction branch of travelInAir and the animation flag in aiStep); both now read
+    // Entity#omnidirectionalAirMover(), which flying vanilla mobs override. Same body, same behaviour.
     @Override
-    public boolean isFlying() {
+    protected boolean omnidirectionalAirMover() {
         return !this.onGround();
     }
 

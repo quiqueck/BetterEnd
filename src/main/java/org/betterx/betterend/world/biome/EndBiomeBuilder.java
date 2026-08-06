@@ -11,6 +11,7 @@ import de.ambertation.wover.biome.api.data.BiomeData;
 import de.ambertation.wover.biome.api.data.BiomeGenerationDataContainer;
 import de.ambertation.wover.generator.api.biomesource.WoverBiomeBuilder;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.EndPlacements;
 import net.minecraft.resources.ResourceKey;
@@ -49,8 +50,13 @@ public class EndBiomeBuilder extends WoverBiomeBuilder.AbstractWoverBiomeBuilder
     }
 
     EndBiomeBuilder configure(EndBiome.Config biomeConfig) {
+        // 26.2: SurfaceRules.isBiome resolves its keys into a HolderSet eagerly, so
+        // SurfaceRuleBuilder.build() gained a HolderGetter<Biome> parameter. The lookup is only
+        // consulted when a biome filter was set on the builder - which none of BetterEnd's
+        // SurfaceMaterialProviders do - but the bootstrap context we were constructed with provides a
+        // real one anyway, so no null is handed to WoVer.
         this.startSurface()
-            .rule(biomeConfig.surfaceMaterial().surface().build())
+            .rule(biomeConfig.surfaceMaterial().surface().build(bootstrapContext.lookup(Registries.BIOME)))
             .finishSurface();
 
         this.surface = biomeConfig.surfaceMaterial();

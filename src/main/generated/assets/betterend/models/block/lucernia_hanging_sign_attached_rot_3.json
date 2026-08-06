@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_attached_hanging_sign_rot_3",
+  "textures": {
+    "all": "betterend:block/lucernia_hanging_sign",
+    "particle": "betterend:block/lucernia_stripped_log_side"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "feature": {
+    "type": "minecraft:speleothem",
+    "config": {
+      "base_block": {
+        "Name": "betterend:brimstone",
+        "Properties": {
+          "active": "false"
+        }
+      },
+      "pointed_block": {
+        "Name": "minecraft:sulfur_spike",
+        "Properties": {
+          "thickness": "tip",
+          "vertical_direction": "up",
+          "waterlogged": "false"
+        }
+      },
+      "replaceable_blocks": [
+        "betterend:brimstone",
+        "betterend:sulphuric_rock"
+      ]
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 4
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:count",
+      "count": 28
+    },
+    {
+      "type": "minecraft:random_offset",
+      "xz_spread": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 5,
+        "min_inclusive": -5
+      },
+      "y_spread": 0
+    },
+    {
+      "type": "wover:every_layer"
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_block_tag",
+        "tag": "minecraft:air"
+      }
+    },
+    {
+      "type": "wover:is",
+      "offset": [
+        0,
+        -1,
+        0
+      ],
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "blocks": [
+          "betterend:brimstone",
+          "betterend:sulphuric_rock"
+        ]
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

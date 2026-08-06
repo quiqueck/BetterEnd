@@ -84,6 +84,8 @@ public class EndStoneBlocks {
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(ModelTraitLibrary.pillar())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            // Vanilla's bone_block is the regular archetype, with dirt and clay.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.regular())
             .buildAndRegister();
 
     public static final Block DRAGON_BONE_STAIRS = EndBlocks.defineBlock(
@@ -262,6 +264,8 @@ public class EndStoneBlocks {
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(EndModelTraits.flavoliteRuned())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            // Vanilla puts obsidian, crying_obsidian, amethyst_block and the whole stone family in slow_bouncy.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
             .buildAndRegister();
 
     public static final Block FLAVOLITE_RUNED_ETERNAL = EndBlocks.defineBlock("flavolite_runed_eternal", RunedFlavolite::new)
@@ -274,6 +278,8 @@ public class EndStoneBlocks {
             // obtainable and a block with no table drops nothing. RunedFlavolite used to say that with a
             // getDrops override testing its own hardness - but the two variants are separate registrations,
             // so the distinction belongs here rather than in code both of them share.
+            // Vanilla puts obsidian, crying_obsidian, amethyst_block and the whole stone family in slow_bouncy.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
             .buildAndRegister();
 
     public static final Block HYDROTHERMAL_VENT = EndBlocks.defineBlock("hydrothermal_vent", HydrothermalVentBlock::new)
@@ -283,6 +289,8 @@ public class EndStoneBlocks {
             .noCollission()
             .requiresCorrectToolForDrops()
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            // Not a full cube, so no sulfur cube archetype - vanilla tags no block of this shape.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.notSwallowable())
             .buildAndRegister();
 
     public static final Block VENT_BUBBLE_COLUMN = EndBlocks.defineBlockOnly("vent_bubble_column", VentBubbleColumnBlock::new)
@@ -292,12 +300,16 @@ public class EndStoneBlocks {
 
     public static final Block END_STONE_STALACTITE = EndBlocks.defineBlock("end_stone_stalactite", StalactiteBlock::new)
             .addTrait(StalactiteBlockTrait.withSource(Blocks.END_STONE))
+            // Not a full cube, so no sulfur cube archetype - vanilla tags no block of this shape.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.notSwallowable())
             .buildAndRegister();
 
     public static final Block END_STONE_STALACTITE_CAVEMOSS = EndBlocks.defineBlock(
             "end_stone_stalactite_cavemoss",
             StalactiteBlock::new
     ).addTrait(StalactiteBlockTrait.withSource(EndTerrainBlocks.CAVE_MOSS))
+     // Not a full cube, so no sulfur cube archetype - vanilla tags no block of this shape.
+     .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.notSwallowable())
      .buildAndRegister();
 
     // Variations

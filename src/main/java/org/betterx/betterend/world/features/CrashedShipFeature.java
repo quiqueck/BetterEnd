@@ -7,6 +7,8 @@ import org.betterx.bclib.util.StructureHelper;
 import org.betterx.betterend.util.BlockFixer;
 import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
+import com.mojang.serialization.MapCodec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
@@ -130,14 +132,41 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
         data.addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR).addProcessor(REPLACER).setIgnoreEntities(true);
     }
 
+    /**
+     * The codec {@link #REPLACER} hands back from {@code codec()}.
+     * <p>
+     * 26.2 removed {@code KeyDispatchDataCodec} and turned {@link StructureProcessor} into an interface
+     * whose only abstract method is {@code codec()}, returning a plain {@link MapCodec}. Up to 26.1 this
+     * processor returned {@code StructureProcessorType.NOP}, which was only ever a placeholder - it is
+     * built here in Java, is never serialized and is not registered in
+     * {@code BuiltInRegistries.STRUCTURE_PROCESSOR_TYPE}. The processor is stateless, so a unit codec is
+     * the exact equivalent; it still cannot round-trip through JSON until someone registers the type.
+     * <p>
+     * The supplier overload is used deliberately: this constant is initialised before the
+     * {@link #REPLACER} static block runs, so capturing the value eagerly would capture {@code null}. The
+     * supplier goes through {@link #replacer()} rather than reading the field directly, because a blank
+     * {@code static final} is not definitely assigned yet at this point in the initializer sequence and
+     * javac rejects a simple-name read of it - even from inside a lambda body.
+     */
+    private static final MapCodec<StructureProcessor> REPLACER_CODEC = MapCodec.unit(CrashedShipFeature::replacer);
+
+    private static StructureProcessor replacer() {
+        return REPLACER;
+    }
+
     static {
         REPLACER = new StructureProcessor() {
+            /**
+             * 26.2 replaced the original {@code StructureBlockInfo} parameter with just its position.
+             * Nothing is lost here: this processor only ever read {@code structureBlockInfo2}, the
+             * already-processed info.
+             */
             @Override
             public StructureBlockInfo processBlock(
                     LevelReader worldView,
                     BlockPos pos,
                     BlockPos blockPos,
-                    StructureBlockInfo structureBlockInfo,
+                    BlockPos originalPos,
                     StructureBlockInfo structureBlockInfo2,
                     StructurePlaceSettings structurePlacementData
             ) {
@@ -149,8 +178,8 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
             }
 
             @Override
-            protected StructureProcessorType<?> getType() {
-                return StructureProcessorType.NOP;
+            public MapCodec<? extends StructureProcessor> codec() {
+                return REPLACER_CODEC;
             }
         };
     }

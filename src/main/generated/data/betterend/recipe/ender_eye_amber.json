@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "betterend:amber_gem",
     "P": "minecraft:ender_pearl",

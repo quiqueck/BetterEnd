@@ -12,7 +12,7 @@ import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class GlowingGrasslandsBiome extends EndBiome.Config {
@@ -45,7 +45,7 @@ public class GlowingGrasslandsBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.CHARNIA_RED_RARE)
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.END_VILLAGE)
-                .spawn(EntityType.ENDERMAN, 3, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 3, 1, 2);
     }
 
     @Override

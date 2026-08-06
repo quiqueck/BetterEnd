@@ -6,6 +6,7 @@ import de.ambertation.wover.sets.api.blocks.SlotType;
 
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
+import org.betterx.betterend.world.features.terrain.SulphurFloorMix;
 import org.betterx.betterend.blocks.EndBlockProperties;
 import org.betterx.betterend.blocks.SulphurCrystalBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
@@ -24,8 +25,10 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SpeleothemBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.SpeleothemThickness;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -131,6 +134,9 @@ public class SulphuricCavePiece extends BasePiece {
 
     private boolean isReplaceable(BlockState state) {
         return state.is(CommonBlockTags.END_STONES)
+                // The sulfur/cinnabar this piece itself places must carve like the brimstone it replaced,
+                // or a later pass removes the rock around it and leaves it standing in open water.
+                || SulphurFloorMix.isDepositBlock(state)
                 || state.is(EndStoneBlocks.HYDROTHERMAL_VENT)
                 || state.is(EndStoneBlocks.VENT_BUBBLE_COLUMN)
                 || state.is(EndStoneBlocks.SULPHUR_CRYSTAL)
@@ -215,6 +221,8 @@ public class SulphuricCavePiece extends BasePiece {
 
         brimstone.forEach((pos) -> placeBrimstone(chunk, pos, random));
 
+        placeSulfurSpikeClusters(chunk, random, x0, x1, z0, z1, y1, y2);
+
         // ---- Hydrothermal vent + tube-worm columns (legacy 25%-per-cave cluster) ------------------
         for (int i = 0; i < ventDX.length; i++) {
             final int wx = cx + ventDX[i];
@@ -280,10 +288,173 @@ public class SulphuricCavePiece extends BasePiece {
 
     private void placeBrimstone(ChunkAccess chunk, BlockPos pos, RandomSource random) {
         BlockState state = getBrimstone(chunk, pos);
+        // Same deposit as the sulphur lake bed and the geyser bowl: where the shell is buried behind at
+        // least SulphurFloorMix.MIN_DEPTH blocks of cover and touches no air, it can be vanilla sulfur or
+        // (more rarely) cinnabar instead of brimstone. Active, water-touching brimstone always wins - it
+        // carries the shards. See SulphurFloorMix for the shared rule.
+        if (!state.getValue(EndBlockProperties.ACTIVE) && isBuriedInChunk(chunk, pos) && !facesOpenSpaceInChunk(chunk, pos)) {
+            BlockState mixed = SulphurFloorMix.pickByNoise(pos.getX(), pos.getY(), pos.getZ());
+            if (mixed != null) {
+                chunk.setBlockState(pos, mixed, 3);
+                return;
+            }
+        }
         chunk.setBlockState(pos, state, 3);
         if (state.getValue(EndBlockProperties.ACTIVE)) {
             makeShards(chunk, pos, random);
         }
+    }
+
+    /**
+     * Scatters clusters of 26.2's vanilla sulfur spikes across the cave's floor and ceiling.
+     * <p>
+     * Anchored on a per-chunk grid rather than a plain random walk so a cluster is not cut in half by a
+     * chunk border: each candidate is seeded from its own block position, so the same seed always
+     * produces the same spikes regardless of which chunk generates first.
+     * <p>
+     * Spikes are only hung from brimstone or sulphuric rock, and never in water - the flooded lower half
+     * of the cave keeps its vents and tube worms instead.
+     */
+    private void placeSulfurSpikeClusters(
+            ChunkAccess chunk,
+            RandomSource random,
+            int x0, int x1, int z0, int z1, int y1, int y2
+    ) {
+        final MutableBlockPos mut = new MutableBlockPos();
+        final int attempts = (x1 - x0 + 1) * (z1 - z0 + 1) / 24;
+        for (int i = 0; i < attempts; i++) {
+            final int x = MHelper.randRange(x0, x1, random);
+            final int z = MHelper.randRange(z0, z1, random);
+            final boolean fromCeiling = random.nextBoolean();
+
+            // Scan the whole column for an open/solid boundary rather than probing outward from a random
+            // height: a random y almost always starts inside rock, where the old walk either anchored
+            // with no room to grow or gave up immediately, which is why no spikes ever appeared.
+            // A floor anchor is air with anchor rock below; a ceiling anchor is air with rock above.
+            int surfaceY = Integer.MIN_VALUE;
+            int found = 0;
+            for (int y = y1 + 1; y <= y2 - 1; y++) {
+                mut.set(x, y, z);
+                if (!chunk.getBlockState(mut).isAir()) continue; // water counts as blocked - no spikes underwater
+                mut.set(x, fromCeiling ? y + 1 : y - 1, z);
+                if (!isSpikeAnchor(chunk.getBlockState(mut))) continue;
+                // Reservoir-sample so every boundary in the column is equally likely, without
+                // collecting them into a list first.
+                found++;
+                if (random.nextInt(found) == 0) {
+                    surfaceY = y;
+                }
+            }
+            if (surfaceY == Integer.MIN_VALUE) continue;
+
+            final int cluster = 1 + random.nextInt(4);
+            for (int c = 0; c < cluster; c++) {
+                final int sx = x + MHelper.randRange(-2, 2, random);
+                final int sz = z + MHelper.randRange(-2, 2, random);
+                if (sx < x0 || sx > x1 || sz < z0 || sz > z1) continue;
+                placeSpike(chunk, random, mut, sx, surfaceY, sz, fromCeiling, y1, y2);
+            }
+        }
+    }
+
+    /** Spikes grow out of the cave's own stone, not out of ore or decoration. */
+    private static boolean isSpikeAnchor(BlockState state) {
+        return state.is(EndStoneBlocks.BRIMSTONE)
+                || state.is(EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE))
+                || state.is(Blocks.SULFUR)
+                || state.is(Blocks.CINNABAR);
+    }
+
+    /**
+     * Grows one spike of 1-3 segments away from the anchor surface. Mirrors vanilla's speleothem shape:
+     * a base at the rock, optional middle segments, and a tip at the end.
+     */
+    private static void placeSpike(
+            ChunkAccess chunk,
+            RandomSource random,
+            MutableBlockPos mut,
+            int x, int openY, int z,
+            boolean fromCeiling,
+            int y1, int y2
+    ) {
+        final Direction tipDirection = fromCeiling ? Direction.DOWN : Direction.UP;
+        final int grow = fromCeiling ? -1 : 1;
+
+        // openY is the first open block off the surface, so the rock it hangs from is one step back.
+        // Re-check it here because the cluster jitter may have moved this spike off the anchor the
+        // column scan found.
+        mut.set(x, openY - grow, z);
+        if (!isSpikeAnchor(chunk.getBlockState(mut))) return;
+
+        final int length = 1 + random.nextInt(3);
+        for (int n = 0; n < length; n++) {
+            final int y = openY + grow * n;
+            if (y < y1 || y > y2) return;
+            mut.set(x, y, z);
+            final BlockState existing = chunk.getBlockState(mut);
+            if (!existing.isAir()) return; // stop at water, rock, or an earlier spike
+
+            final SpeleothemThickness thickness;
+            if (n == length - 1) {
+                thickness = SpeleothemThickness.TIP; // a single-block spike is just a tip
+            } else if (n == 0) {
+                thickness = SpeleothemThickness.BASE;
+            } else {
+                thickness = SpeleothemThickness.MIDDLE;
+            }
+            chunk.setBlockState(
+                    mut,
+                    Blocks.SULFUR_SPIKE.defaultBlockState()
+                          .setValue(SpeleothemBlock.TIP_DIRECTION, tipDirection)
+                          .setValue(SpeleothemBlock.THICKNESS, thickness),
+                    3
+            );
+        }
+    }
+
+    /**
+     * Chunk-local counterpart of {@link SulphurFloorMix#isBuried}. Only walks straight up, so it never
+     * leaves this chunk column and needs no bounds check beyond the chunk's own height limits.
+     */
+    private static boolean isBuriedInChunk(ChunkAccess chunk, BlockPos pos) {
+        MutableBlockPos above = new MutableBlockPos();
+        for (int i = 1; i <= SulphurFloorMix.MIN_DEPTH; i++) {
+            int y = pos.getY() + i;
+            if (y > chunk.getMaxY()) {
+                return false;
+            }
+            above.set(pos.getX(), y, pos.getZ());
+            if (chunk.getBlockState(above).isAir()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Chunk-local counterpart of {@link SulphurFloorMix#facesOpenSpace}. Air only, matching it. A horizontal step can leave this
+     * chunk, where {@code chunk.getBlockState} would report air for terrain that simply has not been
+     * built yet - treat leaving the chunk as "exposed" so the deposit never bleeds onto a cave wall
+     * because of a neighbour that was not loaded.
+     */
+    private static boolean facesOpenSpaceInChunk(ChunkAccess chunk, BlockPos pos) {
+        MutableBlockPos side = new MutableBlockPos();
+        int minX = chunk.getPos().getMinBlockX();
+        int minZ = chunk.getPos().getMinBlockZ();
+        for (Direction dir : BlocksHelper.DIRECTIONS) {
+            int x = pos.getX() + dir.getStepX();
+            int y = pos.getY() + dir.getStepY();
+            int z = pos.getZ() + dir.getStepZ();
+            if (x < minX || x > minX + 15 || z < minZ || z > minZ + 15
+                    || y < chunk.getMinY() || y > chunk.getMaxY()) {
+                return true;
+            }
+            side.set(x, y, z);
+            if (chunk.getBlockState(side).isAir()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private BlockState getBrimstone(ChunkAccess chunk, BlockPos pos) {

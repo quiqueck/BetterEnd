@@ -5,6 +5,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.config.Configs;
 
+import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.systems.RenderPass;
@@ -15,7 +16,6 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -30,8 +30,8 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelTerrainRenderContext;
 
+import java.util.Optional;
 import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -49,6 +49,22 @@ import org.joml.Vector4f;
  * the opaque terrain drawn afterwards paints over ours — so terrain occludes the sky naturally at
  * every distance, with no depth test needed (the vanilla END_SKY/STARS pipelines carry no
  * depth-stencil state precisely because they are meant to run before terrain).
+ * <p>
+ * Both draw paths below were re-checked against 26.2's own {@code SkyRenderer#renderEndSky}, which
+ * performs the identical sequence:
+ * <ul>
+ *     <li>{@code VertexFormat.Mode} split off into {@link PrimitiveTopology}, which is also what
+ *     {@code BufferBuilder} and {@code RenderSystem#getSequentialBuffer} now take.</li>
+ *     <li>{@code Minecraft#getMainRenderTarget()} is gone; the main target now hangs off
+ *     {@code GameRenderer#mainRenderTarget()}, which is what vanilla hands {@code SkyRenderer}.</li>
+ *     <li>A render pass' colour clear value became an {@code Optional<Vector4fc>} instead of an
+ *     {@code OptionalInt} (26.2 clears with float colours).</li>
+ *     <li>{@code setVertexBuffer} binds a {@link GpuBufferSlice}, hence the {@code .slice()}.</li>
+ *     <li>{@code drawIndexed} adopted the Vulkan argument order
+ *     {@code (indexCount, instanceCount, firstIndex, vertexOffset, firstInstance)}; the 26.1 call was
+ *     {@code (baseVertex, firstIndex, indexCount, instanceCount)}, so the arguments are deliberately
+ *     re-ordered, not carried over positionally.</li>
+ * </ul>
  */
 public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
     private record SkyMesh(GpuBuffer buffer, int indexCount) {
@@ -191,8 +207,8 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
             float a
     ) {
         AbstractTexture abstractTexture = Minecraft.getInstance().getTextureManager().getTexture(texture);
-        GpuTextureView colorView = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
-        GpuTextureView depthView = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
+        GpuTextureView colorView = Minecraft.getInstance().gameRenderer.mainRenderTarget().getColorTextureView();
+        GpuTextureView depthView = Minecraft.getInstance().gameRenderer.mainRenderTarget().getDepthTextureView();
         GpuBufferSlice transform = RenderSystem.getDynamicUniforms()
                                                 .writeTransform(
                                                         matrices.last().pose(),
@@ -201,7 +217,7 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
                                                         new Matrix4f()
                                                 );
 
-        RenderSystem.AutoStorageIndexBuffer indexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+        RenderSystem.AutoStorageIndexBuffer indexBuffer = RenderSystem.getSequentialBuffer(PrimitiveTopology.QUADS);
         GpuBuffer indices = indexBuffer.getBuffer(mesh.indexCount());
 
         try (RenderPass pass = RenderSystem.getDevice()
@@ -209,7 +225,7 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
                                             .createRenderPass(
                                                     () -> "BetterEnd sky",
                                                     colorView,
-                                                    OptionalInt.empty(),
+                                                    Optional.empty(),
                                                     depthView,
                                                     OptionalDouble.empty()
                                             )) {
@@ -217,15 +233,15 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
             RenderSystem.bindDefaultUniforms(pass);
             pass.setUniform("DynamicTransforms", transform);
             pass.bindTexture("Sampler0", abstractTexture.getTextureView(), abstractTexture.getSampler());
-            pass.setVertexBuffer(0, mesh.buffer());
+            pass.setVertexBuffer(0, mesh.buffer().slice());
             pass.setIndexBuffer(indices, indexBuffer.type());
-            pass.drawIndexed(0, 0, mesh.indexCount(), 1);
+            pass.drawIndexed(mesh.indexCount(), 1, 0, 0, 0);
         }
     }
 
     private void renderStarMesh(PoseStack matrices, SkyMesh mesh, float r, float g, float b, float a) {
-        GpuTextureView colorView = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
-        GpuTextureView depthView = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
+        GpuTextureView colorView = Minecraft.getInstance().gameRenderer.mainRenderTarget().getColorTextureView();
+        GpuTextureView depthView = Minecraft.getInstance().gameRenderer.mainRenderTarget().getDepthTextureView();
         GpuBufferSlice transform = RenderSystem.getDynamicUniforms()
                                                 .writeTransform(
                                                         matrices.last().pose(),
@@ -234,7 +250,7 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
                                                         new Matrix4f()
                                                 );
 
-        RenderSystem.AutoStorageIndexBuffer indexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+        RenderSystem.AutoStorageIndexBuffer indexBuffer = RenderSystem.getSequentialBuffer(PrimitiveTopology.QUADS);
         GpuBuffer indices = indexBuffer.getBuffer(mesh.indexCount());
 
         try (RenderPass pass = RenderSystem.getDevice()
@@ -242,16 +258,16 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
                                             .createRenderPass(
                                                     () -> "BetterEnd stars",
                                                     colorView,
-                                                    OptionalInt.empty(),
+                                                    Optional.empty(),
                                                     depthView,
                                                     OptionalDouble.empty()
                                             )) {
             pass.setPipeline(RenderPipelines.STARS);
             RenderSystem.bindDefaultUniforms(pass);
             pass.setUniform("DynamicTransforms", transform);
-            pass.setVertexBuffer(0, mesh.buffer());
+            pass.setVertexBuffer(0, mesh.buffer().slice());
             pass.setIndexBuffer(indices, indexBuffer.type());
-            pass.drawIndexed(0, 0, mesh.indexCount(), 1);
+            pass.drawIndexed(mesh.indexCount(), 1, 0, 0, 0);
         }
     }
 
@@ -270,7 +286,7 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
         try (ByteBufferBuilder byteBufferBuilder = ByteBufferBuilder.exactlySized(
                 DefaultVertexFormat.POSITION.getVertexSize() * count * 4
         )) {
-            BufferBuilder builder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+            BufferBuilder builder = new BufferBuilder(byteBufferBuilder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION);
             MeshData meshData = makeStars(builder, minSize, maxSize, count, seed);
             return uploadMesh(meshData, "BetterEnd stars vertex buffer");
         }
@@ -282,7 +298,7 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
         )) {
             BufferBuilder builder = new BufferBuilder(
                     byteBufferBuilder,
-                    VertexFormat.Mode.QUADS,
+                    PrimitiveTopology.QUADS,
                     DefaultVertexFormat.POSITION_TEX_COLOR
             );
             MeshData meshData = fkt.make(builder, minSize, maxSize, count, seed);

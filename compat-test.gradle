@@ -1,0 +1,260 @@
+// Cross-mod compatibility test task. Copy-paste this file identically into every repo/module that
+// wants to opt in - BetterEnd/BetterNether at their repo root, and WorldWeaver's common.gradle for any
+// wover-*-api module - the same convention common-helper.gradle documents for itself.
+//
+// Depends on common-helper.gradle's resolveWunderVaultDir() closure already being defined in this project, so
+// apply this file AFTER common-helper.gradle wherever both are used.
+//
+// Participation is opt-in per module, decided purely by whether
+// <vault>/modsets/<mcVersion>/<moduleName>.json exists - see the plan this implements
+// (jiggly-chasing-metcalfe.md, Phase C) for the full design rationale.
+//
+// This file has two modes, distinguished by the -PcompatSet property:
+//   - Not set (normal invocation): registers the `compatTest` task, which discovers configured mod-sets
+//     and spawns the WunderVault node harness once per runnable set.
+//   - Set (a child invocation the harness itself spawns): wires that one set's resolved third-party
+//     jars onto a dedicated :runGametest run, isolated from the normal build/gametest/report.xml.
+
+def compatModuleName = findProperty('mod_id') ?: project.name
+
+def compatMcVersion = {
+    def versionsJson = findProperty('modrinth_versions')
+    if (versionsJson == null) return null
+    def versions = new groovy.json.JsonSlurper().parseText(versionsJson)
+    return versions.isEmpty() ? null : versions.last()
+}()
+
+def safeSetDirName = { String setName -> setName.replaceAll(/[^a-zA-Z0-9_.-]/, '_') }
+
+// Resolved once, at configuration time, rather than relying on a bare "node" being found on whatever
+// PATH the JavaExec that runs this ends up with. Matters in practice: a plain interactive shell (or this
+// gradlew invoked directly) reliably has nvm's node on PATH, but this compatTest task can also run as a
+// grandchild of another Node process (e.g. mod-task.js's own `spawnSync('./gradlew', ...)`) - whether
+// PATH survives that chain intact isn't something to depend on. `which` isn't available on Windows, so
+// this falls back to the bare command name there rather than failing outright.
+def nodeExecutable = {
+    try {
+        def resolved = ["which", "node"].execute().text.trim()
+        return resolved.isEmpty() ? "node" : resolved
+    } catch (Exception ignored) {
+        return "node"
+    }
+}()
+
+// -PcompatSet/-PcompatModule are Gradle project properties, which in a multi-project build (WorldWeaver)
+// are visible to every subproject at once, not just the one the harness actually targeted - without
+// this equality check, applying this file to every wover-*-api submodule would make ALL of them try to
+// enter child-invocation mode simultaneously for a single-module compat run, most of them lacking a
+// runGametest task at all. Harmless no-op condition for single-project repos (BetterEnd/BetterNether),
+// where compatModuleName always equals the -PcompatModule the harness passes.
+if (project.hasProperty('compatSet') && project.hasProperty('compatModule')
+        && project.property('compatModule') == compatModuleName) {
+    // ---- Child-invocation mode -------------------------------------------------------------------
+    def setName = project.property('compatSet')
+    def vault = resolveWunderVaultDir()
+    if (vault == null) {
+        throw new GradleException("compat-test: -PcompatSet=${setName} was given but no WunderVault checkout was found")
+    }
+
+    def configFile = new File(vault, "modsets/${compatMcVersion}/${compatModuleName}.json")
+    if (!configFile.exists()) {
+        throw new GradleException("compat-test: no ${configFile}")
+    }
+    def config = new groovy.json.JsonSlurper().parse(configFile)
+    def set = config.sets.find { it.name == setName }
+    if (set == null) {
+        throw new GradleException("compat-test: set '${setName}' not found in ${configFile}")
+    }
+
+    def modsDir = new File(vault, "modsets/${compatMcVersion}/mods")
+    def jarFiles = (set.mods ?: []).collect { new File(modsDir, it) }
+    def missing = jarFiles.findAll { !it.exists() }
+    if (!missing.isEmpty()) {
+        throw new GradleException("compat-test: missing jar(s) for set '${setName}': ${missing*.name}")
+    }
+
+    def dirName = safeSetDirName(setName)
+
+    loom {
+        mods {
+            // Loom bookkeeping (IDE run-config generation, classpath grouping) - kept for
+            // correctness, but NOT sufficient on its own: measured empirically that modFiles alone
+            // did not make Fabric Loader's dev-mode mod scan see these jars at all (absent from the
+            // "Loading N mods" list). The classpath(...) call on the run task below is what actually
+            // puts them where the JavaExec that boots the server reads from.
+            //
+            // One register(...) block PER jar, not one block for the whole set: Loom's
+            // fabric.classPathGroups mechanism merges every path inside a single register() block into
+            // one classpath group, and Fabric Loader's dev-mode candidate finder only inspects one
+            // fabric.mod.json per group - measured empirically that batching multiple third-party jars
+            // into one register() silently dropped whichever jar was NOT first in the group (confirmed
+            // by swapping list order and watching the dropped mod swap too).
+            jarFiles.eachWithIndex { jarFile, index ->
+                register("compat-${dirName}-${index}") {
+                    modFiles.from(files(jarFile))
+                }
+            }
+        }
+        runs {
+            // A brand new run, fully self-specified, rather than reusing/extending whatever the
+            // project's own pre-existing gametest run is named - that name differs between repos
+            // (BetterEnd/BetterNether's testmod build.gradle names it `gametest`, giving task
+            // `runGametest`; WorldWeaver's common.gradle names a submodule's `${name}-testmodGametest`,
+            // giving `run${Name}-testmodGametest`). Defining `compatGametest` here sidesteps that
+            // entirely - the outer-mode block below always knows the resulting task is
+            // `runCompatGametest`, in every repo, unconditionally.
+            compatGametest {
+                server()
+                source sourceSets.testmod
+                runDir "build/compat-test/${dirName}"
+                vmArg "-Dfabric-api.gametest"
+                vmArg "-Dfabric-api.gametest.report-file=${file("build/compat-test/${dirName}/gametest/report.xml")}"
+            }
+
+            // A plain dedicated-server boot, deliberately NOT a GameTest run: vanilla's own
+            // GameTestServer hardcodes WorldPresets.FLAT for every dimension it creates (confirmed by
+            // decompiling its bytecode), so a GameTest run's overworld is unconditionally the flat/void
+            // Superflat preset and can never show noise-based worldgen (TerraBlender regions,
+            // Terralith's own biome source, etc) regardless of whether it actually works. This run uses
+            // the project's real registered generator for every dimension instead - see
+            // CompatWorldgenBootCheck's own class doc for the full mechanism (checks BiomeSource
+            // contents on SERVER_STARTED, writes a result file, halts immediately either way so a bug
+            // in the check can never leave the server waiting for a client that never connects).
+            // Only registered when there's actually something to check - project.hasProperty is
+            // available at this point since these are plain Gradle properties.
+            def needsWorldgenBoot = project.hasProperty('compatExpectWorldgen') || project.hasProperty('compatExpectDefaultGenerator')
+            if (needsWorldgenBoot) {
+                def worldgenBootDir = file("build/compat-test/${dirName}-worldgen-boot")
+                worldgenBootDir.mkdirs()
+                // A fresh rundir has no EULA acceptance and no server.properties - without both, the
+                // server exits immediately (fast-fail, not a hang, but never reaches our check either).
+                // Port 0 asks the OS for an ephemeral port: this server never needs a client to connect
+                // (the check runs entirely from SERVER_STARTED, in-process), so binding the real
+                // Minecraft port would only risk colliding with some other dev server already running
+                // on the machine for no benefit.
+                new File(worldgenBootDir, "eula.txt").text = "eula=true\n"
+                new File(worldgenBootDir, "server.properties").text =
+                        "server-port=0\nonline-mode=false\nenable-query=false\nenable-rcon=false\n"
+
+                compatWorldgenBoot {
+                    server()
+                    source sourceSets.testmod
+                    runDir "build/compat-test/${dirName}-worldgen-boot"
+                    if (project.hasProperty('compatExpectWorldgen')) {
+                        vmArg "-Dbetterx.compat.expectWorldgen=${project.property('compatExpectWorldgen')}"
+                    }
+                    if (project.hasProperty('compatExpectDefaultGenerator')) {
+                        vmArg "-Dbetterx.compat.expectDefaultGenerator=${project.property('compatExpectDefaultGenerator')}"
+                    }
+                    vmArg "-Dbetterx.compat.worldgenResultFile=${file("build/compat-test/${dirName}/worldgen-boot-result.json")}"
+                }
+            }
+        }
+    }
+
+    // The actual mechanism: AbstractRunTask extends JavaExec, and classpath(Object...) appends to its
+    // classpath (evaluated lazily, so this runs after Loom has created the task from the run blocks
+    // above). Fabric Loader's dev-mode mod discovery scans every classpath entry for a root-level
+    // fabric.mod.json, so a self-contained third-party jar just needs to be on it. Appended one at a
+    // time (not as a single files(jarFiles) collection) to match the per-jar loom.mods registration
+    // above.
+    tasks.named('runCompatGametest').configure {
+        jarFiles.each { jarFile -> classpath(jarFile) }
+    }
+    if (project.hasProperty('compatExpectWorldgen') || project.hasProperty('compatExpectDefaultGenerator')) {
+        tasks.named('runCompatWorldgenBoot').configure {
+            jarFiles.each { jarFile -> classpath(jarFile) }
+        }
+    }
+} else {
+    // ---- Outer orchestrator mode ------------------------------------------------------------------
+    tasks.register('compatTest') {
+        group = 'verification'
+        description = 'Boots this module together with each configured mod-set\'s third-party jars, recording pass/fail/skip for the changelog.'
+
+        doLast {
+            def vault = resolveWunderVaultDir()
+            def resultsFile = file('build/compat-test/results.json')
+            resultsFile.parentFile.mkdirs()
+
+            if (vault == null) {
+                logger.warn("compatTest: no WunderVault checkout found - skipping (set -PwunderVaultDir, \$WUNDER_VAULT, or check out Tools/WunderVault as a sibling of the workspace)")
+                resultsFile.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(
+                        [[name: 'WunderVault', status: 'SKIPPED', reason: 'WunderVault checkout not found']]
+                ))
+                return
+            }
+
+            def configFile = new File(vault, "modsets/${compatMcVersion}/${compatModuleName}.json")
+            if (!configFile.exists()) {
+                logger.lifecycle("compatTest: no modsets/${compatMcVersion}/${compatModuleName}.json - ${compatModuleName} has not opted in, nothing to do")
+                return
+            }
+
+            def harnessJs = new File(vault, 'harness/run.js')
+            def config = new groovy.json.JsonSlurper().parse(configFile)
+            def modsDir = new File(vault, "modsets/${compatMcVersion}/mods")
+            def results = []
+
+            config.sets.each { set ->
+                def jarFiles = (set.mods ?: []).collect { new File(modsDir, it) }
+                def missing = jarFiles.findAll { !it.exists() }
+                if (!missing.isEmpty()) {
+                    logger.warn("compatTest: skipping set '${set.name}' - missing jar(s): ${missing*.name.join(', ')}")
+                    results << [name: set.name, mods: set.mods, status: 'SKIPPED', reason: "missing jar(s): ${missing*.name.join(', ')}"]
+                    return
+                }
+
+                def dirName = safeSetDirName(set.name)
+                def reportFile = file("build/compat-test/${dirName}/result.json")
+
+                logger.lifecycle("compatTest: running '${set.name}' (${(set.mods ?: []).join(', ')})")
+                // gradlew only exists at the root of a build (BetterEnd/BetterNether's own repo root,
+                // or WorldWeaver's root for a wover-*-api submodule) - the harness must spawn from
+                // there, but the actual runGametest task and its build/compat-test/... output live
+                // under THIS project (root itself for single-project repos, the submodule otherwise).
+                // Project.exec(...) is gone as of this Gradle version - providers.exec(...) is the
+                // replacement; .result.get() forces it to actually run (and block) right here, since we
+                // need reportFile to exist before the next line.
+                def projectPathPrefix = project == rootProject ? ':' : "${project.path}:"
+                def gametestTaskPath = "${projectPathPrefix}runCompatGametest"
+                def reportDir = file("build/compat-test/${dirName}")
+                def expectWorldgen = set.expectWorldgen ?: [:]
+                def expectDefaultGenerator = set.expectDefaultGenerator == true
+
+                def harnessArgs = [
+                        nodeExecutable, harnessJs.absolutePath,
+                        'run',
+                        '--workspace', rootProject.projectDir.absolutePath,
+                        '--module', compatModuleName,
+                        '--mc-version', compatMcVersion,
+                        '--set', set.name,
+                        '--report', reportFile.absolutePath,
+                        '--gametest-task', gametestTaskPath,
+                        '--report-dir', reportDir.absolutePath,
+                ]
+                if (!expectWorldgen.isEmpty() || expectDefaultGenerator) {
+                    harnessArgs += [
+                            '--worldgen-task', "${projectPathPrefix}runCompatWorldgenBoot",
+                            '--worldgen-result', file("build/compat-test/${dirName}/worldgen-boot-result.json").absolutePath,
+                    ]
+                }
+
+                providers.exec {
+                    workingDir = rootProject.projectDir
+                    commandLine(harnessArgs)
+                    ignoreExitValue = true
+                }.result.get()
+
+                if (reportFile.exists()) {
+                    results << new groovy.json.JsonSlurper().parse(reportFile)
+                } else {
+                    results << [name: set.name, mods: set.mods, status: 'FAIL', reason: 'harness produced no result.json']
+                }
+            }
+
+            resultsFile.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(results))
+            logger.lifecycle("compatTest: results written to ${resultsFile}")
+        }
+    }
+}

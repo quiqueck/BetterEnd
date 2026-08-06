@@ -3,6 +3,6 @@
   "textures": {
     "base": "minecraft:block/purpur_block",
     "bottom": "minecraft:block/purpur_block",
-    "pillar": "minecraft:block/purpur_pillar"
+    "pillar": "minecraft:block/purpur_pillar_side"
   }
 }

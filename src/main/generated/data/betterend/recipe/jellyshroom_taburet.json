@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "taburet",
   "key": {
     "#": "betterend:jellyshroom_slab",

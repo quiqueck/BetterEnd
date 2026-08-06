@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "end_stone_slabs",
   "key": {
     "#": "betterend:smaragdant_crystal_bricks"

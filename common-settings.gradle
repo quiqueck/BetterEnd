@@ -1,7 +1,7 @@
 // Shared settings-phase helper for local sibling library inclusion.
 // Copy-paste this file identically into every library/mod repo's settings.gradle
-// FOR THIS MINECRAFT VERSION (26.1). Not interchangeable with the 1.21.6 copy:
-// this Loom version (1.15.x) dropped the mod*-prefixed configurations
+// FOR THIS MINECRAFT VERSION (26.2). Not interchangeable with the 1.21.6 copy:
+// this Loom version (1.17.x) dropped the mod*-prefixed configurations
 // (modApi/modImplementation/...) in favor of plain configurations + an
 // explicit loom.mods{} block, so the Maven-fallback branch below uses 'api',
 // not 'modApi'.
@@ -72,7 +72,7 @@ gradle.ext.modApiOrLocal = { deps, String localProjectPath, String coordinate, b
             deps.add('include', deps.project(path: localProjectPath))
         }
     } else {
-        // Loom 1.15 dropped the mod*-prefixed configurations; mod-awareness now
+        // Loom 1.17 dropped the mod*-prefixed configurations; mod-awareness now
         // comes from loom.mods{}, not the configuration name, so this is plain 'api'.
         deps.add('api', coordinate)
         if (alsoInclude) {

@@ -5,6 +5,7 @@ import org.betterx.betterend.util.LootTableUtil;
 import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 
@@ -108,14 +108,33 @@ public class BuildingListFeature extends NBTFeature<BuildingListFeatureConfig> {
         }
     }
 
-    class ChestProcessor extends StructureProcessor {
+    /**
+     * Fills the loot table of every chest in a placed building from the biome it landed in.
+     * <p>
+     * Minecraft 26.2 changes reflected here:
+     * <ul>
+     * <li>{@code StructureProcessor} became an <b>interface</b>, so this class implements it.</li>
+     * <li>{@code getType()} is gone; a processor now returns its {@link MapCodec} from {@code codec()},
+     * because 26.2 removed {@code KeyDispatchDataCodec}. Up to 26.1 this returned
+     * {@code StructureProcessorType.NOP}, a placeholder - the processor is built in Java by
+     * {@link #addStructureData}, is never serialized and is not registered in
+     * {@code BuiltInRegistries.STRUCTURE_PROCESSOR_TYPE}. It is stateless apart from its enclosing
+     * feature, so a unit codec over a fresh instance is the exact equivalent.</li>
+     * <li>{@code processBlock}'s fourth parameter is no longer the original {@code StructureBlockInfo}
+     * but only its {@code BlockPos}. Nothing is lost here: this processor only ever read
+     * {@code structureBlockInfo2}, the already-processed info.</li>
+     * </ul>
+     */
+    class ChestProcessor implements StructureProcessor {
+        private final MapCodec<ChestProcessor> codec = MapCodec.unit(this);
+
         @Nullable
         @Override
         public StructureTemplate.StructureBlockInfo processBlock(
                 LevelReader levelReader,
                 BlockPos blockPos,
                 BlockPos blockPos2,
-                StructureBlockInfo structureBlockInfo,
+                BlockPos originalPos,
                 StructureBlockInfo structureBlockInfo2,
                 StructurePlaceSettings structurePlaceSettings
         ) {
@@ -139,8 +158,8 @@ public class BuildingListFeature extends NBTFeature<BuildingListFeatureConfig> {
         }
 
         @Override
-        protected StructureProcessorType<?> getType() {
-            return StructureProcessorType.NOP;
+        public MapCodec<? extends StructureProcessor> codec() {
+            return codec;
         }
     }
 }

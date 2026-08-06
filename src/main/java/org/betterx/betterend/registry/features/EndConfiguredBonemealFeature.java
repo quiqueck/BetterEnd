@@ -49,4 +49,7 @@ public class EndConfiguredBonemealFeature {
 
     public static final ConfiguredFeatureKey<WeightedBlockPatch> BONEMEAL_AMBER_MOSS = ConfiguredFeatureManager
             .bonemeal(BetterEnd.C.mk("bonemeal_amber_moss"));
+
+    public static final ConfiguredFeatureKey<WeightedBlockPatch> BONEMEAL_PALLIDIUM = ConfiguredFeatureManager
+            .bonemeal(BetterEnd.C.mk("bonemeal_pallidium"));
 }

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "#": "betterend:glowing_bulb",
     "C": "minecraft:iron_chain",

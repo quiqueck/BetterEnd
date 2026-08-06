@@ -835,6 +835,8 @@
   "emi.category.betterend.infusion": "Elementarrituale",
   "enchantment.betterend.end_veil": "Endschleier",
   "enchantment.betterend.end_veil.desc": "Enderman bemerken nicht wenn sie vom Spieler angesehen werden.",
+  "enchantment.betterend.resonance": "Resonanz",
+  "enchantment.betterend.resonance.desc": "Beim Abbau eines Blocks mit einem Hammer werden auch die umliegenden Blöcke zerstört. Schleiche beim Abbauen, um nur den anvisierten Block zu zerstören.",
   "entity.betterend.cubozoa": "Cubozoa",
   "entity.betterend.dragonfly": "Libelle",
   "entity.betterend.end_fish": "Endfisch",

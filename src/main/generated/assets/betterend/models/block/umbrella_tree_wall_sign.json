@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_wall_sign",
+  "textures": {
+    "all": "betterend:block/umbrella_tree_sign",
+    "particle": "betterend:block/umbrella_tree_planks"
+  }
+}

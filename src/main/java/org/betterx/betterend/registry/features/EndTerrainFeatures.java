@@ -15,6 +15,17 @@ public class EndTerrainFeatures {
             .createKey(BetterEnd.C.mk("sulphur_hill"))
             .setDecoration(GenerationStep.Decoration.SURFACE_STRUCTURES);
 
+    // Vanilla places its own sulfur_spike/sulfur_spike_cluster in UNDERGROUND_DECORATION (sulfur_caves),
+    // so the two End variants use the same step: after the ores, before the vegetation that has to sit on
+    // the surface the spikes share.
+    public static final PlacedFeatureKey SULPHUR_SPIKE = PlacedFeatureManager
+            .createKey(BetterEnd.C.mk("sulphur_spike"))
+            .setDecoration(GenerationStep.Decoration.UNDERGROUND_DECORATION);
+
+    public static final PlacedFeatureKey SULPHUR_SPIKE_HANGING = PlacedFeatureManager
+            .createKey(BetterEnd.C.mk("sulphur_spike_hanging"))
+            .setDecoration(GenerationStep.Decoration.UNDERGROUND_DECORATION);
+
     public static final PlacedFeatureKey OBSIDIAN_PILLAR_BASEMENT = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("obsidian_pillar_basement"))
             .setDecoration(GenerationStep.Decoration.SURFACE_STRUCTURES);

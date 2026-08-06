@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.ui.ColorUtil;
 
@@ -19,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class AuroraCrystalBlock extends TransparentBlock implements CustomColorProvider {
+public class AuroraCrystalBlock extends TransparentBlock {
     public static final Vec3i[] COLORS;
 
     public AuroraCrystalBlock(BlockBehaviour.Properties props) {
@@ -37,39 +36,6 @@ public class AuroraCrystalBlock extends TransparentBlock implements CustomColorP
         return this.getCollisionShape(blockState, blockGetter, blockPos, collisionContext);
     }
 
-    @Override
-    @Environment(EnvType.CLIENT)
-    public BlockTintSource getProvider() {
-        return new BlockTintSource() {
-            @Override
-            public int color(BlockState state) {
-                return colorInWorld(state, null, BlockPos.ZERO);
-            }
-
-            @Override
-            public int colorInWorld(BlockState state, BlockAndTintGetter world, BlockPos pos) {
-                if (pos == null) {
-                    pos = BlockPos.ZERO;
-                }
-
-                long i = (long) pos.getX() + (long) pos.getY() + (long) pos.getZ();
-                double delta = i * 0.1;
-                int index = MHelper.floor(delta);
-                int index2 = (index + 1) & 3;
-                delta -= index;
-                index &= 3;
-
-                Vec3i color1 = COLORS[index];
-                Vec3i color2 = COLORS[index2];
-
-                int r = MHelper.floor(Mth.lerp(delta, color1.getX(), color2.getX()));
-                int g = MHelper.floor(Mth.lerp(delta, color1.getY(), color2.getY()));
-                int b = MHelper.floor(Mth.lerp(delta, color1.getZ(), color2.getZ()));
-
-                return ColorUtil.color(r, g, b);
-            }
-        };
-    }
 
     static {
         COLORS = new Vec3i[]{

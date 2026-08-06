@@ -65,4 +65,11 @@ public class Anvil extends SlotFromDefinition {
     }
 
 
+
+    @Override
+    protected void finalizeDefinitions(BlockSet<?> set, BlockDefinition<?, ?> def) {
+        // Not a full cube (an anvil), so it must not inherit the set material's sulfur cube archetype - a
+        // cube renders what it swallowed as a block model, and an anvil inside one reads as a bug.
+        def.addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.notSwallowable());
+    }
 }

@@ -65,4 +65,11 @@ public class Chandelier extends SlotFromDefinition {
     protected BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
         return ChandelierBlock.buildModel(set, traitLookup);
     }
+
+    @Override
+    protected void finalizeDefinitions(BlockSet<?> set, BlockDefinition<?, ?> def) {
+        // Not a full cube (a chandelier), so it must not inherit the set material's sulfur cube archetype -
+        // a cube renders what it swallowed as a block model, and a chandelier inside one reads as a bug.
+        def.addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.notSwallowable());
+    }
 }

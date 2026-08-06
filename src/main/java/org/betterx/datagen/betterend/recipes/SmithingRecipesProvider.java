@@ -26,9 +26,9 @@ public class SmithingRecipesProvider extends WoverRecipeProvider {
     @Override
     protected void bootstrap(RecipeBuilder.Context context) {
         RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_sword_handle"), EndEquipmentItems.AETERNIUM_SET.swordHandle)
-                     .template(EndTemplates.TERMINITE_UPGRADE)
+                     .template(EndTemplates.AETERNIUM_UPGRADE)
                      .base(EndResourceItems.LEATHER_WRAPPED_STICK)
-                     .addon(EndMetalBlocks.TERMINITE.equipment.ingot)
+                     .addon(EndEquipmentItems.AETERNIUM_SET.ingot)
                      .build(context);
 
         RecipeBuilder.smithing(BetterEnd.C.mk("thallasium_anvil_updrade"), EndMetalBlocks.TERMINITE.getBlock(MetalMaterial.ANVIL))

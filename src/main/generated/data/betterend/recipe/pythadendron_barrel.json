@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "barrel",
   "key": {
     "#": "betterend:pythadendron_planks",

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "wall",
   "key": {
     "*": "minecraft:end_stone"

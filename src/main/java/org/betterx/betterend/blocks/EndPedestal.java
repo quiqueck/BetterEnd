@@ -40,14 +40,14 @@ public class EndPedestal extends PedestalBlock {
                     .put(TextureSlot.TOP, new Material(WoverBlockModelGenerators.vanilla("quartz_pillar_top")))
                     .put(TextureSlot.BOTTOM, new Material(WoverBlockModelGenerators.vanilla("quartz_block_bottom")))
                     .put(EndModels.BASE, new Material(WoverBlockModelGenerators.vanilla("quartz_block_side")))
-                    .put(EndModels.PILLAR, new Material(WoverBlockModelGenerators.vanilla("quartz_pillar")));
+                    .put(EndModels.PILLAR, new Material(WoverBlockModelGenerators.vanilla("quartz_pillar_side")));
         }
         if (parent == Blocks.PURPUR_BLOCK) {
             return new TextureMapping()
                     .put(TextureSlot.TOP, new Material(WoverBlockModelGenerators.vanilla("purpur_pillar_top")))
                     .put(TextureSlot.BOTTOM, new Material(WoverBlockModelGenerators.vanilla("purpur_block")))
                     .put(EndModels.BASE, new Material(WoverBlockModelGenerators.vanilla("purpur_block")))
-                    .put(EndModels.PILLAR, new Material(WoverBlockModelGenerators.vanilla("purpur_pillar")));
+                    .put(EndModels.PILLAR, new Material(WoverBlockModelGenerators.vanilla("purpur_pillar_side")));
         }
 
         final var id = BuiltInRegistries.BLOCK.getKey(parent);

@@ -2,7 +2,7 @@
   "parent": "betterend:block/pedestal_top",
   "textures": {
     "base": "minecraft:block/purpur_block",
-    "pillar": "minecraft:block/purpur_pillar",
+    "pillar": "minecraft:block/purpur_pillar_side",
     "top": "minecraft:block/purpur_pillar_top"
   }
 }

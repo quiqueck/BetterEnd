@@ -1,8 +1,6 @@
 {
   "type": "minecraft:smoking",
   "category": "food",
-  "cookingtime": 100,
-  "experience": 0.0,
   "ingredient": "betterend:bolux_mushroom",
   "result": {
     "id": "betterend:bolux_mushroom_cooked"

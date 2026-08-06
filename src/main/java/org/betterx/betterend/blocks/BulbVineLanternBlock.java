@@ -99,6 +99,9 @@ public class BulbVineLanternBlock extends EndLanternBlock {
                         generator.acceptBlockState(MultiVariantGenerator
                                 .dispatch(block, BlockModelGenerators.plainVariant(ceilModel))
                                 .with(floorCeilDispatch));
+                        // The colored variants declare ClientBlockTraits.ITEM_TINT (bulb_vine_lantern_bulb is
+                        // near-grayscale and tinted via "tintindex": 0), so this delegation emits their tint;
+                        // the uncolored lanterns carry no such trait and get a plain item model.
                         generator.delegateItemModel(block, floorModel);
                     });
         }

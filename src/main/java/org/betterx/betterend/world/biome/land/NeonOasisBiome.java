@@ -18,7 +18,7 @@ import de.ambertation.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
@@ -52,7 +52,7 @@ public class NeonOasisBiome extends EndBiome.Config {
                 .feature(EndOreFeatures.FLAVOLITE_LAYER)
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
-                .spawn(EntityType.ENDERMAN, 50, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 50, 1, 2);
     }
 
     @Override

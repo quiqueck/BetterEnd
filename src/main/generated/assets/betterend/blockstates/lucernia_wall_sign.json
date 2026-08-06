@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
-      "model": "betterend:block/lucernia_planks_particles"
+    "facing=east": {
+      "model": "betterend:block/lucernia_wall_sign",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "betterend:block/lucernia_wall_sign",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "betterend:block/lucernia_wall_sign"
+    },
+    "facing=west": {
+      "model": "betterend:block/lucernia_wall_sign",
+      "y": 90
     }
   }
 }

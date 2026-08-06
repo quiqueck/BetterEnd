@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "O": "betterend:crystalline_sulphur"
+  },
+  "pattern": [
+    "OO",
+    "OO"
+  ],
+  "result": {
+    "id": "minecraft:sulfur_spike"
+  }
+}

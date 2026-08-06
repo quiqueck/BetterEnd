@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_sign_rot_1",
+  "textures": {
+    "all": "betterend:block/helix_tree_sign",
+    "particle": "betterend:block/helix_tree_planks"
+  }
+}

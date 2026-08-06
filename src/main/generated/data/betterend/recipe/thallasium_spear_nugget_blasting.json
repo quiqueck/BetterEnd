@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": "betterend:thallasium_spear",
+  "result": {
+    "id": "betterend:thallasium_nugget"
+  }
+}

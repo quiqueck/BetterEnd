@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_attached_hanging_sign_rot_1",
+  "textures": {
+    "all": "betterend:block/jellyshroom_hanging_sign",
+    "particle": "betterend:block/jellyshroom_stripped_log_side"
+  }
+}

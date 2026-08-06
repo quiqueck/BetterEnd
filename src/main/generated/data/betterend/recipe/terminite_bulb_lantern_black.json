@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "betterend:terminite_bulb_lantern",
     "minecraft:black_dye"

@@ -9,6 +9,7 @@ import org.betterx.betterend.item.material.ToolsWithHeadsSet;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTemplates;
 import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
 import de.ambertation.wover.block.api.trait.BlockTraits;
 import de.ambertation.wover.complex.api.equipment.ArmorTier;
 import de.ambertation.wover.complex.api.equipment.ToolTier;
@@ -240,7 +241,10 @@ public class MetalMaterial extends MetalBlockSet<MetalMaterial> implements Mater
                     if (harvestTierTag != null) {
                         def.addTags(harvestTierTag);
                     }
-                }
+                },
+                // ColoredMaterial attaches the CONST_COLOR tint itself; the lanterns only need their dye colour
+                // brightened first (bulb_vine_lantern_bulb is near-grayscale and tinted via "tintindex": 0).
+                BulbVineLanternColoredBlock::boostLanternColor
         );
 
         return this;

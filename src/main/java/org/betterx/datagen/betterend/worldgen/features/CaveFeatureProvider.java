@@ -171,8 +171,10 @@ public class CaveFeatureProvider extends WoverFeatureProvider {
             CaveSurface surface,
             Holder<PlacedFeature> vegetation
     ) {
+        // 26.2 turned VegetationPatchConfiguration into a record whose `replaceable` slot is a
+        // HolderSet<Block> instead of a TagKey<Block>; resolve the tag through the bootstrap lookup.
         return new VegetationPatchConfiguration(
-                CommonBlockTags.END_STONES,
+                context.lookup(Registries.BLOCK).getOrThrow(CommonBlockTags.END_STONES),
                 BlockStateProvider.simple(EndTerrainBlocks.CAVE_MOSS),
                 vegetation,
                 surface,

@@ -4,7 +4,6 @@ import org.betterx.bclib.util.MHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.WinScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -26,9 +25,6 @@ public class MinecraftClientMixin {
     @Shadow
     public LocalPlayer player;
 
-    @Shadow
-    public Screen screen;
-
     @Final
     @Shadow
     public Gui gui;
@@ -38,9 +34,11 @@ public class MinecraftClientMixin {
 
     @Inject(method = "getSituationalMusic", at = @At("HEAD"), cancellable = true)
     private void be_getEndMusic(CallbackInfoReturnable<Music> info) {
-        if (!(this.screen instanceof WinScreen) && this.player != null) {
+        // 26.2 moved the active screen off Minecraft onto Gui (Minecraft#screen is gone).
+        if (!(this.gui.screen() instanceof WinScreen) && this.player != null) {
             if (this.player.level().dimension() == Level.END) {
-                if (this.gui.getBossOverlay().shouldPlayMusic() && MHelper.lengthSqr(
+                // 26.2 split the in-game HUD out of Gui into Gui#hud; the boss bar lives there now.
+                if (this.gui.hud.getBossOverlay().shouldPlayMusic() && MHelper.lengthSqr(
                         this.player.getX(),
                         this.player.getZ()
                 ) < 250000) {

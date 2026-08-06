@@ -2,7 +2,6 @@
   "type": "minecraft:campfire_cooking",
   "category": "food",
   "cookingtime": 600,
-  "experience": 0.0,
   "ingredient": "betterend:chorus_mushroom_raw",
   "result": {
     "id": "betterend:chorus_mushroom_cooked"

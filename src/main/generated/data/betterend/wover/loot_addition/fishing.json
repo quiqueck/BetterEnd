@@ -17,7 +17,6 @@
         {
           "type": "add_pool",
           "pools": {
-            "bonus_rolls": 0.0,
             "conditions": [
               {
                 "condition": "minecraft:location_check",

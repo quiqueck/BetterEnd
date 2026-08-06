@@ -233,6 +233,21 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .group("enchantment")
                       .setTime(300)
                       .build(context);
+        // Echo shards resonate with sculk vibrations, matching the enchantment's theme. Only level 1 is
+        // infusable - like every other book here, the higher level is an anvil job.
+        InfusionRecipe.create("resonance_1_book", EndEnchantments.RESONANCE.key(), 1, enchantments)
+                      .setPrimaryInputAndUnlock(Items.BOOK)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.ECHO_SHARD)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.ECHO_SHARD)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.ECHO_SHARD)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, Items.LAPIS_LAZULI)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, Items.LAPIS_LAZULI)
+                      .group("enchantment")
+                      .setTime(300)
+                      .build(context);
         InfusionRecipe.create("thorns_book", Enchantments.THORNS, 1, enchantments)
                       .setPrimaryInputAndUnlock(Items.BOOK)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
@@ -378,6 +393,20 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
                       .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.GOLDEN_SWORD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.IRON_SWORD)
                       .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.GOLDEN_SWORD)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, Items.LAPIS_LAZULI)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_WEST, Items.LAPIS_LAZULI)
+                      .group("enchantment")
+                      .setTime(300)
+                      .build(context);
+        // Rabbit feet for the forward leap the enchantment grants on a piercing attack.
+        InfusionRecipe.create("lunge_book", Enchantments.LUNGE, 1, enchantments)
+                      .setPrimaryInputAndUnlock(Items.BOOK)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndResourceItems.ENCHANTED_PETAL)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.EAST, Items.RABBIT_FOOT)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH, Items.RABBIT_FOOT)
+                      .addCatalyst(InfusionRecipe.CatalystSlot.WEST, Items.RABBIT_FOOT)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_EAST, Items.LAPIS_LAZULI)
                       .addCatalyst(InfusionRecipe.CatalystSlot.SOUTH_WEST, Items.LAPIS_LAZULI)

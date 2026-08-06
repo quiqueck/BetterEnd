@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_crystalline_sulphur": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:crystalline_sulphur"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:crystalline_sulphur_to_sulfur_spike"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_crystalline_sulphur"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:crystalline_sulphur_to_sulfur_spike"
+    ]
+  }
+}

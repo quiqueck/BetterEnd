@@ -4,6 +4,7 @@ import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
 import de.ambertation.wover.block.api.DefaultBlockDefinition;
+import de.ambertation.wover.block.api.render.BlockRenderTraits;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.recipe.api.RecipeBuilder;
 import de.ambertation.wover.tag.api.event.context.ItemTagBootstrapContext;
@@ -35,7 +36,7 @@ public class ColoredMaterial implements MaterialManager.Material {
     private final Map<Integer, Block> colors = Maps.newLinkedHashMap();
 
     public ColoredMaterial(Function<BlockBehaviour.Properties, Block> constructor, Block source, boolean craftEight) {
-        this(constructor, source, COLORS, DYES, craftEight, null);
+        this(constructor, source, COLORS, DYES, craftEight, null, null);
     }
 
     public ColoredMaterial(
@@ -44,10 +45,25 @@ public class ColoredMaterial implements MaterialManager.Material {
             boolean craftEight,
             Consumer<DefaultBlockDefinition<Block>> customizer
     ) {
-        this(constructor, source, COLORS, DYES, craftEight, customizer);
+        this(constructor, source, COLORS, DYES, craftEight, customizer, null);
+    }
+
+    /**
+     * @param colorTransform adjusts each dye colour before it becomes the block's tint (e.g. a saturation boost)
+     */
+    public ColoredMaterial(
+            Function<BlockBehaviour.Properties, Block> constructor,
+            Block source,
+            boolean craftEight,
+            Consumer<DefaultBlockDefinition<Block>> customizer,
+            java.util.function.IntUnaryOperator colorTransform
+    ) {
+        this(constructor, source, COLORS, DYES, craftEight, customizer, colorTransform);
     }
 
     private List<MaterialManager.MaterialRecipe> RECIPES;
+    /** Adjusts the raw dye colour before it becomes the block's tint, or {@code null} to use it as-is. */
+    private final java.util.function.IntUnaryOperator colorTransform;
 
     public ColoredMaterial(
             Function<BlockBehaviour.Properties, Block> constructor,
@@ -56,8 +72,9 @@ public class ColoredMaterial implements MaterialManager.Material {
             Map<Integer, ItemLike> dyes,
             boolean craftEight
     ) {
-        this(constructor, source, colors, dyes, craftEight, null);
+        this(constructor, source, colors, dyes, craftEight, null, null);
     }
+
 
     public ColoredMaterial(
             Function<BlockBehaviour.Properties, Block> constructor,
@@ -67,6 +84,19 @@ public class ColoredMaterial implements MaterialManager.Material {
             boolean craftEight,
             Consumer<DefaultBlockDefinition<Block>> customizer
     ) {
+        this(constructor, source, colors, dyes, craftEight, customizer, null);
+    }
+
+    public ColoredMaterial(
+            Function<BlockBehaviour.Properties, Block> constructor,
+            Block source,
+            Map<Integer, String> colors,
+            Map<Integer, ItemLike> dyes,
+            boolean craftEight,
+            Consumer<DefaultBlockDefinition<Block>> customizer,
+            java.util.function.IntUnaryOperator colorTransform
+    ) {
+        this.colorTransform = colorTransform;
         if (ModCore.isDatagen()) {
             RECIPES = new ArrayList<>(colors.size());
             MaterialManager.register(this);
@@ -76,7 +106,19 @@ public class ColoredMaterial implements MaterialManager.Material {
             String blockName = id + "_" + name;
             DefaultBlockDefinition<Block> definition = EndBlocks.defineBlock(blockName, constructor)
                                                                  .replacePropertiesWithCopy(source)
-                                                                 .mapColor(MapColor.COLOR_BLACK);
+                                                                 .mapColor(MapColor.COLOR_BLACK)
+                                                                 // Every ColoredMaterial block shares one
+                                                                 // grayscale texture and gets its colour from
+                                                                 // the tint, so the binding belongs here rather
+                                                                 // than at each call site. colorTransform lets a
+                                                                 // family adjust the dye colour (the bulb
+                                                                 // lanterns boost saturation); the result is
+                                                                 // baked once, at definition time.
+                                                                 .addTrait(BlockRenderTraits.TINT.constColor(
+                                                                         colorTransform == null
+                                                                                 ? color
+                                                                                 : colorTransform.applyAsInt(color)
+                                                                 ));
             if (customizer != null) {
                 customizer.accept(definition);
             }

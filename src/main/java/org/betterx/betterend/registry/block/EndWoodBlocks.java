@@ -14,6 +14,7 @@ import org.betterx.bclib.blocks.UnderwaterPlantBlock;
 import org.betterx.bclib.blocks.BaseTerrainBlock;
 import org.betterx.bclib.blocks.BasePlantWithAgeBlock;
 import org.betterx.bclib.trait.block.*;
+import org.betterx.ui.ColorUtil;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.*;
 import org.betterx.betterend.blocks.EndPortalBlock;
@@ -35,6 +36,7 @@ import de.ambertation.wover.block.api.model.ModelTraitLibrary;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
 import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.render.TinterKeys;
 import de.ambertation.wover.block.api.trait.BlockTraits;
 import de.ambertation.wover.item.api.BlockItemDefinition;
 import de.ambertation.wover.pottable.api.trait.PottablePlantBlockTrait;
@@ -79,6 +81,18 @@ public class EndWoodBlocks {
      */
     private static final float CANOPY_SAPLING_CHANCE = 1F / 128F;
 
+    /** The tenanea petal shimmer - see EndCrystalBlocks.AURORA_PALETTE for the same pattern. */
+    private static final TinterKeys.PaletteCycle TENANEA_PALETTE = new TinterKeys.PaletteCycle(
+            List.of(
+                    ColorUtil.color(250, 111, 222),
+                    ColorUtil.color(167, 89, 255),
+                    ColorUtil.color(120, 207, 239),
+                    ColorUtil.color(255, 87, 182)
+            ),
+            TinterKeys.PaletteCycle.IndexMode.HASH_XZ_PLUS_Y,
+            0.5F
+    );
+
     public static final Block MOSSY_GLOWSHROOM_CAP = EndBlocks.defineBlock("mossy_glowshroom_cap", MossyGlowshroomCapBlock::new)
             .addTrait(BlockTraits.WOOD_BLOCK)
             .addTrait(ModelTraitLibrary.externalModelDelegatedItem())
@@ -108,7 +122,7 @@ public class EndWoodBlocks {
             "mossy_glowshroom",
             MapColor.COLOR_GRAY,
             MapColor.WOOD
-    ).setFurnitureCloth(Blocks.GRAY_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.gray())
      .setLogVariants(1, 1, 1, 1, 1)
      .setStrippedVariants(1, 1, 1, 1, 1)
      .buildAndRegister();
@@ -126,7 +140,7 @@ public class EndWoodBlocks {
             "pythadendron",
             MapColor.COLOR_MAGENTA,
             MapColor.COLOR_PURPLE
-    ).setFurnitureCloth(Blocks.BLACK_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.black())
      .setLogVariants(1, 1, 1, 1)
      .buildAndRegister();
 
@@ -135,13 +149,15 @@ public class EndWoodBlocks {
             .addTrait(ClientBlockTraits.RENDER_LAYER.cutout())
             .addTrait(ModelTraitLibrary.externalModelDelegatedItem())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
+            // Not a full cube, so no sulfur cube archetype - vanilla tags no block of this shape.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.notSwallowable())
             .buildAndRegister();
 
     public static final EndWoodenComplexMaterial END_LOTUS = new EndWoodenComplexMaterial(
             "end_lotus",
             MapColor.COLOR_LIGHT_BLUE,
             MapColor.COLOR_CYAN
-    ).setFurnitureCloth(Blocks.LIGHT_BLUE_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.lightBlue())
      // end_lotus is a plant, not wood - its boat is a raft (like vanilla's bamboo raft), not a real boat
      .useRaft()
      .buildAndRegister();
@@ -156,7 +172,7 @@ public class EndWoodBlocks {
             "lacugrove",
             MapColor.COLOR_BROWN,
             MapColor.COLOR_YELLOW
-    ).setFurnitureCloth(Blocks.CYAN_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.cyan())
      .setLogVariants(1, 1, 1, 1)
      .buildAndRegister();
 
@@ -170,7 +186,7 @@ public class EndWoodBlocks {
             "dragon_tree",
             MapColor.COLOR_BLACK,
             MapColor.COLOR_MAGENTA
-    ).setFurnitureCloth(Blocks.BLACK_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.black())
      .setLogVariants(1, 1, 1, 1)
      .buildAndRegister();
 
@@ -188,6 +204,9 @@ public class EndWoodBlocks {
             // MapColor.PLANT regardless of this trait's color argument, silently overriding the
             // COLOR_PINK declared here. Corrected to PLANT to match the frozen golden (mapColor=7).
             .addTrait(VineBlockTrait.withColor(MapColor.PLANT, 15, false, false))
+            // World only: the flowers' item has its own fully coloured texture, so tinting it would
+            // double-colour the icon. minSaturation 0.5 keeps the petals vivid where the palette lerps dull.
+            .addTrait(ClientBlockTraits.TINT.world(TinterKeys.PALETTE_CYCLE, () -> TENANEA_PALETTE))
             .addTrait(ModelTraitLibrary.externalModel())
             .buildAndRegister();
 
@@ -209,7 +228,7 @@ public class EndWoodBlocks {
             "tenanea",
             MapColor.COLOR_BROWN,
             MapColor.COLOR_PINK
-    ).setFurnitureCloth(Blocks.PINK_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.pink())
      .buildAndRegister();
 
     public static final Block HELIX_TREE_LEAVES = EndBlocks.defineBlock("helix_tree_leaves", HelixTreeLeavesBlock::new)
@@ -219,6 +238,19 @@ public class EndWoodBlocks {
             // Its model is a plain texture-swap child of the shared betterend:block/tint_cube (tinted full cube),
             // single-variant, item delegated to the block model - generate it instead of hand-authoring.
             .addTrait(TemplateModelTrait.cube(BetterEnd.C.mk("block/tint_cube"), false))
+            // tint_cube colorizes the texture from the block tint, so the item model needs it baked in. Sampled
+            // at COLOR=4 rather than the default 0: COLOR runs 0..7 from deep orange to yellow, but
+            // HelixTreeFeature distributes leaves as noise*3.5+4, so 4 is the shade a player actually sees on a
+            // tree, while 0 is the extreme end of the gradient.
+            .addTrait(ClientBlockTraits.TINT.worldAndItem(
+                    TinterKeys.GRADIENT,
+                    () -> new TinterKeys.Gradient(
+                            HelixTreeLeavesBlock.COLOR, 7,
+                            ColorUtil.color(237, 80, 20),
+                            ColorUtil.color(237, 158, 20)
+                    ),
+                    b -> b.defaultBlockState().setValue(HelixTreeLeavesBlock.COLOR, 4)
+            ))
             .sound(SoundType.WART_BLOCK)
             .buildAndRegister();
 
@@ -226,7 +258,7 @@ public class EndWoodBlocks {
             "helix_tree",
             MapColor.COLOR_GRAY,
             MapColor.COLOR_ORANGE
-    ).setFurnitureCloth(Blocks.GRAY_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.gray())
      .buildAndRegister();
 
     public static final Block UMBRELLA_TREE_MEMBRANE = EndBlocks.defineBlock(
@@ -235,13 +267,19 @@ public class EndWoodBlocks {
     ).replacePropertiesWithCopy(Blocks.SLIME_BLOCK)
      // Translucent canopy membrane: solid (walkable=true) so players can stand on the umbrella-tree canopy.
      // generateModel=false so LeavesBlockTrait does not attach its default cube-block + FLAT-item model;
-     // instead ModelTraitLibrary.cube() supplies a cube block model whose inventory item is the 3D block
-     // (delegated item model), matching how the membrane rendered as a solid block item previously.
+     // instead UmbrellaTreeMembraneBlock.provideBlockModel supplies one cube model per COLOR value (see there:
+     // a plain ModelTraitLibrary.cube() bound every state to the single, 70%-opaque
+     // block/umbrella_tree_membrane sprite, which made the opaque color=0 state - and the item - see-through)
+     // and delegates the inventory item to the color=0 model, so it stays a 3D block in hand as before.
      // CANOPY_SAPLING_CHANCE: UmbrellaTreeFeature builds 1-3 filled dome shells of radius 4-12 per tree,
      // so a canopy is several hundred membrane blocks - see the constant.
      .addTrait(LeavesBlockTrait.withColor(MapColor.COLOR_BLUE, 0, false, CANOPY_SAPLING_CHANCE, EndSaplingBlocks.UMBRELLA_TREE_SAPLING, false, true))
-     .addTrait(ModelTraitLibrary.cube())
+     .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
+             (key, block, generator) -> UmbrellaTreeMembraneBlock.provideBlockModel(generator, block)
+     ) : null)
      .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
+     // Vanilla groups the mushroom blocks, mushroom_stem and mycelium in slow_sliding.
+     .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowSliding())
      .buildAndRegister();
 
     public static final Block UMBRELLA_TREE_CLUSTER = EndBlocks.defineBlock(
@@ -270,30 +308,40 @@ public class EndWoodBlocks {
             "umbrella_tree",
             MapColor.COLOR_BLUE,
             MapColor.COLOR_GREEN
-    ).setFurnitureCloth(Blocks.MAGENTA_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.magenta())
      .buildAndRegister();
 
     public static final Block JELLYSHROOM_CAP_PURPLE = EndBlocks.defineBlock(
             "jellyshroom_cap_purple",
-            p -> new JellyshroomCapBlock(
-                    p,
-                    217, 142, 255,
-                    164, 0, 255
-            )
+            JellyshroomCapBlock::new
     ).replacePropertiesWithCopy(Blocks.SLIME_BLOCK)
      .mapColor(MapColor.COLOR_PURPLE)
      .addTrait(BlockTraits.LOOT_TABLE)
      .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
+     // block/jellyshroom_cap is grayscale; all the purple comes from the block tint. Sampled at COLOR=4
+     // rather than the default 0: COLOR runs 0..7 across the gradient, but getStateForPlacement and
+     // JellyshroomFeature distribute caps as noise*3.5+4, so 4 is the shade actually seen in the world.
+     .addTrait(ClientBlockTraits.TINT.worldAndItem(
+             TinterKeys.GRADIENT,
+             () -> new TinterKeys.Gradient(
+                     JellyshroomCapBlock.COLOR, 7,
+                     ColorUtil.color(217, 142, 255),
+                     ColorUtil.color(164, 0, 255)
+             ),
+             b -> b.defaultBlockState().setValue(JellyshroomCapBlock.COLOR, 4)
+     ))
      .addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
              (key, block, generator) -> JellyshroomCapBlock.provideBlockModel(generator, block)
      ) : null)
+     // Vanilla groups the mushroom blocks, mushroom_stem and mycelium in slow_sliding.
+     .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowSliding())
      .buildAndRegister();
 
     public static final EndWoodenComplexMaterial JELLYSHROOM = new EndWoodenComplexMaterial(
             "jellyshroom",
             MapColor.COLOR_PURPLE,
             MapColor.COLOR_LIGHT_BLUE
-    ).setFurnitureCloth(Blocks.PURPLE_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.purple())
      .buildAndRegister();
 
     public static final Block LUCERNIA_LEAVES = EndBlocks.defineBlock("lucernia_leaves", p -> new TintedParticleLeavesBlock(0.01F, p))
@@ -315,12 +363,12 @@ public class EndWoodBlocks {
             "lucernia",
             MapColor.COLOR_ORANGE,
             MapColor.COLOR_ORANGE
-    ).setFurnitureCloth(Blocks.WHITE_WOOL)
+    ).setFurnitureCloth(Blocks.WOOL.white())
      .setLogVariants(16, 1, 16, 1)
      .buildAndRegister();
 
     public static final EndWoodenComplexMaterial LUCERNIA_JELLY = new JellyLucerniaWoodMaterial()
-            .setFurnitureCloth(Blocks.BROWN_WOOL)
+            .setFurnitureCloth(Blocks.WOOL.brown())
             .buildAndRegister();
 
     public static void ensureLoaded() {}

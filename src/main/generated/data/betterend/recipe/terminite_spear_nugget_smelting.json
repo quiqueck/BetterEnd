@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": "betterend:terminite_spear",
+  "result": {
+    "id": "betterend:terminite_nugget"
+  }
+}

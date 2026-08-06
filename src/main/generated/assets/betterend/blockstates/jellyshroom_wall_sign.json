@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
-      "model": "betterend:block/jellyshroom_planks_particles"
+    "facing=east": {
+      "model": "betterend:block/jellyshroom_wall_sign",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "betterend:block/jellyshroom_wall_sign",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "betterend:block/jellyshroom_wall_sign"
+    },
+    "facing=west": {
+      "model": "betterend:block/jellyshroom_wall_sign",
+      "y": 90
     }
   }
 }

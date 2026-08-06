@@ -3,7 +3,6 @@ package org.betterx.betterend.blocks.basis;
 
 import org.betterx.betterend.registry.block.EndCrystalBlocks;
 import org.betterx.bclib.client.models.BCLModels;
-import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
 import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
@@ -31,7 +30,7 @@ import net.fabricmc.api.Environment;
 
 import org.jetbrains.annotations.NotNull;
 
-public class StoneLanternBlock extends EndLanternBlock implements CustomColorProvider {
+public class StoneLanternBlock extends EndLanternBlock {
     private static final VoxelShape SHAPE_CEIL = box(3, 1, 3, 13, 16, 13);
     private static final VoxelShape SHAPE_FLOOR = box(3, 0, 3, 13, 15, 13);
 
@@ -39,11 +38,6 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
         super(props);
     }
 
-    @Override
-    @Environment(EnvType.CLIENT)
-    public BlockTintSource getProvider() {
-        return ((CustomColorProvider) EndCrystalBlocks.AURORA_CRYSTAL).getProvider();
-    }
 
 
     @Override
@@ -91,6 +85,9 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
         generator.acceptBlockState(MultiVariantGenerator
                 .dispatch(block, BlockModelGenerators.plainVariant(ceilModel))
                 .with(floorCeilDispatch));
+        // The glass slot uses the near-grayscale aurora_crystal texture and this block forwards its tint to
+        // AURORA_CRYSTAL's provider; ClientBlockTraits.ITEM_TINT on the lantern definition is what gets that
+        // tint into the item model, so this delegation emits it.
         generator.delegateItemModel(block, ceilModel);
     }
 

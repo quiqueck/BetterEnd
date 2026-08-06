@@ -3,6 +3,8 @@ package org.betterx.betterend.testmod.gametest;
 import org.betterx.betterend.registry.EndAttributes;
 import org.betterx.betterend.registry.item.EndEquipmentItems;
 
+import de.ambertation.wover.test.api.gametest.MockPlayers;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -10,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.npc.villager.Villager;
@@ -43,7 +45,7 @@ public class CrystaliteEffectGameTest {
     private static final BlockPos CONTROL = new BlockPos(4, 2, 4);
 
     private static Villager wearing(GameTestHelper helper, BlockPos at, Item... pieces) {
-        final Villager villager = helper.spawnWithNoFreeWill(EntityType.VILLAGER, at);
+        final Villager villager = helper.spawnWithNoFreeWill(EntityTypes.VILLAGER, at);
         for (Item piece : pieces) {
             final ItemStack stack = new ItemStack(piece);
             villager.setItemSlot(villager.getEquipmentSlotForItem(stack), stack);
@@ -138,7 +140,7 @@ public class CrystaliteEffectGameTest {
     @GameTest(maxTicks = 200)
     public void helmetGrantsBlindnessImmunity(GameTestHelper helper) {
         final Villager helmeted = wearing(helper, SUBJECT, EndEquipmentItems.CRYSTALITE_HELMET);
-        final Villager bare = helper.spawnWithNoFreeWill(EntityType.VILLAGER, CONTROL);
+        final Villager bare = helper.spawnWithNoFreeWill(EntityTypes.VILLAGER, CONTROL);
 
         helper.startSequence()
               .thenIdle(SETTLE_TICKS)

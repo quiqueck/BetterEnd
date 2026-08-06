@@ -11,7 +11,7 @@ import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -75,7 +75,7 @@ public class WaterfallPondsBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.BUBBLE_CORAL)
                 .feature(EndVegetationFeatures.CHARNIA_CYAN)
                 .feature(EndVegetationFeatures.CHARNIA_GREEN)
-                .spawn(EntityType.ENDERMAN, 3, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 3, 1, 2);
     }
 
     @Override

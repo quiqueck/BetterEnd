@@ -5,10 +5,10 @@ import org.betterx.betterend.registry.block.EndDecorBlocks;
 import org.betterx.betterend.registry.EndBlocks;
 import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Tuple;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -67,14 +67,15 @@ public class MengerSpongeBlock extends Block {
     }
 
     private boolean absorbWater(LevelAccessor world, BlockPos pos) {
-        Queue<Tuple<BlockPos, Integer>> queue = Lists.newLinkedList();
-        queue.add(new Tuple<>(pos, 0));
+        // 26.2 deleted net.minecraft.util.Tuple; DFU's Pair is the same two-slot carrier.
+        Queue<Pair<BlockPos, Integer>> queue = Lists.newLinkedList();
+        queue.add(Pair.of(pos, 0));
         int i = 0;
 
         while (!queue.isEmpty()) {
-            Tuple<BlockPos, Integer> pair = queue.poll();
-            BlockPos blockPos = pair.getA();
-            int j = pair.getB();
+            Pair<BlockPos, Integer> pair = queue.poll();
+            BlockPos blockPos = pair.getFirst();
+            int j = pair.getSecond();
 
             for (Direction direction : Direction.values()) {
                 BlockPos blockPos2 = blockPos.relative(direction);
@@ -88,13 +89,13 @@ public class MengerSpongeBlock extends Block {
                     ) {
                         ++i;
                         if (j < 6) {
-                            queue.add(new Tuple<>(blockPos2, j + 1));
+                            queue.add(Pair.of(blockPos2, j + 1));
                         }
                     } else if (blockState.getBlock() instanceof LiquidBlock) {
                         world.setBlock(blockPos2, Blocks.AIR.defaultBlockState(), 3);
                         ++i;
                         if (j < 6) {
-                            queue.add(new Tuple<>(blockPos2, j + 1));
+                            queue.add(Pair.of(blockPos2, j + 1));
                         }
                     } else if (blockState.is(CommonBlockTags.WATER_PLANT)) {
                         BlockEntity blockEntity = blockState.hasBlockEntity() ? world.getBlockEntity(blockPos2) : null;
@@ -102,7 +103,7 @@ public class MengerSpongeBlock extends Block {
                         world.setBlock(blockPos2, Blocks.AIR.defaultBlockState(), 3);
                         ++i;
                         if (j < 6) {
-                            queue.add(new Tuple<>(blockPos2, j + 1));
+                            queue.add(Pair.of(blockPos2, j + 1));
                         }
                     }
                 }

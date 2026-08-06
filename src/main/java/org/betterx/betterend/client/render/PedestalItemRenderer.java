@@ -16,7 +16,6 @@ import org.betterx.betterend.rituals.InfusionRitual;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -229,9 +228,8 @@ public class PedestalItemRenderer implements BlockEntityRenderer<PedestalBlockEn
     }
 
     /**
-     * Draws one socket outline. Isolated because this is the one part of the hint that differs
-     * between game versions: 26.1 has no {@code submitShapeOutline} node, so the shape is emitted
-     * into a custom-geometry callback with {@link ShapeRenderer} instead.
+     * Draws one outline. Isolated because this is the one part of the hints that differs between game
+     * versions - 26.1 has no {@code submitShapeOutline} node and goes through custom geometry instead.
      */
     private static void submitOutline(
             SubmitNodeCollector submitNodeCollector,
@@ -240,14 +238,7 @@ public class PedestalItemRenderer implements BlockEntityRenderer<PedestalBlockEn
             int color,
             float lineWidth
     ) {
-        submitNodeCollector.submitCustomGeometry(matrices, RenderTypes.linesTranslucent(), (pose, buffer) -> {
-            // ShapeRenderer wants a PoseStack but custom geometry hands out the flattened Pose, so
-            // the transform is folded back into a throwaway stack (mulPose, not a raw matrix set, so
-            // the normal matrix comes along - the line shader needs it).
-            PoseStack local = new PoseStack();
-            local.mulPose(pose.pose());
-            ShapeRenderer.renderShape(local, buffer, shape, 0, 0, 0, color, lineWidth);
-        });
+        submitNodeCollector.submitShapeOutline(matrices, shape, RenderTypes.linesTranslucent(), color, lineWidth, true);
     }
 
     @Override

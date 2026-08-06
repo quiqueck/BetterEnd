@@ -83,6 +83,16 @@ loom {
 dependencies {
     // The testmod compiles and runs against the mod itself.
     testmodImplementation sourceSets.main.output
+
+    // wover-test-api is purely GameTest support (mock players, registry/trait sweeps) shared with
+    // BetterNether's testmod - deliberately testmod-only, not part of the knownWoverModules loop
+    // below, so it never becomes a runtime dependency of the shipped mod jar.
+    if (findProject(':WorldWeaver') != null) {
+        testmodImplementation project(path: ":WorldWeaver:wover-test-api", configuration: 'dev')
+        testmodImplementation project(path: ":WorldWeaver:wover-test-api", configuration: 'devClient')
+    } else {
+        testmodImplementation "org.betterx:worldweaver:${project.wover_version}"
+    }
 }
 
 subprojects { subproject ->
@@ -139,7 +149,9 @@ dependencies {
     if (findProject(':WorldWeaver') != null) {
         implementation project(path: ":WorldWeaver", configuration: 'localDev')
 
-        gradle.knownWoverModules.each {
+        // wover-test-api is excluded here: it's testmod-only GameTest support, wired separately
+        // below as testmodImplementation so it never reaches the shipped mod's dependency graph.
+        (gradle.knownWoverModules - ['wover-test-api']).each {
             implementation project(path: ":WorldWeaver:$it", configuration: 'dev')
             // BetterEnd doesn't split its own client/common sources, so its single sourceSet needs
             // each wover module's client output too (WorldWeaver itself now enforces the split - see
@@ -274,6 +286,7 @@ artifacts {
 }
 
 apply from: "common-helper.gradle"
+apply from: "compat-test.gradle"
 apply from: "common-publish-tag.gradle"
 
 allprojects {

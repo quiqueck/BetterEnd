@@ -96,6 +96,14 @@ public class BonemealFeatureProvider extends WoverFeatureProvider {
         EndConfiguredBonemealFeature.BONEMEAL_AMBER_MOSS
                 .bootstrap(context).add(EndPlantBlocks.AMBER_GRASS, 100)
                 .register();
+
+        // Umbra Valley is the only biome that plants on pallidium, and it plants exactly these two
+        // (VegetationFeaturesProvider: INFLEXIA at density 16, FLAMMALIX at 5). The weights keep that
+        // ~3:1 ratio so bonemealed patches look like the generated surface.
+        EndConfiguredBonemealFeature.BONEMEAL_PALLIDIUM
+                .bootstrap(context).add(EndPlantBlocks.INFLEXIA, 100)
+                .add(EndPlantBlocks.FLAMMALIX, 30)
+                .register();
     }
 
     @Override

@@ -1,8 +1,5 @@
 {
   "type": "minecraft:blasting",
-  "category": "misc",
-  "cookingtime": 100,
-  "experience": 0.0,
   "ingredient": "betterend:terminite_hammer",
   "result": {
     "id": "betterend:terminite_nugget"

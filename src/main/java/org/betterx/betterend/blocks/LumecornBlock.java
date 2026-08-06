@@ -9,7 +9,7 @@ import org.betterx.betterend.registry.EndItems;
 import de.ambertation.wover.loot.api.LootLookupProvider;
 import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
-import net.minecraft.advancements.criterion.StatePropertiesPredicate;
+import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;

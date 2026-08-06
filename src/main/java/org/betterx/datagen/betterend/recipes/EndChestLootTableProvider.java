@@ -28,7 +28,7 @@ import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.datagen.api.provider.WoverLootTableProvider;
 import de.ambertation.wover.sets.api.blocks.SlotType;
 
-import net.minecraft.advancements.criterion.LocationPredicate;
+import net.minecraft.advancements.predicates.LocationPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -116,6 +116,24 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                                      .withEnchantment(lookup
                                              .lookupOrThrow(Registries.ENCHANTMENT)
                                              .getOrThrow(EndEnchantments.END_VEIL.key()))));
+    }
+
+    /**
+     * A rare source of Resonance for players who don't want to build the infusion ritual or gamble on the
+     * enchanting table. {@code EnchantRandomlyFunction.withEnchantment} restricts the roll to just this
+     * enchantment while still randomizing the level (1 or 2), the same as a normal enchanting-table result.
+     */
+    private LootPool.Builder resonanceBook(HolderLookup.@NotNull Provider lookup, float chance) {
+        return LootPool
+                .lootPool()
+                .setRolls(ConstantValue.exactly(1))
+                .when(LootItemRandomChanceCondition.randomChance(chance))
+                .add(LootItem.lootTableItem(Items.BOOK)
+                             .apply(EnchantRandomlyFunction
+                                     .randomEnchantment()
+                                     .withEnchantment(lookup
+                                             .lookupOrThrow(Registries.ENCHANTMENT)
+                                             .getOrThrow(EndEnchantments.RESONANCE.key()))));
     }
 
     private LootPool.Builder fishing() {
@@ -477,6 +495,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                          .withPool(plateUpgradeLootPool())
                          .withPool(villageBonusLoot())
                          .withPool(elytraLoot(0.2f))
+                         .withPool(resonanceBook(lookup, 0.15f))
         );
 
         biConsumer.accept(
@@ -486,6 +505,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                          .withPool(endCityMusicDiscs())
                          .withPool(endCitySmithingTemplates())
                          .withPool(endCityEndVeilBook(lookup))
+                         .withPool(resonanceBook(lookup, 0.15f))
         );
 
         biConsumer.accept(

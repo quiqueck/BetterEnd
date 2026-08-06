@@ -15,12 +15,17 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -124,12 +129,46 @@ public class InfusionRecipeScreen extends Screen {
         List<RecipeHolder<InfusionRecipe>> found = new ArrayList<>(
                 SyncedRecipes.allOfType(minecraft.level, InfusionRecipe.TYPE)
         );
-        found.sort(Comparator.comparing(holder -> outputOf(holder).getHoverName().getString()));
+        found.sort(Comparator.comparing(holder -> displayName(outputOf(holder)).getString()));
         return found;
     }
 
     private static ItemStack outputOf(RecipeHolder<InfusionRecipe> holder) {
         return holder.value().assemble(null);
+    }
+
+    /**
+     * The name a recipe is listed under. Roughly half of the infusion recipes produce an enchanted
+     * book, and every one of those is called "Enchanted Book" - so a book is listed under what it
+     * actually stores, which is the only thing that tells those rows apart.
+     * <p>
+     * Falls back to the item's own name whenever the enchantment cannot be named: a book with no
+     * stored enchantments, or one carrying a custom name that was deliberately set.
+     */
+    private static Component displayName(ItemStack stack) {
+        if (stack.has(DataComponents.CUSTOM_NAME)) return stack.getHoverName();
+
+        ItemEnchantments stored = stack.get(DataComponents.STORED_ENCHANTMENTS);
+        if (stored == null || stored.isEmpty()) return stack.getHoverName();
+
+        MutableComponent name = null;
+        for (Holder<Enchantment> enchantment : stored.keySet()) {
+            MutableComponent one = enchantmentName(enchantment, stored.getLevel(enchantment));
+            name = name == null ? one : name.append(", ").append(one);
+        }
+        return name == null ? stack.getHoverName() : name;
+    }
+
+    /**
+     * {@link Enchantment#getFullname} with the styling left off - it paints the name gray (red for
+     * curses), and neither reads on a near-white page.
+     */
+    private static MutableComponent enchantmentName(Holder<Enchantment> enchantment, int level) {
+        MutableComponent name = enchantment.value().description().copy();
+        if (level != 1 || enchantment.value().getMaxLevel() != 1) {
+            name.append(CommonComponents.SPACE).append(Component.translatable("enchantment.level." + level));
+        }
+        return name;
     }
 
     /**
@@ -363,7 +402,7 @@ public class InfusionRecipeScreen extends Screen {
                 graphics.itemDecorations(font, output, getX() + 2, rowY + 2);
                 graphics.text(
                         font,
-                        output.getHoverName(),
+                        displayName(output),
                         getX() + 22,
                         rowY + (ROW_HEIGHT - font.lineHeight) / 2 + 1,
                         TEXT_COLOR,

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "#": "betterend:hydralux_petal_block",
     "D": "minecraft:blue_dye"

@@ -3,6 +3,6 @@
   "textures": {
     "base": "minecraft:block/quartz_block_side",
     "bottom": "minecraft:block/quartz_block_bottom",
-    "pillar": "minecraft:block/quartz_pillar"
+    "pillar": "minecraft:block/quartz_pillar_side"
   }
 }

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "composter",
   "key": {
     "#": "betterend:dragon_tree_slab"

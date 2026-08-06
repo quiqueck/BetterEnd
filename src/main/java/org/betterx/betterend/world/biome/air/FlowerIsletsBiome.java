@@ -10,7 +10,7 @@ import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -69,7 +69,7 @@ public class FlowerIsletsBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.UMBRELLA_MOSS)
                 .feature(EndVegetationFeatures.CREEPING_MOSS_RARE)
                 .feature(EndVegetationFeatures.TWISTED_UMBRELLA_MOSS_RARE)
-                .spawn(EntityType.ENDERMAN, 3, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 3, 1, 2);
     }
 
     @Override

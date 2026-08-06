@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "#": "betterend:tenanea_planks",
     "L": "betterend:tenanea_leaves",

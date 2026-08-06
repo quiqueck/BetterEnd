@@ -141,10 +141,15 @@ public class EndTerrainBlocks {
             .addTags(BCLBlockTags.BONEMEAL_SOURCE_END_STONE, BlockTags.NYLIUM)
             .buildAndRegister();
 
+    // Declared thickest-first on purpose: each variant's constructor names the NEXT thicker one, so that
+    // block must already be initialised. Bone meal walks tiny -> thin -> heavy -> full, then (full having no
+    // next level) falls through to BonemealAPI and grows vegetation.
     public static final Block PALLIDIUM_FULL = EndBlocks.defineBlock("pallidium_full", p -> new PallidiumBlock(p, "full", null))
             .mapColor(MapColor.COLOR_LIGHT_GRAY)
             .addTrait(TerrainTraits.full())
             .addTags(BCLBlockTags.BONEMEAL_SOURCE_END_STONE, BlockTags.NYLIUM)
+            // Vanilla puts obsidian, crying_obsidian, amethyst_block and the whole stone family in slow_bouncy.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
             .buildAndRegister();
 
     public static final Block PALLIDIUM_HEAVY = EndBlocks.defineBlock(
@@ -153,22 +158,28 @@ public class EndTerrainBlocks {
             .mapColor(MapColor.COLOR_LIGHT_GRAY)
             .addTrait(TerrainTraits.full())
             .addTags(BCLBlockTags.BONEMEAL_SOURCE_END_STONE, BlockTags.NYLIUM)
+            // Vanilla puts obsidian, crying_obsidian, amethyst_block and the whole stone family in slow_bouncy.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
             .buildAndRegister();
 
     public static final Block PALLIDIUM_THIN = EndBlocks.defineBlock(
-            "pallidium_thin", p -> new PallidiumBlock(p, "thin", PALLIDIUM_FULL)
+            "pallidium_thin", p -> new PallidiumBlock(p, "thin", PALLIDIUM_HEAVY)
     )
             .mapColor(MapColor.COLOR_LIGHT_GRAY)
             .addTrait(TerrainTraits.full())
             .addTags(BCLBlockTags.BONEMEAL_SOURCE_END_STONE, BlockTags.NYLIUM)
+            // Vanilla puts obsidian, crying_obsidian, amethyst_block and the whole stone family in slow_bouncy.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
             .buildAndRegister();
 
     public static final Block PALLIDIUM_TINY = EndBlocks.defineBlock(
-            "pallidium_tiny", p -> new PallidiumBlock(p, "tiny", PALLIDIUM_FULL)
+            "pallidium_tiny", p -> new PallidiumBlock(p, "tiny", PALLIDIUM_THIN)
     )
             .mapColor(MapColor.COLOR_LIGHT_GRAY)
             .addTrait(TerrainTraits.full())
             .addTags(BCLBlockTags.BONEMEAL_SOURCE_END_STONE, BlockTags.NYLIUM)
+            // Vanilla puts obsidian, crying_obsidian, amethyst_block and the whole stone family in slow_bouncy.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
             .buildAndRegister();
 
     public static final Block END_MYCELIUM_PATH = EndBlocks.defineBlock("end_mycelium_path", DirtPathBlock::new)

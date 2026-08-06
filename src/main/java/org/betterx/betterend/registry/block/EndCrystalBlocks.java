@@ -17,6 +17,7 @@ import org.betterx.bclib.blocks.BaseTerrainBlock;
 import org.betterx.bclib.blocks.BasePlantWithAgeBlock;
 import org.betterx.bclib.trait.block.*;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.ui.ColorUtil;
 import org.betterx.betterend.blocks.*;
 import org.betterx.betterend.blocks.EndPortalBlock;
 import org.betterx.betterend.blocks.basis.*;
@@ -37,6 +38,7 @@ import de.ambertation.wover.block.api.model.ModelTraitLibrary;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
 import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.render.TinterKeys;
 import de.ambertation.wover.block.api.trait.BlockTraits;
 import de.ambertation.wover.item.api.BlockItemDefinition;
 import de.ambertation.wover.pottable.api.trait.PottablePlantBlockTrait;
@@ -70,6 +72,22 @@ import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.registry.EndTemplates;
 
 public class EndCrystalBlocks {
+    /**
+     * The aurora shimmer, shared by aurora crystal, the respawn obelisk and every stone lantern's glass slot -
+     * one payload instance for all of them rather than one per block. These blocks used to express the sharing
+     * by delegating to AURORA_CRYSTAL's provider; now they just bind the same payload.
+     */
+    public static final TinterKeys.PaletteCycle AURORA_PALETTE = new TinterKeys.PaletteCycle(
+            List.of(
+                    ColorUtil.color(247, 77, 161),
+                    ColorUtil.color(120, 184, 255),
+                    ColorUtil.color(120, 255, 168),
+                    ColorUtil.color(243, 58, 255)
+            ),
+            TinterKeys.PaletteCycle.IndexMode.SUM_XYZ,
+            0F
+    );
+
     public static final Block AURORA_CRYSTAL = EndBlocks.defineBlock("aurora_crystal", AuroraCrystalBlock::new)
             .strength(1F)
             .noOcclusion()
@@ -77,11 +95,15 @@ public class EndCrystalBlocks {
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(BlockTraits.MINEABLE_WITH.needsHammer())
             .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
+            // Near-grayscale texture colorized by the block tint - the item model needs it baked in.
+            .addTrait(ClientBlockTraits.TINT.worldAndItem(TinterKeys.PALETTE_CYCLE, () -> AURORA_PALETTE))
             .addTrait(ModelTraitLibrary.externalModel())
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) ->
                             provider.dropOre(block, EndResourceItems.CRYSTAL_SHARDS, UniformGenerator.between(1, 4))
             ))
+            // Vanilla puts obsidian, crying_obsidian, amethyst_block and the whole stone family in slow_bouncy.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
             .buildAndRegister();
 
     public static final Block SMARAGDANT_CRYSTAL_SHARD = EndBlocks.defineBlock(
@@ -127,6 +149,8 @@ public class EndCrystalBlocks {
             .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
             .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
             .addTrait(EndModelTraits.rotatedPillar(() -> BetterEnd.C.mk("block/smaragdant_crystal")))
+            // Vanilla puts obsidian, crying_obsidian, amethyst_block and the whole stone family in slow_bouncy.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
             .buildAndRegister();
 
     public static final CrystalSubblocksMaterial SMARAGDANT_SUBBLOCKS = new CrystalSubblocksMaterial(
@@ -150,6 +174,8 @@ public class EndCrystalBlocks {
             // list - the override won, so the generated dropSelf table was both dead and wrong.
             .addTags(CommonBlockTags.BUDDING_BLOCKS)
             .addTrait(EndModelTraits.rotatedPillar(() -> BetterEnd.C.mk("block/budding_smaragdant_crystal")))
+            // Vanilla puts obsidian, crying_obsidian, amethyst_block and the whole stone family in slow_bouncy.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
             .buildAndRegister();
 
     public static void ensureLoaded() {}

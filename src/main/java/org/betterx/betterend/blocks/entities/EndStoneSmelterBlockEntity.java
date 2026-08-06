@@ -457,7 +457,11 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
                         Item item = fuelStack.getItem();
                         fuelStack.shrink(1);
                         if (fuelStack.isEmpty()) {
-                            smelterEntity.inventory.set(EndStoneSmelterMenu.FUEL_SLOT, item.getCraftingRemainder().create());
+                            var remainder = item.getCraftingRemainder();
+                            smelterEntity.inventory.set(
+                                    EndStoneSmelterMenu.FUEL_SLOT,
+                                    remainder == null ? ItemStack.EMPTY : remainder.create()
+                            );
                         }
                     }
                 }
@@ -540,7 +544,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
             if (inputState.singleInput().is(Blocks.WET_SPONGE.asItem())
                     && !inventory.get(EndStoneSmelterMenu.FUEL_SLOT).isEmpty()
                     && inventory.get(EndStoneSmelterMenu.FUEL_SLOT).is(Items.BUCKET)) {
-                inventory.set(1, new ItemStack(Items.WATER_BUCKET));
+                inventory.set(EndStoneSmelterMenu.FUEL_SLOT, new ItemStack(Items.WATER_BUCKET));
             }
 
             inputState.singleInput().shrink(1);

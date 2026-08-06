@@ -6,7 +6,7 @@ import org.betterx.betterend.registry.EndBlocks;
 import de.ambertation.wover.block.api.BlockProperties;
 import de.ambertation.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.advancements.criterion.StatePropertiesPredicate;
+import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;

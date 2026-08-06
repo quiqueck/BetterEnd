@@ -11,7 +11,7 @@ import org.betterx.betterend.registry.EndEntities;
 import org.betterx.betterend.registry.EndItems;
 import de.ambertation.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.advancements.criterion.StatePropertiesPredicate;
+import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

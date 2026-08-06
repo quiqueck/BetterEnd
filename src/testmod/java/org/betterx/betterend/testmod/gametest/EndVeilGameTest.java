@@ -6,6 +6,7 @@ import org.betterx.betterend.registry.EndEnchantments;
 import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.betterend.testmod.mixin.EnderManInvoker;
 import de.ambertation.wover.enchantment.api.EnchantmentUtils;
+import de.ambertation.wover.test.api.gametest.MockPlayers;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -14,7 +15,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.item.ItemStack;
@@ -55,7 +56,7 @@ public class EndVeilGameTest {
 
     private static EnderMan enderman(GameTestHelper helper) {
         // spawnWithNoFreeWill keeps the enderman from wandering out of the structure mid-test.
-        return helper.spawnWithNoFreeWill(EntityType.ENDERMAN, ENDERMAN_POS);
+        return helper.spawnWithNoFreeWill(EntityTypes.ENDERMAN, ENDERMAN_POS);
     }
 
     /** A survival player inside the structure, bare-headed. Aim it with {@link #aimAt} once settled. */

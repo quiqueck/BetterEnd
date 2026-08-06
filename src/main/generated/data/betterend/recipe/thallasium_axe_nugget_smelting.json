@@ -1,8 +1,5 @@
 {
   "type": "minecraft:smelting",
-  "category": "misc",
-  "cookingtime": 200,
-  "experience": 0.0,
   "ingredient": "betterend:thallasium_axe",
   "result": {
     "id": "betterend:thallasium_nugget"

@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.dimension.end.DragonRespawnStage;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -35,7 +36,11 @@ public class EndDragonFightMixin {
     @Shadow
     @Final
     private static Logger LOGGER;
-    @Final
+    // NOT @Final: javap -p net.minecraft.world.level.dimension.end.EnderDragonFight shows
+    // `private ServerLevel level;` plus a write inside init(ServerLevel, long, BlockPos), i.e. a
+    // write outside <init>, which a final instance field cannot legally have. The stale @Final
+    // was cosmetic rather than fatal (mergeShadowFields only ever clears ACC_FINAL, for @Mutable - it
+    // never adds it, so this just logged "decorated with @Final but target is not final"), but wrong.
     @Shadow
     private ServerLevel level;
 
@@ -73,8 +78,9 @@ public class EndDragonFightMixin {
                 List<EndCrystal> crystalList = level.getEntitiesOfClass(
                         EndCrystal.class,
                         new AABB(
-                                central.below(255).south().west().getCenter(),
-                                central.above(255).north().east().getCenter()
+                                // 26.2 removed BlockPos#getCenter(); use Vec3.atCenterOf(Vec3i).
+                                Vec3.atCenterOf(central.below(255).south().west()),
+                                Vec3.atCenterOf(central.above(255).north().east())
                         )
                 );
 

@@ -18,6 +18,7 @@ import de.ambertation.wover.recipe.api.RecipeBuilder;
 import de.ambertation.wover.tag.api.event.context.ItemTagBootstrapContext;
 import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
 
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
@@ -61,17 +62,23 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                              .replacePropertiesWithCopy(source)
                              .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                              .addTrait(EndModelTraits.unshadedCube())
+                             // A full crystal cube: vanilla's amethyst_block sits in slow_bouncy with the stone family.
+                             .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
                              .buildAndRegister();
         tiles = EndBlocks.defineBlock(name + "_tiles", Block::new)
                           .replacePropertiesWithCopy(source)
                           .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                           .addTrait(EndModelTraits.unshadedCube())
+                          // A full crystal cube: vanilla's amethyst_block sits in slow_bouncy with the stone family.
+                          .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
                           .buildAndRegister();
         pillar = EndBlocks.defineBlock(name + "_pillar", RotatedPillarBlock::new)
                            .replacePropertiesWithCopy(source)
                            .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                            .addTrait(BlockTraits.LOOT_TABLE.dropSelf())
                            .addTrait(ModelTraitLibrary.pillar())
+                           // A full crystal cube: vanilla's amethyst_block sits in slow_bouncy with the stone family.
+                           .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
                            .buildAndRegister();
         stairs = EndBlocks.defineBlock(name + "_stairs", p -> new StairBlock(source.defaultBlockState(), p))
                            .replacePropertiesWithCopy(source)
@@ -102,6 +109,8 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
                            .replacePropertiesWithCopy(source)
                            .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
                            .addTrait(EndModelTraits.unshadedCube())
+                           // A full crystal cube: vanilla's amethyst_block sits in slow_bouncy with the stone family.
+                           .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.slowBouncy())
                            .buildAndRegister();
         brick_stairs = EndBlocks.defineBlock(name + "_bricks_stairs", p -> new StairBlock(bricks.defaultBlockState(), p))
                                  .replacePropertiesWithCopy(bricks)
@@ -138,7 +147,9 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
 
     @Override
     public void registerItemTags(ItemTagBootstrapContext context) {
-        context.add(ItemTags.SLABS, slab.asItem(), brick_slab.asItem());
+        // 26.2 dropped the ItemTags.SLABS constant; the tag itself is unchanged and is now reached
+        // through the paired BlockItemTags.SLABS handle.
+        context.add(BlockItemTags.SLABS.item(), slab.asItem(), brick_slab.asItem());
         context.add(ItemTags.STONE_BRICKS, bricks.asItem());
         context.add(ItemTags.STONE_CRAFTING_MATERIALS, source.asItem());
         context.add(ItemTags.STONE_TOOL_MATERIALS, source.asItem());

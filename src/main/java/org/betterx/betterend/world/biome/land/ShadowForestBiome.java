@@ -14,7 +14,7 @@ import org.betterx.betterend.world.biome.EndBiomeBuilder;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ShadowForestBiome extends EndBiome.Config {
@@ -49,8 +49,8 @@ public class ShadowForestBiome extends EndBiome.Config {
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
                 .spawn(EndEntities.SHADOW_WALKER.type(), 80, 2, 4)
-                .spawn(EntityType.ENDERMAN, 3, 1, 4)
-                .spawn(EntityType.PHANTOM, 1, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 3, 1, 4)
+                .spawn(EntityTypes.PHANTOM, 1, 1, 2);
     }
 
     @Override

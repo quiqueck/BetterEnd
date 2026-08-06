@@ -1,7 +1,6 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseVineBlock;
-import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndParticles;
 import org.betterx.ui.ColorUtil;
@@ -20,46 +19,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class TenaneaFlowersBlock extends BaseVineBlock implements CustomColorProvider {
+public class TenaneaFlowersBlock extends BaseVineBlock {
     public static final Vec3i[] COLORS;
 
     public TenaneaFlowersBlock(BlockBehaviour.Properties props) {
         super(props);
     }
 
-    @Override
-    @Environment(EnvType.CLIENT)
-    public BlockTintSource getProvider() {
-        return new BlockTintSource() {
-            @Override
-            public int color(BlockState state) {
-                return colorInWorld(state, null, BlockPos.ZERO);
-            }
-
-            @Override
-            public int colorInWorld(BlockState state, BlockAndTintGetter world, BlockPos pos) {
-                if (pos == null) {
-                    pos = BlockPos.ZERO;
-                }
-                long i = (MHelper.getRandom(pos.getX(), pos.getZ()) & 63) + pos.getY();
-                double delta = i * 0.1;
-                int index = MHelper.floor(delta);
-                int index2 = (index + 1) & 3;
-                delta -= index;
-                index &= 3;
-
-                Vec3i color1 = COLORS[index];
-                Vec3i color2 = COLORS[index2];
-
-                int r = MHelper.floor(Mth.lerp(delta, color1.getX(), color2.getX()));
-                int g = MHelper.floor(Mth.lerp(delta, color1.getY(), color2.getY()));
-                int b = MHelper.floor(Mth.lerp(delta, color1.getZ(), color2.getZ()));
-                float[] hsb = ColorUtil.RGBtoHSB(r, g, b, new float[3]);
-
-                return ColorUtil.HSBtoRGB(hsb[0], MHelper.max(0.5F, hsb[1]), hsb[2]);
-            }
-        };
-    }
 
     @Override
     public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {

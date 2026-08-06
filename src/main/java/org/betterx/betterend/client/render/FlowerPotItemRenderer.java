@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
+import net.minecraft.client.renderer.block.BlockModelResolver;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.block.model.BlockDisplayContext;
@@ -52,8 +53,15 @@ public class FlowerPotItemRenderer implements BlockEntityRenderer<FlowerPotBlock
     // the pot; tune after a live check.
     private static final float FALLBACK_PLANT_SCALE = 0.7F;
 
+    /**
+     * 26.2 removed the public {@code Minecraft#blockModelResolver} field; the resolver is handed to block
+     * entity renderers through their provider context instead, so it is captured once here.
+     */
+    private final BlockModelResolver blockModelResolver;
+
     public FlowerPotItemRenderer(BlockEntityRendererProvider.Context ctx) {
         super();
+        this.blockModelResolver = ctx.blockModelResolver();
     }
 
     @Override
@@ -243,7 +251,7 @@ public class FlowerPotItemRenderer implements BlockEntityRenderer<FlowerPotBlock
             int light
     ) {
         BlockModelRenderState renderState = new BlockModelRenderState();
-        Minecraft.getInstance().blockModelResolver.update(
+        this.blockModelResolver.update(
                 renderState, plant.defaultBlockState(), BlockDisplayContext.create()
         );
 

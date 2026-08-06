@@ -35,7 +35,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -52,7 +51,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 import org.jetbrains.annotations.Nullable;
 
-public class SilkMothEntity extends Animal implements FlyingAnimal {
+public class SilkMothEntity extends Animal {
     private BlockPos hivePos;
     private BlockPos entrance;
     private Level hiveWorld;
@@ -152,8 +151,11 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
         return Entity.MovementEmission.EVENTS;
     }
 
+    // 26.2 removed FlyingAnimal. Its single method had exactly two readers, both in LivingEntity (the
+    // air-friction branch of travelInAir and the animation flag in aiStep); both now read
+    // Entity#omnidirectionalAirMover(), which flying vanilla mobs override. Same body, same behaviour.
     @Override
-    public boolean isFlying() {
+    protected boolean omnidirectionalAirMover() {
         return !this.onGround();
     }
 

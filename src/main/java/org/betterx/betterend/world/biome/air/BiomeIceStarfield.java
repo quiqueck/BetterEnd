@@ -6,7 +6,7 @@ import org.betterx.betterend.registry.features.EndTerrainFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class BiomeIceStarfield extends EndBiome.Config {
     public BiomeIceStarfield() {
@@ -29,6 +29,6 @@ public class BiomeIceStarfield extends EndBiome.Config {
                .particles(EndParticles.SNOWFLAKE, 0.002F)
                .feature(EndTerrainFeatures.ICE_STAR)
                .feature(EndTerrainFeatures.ICE_STAR_SMALL)
-               .spawn(EntityType.ENDERMAN, 3, 1, 4);
+               .spawn(EntityTypes.ENDERMAN, 3, 1, 4);
     }
 }

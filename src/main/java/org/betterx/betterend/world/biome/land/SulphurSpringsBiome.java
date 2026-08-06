@@ -15,7 +15,7 @@ import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
 import de.ambertation.wover.surface.impl.BaseSurfaceRuleBuilder;
 import de.ambertation.wover.surface.impl.rules.SwitchRuleSource;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
@@ -47,6 +47,8 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 .particles(EndParticles.SULPHUR_PARTICLE, 0.001F)
                 .feature(EndTerrainFeatures.GEYSER)
                 .feature(EndTerrainFeatures.SURFACE_VENT)
+                .feature(EndTerrainFeatures.SULPHUR_SPIKE)
+                .feature(EndTerrainFeatures.SULPHUR_SPIKE_HANGING)
                 .feature(EndLakeFeatures.SULPHURIC_LAKE)
                 .feature(EndVegetationFeatures.HYDRALUX)
                 .feature(EndVegetationFeatures.CHARNIA_GREEN)
@@ -56,7 +58,7 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 .structure(EndStructures.SULPHURIC_CAVE)
                 .spawn(EndEntities.END_FISH.type(), 50, 3, 8)
                 .spawn(EndEntities.CUBOZOA.type(), 50, 3, 8)
-                .spawn(EntityType.ENDERMAN, 1, 1, 4);
+                .spawn(EntityTypes.ENDERMAN, 1, 1, 4);
     }
 
     @Override

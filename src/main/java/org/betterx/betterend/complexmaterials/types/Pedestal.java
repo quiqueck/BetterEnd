@@ -74,4 +74,11 @@ public class Pedestal extends SlotFromDefinition {
     protected BlockModelTrait buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
         return EndPedestal.buildModel(set, traitLookup);
     }
+
+    @Override
+    protected void finalizeDefinitions(BlockSet<?> set, BlockDefinition<?, ?> def) {
+        // Not a full cube (a pedestal), so it must not inherit the set material's sulfur cube archetype - a
+        // cube renders what it swallowed as a block model, and a pedestal inside one reads as a bug.
+        def.addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.notSwallowable());
+    }
 }

@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
-      "model": "betterend:block/lacugrove_planks_particles"
+    "facing=east": {
+      "model": "betterend:block/lacugrove_wall_sign",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "betterend:block/lacugrove_wall_sign",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "betterend:block/lacugrove_wall_sign"
+    },
+    "facing=west": {
+      "model": "betterend:block/lacugrove_wall_sign",
+      "y": 90
     }
   }
 }

@@ -1,8 +1,5 @@
 {
   "type": "minecraft:smelting",
-  "category": "misc",
-  "cookingtime": 200,
-  "experience": 0.0,
   "ingredient": "betterend:endstone_dust",
   "result": {
     "id": "minecraft:glass"

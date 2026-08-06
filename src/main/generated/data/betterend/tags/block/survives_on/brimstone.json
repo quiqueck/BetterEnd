@@ -1,5 +1,7 @@
 {
   "values": [
-    "betterend:brimstone"
+    "betterend:brimstone",
+    "minecraft:cinnabar",
+    "minecraft:sulfur"
   ]
 }

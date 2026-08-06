@@ -24,7 +24,7 @@ import net.minecraft.world.level.material.MapColor;
 
 public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMaterial> implements MaterialManager.Material {
     private final MapColor plankColor;
-    protected Block furnitureCloth = Blocks.WHITE_WOOL;
+    protected Block furnitureCloth = Blocks.WOOL.white();
     private Block bark;
     private Block log;
     private int[] logVariantWeights;

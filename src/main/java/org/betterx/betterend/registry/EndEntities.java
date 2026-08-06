@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 
 public class EndEntities {
     public static final BCLEntityWrapper<DragonflyEntity> DRAGONFLY = register(
@@ -121,9 +120,12 @@ public class EndEntities {
     ) {
         Identifier id = BetterEnd.C.mk(name);
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
-        EntityType<T> type = FabricEntityTypeBuilder
-                .create(group, entity)
-                .dimensions(EntityDimensions.fixed(width, height))
+        // Fabric dropped FabricEntityTypeBuilder in 26.2; vanilla's EntityType.Builder is the
+        // replacement. `.create(group, factory)` -> `.of(factory, group)`, `.dimensions(...)` ->
+        // `.sized(w, h)`. See the note on the other register() overload about fixed dimensions.
+        EntityType<T> type = EntityType.Builder
+                .of(entity, group)
+                .sized(width, height)
                 .build(key);
 
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, id, type);
@@ -142,11 +144,16 @@ public class EndEntities {
     ) {
         Identifier id = BetterEnd.C.mk(name);
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
-        EntityType<T> type = FabricEntityTypeBuilder
-                .create(group, entity)
-                .dimensions(fixedSize
-                        ? EntityDimensions.fixed(width, height)
-                        : EntityDimensions.scalable(width, height))
+        // 26.2: EntityType.Builder#sized always produces EntityDimensions.scalable and there is no
+        // public setter for fixed dimensions any more (the `dimensions` field is private and vanilla's
+        // own EntityTypes never calls EntityDimensions.fixed). `fixedSize` is therefore no longer
+        // honoured; it is kept so the per-entity intent stays recorded. The only observable difference
+        // is that baby DRAGONFLY/SILK_MOTH now get a half-size hitbox via LivingEntity#getDefaultDimensions
+        // (which multiplies by getAgeScale()). END_SLIME already asked for scalable, and END_FISH,
+        // CUBOZOA and SHADOW_WALKER are not AgeableMobs, so their age scale is always 1.
+        EntityType<T> type = EntityType.Builder
+                .of(entity, group)
+                .sized(width, height)
                 .build(key);
         FabricDefaultAttributeRegistry.register(type, attributes);
         EndItems.registerEndEgg("spawn_egg_" + name, type, eggColor, dotsColor);

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item.betterend.terminite_spear": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:terminite_spear"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:terminite_spear_nugget_blasting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_item.betterend.terminite_spear"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:terminite_spear_nugget_blasting"
+    ]
+  }
+}

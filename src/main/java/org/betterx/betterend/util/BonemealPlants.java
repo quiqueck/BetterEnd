@@ -77,6 +77,14 @@ public class BonemealPlants {
         );
 
 
+        // Only the full variant: PallidiumBlock.useItemOn intercepts bone meal on tiny/thin/heavy to
+        // upgrade them one step, and only pallidium_full (nextLevel == null) falls through to the item,
+        // where BonemealAPI can take over. Registering the thinner variants here would be dead code.
+        BonemealAPI.INSTANCE.addSpreadableFeatures(
+                EndTerrainBlocks.PALLIDIUM_FULL,
+                EndConfiguredBonemealFeature.BONEMEAL_PALLIDIUM
+        );
+
         BonemealAPI.INSTANCE.addSpreadableBlocks(
                 EndTags.BONEMEAL_TARGET_WATER_GRASS,
                 new WaterGrassSpreader(EndTags.BONEMEAL_SOURCE_WATER_GRASS)

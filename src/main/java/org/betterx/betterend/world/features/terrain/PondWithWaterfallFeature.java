@@ -42,7 +42,7 @@ import net.minecraft.world.level.material.Fluids;
  * Fluids.WATER, 0)}) so, once the chunk is ticked after load, the pool re-evaluates, finds the notch
  * and streams out and down the island side on its own. Because the bowl is full of source blocks the
  * spill is self-replenishing (an infinite waterfall) while the pool stays full. Blocks are also
- * marked via {@link ChunkAccess#markPosForPostprocessing(BlockPos)} so the fluid state settles.
+ * marked via {@link ChunkAccess#markPosForPostProcessing(BlockPos)} so the fluid state settles.
  */
 public class PondWithWaterfallFeature extends DefaultFeature {
     private static final BlockState END_STONE = Blocks.END_STONE.defaultBlockState();
@@ -179,11 +179,11 @@ public class PondWithWaterfallFeature extends DefaultFeature {
 
                 // Fill with water up to rim-1. These are SOURCE blocks; each gets a fluid tick so the
                 // pool re-flows through the notch after load (the pool stays full, so the spill is
-                // infinite/self-replenishing). markPosForPostprocessing on the column's OWN chunk.
+                // infinite/self-replenishing). markPosForPostProcessing on the column's OWN chunk.
                 for (int y = floorY + 1; y <= waterLevel; y++) {
                     final BlockPos wpos = new BlockPos(x, y, z);
                     BlocksHelper.setWithoutUpdate(world, wpos, WATER);
-                    world.getChunk(x >> 4, z >> 4).markPosForPostprocessing(wpos);
+                    world.getChunk(x >> 4, z >> 4).markPosForPostProcessing(wpos);
                     world.scheduleTick(wpos, Fluids.WATER, 0);
                 }
                 // Clear the lip above the water so the pond is open to the sky.

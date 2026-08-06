@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "group": "end_berries",
   "ingredients": [
     "betterend:shadow_berry_cooked",

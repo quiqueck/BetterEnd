@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_sign_rot_1",
+  "textures": {
+    "all": "betterend:block/end_lotus_sign",
+    "particle": "betterend:block/end_lotus_planks"
+  }
+}

@@ -83,8 +83,35 @@ public abstract class LivingEntityMixin extends Entity {
         this.be_lastAttacker = source.getEntity();
     }
 
-    @ModifyArg(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDD)V"), index = 0)
-    private double be_increaseKnockback(double value, double x, double z) {
+    /**
+     * Adds the attacker's {@code ATTACK_KNOCKBACK} main-hand modifier to the knockback strength of a hit.
+     * <p>
+     * 26.2 moved the knockback out of {@code hurtServer} and changed the {@code knockback} descriptor. Verified
+     * with {@code javap -p -c net.minecraft.world.entity.LivingEntity}:
+     * <pre>
+     * 26.1.2  hurtServer:            453: ldc2_w 0.4d ... 460: invokevirtual knockback:(DDD)V
+     * 26.2    hurtServer:            367: invokevirtual dealDefaultKnockback:(Lnet/minecraft/world/damagesource/DamageSource;FZ)V
+     *         dealDefaultKnockback:   91: ldc2_w 0.4d ... 100: invokevirtual knockback:(DDDLnet/minecraft/world/damagesource/DamageSource;F)V
+     * </pre>
+     * So the old injector was doubly stale: {@code knockback(DDD)V} no longer exists at all (26.2 only has the
+     * {@code (DDDLDamageSource;F)V} and {@code (DDDLDamageSource;FZ)V} overloads), and {@code hurtServer} no
+     * longer contains any {@code knockback} call to match. Zero matched instructions with {@code require = 1}
+     * is an apply-time failure, and this build has no refmap and no mixin annotation processor, so it compiled
+     * regardless.
+     * <p>
+     * The hard-coded {@code 0.4D} strength moved verbatim into {@code dealDefaultKnockback}, still at argument
+     * index 0, so retargeting there preserves the 26.1 semantics exactly. {@code dealDefaultKnockback} is not
+     * overloaded and contains exactly one {@code knockback} call, so the selection is unambiguous. It is only
+     * reached from {@code hurtServer} inside {@code LivingEntity}, which is where {@code be_lastAttacker} is
+     * captured, so the guard still sees the right attacker. The single-argument handler form is used because
+     * capturing the target call's arguments would now mean carrying {@code DamageSource} and {@code float} too.
+     */
+    @ModifyArg(
+            method = "dealDefaultKnockback",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDDLnet/minecraft/world/damagesource/DamageSource;F)V"),
+            index = 0
+    )
+    private double be_increaseKnockback(double value) {
         if (be_lastAttacker != null && be_lastAttacker instanceof LivingEntity) {
             LivingEntity attacker = (LivingEntity) be_lastAttacker;
             value += this.be_getKnockback(attacker.getMainHandItem());

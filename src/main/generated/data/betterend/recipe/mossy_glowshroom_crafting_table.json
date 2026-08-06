@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "crafting_table",
   "key": {
     "#": "betterend:mossy_glowshroom_planks"

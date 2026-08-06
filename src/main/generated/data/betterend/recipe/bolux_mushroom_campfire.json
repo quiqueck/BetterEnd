@@ -2,7 +2,6 @@
   "type": "minecraft:campfire_cooking",
   "category": "food",
   "cookingtime": 600,
-  "experience": 0.0,
   "ingredient": "betterend:bolux_mushroom",
   "result": {
     "id": "betterend:bolux_mushroom_cooked"

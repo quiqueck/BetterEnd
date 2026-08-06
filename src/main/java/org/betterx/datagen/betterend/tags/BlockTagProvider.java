@@ -54,7 +54,14 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
                 EndTerrainBlocks.PALLIDIUM_TINY
         );
         context.add(EndTags.SURVIVES_ON_AMBER_MOSS, EndTerrainBlocks.AMBER_MOSS);
-        context.add(EndTags.SURVIVES_ON_BRIMSTONE, EndStoneBlocks.BRIMSTONE);
+        // 26.2's vanilla sulfur and cinnabar now make up the sulphur spring floor and the sulphuric
+        // cave alongside brimstone, so anything that could root on brimstone roots on those too.
+        context.add(
+                EndTags.SURVIVES_ON_BRIMSTONE,
+                EndStoneBlocks.BRIMSTONE,
+                Blocks.SULFUR,
+                Blocks.CINNABAR
+        );
         context.add(EndTags.SURVIVES_ON_CHORUS_NYLIUM, EndTerrainBlocks.CHORUS_NYLIUM);
         context.add(
                 EndTags.SURVIVES_ON_END_BONE,

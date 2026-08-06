@@ -7,7 +7,7 @@ import org.betterx.bclib.trait.block.SurvivesOnBlockTrait;
 import org.betterx.betterend.registry.EndItems;
 import de.ambertation.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.advancements.criterion.StatePropertiesPredicate;
+import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;

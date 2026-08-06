@@ -70,20 +70,28 @@ import org.betterx.betterend.registry.EndTemplates;
 public class EndDecorBlocks {
     public static final Block DENSE_SNOW = EndBlocks.defineBlock("dense_snow", Block::new)
             .addTrait(SnowBlockTrait.withDefault())
+            // Vanilla's ice and snow blocks (blue_ice, packed_ice, snow_block) are the fast_sliding archetype.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.fastSliding())
             .buildAndRegister();
 
     public static final Block EMERALD_ICE = EndBlocks.defineBlock("emerald_ice", EmeraldIceBlock::new)
             .addTrait(IceBlockTrait.withBase(Blocks.ICE))
             .randomTicks()
+            // Vanilla's ice and snow blocks (blue_ice, packed_ice, snow_block) are the fast_sliding archetype.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.fastSliding())
             .buildAndRegister();
 
     public static final Block DENSE_EMERALD_ICE = EndBlocks.defineBlock("dense_emerald_ice", Block::new)
             .addTrait(IceBlockTrait.withBase(Blocks.PACKED_ICE))
+            // Vanilla's ice and snow blocks (blue_ice, packed_ice, snow_block) are the fast_sliding archetype.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.fastSliding())
             .buildAndRegister();
 
     public static final Block ANCIENT_EMERALD_ICE = EndBlocks.defineBlock("ancient_emerald_ice", AncientEmeraldIceBlock::new)
             .addTrait(IceBlockTrait.withBase(Blocks.BLUE_ICE))
             .randomTicks()
+            // Vanilla's ice and snow blocks (blue_ice, packed_ice, snow_block) are the fast_sliding archetype.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.fastSliding())
             .buildAndRegister();
 
     public static final Block NEON_CACTUS_BLOCK = EndBlocks.defineBlock("neon_cactus_block", RotatedPillarBlock::new)
@@ -133,6 +141,8 @@ public class EndDecorBlocks {
             .addTrait(ModelTraitLibrary.cube())
             .strength(1.0f, 1.0f)
             .sound(SoundType.WART_BLOCK)
+            // Vanilla's soft organic cubes (moss, sponge, dried_kelp, melon, pumpkin) are fast_flat.
+            .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.fastFlat())
             .buildAndRegister();
 
     public static final ColoredMaterial HYDRALUX_PETAL_BLOCK_COLORED = new ColoredMaterial(
@@ -142,6 +152,8 @@ public class EndDecorBlocks {
              (def) -> def.addTrait(ModCore.isDatagen() ? ClientBlockTraits.MODEL.with(
                     (key, block, generator) -> HydraluxPetalColoredBlock.provideBlockModel(generator, block)
             ) : null).addTrait(PlantLikeBlockTrait.withDefault()).addTrait(BlockTraits.MINEABLE_WITH.needsAxe())
+                     // Same soft organic cube as the uncoloured petal block above.
+                     .addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.fastFlat())
     );
 
     public static void ensureLoaded() {}

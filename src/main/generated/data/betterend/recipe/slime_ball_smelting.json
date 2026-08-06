@@ -1,8 +1,5 @@
 {
   "type": "minecraft:smelting",
-  "category": "misc",
-  "cookingtime": 200,
-  "experience": 0.0,
   "ingredient": "betterend:jellyshroom_cap_purple",
   "result": {
     "id": "minecraft:slime_ball"

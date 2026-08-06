@@ -87,10 +87,10 @@ public class CommandRegistry {
         Optional<BlockPos> found = poi.findPoiAround(level, mPos, false, level.getWorldBorder());
         System.out.println("Found at: " + found.orElse(null));
         if (found.isPresent()) {
-            BlocksHelper.setWithoutUpdate(level, found.get(), Blocks.YELLOW_CONCRETE);
-            BlocksHelper.setWithoutUpdate(level, mPos, Blocks.LIGHT_BLUE_CONCRETE);
+            BlocksHelper.setWithoutUpdate(level, found.get(), Blocks.CONCRETE.yellow());
+            BlocksHelper.setWithoutUpdate(level, mPos, Blocks.CONCRETE.lightBlue());
         } else {
-            BlocksHelper.setWithoutUpdate(level, mPos, Blocks.RED_CONCRETE);
+            BlocksHelper.setWithoutUpdate(level, mPos, Blocks.CONCRETE.red());
         }
         return Command.SINGLE_SUCCESS;
     }

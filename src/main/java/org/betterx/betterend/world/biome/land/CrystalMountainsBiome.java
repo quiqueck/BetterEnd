@@ -14,7 +14,7 @@ import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
 import de.ambertation.wover.surface.impl.BaseSurfaceRuleBuilder;
 import de.ambertation.wover.surface.impl.rules.SwitchRuleSource;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
@@ -34,7 +34,7 @@ public class CrystalMountainsBiome extends EndBiome.Config {
                 .music(EndSounds.MUSIC_OPENSPACE)
                 .feature(EndVegetationFeatures.CRYSTAL_GRASS)
                 .feature(EndVegetationFeatures.CRYSTAL_MOSS_COVER)
-                .spawn(EntityType.ENDERMAN, 3, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 3, 1, 2);
     }
 
     @Override

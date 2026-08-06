@@ -1,6 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
 
+import org.betterx.betterend.blocks.EndBlockProperties;
 import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.betterend.registry.block.EndWallPlantBlocks;
 import de.ambertation.wover.sets.api.blocks.SlotType;
@@ -292,20 +293,37 @@ public class GeyserFeature extends DefaultFeature {
         );
         BlockFixer.fixBlocks(world, start, end);
 
+        // Turn the buried part of the brimstone bowl into the same sulfur/cinnabar deposit the lake bed
+        // gets. Deliberately a post-pass over the finished geometry rather than a change to the SDF
+        // fills above: the fills paint whole shells in one block, and the rule here depends on how each
+        // position ended up being covered. Reuses the box BlockFixer just walked, which is already
+        // write-zone clamped and bounds the whole bowl.
+        for (BlockPos floorPos : BlockPos.betweenClosed(start, end)) {
+            BlockState floorState = world.getBlockState(floorPos);
+            // Skip ACTIVE brimstone: the sulphuric lake placed just above runs through here too, and its
+            // water-touching brimstone is what carries the hydrothermal look and the crystal shards.
+            if (floorState.is(EndStoneBlocks.BRIMSTONE)
+                    && !floorState.getValue(EndBlockProperties.ACTIVE)) {
+                SulphurFloorMix.apply(world, zone, floorPos.immutable());
+            }
+        }
+
         return true;
     }
 
     static {
-        REPLACE1 = (state) -> state.isAir() || (state.is(CommonBlockTags.END_STONES));
+        REPLACE1 = (state) -> state.isAir() || state.is(CommonBlockTags.END_STONES)
+                || SulphurFloorMix.isDepositBlock(state);
 
         REPLACE2 = (state) -> {
-            if (state.is(CommonBlockTags.END_STONES) || state.is(EndStoneBlocks.HYDROTHERMAL_VENT) || state.is(EndStoneBlocks.SULPHUR_CRYSTAL)) {
+            if (state.is(CommonBlockTags.END_STONES) || state.is(EndStoneBlocks.HYDROTHERMAL_VENT) || state.is(EndStoneBlocks.SULPHUR_CRYSTAL)
+                    || SulphurFloorMix.isDepositBlock(state)) {
                 return true;
             }
             return BlocksHelper.replaceableOrPlant(state);
         };
 
         IGNORE = (state) -> state.is(Blocks.WATER) || state.is(Blocks.CAVE_AIR) || state.is(EndStoneBlocks.SULPHURIC_ROCK.getBlock(SlotType.SOURCE)) || state
-                .is(EndStoneBlocks.BRIMSTONE);
+                .is(EndStoneBlocks.BRIMSTONE) || SulphurFloorMix.isDepositBlock(state);
     }
 }

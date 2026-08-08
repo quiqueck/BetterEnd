@@ -1,0 +1,24 @@
+{
+  "type": "betterend:infusion",
+  "catalysts": {
+    "east": "minecraft:echo_shard",
+    "north": "betterend:enchanted_petal",
+    "north_east": "minecraft:lapis_lazuli",
+    "north_west": "minecraft:lapis_lazuli",
+    "south": "minecraft:echo_shard",
+    "south_east": "minecraft:lapis_lazuli",
+    "south_west": "minecraft:lapis_lazuli",
+    "west": "minecraft:echo_shard"
+  },
+  "group": "enchantment",
+  "input": "minecraft:book",
+  "result": {
+    "item": "minecraft:enchanted_book",
+    "nbt": {
+      "minecraft:stored_enchantments": {
+        "betterend:resonance": 1
+      }
+    }
+  },
+  "time": 300
+}

@@ -56,6 +56,10 @@ public class EternalRitual {
     private final static Block PEDESTAL = EndFunctionalBlocks.ETERNAL_PEDESTAL;
     public final static BooleanProperty ACTIVE = BlockProperties.ACTIVE;
 
+    public static Set<Point> pedestalOffsets() {
+        return java.util.Collections.unmodifiableSet(PEDESTAL_POSITIONS);
+    }
+
     private Level world;
     private Direction.Axis axis;
     private ResourceLocation targetWorldId;

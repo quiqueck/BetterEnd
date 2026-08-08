@@ -1,0 +1,56 @@
+{
+  "additions": [
+    {
+      "operations": [
+        {
+          "type": "add_condition",
+          "condition": {
+            "condition": "minecraft:inverted",
+            "term": {
+              "condition": "minecraft:location_check",
+              "predicate": {
+                "dimension": "minecraft:the_end"
+              }
+            }
+          }
+        },
+        {
+          "type": "add_pool",
+          "pools": {
+            "bonus_rolls": 0.0,
+            "conditions": [
+              {
+                "condition": "minecraft:location_check",
+                "predicate": {
+                  "dimension": "minecraft:the_end"
+                }
+              }
+            ],
+            "entries": [
+              {
+                "type": "minecraft:loot_table",
+                "quality": -1,
+                "value": "betterend:gameplay/fishing/fish",
+                "weight": 85
+              },
+              {
+                "type": "minecraft:loot_table",
+                "quality": 2,
+                "value": "betterend:gameplay/fishing/treasure",
+                "weight": 5
+              },
+              {
+                "type": "minecraft:loot_table",
+                "quality": -2,
+                "value": "betterend:gameplay/fishing/junk",
+                "weight": 10
+              }
+            ],
+            "rolls": 1.0
+          }
+        }
+      ],
+      "target": "minecraft:gameplay/fishing"
+    }
+  ]
+}

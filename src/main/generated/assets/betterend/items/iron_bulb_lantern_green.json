@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:block/iron_bulb_lantern_green_floor"
+    "model": "betterend:block/iron_bulb_lantern_green_floor",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -3276954
+      }
+    ]
   }
 }

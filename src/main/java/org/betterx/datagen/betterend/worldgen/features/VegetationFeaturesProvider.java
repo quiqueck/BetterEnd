@@ -138,7 +138,7 @@ public class VegetationFeaturesProvider extends WoverFeatureProvider {
 
         registerVegetation(context, EndVegetationFeatures.CREEPING_MOSS, EndFeatures.SINGLE_PLANT_FEATURE, new SinglePlantFeatureConfig(EndPlantBlocks.CREEPING_MOSS, 5), 3);
         registerVegetation(context, EndVegetationFeatures.CHORUS_GRASS, EndFeatures.SINGLE_PLANT_FEATURE, new SinglePlantFeatureConfig(EndPlantBlocks.CHORUS_GRASS, 4), 3);
-        registerVegetation(context, EndVegetationFeatures.CRYSTAL_GRASS, EndFeatures.SINGLE_PLANT_FEATURE, new SinglePlantFeatureConfig(EndPlantBlocks.CRYSTAL_GRASS, 8, false), 5);
+        registerVegetation(context, EndVegetationFeatures.CRYSTAL_GRASS, EndFeatures.SINGLE_PLANT_FEATURE, new SinglePlantFeatureConfig(EndPlantBlocks.CRYSTAL_GRASS, 8, false), 20);
         registerVegetation(context, EndVegetationFeatures.SHADOW_PLANT, EndFeatures.SINGLE_PLANT_FEATURE, new SinglePlantFeatureConfig(EndPlantBlocks.SHADOW_PLANT, 6), 5);
         registerVegetation(context, EndVegetationFeatures.MURKWEED, EndFeatures.SINGLE_PLANT_FEATURE, new SinglePlantFeatureConfig(EndPlantBlocks.MURKWEED, 3), 2);
         registerVegetation(context, EndVegetationFeatures.NEEDLEGRASS, EndFeatures.SINGLE_PLANT_FEATURE, new SinglePlantFeatureConfig(EndPlantBlocks.NEEDLEGRASS, 3), 1);
@@ -171,16 +171,16 @@ public class VegetationFeaturesProvider extends WoverFeatureProvider {
         registerVegetation(context, EndVegetationFeatures.LANCELEAF, EndFeatures.LANCELEAF_FEATURE, ScatterFeatureConfig.lanceleaf(), 2);
         registerVegetation(context, EndVegetationFeatures.GLOW_PILLAR, EndFeatures.GLOW_PILLAR_FEATURE, ScatterFeatureConfig.glowPillar(), 1);
 
-        // Sparse cover patches: the previous countRange(16,256) x onEveryLayer(2) with spread
-        // chance 1.0 and search range 20 was up to ~512 aggressive placements per chunk - it
-        // plastered every crystal-moss surface and occupied the block spaces the crystal grass
-        // (which runs BEFORE this, order was never the problem) needed. Scattered patches now
-        // leave most of the moss bare for grass.
+        // Cover patches: the original countRange(16,256) x onEveryLayer(2) with spread chance 1.0
+        // and search range 20 was up to ~512 aggressive placements per chunk - it plastered every
+        // crystal-moss surface and occupied the block spaces the crystal grass (which runs BEFORE
+        // this, order was never the problem) needed. That got scaled all the way down to
+        // countRange(2,6), which then read as too sparse. Settling on a middle ground.
         EndVegetationFeatures.CRYSTAL_MOSS_COVER.inlineConfiguration(context)
                                                 .withFeature(Feature.MULTIFACE_GROWTH)
-                                                .configuration(new MultifaceGrowthConfiguration(EndPlantBlocks.CRYSTAL_MOSS_COVER, 6, true, true, true, 0.6f, HolderSet.direct(Block::builtInRegistryHolder, EndTerrainBlocks.CRYSTAL_MOSS, Blocks.END_STONE)))
+                                                .configuration(new MultifaceGrowthConfiguration(EndPlantBlocks.CRYSTAL_MOSS_COVER, 8, true, true, true, 0.75f, HolderSet.direct(Block::builtInRegistryHolder, EndTerrainBlocks.CRYSTAL_MOSS, Blocks.END_STONE)))
                                                 .inlinePlace()
-                                                .countRange(2, 6)
+                                                .countRange(16, 32)
                                                 .onEveryLayer(1)
                                                 .onlyInBiome()
                                                 .register();

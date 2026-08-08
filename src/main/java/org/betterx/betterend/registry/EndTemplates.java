@@ -90,7 +90,7 @@ public class EndTemplates {
     public static final SmithingTemplateItem AETERNIUM_UPGRADE = EndItems
             .getItemRegistry()
             .defineSmithingTemplate("aeternium_upgrade", SmithingTemplateDefinition::createSmithingTemplate)
-            .baseSlotEmptyIcons(List.of(EMPTY_SLOT_ANVIL, EMPTY_SLOT_ELYTRA))
+            .baseSlotEmptyIcons(List.of(EMPTY_SLOT_ANVIL, EMPTY_SLOT_ELYTRA, EMPTY_SLOT_HANDLE))
             .additionalSlotEmptyIcons(List.of(SmithingTemplates.EMPTY_SLOT_INGOT))
             .buildAndRegister();
 

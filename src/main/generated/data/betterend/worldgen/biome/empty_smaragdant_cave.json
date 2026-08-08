@@ -55,7 +55,8 @@
       "betterend:stalagmite_scatter",
       "betterend:stalactite_scatter",
       "betterend:smaragdant_crystal_placed",
-      "betterend:smaragdant_shard_scatter"
+      "betterend:smaragdant_shard_scatter",
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

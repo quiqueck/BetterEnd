@@ -43,7 +43,8 @@
       "betterend:ender_ore"
     ],
     [
-      "betterend:stalactite_cluster_plain"
+      "betterend:stalactite_cluster_plain",
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

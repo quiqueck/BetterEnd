@@ -1,0 +1,30 @@
+{
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "betterend:cave_surface_coat"
+    ]
+  ],
+  "predicate": {
+    "type": "wover:and",
+    "predicates": [
+      {
+        "type": "wover:not",
+        "predicate": {
+          "type": "wover:is_namespace",
+          "namespace": "betterend"
+        }
+      },
+      {
+        "type": "wover:has_tag",
+        "biome_tag": "minecraft:is_end"
+      }
+    ]
+  }
+}

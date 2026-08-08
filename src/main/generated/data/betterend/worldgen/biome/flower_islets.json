@@ -47,7 +47,9 @@
       "betterend:thallasium_ore",
       "betterend:ender_ore"
     ],
-    [],
+    [
+      "betterend:cave_surface_coat"
+    ],
     [],
     [
       "betterend:blooming_cooksonia",

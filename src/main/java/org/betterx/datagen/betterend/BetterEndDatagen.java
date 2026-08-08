@@ -7,6 +7,7 @@ import org.betterx.datagen.betterend.advancement.EndAdvancementDataProvider;
 import org.betterx.datagen.betterend.recipes.*;
 import org.betterx.datagen.betterend.tags.BiomeTagProvider;
 import org.betterx.datagen.betterend.tags.BlockTagProvider;
+import org.betterx.datagen.betterend.tags.EnchantmentTagProvider;
 import org.betterx.datagen.betterend.tags.ItemTagProvider;
 import org.betterx.datagen.betterend.tags.NourishItemTagProvider;
 import org.betterx.datagen.betterend.worldgen.CarverProvider;
@@ -62,7 +63,9 @@ public class BetterEndDatagen extends WoverDataGenEntryPoint {
         globalPack.addProvider(InfusionRecipesProvider::new);
         globalPack.addProvider(EndMaterialRecipesProvider::new);
         globalPack.addProvider(EndEnchantmentProvider::new);
+        globalPack.addProvider(EnchantmentTagProvider::new);
         globalPack.addProvider(EndChestLootTableProvider::new);
+        globalPack.addProvider(EndLootAdditionProvider::new);
         globalPack.addProvider(EndModelProvider::new);
         globalPack.addProvider(WoverEquipmentAssetProvider::new);
         globalPack.addProvider(BlockPropertiesProvider::new);

@@ -57,7 +57,8 @@
       "betterend:cave_lush_ceiling_patch",
       "betterend:cave_grass_scatter",
       "betterend:cave_bush_scatter",
-      "betterend:cave_pumpkin_placed"
+      "betterend:cave_pumpkin_placed",
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

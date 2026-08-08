@@ -6,6 +6,7 @@ import org.betterx.betterend.registry.EndEnchantments;
 import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.betterend.testmod.mixin.EnderManInvoker;
 import de.ambertation.wover.enchantment.api.EnchantmentUtils;
+import de.ambertation.wover.test.api.gametest.MockPlayers;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;

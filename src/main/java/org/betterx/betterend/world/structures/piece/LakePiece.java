@@ -36,9 +36,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.material.FluidState;
 
-import com.google.common.collect.Maps;
-
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LakePiece extends BasePiece {
     private static final BlockState ENDSTONE = Blocks.END_STONE.defaultBlockState();
@@ -82,7 +81,9 @@ public class LakePiece extends BasePiece {
         }
         return rimPlants;
     }
-    private final Map<Integer, Byte> heightmap = Maps.newHashMap();
+    // Concurrent: a lake spans multiple chunks, and its BasePiece can be postProcess()'d by different
+    // worldgen worker threads for adjacent chunks at the same time (parallel worldgen, e.g. c2me).
+    private final Map<Integer, Byte> heightmap = new ConcurrentHashMap<>();
     private OpenSimplexNoise noise;
     private BlockPos center;
     private float radius;

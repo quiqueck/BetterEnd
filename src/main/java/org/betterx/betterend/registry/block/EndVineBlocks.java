@@ -72,6 +72,7 @@ public class EndVineBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_BLUE, false, true))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_MOSS_OR_MYCELIUM))
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(WeightedCrossModelTrait.propertyDispatch(BlueVineSeedBlock.AGE, List.of(
                             WeightedCrossModelTrait.Case.of(0, List.of(
                             WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/blue_vine_0"))
@@ -129,6 +130,7 @@ public class EndVineBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_PURPLE, false, false))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnSolidTrait.DEFAULT)
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(WeightedCrossModelTrait.propertyDispatch(BulbVineSeedBlock.AGE, List.of(
                             WeightedCrossModelTrait.Case.of(0, List.of(
                             WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/bulb_vine_seed_0"))

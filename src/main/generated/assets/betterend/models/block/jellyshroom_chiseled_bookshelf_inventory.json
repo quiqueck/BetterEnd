@@ -1,0 +1,8 @@
+{
+  "parent": "wover:block/chiseled_bookshelf_inventory",
+  "textures": {
+    "front": "betterend:block/jellyshroom_chiseled_bookshelf_empty",
+    "side": "betterend:block/jellyshroom_chiseled_bookshelf_side",
+    "top": "betterend:block/jellyshroom_chiseled_bookshelf_top"
+  }
+}

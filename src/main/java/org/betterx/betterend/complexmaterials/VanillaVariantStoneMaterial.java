@@ -1,16 +1,12 @@
 package org.betterx.betterend.complexmaterials;
 
-import de.ambertation.wover.block.api.BlockDefinition;
 import de.ambertation.wover.sets.api.blocks.SlotMap;
-import de.ambertation.wover.sets.api.blocks.SlotType;
 import de.ambertation.wover.sets.api.blocks.slots.StoneSlots;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
 
 public class VanillaVariantStoneMaterial extends VanillaStoneSet {
-    private final MapColor color;
-
     public VanillaVariantStoneMaterial(
             String baseName,
             Block sourceBlock,
@@ -28,14 +24,8 @@ public class VanillaVariantStoneMaterial extends VanillaStoneSet {
                         StoneSlots.WEATHERED_SLAB,
                         StoneSlots.WEATHERED_STAIRS,
                         StoneSlots.WEATHERED_WALL
-                )
+                ),
+                color
         );
-        this.color = color;
-    }
-
-    @Override
-    protected void addCommonBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
-        super.addCommonBlockDefinitions(slot, blockDefinition);
-        blockDefinition.mapColor(color);
     }
 }

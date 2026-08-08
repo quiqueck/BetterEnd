@@ -18,12 +18,13 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 
-import com.google.common.collect.Maps;
-
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MountainPiece extends BasePiece {
-    protected Map<Integer, Integer> heightmap = Maps.newHashMap();
+    // Concurrent: a mountain spans multiple chunks, and its BasePiece can be postProcess()'d by
+    // different worldgen worker threads for adjacent chunks at the same time (e.g. c2me).
+    protected Map<Integer, Integer> heightmap = new ConcurrentHashMap<>();
     protected OpenSimplexNoise noise1;
     protected OpenSimplexNoise noise2;
     protected BlockPos center;

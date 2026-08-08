@@ -54,7 +54,8 @@
       "betterend:stalactite_cluster_plain",
       "betterend:stalagmite_scatter",
       "betterend:stalactite_scatter",
-      "betterend:big_aurora_crystal_placed"
+      "betterend:big_aurora_crystal_placed",
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

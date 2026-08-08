@@ -129,7 +129,10 @@ public class EndLightBlocks {
             EndMetalBlocks.IRON_SET.getBlock(MetalMaterial.BULB_LANTERN),
             false,
             def -> def.addTrait(ModCore.isDatagen() ? BulbVineLanternBlock.buildModel(null, null) : null)
-                      .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe())
+                      .addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe()),
+            // ColoredMaterial attaches the CONST_COLOR tint itself; the lanterns only need their dye colour
+            // brightened first (bulb_vine_lantern_bulb is near-grayscale and tinted via "tintindex": 0).
+            BulbVineLanternColoredBlock::boostLanternColor
     );
 
     public static void ensureLoaded() {}

@@ -12,7 +12,6 @@ import org.betterx.betterend.recipe.builders.InfusionRecipe;
 import org.betterx.betterend.registry.*;
 import org.betterx.betterend.tab.CreativeTabs;
 import org.betterx.betterend.util.BonemealPlants;
-import org.betterx.betterend.util.LootTableUtil;
 import org.betterx.betterend.world.generator.EndCaveBiomeDecider;
 import org.betterx.betterend.world.generator.EndLandBiomeDecider;
 import org.betterx.betterend.world.generator.GeneratorOptions;
@@ -81,7 +80,6 @@ public class BetterEnd implements ModInitializer {
         EndStructures.register();
         BonemealPlants.init();
         GeneratorOptions.init();
-        LootTableUtil.init();
         CommandRegistry.register();
         EndParticles.ensureStaticallyLoadedServerside();
         BECriteria.register();

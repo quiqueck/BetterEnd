@@ -540,7 +540,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
             if (inputState.singleInput().is(Blocks.WET_SPONGE.asItem())
                     && !inventory.get(EndStoneSmelterMenu.FUEL_SLOT).isEmpty()
                     && inventory.get(EndStoneSmelterMenu.FUEL_SLOT).is(Items.BUCKET)) {
-                inventory.set(1, new ItemStack(Items.WATER_BUCKET));
+                inventory.set(EndStoneSmelterMenu.FUEL_SLOT, new ItemStack(Items.WATER_BUCKET));
             }
 
             inputState.singleInput().shrink(1);

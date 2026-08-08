@@ -240,7 +240,10 @@ public class MetalMaterial extends MetalBlockSet<MetalMaterial> implements Mater
                     if (harvestTierTag != null) {
                         def.addTags(harvestTierTag);
                     }
-                }
+                },
+                // ColoredMaterial attaches the CONST_COLOR tint itself; the lanterns only need their dye colour
+                // brightened first (bulb_vine_lantern_bulb is near-grayscale and tinted via "tintindex": 0).
+                BulbVineLanternColoredBlock::boostLanternColor
         );
 
         return this;

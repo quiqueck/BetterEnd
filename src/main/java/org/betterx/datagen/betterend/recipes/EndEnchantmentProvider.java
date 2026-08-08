@@ -3,6 +3,7 @@ package org.betterx.datagen.betterend.recipes;
 import org.betterx.betterend.registry.EndEnchantments;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.datagen.api.provider.WoverEnchantmentProvider;
+import de.ambertation.wover.tag.api.predefined.CommonItemTags;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -34,5 +35,17 @@ public class EndEnchantmentProvider extends WoverEnchantmentProvider {
                 .withEffect(EndEnchantments.END_VEIL_STATE)
         );
 
+        EndEnchantments.RESONANCE.register(context, Enchantment
+                .enchantment(
+                        Enchantment.definition(
+                                items.getOrThrow(CommonItemTags.HAMMERS),
+                                2, 2,
+                                Enchantment.dynamicCost(20, 15),
+                                Enchantment.dynamicCost(70, 15),
+                                4,
+                                EquipmentSlotGroup.MAINHAND
+                        )
+                )
+        );
     }
 }

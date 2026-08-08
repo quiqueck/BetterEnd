@@ -5,7 +5,6 @@ import org.betterx.betterend.registry.block.EndCrystalBlocks;
 import org.betterx.betterend.registry.block.EndStoneBlocks;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.bclib.interfaces.CustomColorProvider;
 import de.ambertation.wover.block.api.BlockRegistry;
 import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
 import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
@@ -130,31 +129,16 @@ public class EndModelProvider extends WoverModelProvider {
                                              BetterEnd.C.mk("block/sulphuric_rock_brick_wall_inventory")
                                      )
                              )
-                             // Aurora crystal keeps its hand-authored blockstate/model; the override wires a
-                             // TINTED item model. The block's texture is near-grayscale and is colorized by its
-                             // CustomColorProvider tint. BCLib's client mixin still registers the in-world BLOCK
-                             // color, but in 1.21.6 the legacy runtime item-color API (ColorProviderRegistry.ITEM
-                             // / ItemColors) is gone - item tints are now data-driven through the item model's
-                             // `tints` list, so without one the item rendered untinted (grayscale). Emit a
-                             // constant tint equal to the block's own color at the origin (BlockPos.ZERO - the
-                             // value the pre-1.21.4 null-position item color path produced). Registering this as
-                             // an override makes BlockModelTrait.bootstrapModels skip the block's EXTERNAL_MODEL
-                             // item delegation, so there is exactly one (tinted) item model, not a duplicate.
-                             // (Systemic: every CustomColorProvider block whose item relies on the tint has this
-                             // same gap; aurora crystal is wired here because its item-model location is stable.)
-                             .override(EndCrystalBlocks.AURORA_CRYSTAL, b -> {
-                                 final int tint = ((CustomColorProvider) b)
-                                         .getProvider()
-                                         .getColor(b.defaultBlockState(), null, null, 0);
-                                 generator.vanillaGenerator.itemModelOutput.accept(
-                                         b.asItem(),
-                                         ItemModelUtils.tintedModel(
-                                                 BetterEnd.C.mk("item/aurora_crystal"),
-                                                 ItemModelUtils.constantTint(tint)
-                                         )
-                                 );
-                                 generator.markItemModelProvided(b);
-                             })
+                             // Aurora crystal keeps its hand-authored blockstate/model, so the override is what
+                             // registers its item model at all. The tint itself comes from the block's
+                             // ClientBlockTraits.TINT trait, which delegateItemModel applies; registering
+                             // this as an override makes BlockModelTrait.bootstrapModels skip the block's
+                             // EXTERNAL_MODEL item delegation, so there is exactly one item model, not a
+                             // duplicate.
+                             .override(EndCrystalBlocks.AURORA_CRYSTAL, b -> generator.delegateItemModel(
+                                     b,
+                                     BetterEnd.C.mk("item/aurora_crystal")
+                             ))
 ;
     }
 

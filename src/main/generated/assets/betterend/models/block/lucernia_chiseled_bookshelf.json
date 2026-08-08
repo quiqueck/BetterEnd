@@ -1,0 +1,7 @@
+{
+  "parent": "wover:block/chiseled_bookshelf",
+  "textures": {
+    "side": "betterend:block/lucernia_chiseled_bookshelf_side",
+    "top": "betterend:block/lucernia_chiseled_bookshelf_top"
+  }
+}

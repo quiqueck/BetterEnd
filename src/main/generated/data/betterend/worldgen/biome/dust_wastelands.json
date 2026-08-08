@@ -46,6 +46,9 @@
       "betterend:flavolite_layer",
       "betterend:thallasium_ore",
       "betterend:ender_ore"
+    ],
+    [
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

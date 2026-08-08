@@ -73,6 +73,7 @@ public class EndMushroomBlocks {
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_AMBER_MOSS))
             .addTrait(BlockTraits.MINEABLE_WITH.needsShears())
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(WeightedCrossModelTrait.propertyDispatch(GlowingPillarSeedBlock.AGE, List.of(
                             WeightedCrossModelTrait.Case.of(0, List.of(
                             WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/glowing_pillar_seed_0"))
@@ -157,6 +158,7 @@ public class EndMushroomBlocks {
             .addTrait(PlantBlockTrait.compostableWithColor(MapColor.COLOR_LIGHT_BLUE, false, false))
             .addTrait(VegetationTagTrait.seed())
             .addTrait(SurvivesOnBlockTrait.withTag(EndTags.SURVIVES_ON_END_MOSS))
+            .addTrait(RandomTicksTrait.withDefault())
             .addTrait(WeightedCrossModelTrait.propertyDispatch(LumecornSeedBlock.AGE, List.of(
                             WeightedCrossModelTrait.Case.of(0, List.of(
                             WeightedCrossModelTrait.cropParent(BetterEnd.C.mk("block/cross_no_distortion"), BetterEnd.C.mk("block/lumecorn_0"))

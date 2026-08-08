@@ -45,7 +45,8 @@
     [
       "betterend:stalactite_cluster_plain",
       "betterend:stalagmite_scatter",
-      "betterend:stalactite_scatter"
+      "betterend:stalactite_scatter",
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

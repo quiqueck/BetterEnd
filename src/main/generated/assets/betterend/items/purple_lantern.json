@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:block/purple_lantern"
+    "model": "betterend:block/purple_lantern",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -569951
+      }
+    ]
   }
 }

@@ -8,6 +8,8 @@ import org.betterx.betterend.world.features.VineFeatureConfig;
 import org.betterx.betterend.world.features.bushes.BushFeature;
 import org.betterx.betterend.world.features.bushes.BushFeatureConfig;
 import org.betterx.betterend.world.features.terrain.*;
+import org.betterx.betterend.world.features.terrain.caves.CaveSurfaceCoatConfig;
+import org.betterx.betterend.world.features.terrain.caves.CaveSurfaceCoatFeature;
 import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterConfig;
 import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import de.ambertation.wover.feature.api.configured.ConfiguredFeatureKey;
@@ -37,6 +39,9 @@ public class EndConfiguredCaveFeatures {
     public static final ConfiguredFeatureKey<WithConfiguration<CavePumpkinFeature, NoneFeatureConfiguration>> CAVE_PUMPKIN = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_pumpkin"), EndFeatures.CAVE_PUMPKIN_FEATURE);
 
     // WP4.3: dripstone-style stalactite clusters (own their per-column floor/ceiling placement).
+    // Cave surface coat: one instance for every cave biome and every face - the shell pass coats floor,
+    // wall and ceiling in one run, and the materials come from the EndCaveBiome at placement time.
+    public static final ConfiguredFeatureKey<WithConfiguration<CaveSurfaceCoatFeature, CaveSurfaceCoatConfig>> CAVE_SURFACE_COAT = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_surface_coat"), EndFeatures.CAVE_SURFACE_COAT);
     public static final ConfiguredFeatureKey<WithConfiguration<StalactiteClusterFeature, StalactiteClusterConfig>> STALACTITE_CLUSTER_PLAIN = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("stalactite_cluster_plain"), EndFeatures.STALACTITE_CLUSTER);
     public static final ConfiguredFeatureKey<WithConfiguration<StalactiteClusterFeature, StalactiteClusterConfig>> STALACTITE_CLUSTER_CAVEMOSS = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("stalactite_cluster_cavemoss"), EndFeatures.STALACTITE_CLUSTER);
 

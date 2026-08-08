@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:block/sulphuric_rock_lantern"
+    "model": "betterend:block/sulphuric_rock_lantern",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -569951
+      }
+    ]
   }
 }

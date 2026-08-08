@@ -96,6 +96,15 @@ public class AeterniumSet extends ToolsWithHeadsSet {
         return false;
     }
 
+    @Override
+    protected boolean hasAutoSwordHandleRecipe() {
+        // Aeternium's sword handle is hand-written in SmithingRecipesProvider: it is forged under
+        // AETERNIUM_UPGRADE, the template that gates aeternium content. The generic trait would instead use
+        // this set's swordHandleTemplate, which is TOOL_ASSEMBLY - that one assembles finished tools from
+        // their parts and is not an upgrade gate.
+        return false;
+    }
+
     public @NotNull Item pickaxe() {
         return this.get(ToolSlot.PICKAXE_SLOT);
     }

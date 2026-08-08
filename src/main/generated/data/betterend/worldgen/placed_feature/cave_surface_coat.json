@@ -1,0 +1,18 @@
+{
+  "feature": "betterend:cave_surface_coat",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "absolute": 16
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

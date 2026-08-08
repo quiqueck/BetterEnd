@@ -121,6 +121,18 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         return this.time;
     }
 
+    public Ingredient getInput() {
+        return this.input;
+    }
+
+    /**
+     * Indexed by {@link CatalystSlot#index} (compass position around the pedestal ring); entries
+     * are {@code null} for unused slots.
+     */
+    public Ingredient[] getCatalysts() {
+        return this.catalysts;
+    }
+
     @Override
     public boolean matches(InfusionRitual.InfusionInput inv, Level world) {
         boolean valid = this.input.test(inv.getItem(0));

@@ -1,0 +1,20 @@
+{
+  "additions": [
+    {
+      "operations": {
+        "type": "add_pool",
+        "pools": {
+          "bonus_rolls": 0.0,
+          "entries": [
+            {
+              "type": "minecraft:loot_table",
+              "value": "betterend:chests/end_city_extra"
+            }
+          ],
+          "rolls": 1.0
+        }
+      },
+      "target": "minecraft:chests/end_city_treasure"
+    }
+  ]
+}

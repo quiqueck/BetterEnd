@@ -55,7 +55,8 @@
       "betterend:smaragdant_crystal_placed",
       "betterend:smaragdant_shard_scatter",
       "betterend:cave_lush_floor_patch",
-      "betterend:cave_lush_ceiling_patch"
+      "betterend:cave_lush_ceiling_patch",
+      "betterend:cave_surface_coat"
     ]
   ],
   "has_precipitation": false,

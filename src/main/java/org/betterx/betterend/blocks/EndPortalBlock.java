@@ -1,6 +1,5 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.advancements.BECriteria;
 import org.betterx.betterend.portal.PortalBuilder;
@@ -8,7 +7,6 @@ import org.betterx.betterend.registry.EndParticles;
 import org.betterx.betterend.registry.EndPortals;
 
 import net.minecraft.BlockUtil;
-import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
@@ -42,7 +40,7 @@ import net.fabricmc.api.Environment;
 
 import java.util.Optional;
 
-public class EndPortalBlock extends NetherPortalBlock implements CustomColorProvider, Portal {
+public class EndPortalBlock extends NetherPortalBlock implements Portal {
     public static final IntegerProperty PORTAL = EndBlockProperties.PORTAL;
 
     public EndPortalBlock(BlockBehaviour.Properties props) {
@@ -115,11 +113,6 @@ public class EndPortalBlock extends NetherPortalBlock implements CustomColorProv
 
     private boolean validate(Entity entity) {
         return !entity.isPassenger() && !entity.isVehicle() && entity.canUsePortal(false);
-    }
-
-    @Override
-    public BlockColor getProvider() {
-        return (state, world, pos, tintIndex) -> EndPortals.getColor(state.getValue(PORTAL));
     }
 
     @Override

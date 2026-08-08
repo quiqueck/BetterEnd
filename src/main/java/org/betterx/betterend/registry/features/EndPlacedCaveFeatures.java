@@ -20,6 +20,7 @@ public class EndPlacedCaveFeatures {
     public static final PlacedFeatureKey BIG_AURORA_CRYSTAL = key("big_aurora_crystal_placed");
     public static final PlacedFeatureKey SMARAGDANT_CRYSTAL = key("smaragdant_crystal_placed");
     public static final PlacedFeatureKey SMARAGDANT_SHARD_SCATTER = key("smaragdant_shard_scatter");
+    public static final PlacedFeatureKey CAVE_SURFACE_COAT = key("cave_surface_coat");
     public static final PlacedFeatureKey CAVE_LUSH_FLOOR_PATCH = key("cave_lush_floor_patch");
     public static final PlacedFeatureKey CAVE_LUSH_CEILING_PATCH = key("cave_lush_ceiling_patch");
     public static final PlacedFeatureKey CAVE_GRASS_SCATTER = key("cave_grass_scatter");

@@ -2,11 +2,13 @@ package org.betterx.betterend.registry;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.features.EndOreFeatures;
+import org.betterx.betterend.registry.features.EndPlacedCaveFeatures;
 import org.betterx.betterend.registry.features.EndTerrainFeatures;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.features.*;
 import org.betterx.betterend.world.features.bushes.*;
 import org.betterx.betterend.world.features.terrain.*;
+import org.betterx.betterend.world.features.terrain.caves.CaveSurfaceCoatFeature;
 import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.betterend.world.features.trees.*;
 import de.ambertation.wover.feature.api.FeatureManager;
@@ -92,6 +94,7 @@ public class EndFeatures {
     public static final BigAuroraCrystalFeature BIG_AURORA_CRYSTAL_FEATURE = inlineBuild("big_aurora_crystal", new BigAuroraCrystalFeature());
     public static final CavePumpkinFeature CAVE_PUMPKIN_FEATURE = inlineBuild("cave_pumpkin", new CavePumpkinFeature());
     public static final StalactiteClusterFeature STALACTITE_CLUSTER = inlineBuild("stalactite_cluster", new StalactiteClusterFeature());
+    public static final CaveSurfaceCoatFeature CAVE_SURFACE_COAT = inlineBuild("cave_surface_coat", new CaveSurfaceCoatFeature());
 
     public static <F extends Feature<FC>, FC extends FeatureConfiguration> F inlineBuild(String name, F feature) {
         ResourceLocation l = BetterEnd.C.mk(name);
@@ -122,6 +125,15 @@ public class EndFeatures {
         builder.feature(EndOreFeatures.THALLASIUM_ORE);
         builder.feature(EndOreFeatures.ENDER_ORE);
         builder.feature(EndTerrainFeatures.CRASHED_SHIP);
+        // The cave surface coat goes on EVERY End biome, land ones included, even though it only ever paints
+        // cave columns. It is not a per-biome decoration: one placement sweeps the whole chunk and decides
+        // per column what to do (see CaveSurfaceCoatFeature). What it needs from the placement is simply to
+        // RUN in every chunk that holds part of the cave band - and a placed feature only runs where the
+        // biome at the rolled position declared it. Declaring it on the cave biomes alone left that to
+        // chance: in a chunk that is part cave-biome and part land, the roll lands in a land column often
+        // enough that whole chunks of cave went uncoated. Declaring it everywhere makes the roll always
+        // succeed; in a chunk with no cave columns the pass costs 324 biome lookups and stops.
+        builder.feature(EndPlacedCaveFeatures.CAVE_SURFACE_COAT);
     }
 
     public static void register() {

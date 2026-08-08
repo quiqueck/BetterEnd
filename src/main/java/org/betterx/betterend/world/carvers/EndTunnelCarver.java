@@ -21,7 +21,6 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 
-import it.unimi.dsi.fastutil.longs.LongArrayList;
 
 import java.util.function.Function;
 
@@ -114,8 +113,6 @@ public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
         final float threshold = cfg.threshold;
 
         boolean carved = false;
-        // Positions this invocation turns into cave air, in carve-loop order; coated after the loop.
-        final LongArrayList carvedPositions = new LongArrayList();
         final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         final BlockPos.MutableBlockPos neighbor = new BlockPos.MutableBlockPos();
 
@@ -148,7 +145,6 @@ public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
                                 && !EndCaveCarver.isWaterNear(chunk, cp, pos, neighbor, minGenY, maxGenY)) {
                             chunk.setBlockState(pos, CAVE_AIR);
                             mask.set(lx, y, lz);
-                            carvedPositions.add(BlockPos.asLong(wx, y, wz));
                             carved = true;
                         }
                     }
@@ -156,10 +152,11 @@ public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
             }
         }
 
-        // Coat the exposed End-stone faces of the blocks THIS invocation carved with the per-column cave
-        // biome's materials. This carver makes no geometry-relevant random draws, so the wall-shell draws
-        // made inside the coater cannot affect the tunnel shape (see CaveSurfaceCoater).
-        CaveSurfaceCoater.coat(context, chunk, biomeGetter, random, carvedPositions);
+        // The cave's surface materials are NOT applied here any more: 26.3 rebuilt the carver API so that
+        // carvers cannot write blocks at all, which forced the coat to become a decoration-time feature
+        // (CaveSurfaceCoatFeature). That feature is backported here and the carve-time CaveSurfaceCoater is
+        // deleted, so a world generated on this branch and later opened on 26.3 keeps generating the same
+        // caves instead of switching coat algorithms mid-world.
 
         return carved;
     }

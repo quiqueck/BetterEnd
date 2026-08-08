@@ -1,0 +1,11 @@
+{
+  "type": "bclib:smithing",
+  "allowedTools": "betterend:anvil_tool/iron",
+  "anvilLevel": 2,
+  "damage": 2,
+  "input": "betterend:thallasium_ingot",
+  "inputCount": 2,
+  "result": {
+    "item": "betterend:thallasium_spear_tip"
+  }
+}

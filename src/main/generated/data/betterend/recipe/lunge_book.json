@@ -1,0 +1,24 @@
+{
+  "type": "betterend:infusion",
+  "catalysts": {
+    "east": "minecraft:rabbit_foot",
+    "north": "betterend:enchanted_petal",
+    "north_east": "minecraft:lapis_lazuli",
+    "north_west": "minecraft:lapis_lazuli",
+    "south": "minecraft:rabbit_foot",
+    "south_east": "minecraft:lapis_lazuli",
+    "south_west": "minecraft:lapis_lazuli",
+    "west": "minecraft:rabbit_foot"
+  },
+  "group": "enchantment",
+  "input": "minecraft:book",
+  "result": {
+    "components": {
+      "minecraft:stored_enchantments": {
+        "minecraft:lunge": 1
+      }
+    },
+    "item": "minecraft:enchanted_book"
+  },
+  "time": 300
+}

@@ -3,6 +3,8 @@ package org.betterx.betterend.testmod.gametest;
 import org.betterx.betterend.registry.EndAttributes;
 import org.betterx.betterend.registry.item.EndEquipmentItems;
 
+import de.ambertation.wover.test.api.gametest.MockPlayers;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;

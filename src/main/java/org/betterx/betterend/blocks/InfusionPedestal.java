@@ -87,7 +87,13 @@ public class InfusionPedestal extends PedestalBlock {
     /**
      * An empty hand on an empty infusion pedestal is the mod's "tell me about this thing" gesture:
      * with the ring incomplete it replays the socket hint, and with the ring in place it opens the
-     * infusion recipe book.
+     * infusion recipe book. A pedestal that is holding something hands that item back instead - so
+     * sneaking asks for the book directly, since otherwise a finished infusion would have to be
+     * cleared off the pedestal before its recipe could be looked up again.
+     * <p>
+     * A sneak-click only reaches this with both hands empty: vanilla suppresses block use entirely
+     * when the player is sneaking with anything in either hand (see {@code ServerPlayerGameMode}),
+     * so the sneak branch can never swallow a block placement.
      */
     @Override
     public InteractionResult useItemOn(
@@ -99,17 +105,24 @@ public class InfusionPedestal extends PedestalBlock {
             InteractionHand hand,
             BlockHitResult hit
     ) {
-        if (itemStack.isEmpty() && state.is(this) && isPlaceable(state)) {
+        if (state.is(this) && isPlaceable(state)) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof InfusionPedestalEntity pedestal && pedestal.isEmpty()) {
-                if (level.isClientSide()) {
-                    if (InfusionRitual.allSocketsPresent(level, pos)) {
+            if (blockEntity instanceof InfusionPedestalEntity pedestal) {
+                boolean ringComplete = InfusionRitual.allSocketsPresent(level, pos);
+                boolean emptyHandOnEmptyPedestal = itemStack.isEmpty() && pedestal.isEmpty();
+
+                if (ringComplete && (player.isSecondaryUseActive() || emptyHandOnEmptyPedestal)) {
+                    if (level.isClientSide()) {
                         ClientHooks.showRecipes();
-                    } else {
+                    }
+                    return InteractionResult.CONSUME;
+                }
+                if (emptyHandOnEmptyPedestal) {
+                    if (level.isClientSide()) {
                         ClientHooks.showHint(level, pos);
                     }
+                    return InteractionResult.CONSUME;
                 }
-                return InteractionResult.CONSUME;
             }
         }
         return super.useItemOn(itemStack, state, level, pos, player, hand, hit);

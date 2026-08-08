@@ -14,11 +14,50 @@
 // from the project layout instead of hardcoded - see nextVersion below. Keep
 // it that way rather than reintroducing a per-repo variant.
 
+// Finds the owner/repo slug of the first configured remote that points at
+// github.com (remote name may be anything - e.g. "origin" or "home" - and
+// non-GitHub remotes are ignored). Returns null if none is found.
+String findGithubSlug() {
+    def remoteNames = "git remote".execute().text.trim().split("\n").findAll { it }
+    for (name in remoteNames) {
+        def url = "git remote get-url ${name}".execute().text.trim()
+        def matcher = url =~ /github\.com[:\/]([^\/]+)\/(.+?)(\.git)?$/
+        if (matcher.find()) {
+            return "${matcher.group(1)}/${matcher.group(2)}"
+        }
+    }
+    return null
+}
+
+// Turns issue references (`#123` for this repo, `owner/repo#123` for a
+// cross-repo reference) into links to the matching GitHub issue. If no
+// GitHub remote is configured, issue references are stripped instead, same
+// as before GitHub links were supported.
+String linkifyIssues(String comment, String repoSlug) {
+    if (repoSlug == null) {
+        //filter issue links
+        if (comment.contains("(")) {
+            def cline = comment.split("\\(", 2)
+            if (cline.length == 2 && cline[1].contains("#")) {
+                comment = cline[0].trim()
+            }
+        }
+        return comment
+    }
+    return comment.replaceAll(/(?:[\w.-]+\/[\w.-]+)?#\d+/) { match ->
+        def slug = match.contains("/") ? match.substring(0, match.indexOf("#")) : repoSlug
+        def num = match.substring(match.indexOf('#') + 1)
+        def repoName = slug.contains("/") ? slug.substring(slug.indexOf("/") + 1) : slug
+        "[${repoName}#${num}](https://github.com/${slug}/issues/${num})"
+    }
+}
+
 //from https://lowcarbrob.medium.com/android-pro-tip-generating-your-apps-changelog-from-git-inside-build-gradle-19a07533eec4
 String generateChangelog() {
     println "Assembeling Changelog ..."
     def lastTag = "git describe --tags --abbrev=0".execute().text.trim()
     def gitLogCmd = "git log $lastTag..HEAD --oneline --no-merges --pretty=format:\"%s\"".execute().text.trim()
+    def githubSlug = findGithubSlug()
 
     def features = ""
     def fixes = ""
@@ -29,15 +68,7 @@ String generateChangelog() {
             def sline = line.split("]", 2)
             if (sline.length == 2) {
                 def type = sline[0].trim().toLowerCase().substring(1)
-                def comment = sline[1].trim()
-
-                //filter issue links
-                if (comment.contains("(")) {
-                    def cline = comment.split("\\(", 2)
-                    if (cline.length == 2 && cline[1].contains("#")) {
-                        comment = cline[0].trim()
-                    }
-                }
+                def comment = linkifyIssues(sline[1].trim(), githubSlug)
 
                 if (type == "fix" || type == "fixes" || type == "fixed") {
                     fixes += "- $comment \n"
@@ -52,6 +83,25 @@ String generateChangelog() {
         }
 
     }
+
+    // Never let a run with nothing to say replace CHANGES.md. The file is
+    // generated but git-ignored, so an empty write destroys the released notes
+    // for good - and CHANGES.md is also the body of the release commit (see
+    // common-publish-tag.gradle). Guard on the absence of entries rather than on
+    // an empty commit range: a range of ordinary unprefixed commits (version
+    // bumps and the like) produces nothing either, and in the mods the
+    // Validation section below would otherwise write out a changelog made
+    // entirely of stale compat-test results. Both are normal outcomes, not
+    // errors. Returning null tells the task to leave the existing file alone.
+    if (features.isEmpty() && changes.isEmpty() && fixes.isEmpty()) {
+        def commitCount = gitLogCmd.isEmpty() ? 0 : gitLogCmd.readLines().size()
+        def reason = commitCount == 0
+                ? "no commits since $lastTag"
+                : "$commitCount commit(s) since $lastTag, none of them a changelog entry"
+        logger.lifecycle("Nothing to write ($reason) - CHANGES.md left as it is.")
+        return null
+    }
+
     def changelog = ""
     if (!features.isEmpty()) {
         changelog += "#### Features\n"
@@ -69,14 +119,60 @@ String generateChangelog() {
         changelog += "\n\n"
     }
 
+    def validation = buildValidationSection()
+    if (!validation.isEmpty()) {
+        changelog += "#### Validation\n"
+        changelog += validation.trim()
+        changelog += "\n\n"
+    }
+
     println "Changelog since $lastTag:\n$changelog"
     return changelog
+}
+
+// Reads build/compat-test/results.json (written by compat-test.gradle's compatTest task, see
+// compat-test.gradle for the full framework) into one changelog line per mod-set. Entirely absent (the
+// compat-test task was never run this cycle) means the section is omitted, same as an empty
+// Features/Changes/Fixes block above - this differs from a real "WunderVault checkout not found"
+// SKIPPED entry inside the file, which the compat-test task always writes once it actually runs, so a
+// vault that's missing on the machine doing the release still shows up here rather than silently
+// vanishing.
+String buildValidationSection() {
+    def resultsFile = new File(projectDir, "build/compat-test/results.json")
+    if (!resultsFile.exists()) {
+        return ""
+    }
+    def results = new groovy.json.JsonSlurper().parse(resultsFile)
+    def lines = results.collect { result ->
+        def mods = (result.mods ?: []).join(", ")
+        switch (result.status) {
+            case "PASS":
+                def checks = (result.checks ?: [:]).findAll { it.value }.keySet().join("+")
+                return "- ✅ ${result.name} (${mods}, tested: ${checks})"
+            case "FAIL":
+                def failed = (result.checks ?: [:]).findAll { !it.value }.keySet().join(", ")
+                return "- ❌ ${result.name} — failed: ${failed ?: (result.reason ?: 'unknown')}"
+            case "TIMEOUT":
+                return "- ⏱ ${result.name} — TIMEOUT"
+            case "SKIPPED":
+                return "- ⚠️ ${result.name} — SKIPPED (${result.reason ?: 'unknown reason'})"
+            default:
+                return "- ${result.name} — ${result.status}"
+        }
+    }
+    return lines.join("\n") + (lines.isEmpty() ? "" : "\n")
 }
 
 task changelog() {
     group = 'publishing'
     doLast {
-        new File(projectDir, "CHANGES.md").text = generateChangelog()
+        def generated = generateChangelog()
+        // null is generateChangelog's "nothing to write"; the trim() covers any
+        // other way the body could come out blank. Neither ever reaches the file.
+        if (generated == null || generated.trim().isEmpty()) {
+            return
+        }
+        new File(projectDir, "CHANGES.md").text = generated
     }
 }
 
@@ -290,7 +386,12 @@ task nextVersion() {
 //   3. the nearest enclosing Tools/WunderVault, walking up from this project -
 //      the workspaces live at <root>/Entwicklung/<mc-version>/<repo>, the vault
 //      at <root>/Tools/WunderVault
-def wunderVaultDir = {
+// Exposed via ext under a name distinct from the -PwunderVaultDir override flag it checks below -
+// naming the ext property identically to that flag makes findProperty('wunderVaultDir') resolve to
+// this closure instead of the property, causing infinite self-reference. Also needs to be visible from
+// compat-test.gradle, applied after this file - call resolveWunderVaultDir() rather than each needing
+// its own copy of this resolution logic.
+ext.resolveWunderVaultDir = {
     def configured = findProperty('wunderVaultDir') ?: findProperty('wunder_vault_dir') ?: System.getenv('WUNDER_VAULT')
     if (configured) {
         def dir = file(configured)
@@ -313,7 +414,7 @@ def vaultMusicDir = {
     if (modId == null) {
         return null
     }
-    def vault = wunderVaultDir()
+    def vault = resolveWunderVaultDir()
     if (vault == null) {
         return null
     }

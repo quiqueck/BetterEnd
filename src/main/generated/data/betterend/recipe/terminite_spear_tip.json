@@ -1,0 +1,11 @@
+{
+  "type": "bclib:smithing",
+  "allowedTools": "betterend:anvil_tool/diamond",
+  "anvilLevel": 3,
+  "damage": 3,
+  "input": "betterend:terminite_ingot",
+  "inputCount": 2,
+  "result": {
+    "item": "betterend:terminite_spear_tip"
+  }
+}

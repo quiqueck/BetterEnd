@@ -2,7 +2,7 @@ package org.betterx.betterend.particle;
 
 
 import org.betterx.betterend.registry.block.EndWoodBlocks;
-import org.betterx.bclib.interfaces.CustomColorProvider;
+import de.ambertation.wover.block.api.client.render.ClientTinterRegistry;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -41,8 +41,8 @@ public class ParticleTenaneaPetal extends SingleQuadParticle {
         super(world, x, y, z, r, g, b, sprites.get(world.getRandom()));
 
         if (provider == null) {
-            CustomColorProvider block = (CustomColorProvider) EndWoodBlocks.TENANEA_FLOWERS;
-            provider = block.getProvider();
+            // The flowers' colour now comes from their TintBinding rather than an interface on the block.
+            provider = ClientTinterRegistry.sourceFor(EndWoodBlocks.TENANEA_FLOWERS);
         }
         int color = provider.colorInWorld(null, null, new BlockPos((int) x, (int) y, (int) z));
         this.rCol = ((color >> 16) & 255) / 255F;

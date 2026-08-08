@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:stick",
+  "base": "betterend:thallasium_spear_tip",
+  "result": {
+    "id": "betterend:thallasium_spear"
+  },
+  "template": "betterend:handle_attachment_smithing_template"
+}

@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:block/violecite_lantern"
+    "model": "betterend:block/violecite_lantern",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -569951
+      }
+    ]
   }
 }

@@ -12,7 +12,11 @@ import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 
 public class BeamRenderer {
-    private static final Identifier BEAM_TEXTURE = Identifier.withDefaultNamespace("textures/entity/end_gateway_beam.png");
+    // 26.x moved the vanilla entity textures into per-feature folders: this sprite lived at
+    // textures/entity/end_gateway_beam.png up to 1.21.6 and is now under end_portal/ (see vanilla's
+    // TheEndGatewayRenderer.BEAM_LOCATION). The old path resolved to the missing-texture placeholder, which is
+    // what made the eternal-portal beams render as two rotating magenta/black boxes.
+    private static final Identifier BEAM_TEXTURE = Identifier.withDefaultNamespace("textures/entity/end_portal/end_gateway_beam.png");
 
     public static void renderLightBeam(
             PoseStack matrices,

@@ -2,6 +2,7 @@ package org.betterx.betterend.complexmaterials.types;
 
 
 import org.betterx.betterend.registry.item.EndResourceItems;
+import org.betterx.betterend.registry.block.EndCrystalBlocks;
 import org.betterx.betterend.blocks.basis.StoneLanternBlock;
 import org.betterx.betterend.complexmaterials.StoneMaterial;
 import org.betterx.betterend.registry.EndItems;
@@ -9,6 +10,8 @@ import de.ambertation.wover.block.api.BlockDefinition;
 import de.ambertation.wover.block.api.BlockRegistry;
 import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
 import de.ambertation.wover.block.api.trait.BlockRecipeTrait;
+import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.render.TinterKeys;
 import de.ambertation.wover.block.api.trait.BlockTraitLookup;
 import de.ambertation.wover.block.api.trait.BlockTraits;
 import de.ambertation.wover.recipe.api.RecipeBuilder;
@@ -43,6 +46,12 @@ public class StoneLantern extends SlotFromDefinition {
         // noOcclusion() moved out of EndLanternBlock's constructor (R1, WP6.14) to here.
         def.noOcclusion();
         def.lightLevel((bs) -> 15);
+        // The glass slot uses the near-grayscale aurora_crystal texture, so the lantern shares AURORA_CRYSTAL's
+        // palette instance - it used to express that by delegating to its provider - and bakes it into the item.
+        def.addTrait(ClientBlockTraits.TINT.worldAndItem(
+                TinterKeys.PALETTE_CYCLE,
+                () -> EndCrystalBlocks.AURORA_PALETTE
+        ));
         def.addTrait(BlockTraits.LOOT_TABLE.dropSelf());
     }
 

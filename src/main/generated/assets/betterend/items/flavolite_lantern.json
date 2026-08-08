@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:block/flavolite_lantern"
+    "model": "betterend:block/flavolite_lantern",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -569951
+      }
+    ]
   }
 }

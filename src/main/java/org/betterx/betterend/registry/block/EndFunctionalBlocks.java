@@ -17,6 +17,7 @@ import org.betterx.bclib.trait.block.*;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.*;
 import org.betterx.betterend.blocks.EndPortalBlock;
+import org.betterx.betterend.client.render.EndTinterKeys;
 import org.betterx.betterend.blocks.basis.*;
 import org.betterx.betterend.client.models.EndModelTraits;
 import org.betterx.betterend.complexmaterials.*;
@@ -35,6 +36,7 @@ import de.ambertation.wover.block.api.model.ModelTraitLibrary;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
 import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
+import de.ambertation.wover.block.api.render.TinterKeys;
 import de.ambertation.wover.block.api.trait.BlockTraits;
 import de.ambertation.wover.item.api.BlockItemDefinition;
 import de.ambertation.wover.pottable.api.trait.PottablePlantBlockTrait;
@@ -98,6 +100,9 @@ public class EndFunctionalBlocks {
             )
             .addTrait(BlockTraits.STONE_BLOCK)
             .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
+            // Shares AURORA_CRYSTAL's palette instance - this block used to express that by delegating to its
+            // provider. World only: the obelisk's item has its own coloured texture.
+            .addTrait(ClientBlockTraits.TINT.world(TinterKeys.PALETTE_CYCLE, () -> EndCrystalBlocks.AURORA_PALETTE))
             .addTrait(ModelTraitLibrary.externalModel())
             .addTrait(BlockTraits.LOOT_TABLE.with(
                     (tableKey, blockKey, block, provider) -> RespawnObeliskBlock.buildLoot(block, provider)
@@ -150,6 +155,9 @@ public class EndFunctionalBlocks {
     public static final Block END_PORTAL_BLOCK = EndBlocks.defineBlockOnly("end_portal_block", EndPortalBlock::new)
             .lightLevel(bs -> 15)
             .addTrait(ClientBlockTraits.RENDER_LAYER.translucent())
+            // World only - defineBlockOnly, so there is no item to tint. The colour comes from the runtime
+            // EndPortals config, which is why this uses BetterEnd's own key rather than a wover built-in.
+            .addTrait(ClientBlockTraits.TINT.world(EndTinterKeys.END_PORTAL, () -> null))
             .buildAndRegister();
 
     public static void ensureLoaded() {}

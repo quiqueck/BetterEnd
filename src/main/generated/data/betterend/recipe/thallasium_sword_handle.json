@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "betterend:thallasium_ingot",
+  "base": "minecraft:stick",
+  "result": {
+    "id": "betterend:thallasium_sword_handle"
+  },
+  "template": "betterend:thallasium_upgrade_smithing_template"
+}

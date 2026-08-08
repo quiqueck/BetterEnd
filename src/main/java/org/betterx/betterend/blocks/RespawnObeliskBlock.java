@@ -4,7 +4,6 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.betterend.registry.block.EndCrystalBlocks;
 import org.betterx.betterend.registry.item.EndResourceItems;
-import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.particle.InfusionParticleType;
 import org.betterx.betterend.registry.EndBlocks;
@@ -15,7 +14,6 @@ import de.ambertation.wover.block.api.BlockProperties.TripleShape;
 import de.ambertation.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
-import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -57,7 +55,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class RespawnObeliskBlock extends Block implements CustomColorProvider {
+public class RespawnObeliskBlock extends Block {
     private static final VoxelShape VOXEL_SHAPE_BOTTOM = Block.box(1, 0, 1, 15, 16, 15);
     private static final VoxelShape VOXEL_SHAPE_MIDDLE_TOP = Block.box(2, 0, 2, 14, 16, 14);
 
@@ -171,12 +169,6 @@ public class RespawnObeliskBlock extends Block implements CustomColorProvider {
                                         .properties()
                                         .hasProperty(SHAPE, TripleShape.BOTTOM)))
                         .add(LootItem.lootTableItem(block)));
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public BlockTintSource getProvider() {
-        return ((CustomColorProvider) EndCrystalBlocks.AURORA_CRYSTAL).getProvider();
     }
 
     @Override

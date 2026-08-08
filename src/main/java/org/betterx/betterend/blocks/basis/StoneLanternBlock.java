@@ -3,7 +3,6 @@ package org.betterx.betterend.blocks.basis;
 
 import org.betterx.betterend.registry.block.EndCrystalBlocks;
 import org.betterx.bclib.client.models.BCLModels;
-import org.betterx.bclib.interfaces.CustomColorProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import de.ambertation.wover.block.api.client.trait.BlockModelTrait;
 import de.ambertation.wover.block.api.client.trait.ClientBlockTraits;
@@ -12,7 +11,6 @@ import de.ambertation.wover.block.api.trait.BlockTraitLookup;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.sets.api.blocks.BlockSet;
 
-import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
@@ -31,18 +29,12 @@ import net.fabricmc.api.Environment;
 
 import org.jetbrains.annotations.NotNull;
 
-public class StoneLanternBlock extends EndLanternBlock implements CustomColorProvider {
+public class StoneLanternBlock extends EndLanternBlock {
     private static final VoxelShape SHAPE_CEIL = box(3, 1, 3, 13, 16, 13);
     private static final VoxelShape SHAPE_FLOOR = box(3, 0, 3, 13, 15, 13);
 
     public StoneLanternBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public BlockTintSource getProvider() {
-        return ((CustomColorProvider) EndCrystalBlocks.AURORA_CRYSTAL).getProvider();
     }
 
 

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item.betterend.leather_handle_attachment_smithing_template": {
+      "conditions": {
+        "items": [
+          {
+            "items": "betterend:leather_handle_attachment_smithing_template"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:aeternium_spear"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_item.betterend.leather_handle_attachment_smithing_template"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:aeternium_spear"
+    ]
+  }
+}

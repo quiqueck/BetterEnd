@@ -10,8 +10,8 @@
       "can_place_on_ceiling": true,
       "can_place_on_floor": true,
       "can_place_on_wall": true,
-      "chance_of_spreading": 0.6,
-      "search_range": 6
+      "chance_of_spreading": 0.75,
+      "search_range": 8
     }
   },
   "placement": [
@@ -19,8 +19,8 @@
       "type": "minecraft:count",
       "count": {
         "type": "minecraft:uniform",
-        "max_inclusive": 6,
-        "min_inclusive": 2
+        "max_inclusive": 32,
+        "min_inclusive": 16
       }
     },
     {

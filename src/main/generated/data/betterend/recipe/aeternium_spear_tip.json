@@ -1,0 +1,10 @@
+{
+  "type": "bclib:smithing",
+  "allowedTools": "betterend:anvil_tool/diamond",
+  "anvilLevel": 4,
+  "damage": 6,
+  "input": "betterend:aeternium_ingot",
+  "result": {
+    "item": "betterend:aeternium_spear_tip"
+  }
+}

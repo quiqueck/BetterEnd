@@ -3,6 +3,7 @@ package org.betterx.betterend.item.material;
 import org.betterx.bclib.recipes.BCLRecipeBuilder;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndItems;
+import org.betterx.betterend.registry.EndTemplates;
 import de.ambertation.wover.complex.api.equipment.*;
 import de.ambertation.wover.item.api.trait.ItemRecipeTrait;
 import de.ambertation.wover.item.api.trait.ItemTraits;
@@ -32,6 +33,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
     public final Item swordBlade;
     public final Item swordHandle;
     public final Item hammerHead;
+    public final Item spearTip;
 
     public final Supplier<SmithingTemplateItem> handleTemplate;
     public final Supplier<SmithingTemplateItem> swordHandleTemplate;
@@ -85,10 +87,26 @@ public class ToolsWithHeadsSet extends EquipmentSet {
         swordBlade = EndItems.defineEndItem(baseName + "_sword_blade")
                              .addTrait(ItemTraits.RECIPE_ITEM.with(buildHeadRecipe(2)))
                              .buildAndRegister();
-        swordHandle = EndItems.registerEndItem(baseName + "_sword_handle");
+        swordHandle = EndItems.defineEndItem(baseName + "_sword_handle")
+                              .addTrait(ItemTraits.RECIPE_ITEM.with((key, item, context) -> {
+                                  // Queried here rather than when the trait is created, so that the value is read
+                                  // once the set is fully constructed.
+                                  if (!hasAutoSwordHandleRecipe()) return;
+
+                                  RecipeBuilder
+                                          .smithing(key.identifier(), item)
+                                          .template(swordHandleTemplate.get())
+                                          .base(handleItem)
+                                          .addon(ingot)
+                                          .build(context);
+                              }))
+                              .buildAndRegister();
         hammerHead = EndItems.defineEndItem(baseName + "_hammer_head")
                              .addTrait(ItemTraits.RECIPE_ITEM.with(buildHeadRecipe(3)))
                              .buildAndRegister();
+        spearTip = EndItems.defineEndItem(baseName + "_spear_tip")
+                           .addTrait(ItemTraits.RECIPE_ITEM.with(buildHeadRecipe(2)))
+                           .buildAndRegister();
 
         add(
                 ToolSlot.PICKAXE_SLOT,
@@ -149,9 +167,20 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
                                 .smithing(key.identifier(), item)
-                                .template(swordHandleTemplate.get())
+                                .template(EndTemplates.TOOL_ASSEMBLY)
                                 .base(swordBlade)
                                 .addon(swordHandle)
+                                .build(context)
+                )
+        );
+        add(
+                ToolSlot.SPEAR_SLOT,
+                ItemTraits.RECIPE_ITEM.with(
+                        (key, item, context) -> RecipeBuilder
+                                .smithing(key.identifier(), item)
+                                .template(handleTemplate.get())
+                                .base(spearTip)
+                                .addon(handleItem)
                                 .build(context)
                 )
         );
@@ -194,6 +223,9 @@ public class ToolsWithHeadsSet extends EquipmentSet {
             RecipeBuilder.blasting(BetterEnd.C.mk(this.baseName + "_sword_nugget"), nugget)
                          .input(get(ToolSlot.SWORD_SLOT).asItem())
                          .build(context);
+            RecipeBuilder.blasting(BetterEnd.C.mk(this.baseName + "_spear_nugget"), nugget)
+                         .input(get(ToolSlot.SPEAR_SLOT).asItem())
+                         .build(context);
             RecipeBuilder.blasting(BetterEnd.C.mk(this.baseName + "_hammer_nugget"), nugget)
                          .input(get(ToolSlot.HAMMER_SLOT).asItem())
                          .build(context);
@@ -223,6 +255,19 @@ public class ToolsWithHeadsSet extends EquipmentSet {
      * @return {@code true} to derive the head recipes from the trait
      */
     protected boolean hasAutoHeadRecipes() {
+        return true;
+    }
+
+    /**
+     * Whether the sword handle recipe is derived from the item's recipe trait.
+     * <p>
+     * The derived recipe forges the set's own handle item with the set's own ingot under
+     * {@link #swordHandleTemplate}. A set that is instead forged from the ingot of a *lower* tier must return
+     * {@code false} here and let a recipe provider own the recipe, or both would claim the same recipe path.
+     *
+     * @return {@code true} to derive the sword handle recipe from the trait
+     */
+    protected boolean hasAutoSwordHandleRecipe() {
         return true;
     }
 

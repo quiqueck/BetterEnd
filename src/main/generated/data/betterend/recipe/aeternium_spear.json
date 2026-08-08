@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "betterend:leather_wrapped_stick",
+  "base": "betterend:aeternium_spear_tip",
+  "result": {
+    "id": "betterend:aeternium_spear"
+  },
+  "template": "betterend:leather_handle_attachment_smithing_template"
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.0,
+  "ingredient": "betterend:terminite_spear",
+  "result": {
+    "id": "betterend:terminite_nugget"
+  }
+}

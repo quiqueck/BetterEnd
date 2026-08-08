@@ -10,12 +10,34 @@
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
+    "main": [
+      "de.ambertation.wover.test.api.gametest.CompatWorldgenBootCheck"
+    ],
     "fabric-gametest": [
       "org.betterx.betterend.testmod.gametest.CrystaliteArmorGameTest",
       "org.betterx.betterend.testmod.gametest.CrystaliteEffectGameTest",
       "org.betterx.betterend.testmod.gametest.EndVeilGameTest",
       "org.betterx.betterend.testmod.gametest.EndVeilObtainableGameTest",
-      "org.betterx.betterend.testmod.gametest.MapColorGameTest"
+      "org.betterx.betterend.testmod.gametest.MapColorGameTest",
+      "org.betterx.betterend.testmod.gametest.PallidiumGrowthGameTest",
+      "org.betterx.betterend.testmod.gametest.EndStoneSmelterGameTest",
+      "org.betterx.betterend.testmod.gametest.BucketEndFishGameTest",
+      "org.betterx.betterend.testmod.gametest.CavePumpkinPieGameTest",
+      "org.betterx.betterend.testmod.gametest.FurnaceFuelGameTest",
+      "org.betterx.betterend.testmod.gametest.RecipeCoverageGameTest",
+      "org.betterx.betterend.testmod.gametest.AdvancementSweepGameTest",
+      "org.betterx.betterend.testmod.gametest.CrystaliteElytraGameTest",
+      "org.betterx.betterend.testmod.gametest.OreDropGameTest",
+      "org.betterx.betterend.testmod.gametest.RespawnObeliskGameTest",
+      "org.betterx.betterend.testmod.gametest.FurnitureParityGameTest",
+      "org.betterx.betterend.testmod.gametest.PlantGrowthGameTest",
+      "org.betterx.betterend.testmod.gametest.BonemealSpreadGameTest",
+      "org.betterx.betterend.testmod.gametest.InfusionTableGameTest",
+      "org.betterx.betterend.testmod.gametest.EternalPortalGameTest",
+      "org.betterx.betterend.testmod.gametest.SilkMothNestGameTest",
+      "org.betterx.betterend.testmod.gametest.AnvilRecipeGameTest",
+      "org.betterx.betterend.testmod.gametest.FlowerPotGameTest",
+      "org.betterx.betterend.testmod.gametest.LakePieceConcurrentHeightCacheGameTest"
     ]
   },
   "mixins": [

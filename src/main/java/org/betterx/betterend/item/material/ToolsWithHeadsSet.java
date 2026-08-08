@@ -3,6 +3,7 @@ package org.betterx.betterend.item.material;
 import org.betterx.bclib.recipes.BCLRecipeBuilder;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndItems;
+import org.betterx.betterend.registry.EndTemplates;
 import de.ambertation.wover.complex.api.equipment.*;
 import de.ambertation.wover.item.api.trait.ItemRecipeTrait;
 import de.ambertation.wover.item.api.trait.ItemTraits;
@@ -166,7 +167,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
                                 .smithing(key.identifier(), item)
-                                .template(swordHandleTemplate.get())
+                                .template(EndTemplates.TOOL_ASSEMBLY)
                                 .base(swordBlade)
                                 .addon(swordHandle)
                                 .build(context)
@@ -177,7 +178,7 @@ public class ToolsWithHeadsSet extends EquipmentSet {
                 ItemTraits.RECIPE_ITEM.with(
                         (key, item, context) -> RecipeBuilder
                                 .smithing(key.identifier(), item)
-                                .template(swordHandleTemplate.get())
+                                .template(handleTemplate.get())
                                 .base(spearTip)
                                 .addon(handleItem)
                                 .build(context)

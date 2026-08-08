@@ -83,6 +83,25 @@ String generateChangelog() {
         }
 
     }
+
+    // Never let a run with nothing to say replace CHANGES.md. The file is
+    // generated but git-ignored, so an empty write destroys the released notes
+    // for good - and CHANGES.md is also the body of the release commit (see
+    // common-publish-tag.gradle). Guard on the absence of entries rather than on
+    // an empty commit range: a range of ordinary unprefixed commits (version
+    // bumps and the like) produces nothing either, and in the mods the
+    // Validation section below would otherwise write out a changelog made
+    // entirely of stale compat-test results. Both are normal outcomes, not
+    // errors. Returning null tells the task to leave the existing file alone.
+    if (features.isEmpty() && changes.isEmpty() && fixes.isEmpty()) {
+        def commitCount = gitLogCmd.isEmpty() ? 0 : gitLogCmd.readLines().size()
+        def reason = commitCount == 0
+                ? "no commits since $lastTag"
+                : "$commitCount commit(s) since $lastTag, none of them a changelog entry"
+        logger.lifecycle("Nothing to write ($reason) - CHANGES.md left as it is.")
+        return null
+    }
+
     def changelog = ""
     if (!features.isEmpty()) {
         changelog += "#### Features\n"
@@ -147,7 +166,13 @@ String buildValidationSection() {
 task changelog() {
     group = 'publishing'
     doLast {
-        new File(projectDir, "CHANGES.md").text = generateChangelog()
+        def generated = generateChangelog()
+        // null is generateChangelog's "nothing to write"; the trim() covers any
+        // other way the body could come out blank. Neither ever reaches the file.
+        if (generated == null || generated.trim().isEmpty()) {
+            return
+        }
+        new File(projectDir, "CHANGES.md").text = generated
     }
 }
 

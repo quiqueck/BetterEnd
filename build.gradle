@@ -149,8 +149,12 @@ dependencies {
     if (findProject(':WorldWeaver') != null) {
         implementation project(path: ":WorldWeaver", configuration: 'localDev')
 
-        // wover-test-api is excluded here: it's testmod-only GameTest support, wired separately
-        // below as testmodImplementation so it never reaches the shipped mod's dependency graph.
+        // wover-test-api is left out of this loop: it's testmod-only GameTest support, wired
+        // separately as testmodImplementation above. That removes the direct top-level dependency
+        // edges and records the intent, but it is not a containment guarantee - the ':WorldWeaver'
+        // root aggregate pulled in just above depends on every module, wover-test-api included, so
+        // it still reaches this mod's dependency graph transitively (visible in ./gradlew
+        // :dependencies as project :WorldWeaver > project :WorldWeaver:wover-test-api).
         (gradle.knownWoverModules - ['wover-test-api']).each {
             implementation project(path: ":WorldWeaver:$it", configuration: 'dev')
             // BetterEnd doesn't split its own client/common sources, so its single sourceSet needs
@@ -161,6 +165,18 @@ dependencies {
     } else {
         implementation "org.betterx:worldweaver:${project.wover_version}"
     }
+
+    // Plain JUnit 5 unit tests (`src/test/java`, run via `./gradlew test`). Mirrors WorldWeaver's
+    // convention (see WorldWeaver/TESTING.md): pure-logic tests that need no running world/registries.
+    testImplementation platform("org.junit:junit-bom:5.11.4")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    testImplementation sourceSets.main.output
+    // ASM tree API to statically inspect compiled bytecode (see StructurePieceThreadSafetyAuditTest) -
+    // already on the buildscript classpath transitively via Loom/Mixin, but declared explicitly here so
+    // the test compiles/runs reproducibly instead of relying on an incidental transitive edge.
+    testImplementation "org.ow2.asm:asm:9.7"
+    testImplementation "org.ow2.asm:asm-tree:9.7"
 }
 
 
@@ -270,6 +286,20 @@ tasks.processResources {
 }
 tasks.sourcesJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// JUnit 5 for `src/test/java`. Give the test source set access to the (named/Mojmap) Minecraft
+// classpath from `main` so tests that touch mod/Minecraft classes can load them (see
+// StructurePieceThreadSafetyAuditTest, which needs LakePiece/MountainPiece and StructurePiece on the
+// classpath, though it never boots the game).
+sourceSets.test.compileClasspath += sourceSets.main.compileClasspath
+sourceSets.test.runtimeClasspath += sourceSets.main.runtimeClasspath
+tasks.named('test') {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
 }
 
 configurations {

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item.betterend.tool_assembly_smithing_template": {
+    "has_item.betterend.leather_handle_attachment_smithing_template": {
       "conditions": {
         "items": [
           {
-            "items": "betterend:tool_assembly_smithing_template"
+            "items": "betterend:leather_handle_attachment_smithing_template"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_item.betterend.tool_assembly_smithing_template"
+      "has_item.betterend.leather_handle_attachment_smithing_template"
     ]
   ],
   "rewards": {

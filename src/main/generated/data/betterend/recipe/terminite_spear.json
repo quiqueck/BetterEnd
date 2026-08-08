@@ -5,5 +5,5 @@
   "result": {
     "id": "betterend:terminite_spear"
   },
-  "template": "betterend:terminite_upgrade_smithing_template"
+  "template": "betterend:handle_attachment_smithing_template"
 }

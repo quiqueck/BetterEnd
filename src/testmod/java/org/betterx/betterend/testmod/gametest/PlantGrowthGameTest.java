@@ -32,7 +32,9 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
  * each sapling gets several attempts, not just one.
  * <p>
  * {@link #vanillaOakSaplingGrowsAsAControl} is the harness control: if it fails, the harness itself is
- * broken and a "BetterEnd saplings don't grow" result would mean nothing.
+ * broken and a "BetterEnd saplings don't grow" result would mean nothing. Unlike BetterEnd's saplings,
+ * a vanilla one has a light requirement, so the control lights its own site rather than relying on the
+ * gametest world happening to be in daylight - see {@link #lightGrowthSite}.
  */
 public class PlantGrowthGameTest {
     private static final BlockPos POS = new BlockPos(1, 2, 1);
@@ -40,6 +42,12 @@ public class PlantGrowthGameTest {
     // 40 attempts flaked in testing (~8% chance of zero successes at 1/16 odds); 200 leaves a ~1 in
     // 700,000 chance of a false failure.
     private static final int ATTEMPTS = 200;
+    // SaplingBlock.BRIGHTNESS_FOR_SAPLING_GROWTH - inlined rather than referenced because the constant
+    // is only public from 26.3 on and this file is kept identical across the version branches.
+    private static final int MIN_BRIGHTNESS_FOR_SAPLING_GROWTH = 9;
+    // Light updates are queued and flushed by the (threaded) light engine on a later level tick, so the
+    // brightness at a freshly placed light source is not readable in the same tick.
+    private static final int LIGHT_SETTLE_TICKS = 5;
 
     private static final Map<String, Block> SAPLINGS = new LinkedHashMap<>();
 
@@ -83,13 +91,35 @@ public class PlantGrowthGameTest {
 
     @GameTest
     public void vanillaOakSaplingGrowsAsAControl(GameTestHelper helper) {
-        if (!growsWithinAttempts(helper, Blocks.OAK_SAPLING)) {
-            throw helper.assertionException(Component.literal(
-                    "Control failed: a vanilla oak sapling did not grow/advance within " + ATTEMPTS
-                            + " randomTick calls - the harness itself is broken, not BetterEnd"
-            ));
-        }
-        helper.succeed();
+        // Real soil, so the control site is one a vanilla sapling could actually occupy. randomTick
+        // itself never consults canSurvive, but a control that stands on nothing proves less.
+        helper.setBlock(POS.below(), Blocks.DIRT);
+        lightGrowthSite(helper);
+
+        // The light engine runs off the level tick, not inside setBlock, so the brightness the growth
+        // check reads is only correct a tick or two after the light source was placed.
+        helper.runAfterDelay(LIGHT_SETTLE_TICKS, () -> {
+            final int brightness = helper.getLevel().getMaxLocalRawBrightness(helper.absolutePos(POS).above());
+            if (brightness < MIN_BRIGHTNESS_FOR_SAPLING_GROWTH) {
+                throw helper.assertionException(Component.literal(
+                        "Harness precondition failed: the growth site is only lit to " + brightness
+                                + " after " + LIGHT_SETTLE_TICKS + " ticks, vanilla saplings need "
+                                + MIN_BRIGHTNESS_FOR_SAPLING_GROWTH
+                                + " - the light source is missing or the light engine has not caught up"
+                ));
+            }
+
+            if (!growsWithinAttempts(helper, Blocks.OAK_SAPLING)) {
+                throw helper.assertionException(Component.literal(
+                        "Control failed: a vanilla oak sapling did not grow/advance within " + ATTEMPTS
+                                + " randomTick calls - the harness itself is broken, not BetterEnd"
+                                + " (brightness above the sapling was "
+                                + helper.getLevel().getMaxLocalRawBrightness(helper.absolutePos(POS).above())
+                                + ", vanilla needs " + MIN_BRIGHTNESS_FOR_SAPLING_GROWTH + ")"
+                ));
+            }
+            helper.succeed();
+        });
     }
 
     @GameTest
@@ -108,6 +138,28 @@ public class PlantGrowthGameTest {
             ));
         }
         helper.succeed();
+    }
+
+    /**
+     * Puts a glowstone block two above {@link #POS} so the position a sapling's growth check looks at
+     * is lit to 14 no matter what the world is doing.
+     * <p>
+     * Vanilla's {@code SaplingBlock#randomTick} only advances when
+     * {@code getMaxLocalRawBrightness(pos.above()) >= 9}. The GameTest structure is an 8x8x8 box of air
+     * with open sky, so sky light there is 15 - but the effective brightness is
+     * {@code skyLight - skyDarken}, and {@code skyDarken} is 11 at night. The gametest world under
+     * {@code build/gametest} is a normal dedicated-server world that is never deleted between runs, so
+     * its clock keeps accumulating: once the accumulated time lands in the night half of the day cycle
+     * the control could never pass again, and every BetterEnd sapling result in this class stopped
+     * meaning anything. Lighting the site ourselves makes the outcome depend on the block under test
+     * rather than on how many times the suite has been run before.
+     * <p>
+     * BetterEnd's own saplings ({@code FeatureSaplingBlock}) ignore light entirely - they roll a flat
+     * 1/16 per tick - so this only ever mattered for the vanilla control, which is exactly the point of
+     * having a control, and {@link #everySaplingAdvancesUnderRandomTick} is deliberately left unlit.
+     */
+    private static void lightGrowthSite(GameTestHelper helper) {
+        helper.setBlock(POS.above(2), Blocks.GLOWSTONE);
     }
 
     /** Places {@code sapling}, calls randomTick repeatedly, and reports whether anything changed. */

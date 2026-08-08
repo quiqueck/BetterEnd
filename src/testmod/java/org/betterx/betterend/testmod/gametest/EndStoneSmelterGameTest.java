@@ -12,6 +12,8 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.ArrayList;
@@ -22,14 +24,16 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
 /**
  * Covers {@code end_stone_smelter}'s two recipe paths and its hopper I/O rules.
  * <p>
- * <b>On the "1 input is faster / 2 inputs give 3x" claim</b>: {@code EndStoneSmelterBlockEntity} sets
- * a different {@code cookTimeIncrement} per tick for each path (blasting: 2, alloying: 1) but also reads
- * a *different* total-cook-time formula for each recipe type, so whether the single-input path actually
- * finishes sooner in wall-clock ticks depends on the specific recipe's own declared smelt time - it is
- * not a fixed ratio. Rather than assume a direction, both tests below poll for completion
- * ({@code thenWaitUntil}) instead of predicting an exact tick count, and assert what IS fixed: the
- * blasting path yields the recipe's plain result count, the alloying path yields 3x
- * ({@code growsResultBy()} in the block entity), and the fuel/fuel-slot mechanics behave as documented.
+ * <b>On the "1 input is faster / 2 inputs give more" design claim</b>: both halves are asserted, but as
+ * comparisons rather than as hardcoded tick counts, because neither number is a fixed ratio -
+ * {@code EndStoneSmelterBlockEntity} sets a different {@code cookTimeIncrement} per tick for each path
+ * (blasting: 2, alloying: 1) <em>and</em> reads a different total-cook-time formula per recipe type, so
+ * the absolute figures move with whatever smelt time a given recipe declares. See
+ * {@link #singleInputSmeltsFasterThanAVanillaBlastFurnace} (measured against a real Blast Furnace on the
+ * identical recipe - iron ore finishes at tick 33 against the furnace's 100 as of writing) and
+ * {@link #twoInputsYieldMoreThanTheSameOreBlastedOneAtATime} (the same two ore are worth 3 ingots split
+ * across both slots against 2 fed one at a time). The plain per-path outcomes are pinned separately by
+ * {@link #blastingPathProducesPlainResult} and {@link #alloyingPathTriplesTheResult}.
  * <p>
  * <b>Second bug found while writing this class, since fixed</b>: igniting the smelter with the
  * <em>last unit</em> of a fuel item that has no crafting remainder (a single coal block, one piece of
@@ -45,15 +49,36 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
  */
 public class EndStoneSmelterGameTest {
     private static final BlockPos SMELTER_POS = new BlockPos(1, 2, 1);
+    /** Second block for the side-by-side comparisons: either a vanilla control or a second smelter. */
+    private static final BlockPos COMPANION_POS = new BlockPos(4, 2, 1);
+
+    // Vanilla's three-slot furnace layout, for the Blast Furnace control below.
+    private static final int VANILLA_INGREDIENT_SLOT = 0;
+    private static final int VANILLA_FUEL_SLOT = 1;
+    private static final int VANILLA_RESULT_SLOT = 2;
 
     private static EndStoneSmelterBlockEntity smelter(GameTestHelper helper) {
-        final BlockEntity be = helper.getLevel().getBlockEntity(helper.absolutePos(SMELTER_POS));
+        return smelter(helper, SMELTER_POS);
+    }
+
+    private static EndStoneSmelterBlockEntity smelter(GameTestHelper helper, BlockPos pos) {
+        final BlockEntity be = helper.getLevel().getBlockEntity(helper.absolutePos(pos));
         if (!(be instanceof EndStoneSmelterBlockEntity smelter)) {
             throw helper.assertionException(Component.literal(
-                    "end_stone_smelter did not create an EndStoneSmelterBlockEntity"
+                    "end_stone_smelter did not create an EndStoneSmelterBlockEntity at " + pos
             ));
         }
         return smelter;
+    }
+
+    private static AbstractFurnaceBlockEntity vanillaFurnace(GameTestHelper helper, BlockPos pos) {
+        final BlockEntity be = helper.getLevel().getBlockEntity(helper.absolutePos(pos));
+        if (!(be instanceof AbstractFurnaceBlockEntity furnace)) {
+            throw helper.assertionException(Component.literal(
+                    "expected a vanilla furnace block entity at " + pos
+            ));
+        }
+        return furnace;
     }
 
     /**
@@ -178,53 +203,70 @@ public class EndStoneSmelterGameTest {
     }
 
     /**
-     * The wet-sponge byproduct: blasting a wet sponge with an empty bucket sitting in the fuel slot is
-     * supposed to convert that bucket into a water bucket - and, per
-     * {@link EndStoneSmelterBlockEntity#canTakeItemThroughFace}'s own special case (only a water/empty
-     * bucket may ever be pulled out of the fuel slot from below), the water bucket has to actually end
-     * up back in the fuel slot for a hopper to ever retrieve it.
+     * Wet sponge is deliberately <em>not</em> smeltable here, and this asserts that as the intended
+     * contract rather than as a known defect. The End Stone Smelter is a blast furnace (plus alloying),
+     * and vanilla's wet-sponge-to-sponge recipe is a plain {@code RecipeType.SMELTING} recipe - a regular
+     * furnace recipe. A vanilla Blast Furnace therefore cannot dry a sponge either, so neither does this
+     * one: {@code quickCheckBlastFurnace} only ever consults {@code RecipeType.BLASTING} and never matches.
      * <p>
-     * <b>This currently fails on the very first premise, and looks like real bugs, not a bad test.</b>
-     * Two independent problems, found by writing this test:
-     * <ol>
-     *   <li>The single-input path only ever checks {@code RecipeType.BLASTING}
-     *       ({@code quickCheckBlastFurnace = RecipeManager.createCheck(RecipeType.BLASTING)}), but
-     *       vanilla's wet-sponge-to-sponge recipe is a plain {@code RecipeType.SMELTING} recipe (a
-     *       regular furnace recipe, not a blast-furnace one) - and BetterEnd registers no
-     *       {@code betterend:}-namespaced blasting recipe for wet sponge either. So {@code canBurn}
-     *       never returns true for a wet sponge at all: the smelter never even lights, and the whole
-     *       byproduct mechanic is unreachable in current gameplay, not merely misbehaving.</li>
-     *   <li>Even if it did fire, the byproduct branch in {@code EndStoneSmelterBlockEntity#burn(
-     *       RegistryAccess, InputState, BlastingRecipeInfo, NonNullList)} guards on
-     *       {@code inventory.get(EndStoneSmelterMenu.FUEL_SLOT)} correctly, but writes the result with a
-     *       hardcoded {@code inventory.set(1, ...)} - slot 1 is {@code INGREDIENT_SLOT_B}, not
-     *       {@code FUEL_SLOT} (2). The water bucket would land in the second ingredient slot instead,
-     *       silently overwriting whatever was there, while the fuel slot keeps the now-inert empty
-     *       bucket forever - unreachable by any hopper regardless of bug #1.</li>
-     * </ol>
-     * This test asserts the smelter never lights for a wet sponge (proving #1, quickly, rather than
-     * idling out a 600-tick timeout waiting for a cook that can never complete), and documents #2 for
-     * whoever fixes #1 next - fixing only the recipe-type gate would silently trade an unreachable
-     * feature for a badly-broken one.
+     * The control block makes that the actual assertion: a real Blast Furnace is run alongside with the
+     * identical contents, and the two have to agree. Pinning it to vanilla's behaviour rather than to a
+     * bare "does nothing" means a datapack that <em>does</em> add a blasting recipe for wet sponge moves
+     * both blocks together instead of tripping this test.
+     * <p>
+     * That parity extends to the wet-sponge byproduct - the empty bucket in the fuel slot that vanilla
+     * turns into a water bucket ({@code AbstractFurnaceBlockEntity.burn}, inherited by
+     * {@code BlastFurnaceBlockEntity}). BetterEnd carries the same branch, and it is equally unreachable
+     * here for the same reason it is unreachable in a vanilla Blast Furnace. It was still worth repairing
+     * the destination slot it writes to - it wrote to a hardcoded {@code inventory.set(1, ...)}, correct
+     * for vanilla's three-slot layout but {@code INGREDIENT_SLOT_B} in this block's four-slot one - so
+     * that a datapack enabling the recipe gets vanilla behaviour instead of a clobbered ingredient slot.
      */
-    @GameTest
-    public void wetSpongeNeverIgnitesTheBlastingPath(GameTestHelper helper) {
+    @GameTest(maxTicks = 100)
+    public void wetSpongeIsNoMoreSmeltableThanInAVanillaBlastFurnace(GameTestHelper helper) {
         helper.setBlock(SMELTER_POS, EndFunctionalBlocks.END_STONE_SMELTER);
+        helper.setBlock(COMPANION_POS, Blocks.BLAST_FURNACE);
         final EndStoneSmelterBlockEntity smelter = smelter(helper);
+        final AbstractFurnaceBlockEntity control = vanillaFurnace(helper, COMPANION_POS);
 
-        smelter.setItem(EndStoneSmelterMenu.FUEL_SLOT, new ItemStack(Items.COAL_BLOCK, 64));
+        // Identical contents on both sides, including the empty bucket the byproduct would convert.
         smelter.setItem(EndStoneSmelterMenu.INGREDIENT_SLOT_A, new ItemStack(Items.WET_SPONGE));
+        smelter.setItem(EndStoneSmelterMenu.FUEL_SLOT, new ItemStack(Items.BUCKET));
+        control.setItem(VANILLA_INGREDIENT_SLOT, new ItemStack(Items.WET_SPONGE));
+        control.setItem(VANILLA_FUEL_SLOT, new ItemStack(Items.BUCKET));
 
         helper.startSequence()
-              .thenIdle(20)
+              .thenIdle(40)
               .thenExecute(() -> {
                   final List<String> failures = new ArrayList<>();
-                  final boolean lit = helper.getBlockState(SMELTER_POS).getValue(org.betterx.betterend.blocks.EndStoneSmelter.LIT);
-                  if (lit) {
-                      failures.add("the smelter lit up for a bare wet sponge - if the recipe-type gate was"
-                              + " fixed, re-check the fuel-slot byproduct destination too (see class javadoc, bug #2)");
+
+                  final boolean controlProduced = !control.getItem(VANILLA_RESULT_SLOT).isEmpty();
+                  final boolean smelterProduced = !smelter.getItem(EndStoneSmelterMenu.RESULT_SLOT).isEmpty();
+                  if (controlProduced != smelterProduced) {
+                      failures.add("the End Stone Smelter and a vanilla Blast Furnace disagree on whether a wet"
+                              + " sponge is smeltable (smelter produced=" + smelterProduced
+                              + ", blast furnace produced=" + controlProduced + ")");
                   }
-                  failIfAny(helper, "End Stone Smelter wet-sponge byproduct regression", failures);
+                  if (smelterProduced) {
+                      failures.add("a wet sponge was smelted into "
+                              + smelter.getItem(EndStoneSmelterMenu.RESULT_SLOT)
+                              + " - wet sponge is a SMELTING recipe, so neither a blast furnace nor this"
+                              + " block should accept it");
+                  }
+
+                  // The byproduct must not fire on either side, and must never touch ingredient slot B.
+                  final ItemStack fuelSlot = smelter.getItem(EndStoneSmelterMenu.FUEL_SLOT);
+                  if (!fuelSlot.is(Items.BUCKET)) {
+                      failures.add("the empty bucket in the fuel slot became " + fuelSlot
+                              + " without the sponge ever being smelted");
+                  }
+                  if (!smelter.getItem(EndStoneSmelterMenu.INGREDIENT_SLOT_B).isEmpty()) {
+                      failures.add("ingredient slot B was written to ("
+                              + smelter.getItem(EndStoneSmelterMenu.INGREDIENT_SLOT_B)
+                              + ") - this is the vanilla-slot-index bug the byproduct branch used to have");
+                  }
+
+                  failIfAny(helper, "End Stone Smelter wet-sponge parity regression", failures);
               })
               .thenSucceed();
     }
@@ -252,6 +294,108 @@ public class EndStoneSmelterGameTest {
                                       + fuelSlot
                       ));
                   }
+              })
+              .thenSucceed();
+    }
+
+    /**
+     * The "one input is faster" half of the smelter's design claim, measured against a vanilla Blast
+     * Furnace running the identical recipe rather than against a hardcoded tick count: both get one iron
+     * ore and ample fuel, and the smelter has to finish strictly sooner.
+     * <p>
+     * The speed-up comes from two independent multipliers - {@code BlastingRecipeInfo.cookTimeIncrement()}
+     * advances the timer by 2 per tick instead of 1, and {@code getTotalCookTime} divides the blasting
+     * recipe's own {@code cookingTime} by 1.5 - so this asserts the observable outcome and reports both
+     * measured tick counts on failure, rather than pinning the exact ratio those two produce.
+     */
+    @GameTest(maxTicks = 400)
+    public void singleInputSmeltsFasterThanAVanillaBlastFurnace(GameTestHelper helper) {
+        helper.setBlock(SMELTER_POS, EndFunctionalBlocks.END_STONE_SMELTER);
+        helper.setBlock(COMPANION_POS, Blocks.BLAST_FURNACE);
+        final EndStoneSmelterBlockEntity smelter = smelter(helper);
+        final AbstractFurnaceBlockEntity furnace = vanillaFurnace(helper, COMPANION_POS);
+
+        smelter.setItem(EndStoneSmelterMenu.FUEL_SLOT, new ItemStack(Items.COAL_BLOCK, 64));
+        smelter.setItem(EndStoneSmelterMenu.INGREDIENT_SLOT_A, new ItemStack(Items.IRON_ORE));
+        // Vanilla furnace slot layout: 0 = ingredient, 1 = fuel, 2 = result.
+        furnace.setItem(VANILLA_INGREDIENT_SLOT, new ItemStack(Items.IRON_ORE));
+        furnace.setItem(VANILLA_FUEL_SLOT, new ItemStack(Items.COAL_BLOCK, 64));
+
+        final long[] smelterDoneAt = {-1};
+        final long[] furnaceDoneAt = {-1};
+
+        helper.startSequence()
+              .thenWaitUntil(() -> {
+                  if (smelterDoneAt[0] < 0 && !smelter.getItem(EndStoneSmelterMenu.RESULT_SLOT).isEmpty()) {
+                      smelterDoneAt[0] = helper.getTick();
+                  }
+                  if (furnaceDoneAt[0] < 0 && !furnace.getItem(VANILLA_RESULT_SLOT).isEmpty()) {
+                      furnaceDoneAt[0] = helper.getTick();
+                  }
+                  if (smelterDoneAt[0] < 0 || furnaceDoneAt[0] < 0) {
+                      throw helper.assertionException(Component.literal("still cooking"));
+                  }
+              })
+              .thenExecute(() -> {
+                  final List<String> failures = new ArrayList<>();
+                  if (smelterDoneAt[0] >= furnaceDoneAt[0]) {
+                      failures.add("the End Stone Smelter is supposed to beat a vanilla Blast Furnace on the"
+                              + " same recipe, but finished at tick " + smelterDoneAt[0]
+                              + " against the furnace's " + furnaceDoneAt[0]);
+                  }
+                  failIfAny(helper, "End Stone Smelter single-input speed regression", failures);
+              })
+              .thenSucceed();
+    }
+
+    /**
+     * The "two inputs give more" half of the design claim, asserted as a like-for-like comparison rather
+     * than as two separate absolute counts: the same two iron ore either go through the single-input
+     * blasting path one at a time (2 x 1 ingot) or fill both slots at once and hit {@code additional_iron}
+     * (one alloy of 3 ingots, {@code outputCount(3)} in {@link org.betterx.datagen.betterend.recipes.AlloyingRecipesProvider}).
+     * Splitting the ore across both slots has to be worth strictly more than feeding it one at a time,
+     * which is the whole reason the alloying path exists.
+     */
+    @GameTest(maxTicks = 600)
+    public void twoInputsYieldMoreThanTheSameOreBlastedOneAtATime(GameTestHelper helper) {
+        helper.setBlock(SMELTER_POS, EndFunctionalBlocks.END_STONE_SMELTER);
+        helper.setBlock(COMPANION_POS, EndFunctionalBlocks.END_STONE_SMELTER);
+        final EndStoneSmelterBlockEntity blasting = smelter(helper);
+        final EndStoneSmelterBlockEntity alloying = smelter(helper, COMPANION_POS);
+
+        // Same two iron ore either way - stacked in one slot, or one in each slot.
+        blasting.setItem(EndStoneSmelterMenu.FUEL_SLOT, new ItemStack(Items.COAL_BLOCK, 64));
+        blasting.setItem(EndStoneSmelterMenu.INGREDIENT_SLOT_A, new ItemStack(Items.IRON_ORE, 2));
+
+        alloying.setItem(EndStoneSmelterMenu.FUEL_SLOT, new ItemStack(Items.COAL_BLOCK, 64));
+        alloying.setItem(EndStoneSmelterMenu.INGREDIENT_SLOT_A, new ItemStack(Items.IRON_ORE));
+        alloying.setItem(EndStoneSmelterMenu.INGREDIENT_SLOT_B, new ItemStack(Items.IRON_ORE));
+
+        helper.startSequence()
+              .thenWaitUntil(() -> {
+                  final boolean blastingDone = blasting.getItem(EndStoneSmelterMenu.INGREDIENT_SLOT_A).isEmpty()
+                          && !blasting.getItem(EndStoneSmelterMenu.RESULT_SLOT).isEmpty();
+                  final boolean alloyingDone = alloying.getItem(EndStoneSmelterMenu.INGREDIENT_SLOT_A).isEmpty()
+                          && !alloying.getItem(EndStoneSmelterMenu.RESULT_SLOT).isEmpty();
+                  if (!blastingDone || !alloyingDone) {
+                      throw helper.assertionException(Component.literal("still cooking"));
+                  }
+              })
+              .thenExecute(() -> {
+                  final int blasted = blasting.getItem(EndStoneSmelterMenu.RESULT_SLOT).getCount();
+                  final int alloyed = alloying.getItem(EndStoneSmelterMenu.RESULT_SLOT).getCount();
+                  final List<String> failures = new ArrayList<>();
+                  if (blasted != 2) {
+                      failures.add("blasting two iron ore one at a time should yield 2 ingots, got " + blasted);
+                  }
+                  if (alloyed != 3) {
+                      failures.add("alloying two iron ore should yield 3 ingots, got " + alloyed);
+                  }
+                  if (alloyed <= blasted) {
+                      failures.add("filling both slots (" + alloyed + " ingots) is supposed to beat feeding the"
+                              + " same two ore one at a time (" + blasted + " ingots)");
+                  }
+                  failIfAny(helper, "End Stone Smelter two-input yield regression", failures);
               })
               .thenSucceed();
     }

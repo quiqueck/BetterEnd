@@ -57,7 +57,9 @@ public class SmaragdantCrystalFeature extends DefaultFeature {
                     mut.setY(mut.getY() - 1);
                     state = world.getBlockState(mut);
                 }
-                if (state.is(CommonBlockTags.END_STONES) && world.getBlockState(mut.above()).isAir()) {
+                if (state.is(CommonBlockTags.END_STONES)
+                        && world.getBlockState(mut.above()).isAir()
+                        && !world.getLevel().structureManager().hasAnyStructureAt(mut)) {
                     // Surface-exposure guard: a smaragdant cave column shares its biome with whatever island
                     // surface sits above it (see CaveFeatureProvider's "column-biome semantics" note), so
                     // findSolidFloor can just as easily land on an island's outdoor surface as on a cave
@@ -68,7 +70,16 @@ public class SmaragdantCrystalFeature extends DefaultFeature {
                     // if (touchesOpenSky(world, mut) && random.nextInt(100) < SURFACE_REJECT_CHANCE) {
                     //     continue;
                     // }
+                    boolean blocked = false;
                     for (int j = 0; j <= dist; j++) {
+                        if (j > 0 && !BuddingSmaragdantCrystalBlock.canShardGrowAtState(world.getBlockState(mut))) {
+                            // The column has grown past the validated floor into a block we didn't check -
+                            // could be natural stone, but could just as easily be a village wall or other
+                            // structure. Stop growing rather than overwrite it (see BigAuroraCrystalFeature's
+                            // replace function and canShardGrowAtState for the same guard elsewhere).
+                            blocked = true;
+                            break;
+                        }
                         if (random.nextInt(8) == 0) {
                             BlocksHelper.setWithoutUpdate(world, mut, buddingCrystal);
                             for (Direction k : BlocksHelper.HORIZONTAL) {
@@ -92,12 +103,14 @@ public class SmaragdantCrystalFeature extends DefaultFeature {
                         }
                         mut.setY(mut.getY() + 1);
                     }
-                    boolean waterlogged = !world.getFluidState(mut).isEmpty();
-                    BlocksHelper.setWithoutUpdate(
-                            world,
-                            mut,
-                            shard.setValue(BlockStateProperties.WATERLOGGED, waterlogged)
-                    );
+                    if (!blocked) {
+                        boolean waterlogged = !world.getFluidState(mut).isEmpty();
+                        BlocksHelper.setWithoutUpdate(
+                                world,
+                                mut,
+                                shard.setValue(BlockStateProperties.WATERLOGGED, waterlogged)
+                        );
+                    }
                 }
             }
         }

@@ -57,10 +57,6 @@ import org.jetbrains.annotations.NotNull;
 // we use a MultiRecipeInfo to hold both types of recipes and their inputs. And let
 //proxy function decide witch recipe to use based on the input type.
 record BlastingRecipeInfo(SingleRecipeInput input, RecipeHolder<? extends AbstractCookingRecipe> holder) {
-    public int growsResultBy() {
-        return 1;
-    }
-
     public int burnTimeMultiplicator() {
         return 2;
     }
@@ -71,10 +67,6 @@ record BlastingRecipeInfo(SingleRecipeInput input, RecipeHolder<? extends Abstra
 }
 
 record AlloyingRecipeInfo(AlloyingRecipeInput input, RecipeHolder<? extends AlloyingRecipe> holder) {
-    public int growsResultBy() {
-        return 3;
-    }
-
     public int burnTimeMultiplicator() {
         return 1;
     }
@@ -116,10 +108,6 @@ class MultiRecipeInfo {
 
     public boolean isBlasting() {
         return blasting != null;
-    }
-
-    public int growsResultBy() {
-        return isBlasting() ? blasting.growsResultBy() : alloying.growsResultBy();
     }
 
     public int burnTimeMultiplicator() {
@@ -520,7 +508,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
         if (recipeInfo != null) {
             ItemStack resultItem
                     = recipeInfo.holder().value().assemble(recipeInfo.input());
-            createResultItem(inventory, resultItem, recipeInfo.growsResultBy());
+            createResultItem(inventory, resultItem);
 
             inputState.inputA().shrink(1);
             inputState.inputB().shrink(1);
@@ -539,7 +527,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
     ) {
         if (recipeInfo != null) {
             ItemStack resultItem = recipeInfo.holder().value().assemble(recipeInfo.input());
-            createResultItem(inventory, resultItem, recipeInfo.growsResultBy());
+            createResultItem(inventory, resultItem);
 
             if (inputState.singleInput().is(Blocks.WET_SPONGE.asItem())
                     && !inventory.get(EndStoneSmelterMenu.FUEL_SLOT).isEmpty()
@@ -554,12 +542,18 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
         }
     }
 
-    private static void createResultItem(NonNullList<ItemStack> inventory, ItemStack resultItem, int growBy) {
+    /**
+     * Every craft is worth the recipe's own result count - the count an empty result slot is seeded
+     * with below, and the count recipe viewers show. The "same item in both input slots" bonus
+     * (ceil(2.5 x count)) is baked into those recipes by their {@code outputCount}, so it must not be
+     * applied a second time here.
+     */
+    private static void createResultItem(NonNullList<ItemStack> inventory, ItemStack resultItem) {
         ItemStack storedResults = inventory.get(EndStoneSmelterMenu.RESULT_SLOT);
         if (storedResults.isEmpty()) {
             inventory.set(EndStoneSmelterMenu.RESULT_SLOT, resultItem.copy());
         } else if (ItemStack.isSameItemSameComponents(storedResults, resultItem)) {
-            storedResults.grow(growBy);
+            storedResults.grow(resultItem.getCount());
         }
     }
 
@@ -583,7 +577,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
     ) {
         if (recipeInfo.holder() != null && inputState.hasBothInputs()) {
             ItemStack resultItem = recipeInfo.holder().value().assemble(recipeInfo.input());
-            return canStore(inventory, maxStackSize, resultItem, 3);
+            return canStore(inventory, maxStackSize, resultItem);
         } else {
             return false;
         }
@@ -598,7 +592,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
     ) {
         if (recipeInfo.holder() != null && inputState.hasOneInput()) {
             ItemStack resultItem = recipeInfo.holder().value().assemble(recipeInfo.input());
-            return canStore(inventory, maxStackSize, resultItem, 1);
+            return canStore(inventory, maxStackSize, resultItem);
         } else {
             return false;
         }
@@ -607,8 +601,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
     private static boolean canStore(
             NonNullList<ItemStack> inventory,
             int maxStackSize,
-            ItemStack resultItem,
-            int growBy
+            ItemStack resultItem
     ) {
         if (resultItem.isEmpty()) {
             return false;
@@ -619,7 +612,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
             } else if (!ItemStack.isSameItemSameComponents(storedResults, resultItem)) {
                 return false;
             } else {
-                int newCount = storedResults.getCount() + growBy;
+                int newCount = storedResults.getCount() + resultItem.getCount();
                 return newCount < maxStackSize
                         && newCount < storedResults.getMaxStackSize()
                         || newCount < resultItem.getMaxStackSize();

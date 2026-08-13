@@ -37,6 +37,21 @@ public class EndTags {
     );
     public static final TagKey<Item> ANVIL_DIAMOND_TOOL = TagManager.ITEMS.makeTag(BetterEnd.C, "anvil_tool/diamond");
 
+    /**
+     * Everything that counts as a piece of the Crystalite set, checked per slot by
+     * {@link org.betterx.betterend.item.CrystaliteArmor#hasFullSet}.
+     * <p>
+     * Membership is the only thing this tag decides: wearing four tagged items across head, chest, legs
+     * and feet grants the set bonus. It does not grant the per-piece effects - those still come from the
+     * items themselves via {@link org.betterx.betterend.interfaces.MobEffectApplier} - so a pack can add
+     * its own pieces here and get the set bonus without also inheriting Dig Speed, Swiftness and the
+     * rest. A pack that considers the elytra too strong can equally drop it with {@code "replace": true}.
+     * <p>
+     * Both call sites read the tag at runtime (entity ticking, tooltip rendering), never during
+     * registration, so no tag lookup happens before the tags are bound.
+     */
+    public static final TagKey<Item> CRYSTALITE_SET = TagManager.ITEMS.makeTag(BetterEnd.C, "armor_set/crystalite");
+
 
     public static final TagKey<Block> BONEMEAL_SOURCE_DRAGON_BONE = TagManager.BLOCKS.makeTag(
             BetterEnd.C,

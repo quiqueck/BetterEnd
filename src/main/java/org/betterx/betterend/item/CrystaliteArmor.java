@@ -2,6 +2,7 @@ package org.betterx.betterend.item;
 
 import org.betterx.betterend.effects.EndStatusEffects;
 import org.betterx.betterend.item.material.EndArmorTier;
+import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.trait.item.EndArmorItemTraitBuilder;
 import de.ambertation.wover.complex.api.equipment.ArmorSlot;
 import de.ambertation.wover.item.api.ArmorItemDefinition;
@@ -16,7 +17,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
 public class CrystaliteArmor extends Item {
     protected static <I extends CrystaliteArmor> ItemDefinition<I, ?> crystaliteArmorDefinition(
@@ -26,10 +26,12 @@ public class CrystaliteArmor extends Item {
             ArmorItemDefinition.ItemFactory<I> factory
     ) {
         return registry.defineArmorItem(name, factory)
-                       .addTrait(EndArmorItemTraitBuilder.BUILDER.with(slot, EndArmorTier.CRYSTALITE));
+                       .addTrait(EndArmorItemTraitBuilder.BUILDER.with(slot, EndArmorTier.CRYSTALITE))
+                       .addTags(EndTags.CRYSTALITE_SET);
     }
 
     public final static MutableComponent CHEST_DESC;
+    public final static MutableComponent ELYTRA_DESC;
     public final static MutableComponent BOOTS_DESC;
     public final static MutableComponent HELMET_DESC;
     public final static MutableComponent LEGGINGS_DESC;
@@ -45,10 +47,15 @@ public class CrystaliteArmor extends Item {
             EquipmentSlot.FEET
     };
 
+    /**
+     * Set membership is decided by {@link EndTags#CRYSTALITE_SET}, not by this class. The elytra is a
+     * chest-slot item that cannot extend {@code CrystaliteArmor} (both are {@link Item} subclasses), and
+     * a marker interface would have kept the answer locked in code; the tag lets packs both add pieces
+     * and remove ours.
+     */
     public static boolean hasFullSet(LivingEntity owner) {
         for (EquipmentSlot slot : SET_SLOTS) {
-            ItemStack armorStack = owner.getItemBySlot(slot);
-            if (!(armorStack.getItem() instanceof CrystaliteArmor)) {
+            if (!owner.getItemBySlot(slot).is(EndTags.CRYSTALITE_SET)) {
                 return false;
             }
         }
@@ -65,6 +72,8 @@ public class CrystaliteArmor extends Item {
         Style descStyle = Style.EMPTY.applyFormats(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC);
         CHEST_DESC = Component.translatable("tooltip.armor.crystalite_chest");
         CHEST_DESC.setStyle(descStyle);
+        ELYTRA_DESC = Component.translatable("tooltip.armor.crystalite_elytra");
+        ELYTRA_DESC.setStyle(descStyle);
         BOOTS_DESC = Component.translatable("tooltip.armor.crystalite_boots");
         BOOTS_DESC.setStyle(descStyle);
         HELMET_DESC = Component.translatable("tooltip.armor.crystalite_helmet");

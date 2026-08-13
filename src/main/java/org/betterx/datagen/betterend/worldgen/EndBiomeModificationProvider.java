@@ -24,6 +24,34 @@ public class EndBiomeModificationProvider extends WoverRegistryContentProvider<B
 
     @Override
     protected void bootstrap(BootstrapContext<BiomeModification> context) {
+        // Split off the ores, and PREPENDED, because the two halves need opposite insert positions - see
+        // FeaturePosition, and BetterEnd#596 for the crash the wrong one causes.
+        //
+        // UNDERGROUND_ORES is empty in every vanilla End biome, so in BetterEnd's own biomes these three are
+        // the whole step and anything a third-party mod adds to it lands behind them. TechReborn adds four
+        // End ores there through Fabric's biome modification API, which runs before ours: appending here put
+        // them in front of our ores in vanilla's End biomes while our own biomes still had ours in front,
+        // and vanilla's FeatureSorter rejects that contradiction by refusing to generate the whole
+        // dimension. Prepending keeps our three leading in every End biome, foreign ones included.
+        BiomeModification
+                .build(context, BetterEnd.C.id("default_ores"))
+                .allOf(
+                        BiomePredicate.not(BiomePredicate.inNamespace(BetterEnd.C)),
+                        BiomePredicate.anyOf(
+                                BiomePredicate.hasTag(CommonBiomeTags.IS_END_BARRENS),
+                                BiomePredicate.hasTag(CommonBiomeTags.IS_END_MIDLAND),
+                                BiomePredicate.hasTag(CommonBiomeTags.IS_END_HIGHLAND)
+                        )
+                )
+                .prependFeatures()
+                .addFeature(EndOreFeatures.FLAVOLITE_LAYER)
+                .addFeature(EndOreFeatures.THALLASIUM_ORE)
+                .addFeature(EndOreFeatures.ENDER_ORE)
+                .register();
+
+        // The crashed ship stays APPENDED, for the same reason the ores must not be: it sits behind
+        // minecraft:end_gateway_return in BetterEnd's own SURFACE_STRUCTURES step, so it has to stay behind
+        // it in the foreign biomes that have that feature too.
         BiomeModification
                 .build(context, BetterEnd.C.id("defaults"))
                 .allOf(
@@ -34,9 +62,6 @@ public class EndBiomeModificationProvider extends WoverRegistryContentProvider<B
                                 BiomePredicate.hasTag(CommonBiomeTags.IS_END_HIGHLAND)
                         )
                 )
-                .addFeature(EndOreFeatures.FLAVOLITE_LAYER)
-                .addFeature(EndOreFeatures.THALLASIUM_ORE)
-                .addFeature(EndOreFeatures.ENDER_ORE)
                 .addFeature(EndTerrainFeatures.CRASHED_SHIP)
                 .register();
 
@@ -53,6 +78,10 @@ public class EndBiomeModificationProvider extends WoverRegistryContentProvider<B
                         BiomePredicate.not(BiomePredicate.inNamespace(BetterEnd.C)),
                         BiomePredicate.hasTag(BiomeTags.IS_END)
                 )
+                // Prepended for the same reason as the ores above: UNDERGROUND_DECORATION is empty in vanilla's
+                // End biomes, so the coat is the whole step in BetterEnd's own biomes and has to lead in the
+                // foreign ones too.
+                .prependFeatures()
                 .addFeature(EndPlacedCaveFeatures.CAVE_SURFACE_COAT)
                 .register();
 

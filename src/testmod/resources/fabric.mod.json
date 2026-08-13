@@ -37,7 +37,8 @@
       "org.betterx.betterend.testmod.gametest.AnvilRecipeGameTest",
       "org.betterx.betterend.testmod.gametest.FlowerPotGameTest",
       "org.betterx.betterend.testmod.gametest.PallidiumGrowthGameTest",
-      "org.betterx.betterend.testmod.gametest.LakePieceConcurrentHeightCacheGameTest"
+      "org.betterx.betterend.testmod.gametest.LakePieceConcurrentHeightCacheGameTest",
+      "org.betterx.betterend.testmod.gametest.ComposterGameTest"
     ]
   },
   "mixins": [

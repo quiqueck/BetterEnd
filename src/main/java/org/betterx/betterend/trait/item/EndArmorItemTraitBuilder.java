@@ -29,10 +29,10 @@ public class EndArmorItemTraitBuilder extends AbstractItemTraitBuilder.Generic {
     }
 
     /**
-     * Humanoid armor, using the tier's declared defense and toughness as-is (divider 1).
+     * Humanoid armor, using the tier's declared defense and toughness as-is.
      * <p>
-     * The dividers exist for pieces that deliberately trade protection away - the armored elytras, which
-     * pass their own - not for regular armor. Applying one here would make the numbers declared on the
+     * The overrides exist for pieces that deliberately trade protection away - the armored elytras, which
+     * pass their own - not for regular armor. Setting one here would make the numbers declared on the
      * {@link net.minecraft.world.item.equipment.ArmorMaterial} a lie, and would put the tier below the
      * vanilla material it is built on.
      */
@@ -41,7 +41,7 @@ public class EndArmorItemTraitBuilder extends AbstractItemTraitBuilder.Generic {
     ) {
         return with(
                 slot, tier,
-                1.0f, 1.0f,
+                null, null,
                 0.0f, true
         );
     }
@@ -52,46 +52,52 @@ public class EndArmorItemTraitBuilder extends AbstractItemTraitBuilder.Generic {
     ) {
         return with(
                 slot, tier,
-                1.0f, 1.0f,
+                null, null,
                 knockbackResistance, true
         );
     }
 
+    /**
+     * @param defense   armor points this piece grants, or {@code null} to use the material's own value
+     *                  for this slot. Authored outright rather than derived: these are read straight off
+     *                  the tooltip, so they have to be numbers a player recognises.
+     * @param toughness armor toughness, or {@code null} for the material's own.
+     */
     public @Nullable List<ItemTrait<?, ?>> with(
             ArmorSlot slot, ArmorTier tier,
-            float defenseDivider,
-            float toughnessDivider,
+            @Nullable Float defense,
+            @Nullable Float toughness,
             float knockbackResistance,
             boolean fireproof
     ) {
         if (fireproof) {
             return combine(
-                    new Trait(slot, tier, defenseDivider, toughnessDivider, knockbackResistance),
+                    new Trait(slot, tier, defense, toughness, knockbackResistance),
                     ItemTraits.IS_FIREPROOF.withDefault()
             );
         }
         return combine(
-                new Trait(slot, tier, defenseDivider, toughnessDivider, knockbackResistance)
+                new Trait(slot, tier, defense, toughness, knockbackResistance)
         );
     }
 
     private class Trait extends ItemTraitImpl.Generic {
         private final ArmorSlot slot;
         private final ArmorTier tier;
-        private final float defenseDivider;
-        private final float toughnessDivider;
+        private final @Nullable Float defense;
+        private final @Nullable Float toughness;
         private final float knockbackResistance;
 
         Trait(
                 ArmorSlot slot,
                 ArmorTier tier,
-                float defenseDivider, float toughnessDivider,
+                @Nullable Float defense, @Nullable Float toughness,
                 float knockbackResistance
         ) {
             this.slot = slot;
             this.tier = tier;
-            this.defenseDivider = defenseDivider;
-            this.toughnessDivider = toughnessDivider;
+            this.defense = defense;
+            this.toughness = toughness;
             this.knockbackResistance = knockbackResistance;
         }
 
@@ -132,41 +138,53 @@ public class EndArmorItemTraitBuilder extends AbstractItemTraitBuilder.Generic {
                 // material's declared defense verbatim per slot, so Crystalite does too.
                 final EquipmentSlotGroup slotGroup = EquipmentSlotGroup.bySlot(ArmorSlot.toEquipmentSlot(slot));
 
-                if (defenseDivider > 0) {
+                // A piece that trades protection away states the value it lands on, rather than a factor
+                // to divide the material's by. Dividers produced 6.666666 armor and 0.96 toughness, and
+                // a player reading that off a tooltip sees noise, not a deliberate trade.
+                final double armorValue = defense != null
+                        ? defense
+                        : tier.armorMaterial.defense().getOrDefault(slot.armorType, 0);
+
+                if (armorValue > 0) {
                     definition.addAttribute(
                             Attributes.ARMOR,
                             new AttributeModifier(
                                     armorBoostId(slot),
-                                    (double) tier.armorMaterial
-                                            .defense().getOrDefault(slot.armorType, 0) / defenseDivider,
+                                    armorValue,
                                     AttributeModifier.Operation.ADD_VALUE
                             ),
                             slotGroup
                     );
                 }
 
-                if (toughnessDivider > 0) {
+                final double toughnessValue = toughness != null
+                        ? toughness
+                        : tier.armorMaterial.toughness();
+
+                if (toughnessValue > 0) {
                     definition.addAttribute(
                             Attributes.ARMOR_TOUGHNESS,
                             new AttributeModifier(
                                     toughnessBoostId(slot),
-                                    tier.armorMaterial
-                                            .toughness() / toughnessDivider,
+                                    toughnessValue,
                                     AttributeModifier.Operation.ADD_VALUE
                             ),
                             slotGroup
                     );
                 }
 
+                // Same slot group as the armor above, for the same reason: bound to MAINHAND this only
+                // applied while the piece was *held*, which for a chestplate or an elytra is never. It
+                // was silently inert on both elytras, the only two callers that pass a value.
                 if (knockbackResistance > 0.0f) {
                     definition.addAttribute(
                             Attributes.KNOCKBACK_RESISTANCE,
                             new AttributeModifier(
-                                    BASE_KNOCKBACK_RESISTANCE,
+                                    knockbackBoostId(slot),
                                     knockbackResistance,
                                     AttributeModifier.Operation.ADD_VALUE
                             ),
-                            EquipmentSlotGroup.MAINHAND
+                            slotGroup
                     );
                 }
             } else {

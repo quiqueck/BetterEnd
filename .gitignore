@@ -39,3 +39,5 @@ override/
 /modrinth.json
 /tools/
 .DS_Store
+
+logs/latest.log

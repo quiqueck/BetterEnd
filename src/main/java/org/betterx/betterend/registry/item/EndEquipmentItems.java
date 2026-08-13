@@ -44,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndEntities;
 import org.betterx.betterend.registry.EndSounds;
+import org.betterx.betterend.registry.EndTags;
 
 public class EndEquipmentItems {
     public static final AeterniumSet AETERNIUM_SET = new AeterniumSet();
@@ -73,7 +74,13 @@ public class EndEquipmentItems {
             .addTrait(EndArmorItemTraitBuilder.BUILDER.with(
                     ArmorSlot.CHESTPLATE_SLOT,
                     EndArmorTier.AETERNIUM_ELYTRA,
-                    1.15f, 1.15f, 0.5f,
+                    // Under the Aeternium chestplate's 9 armor / 3.5 toughness, which is the price of
+                    // flight. Stated outright: dividing the chestplate's values by 1.15 landed on
+                    // 7.826086 and 3.043478, and a tooltip is no place for six decimals.
+                    // 0.5 knockback resistance until the modifier was bound to the slot it is worn in;
+                    // it had never applied, and live it would have beaten a full netherite set (4 x 0.1)
+                    // off one item. Now the Aeternium material's own declared value, as vanilla does it.
+                    7.5f, 3.0f, 0.2f,
                     true
             ))
             .durability(900)
@@ -83,15 +90,22 @@ public class EndEquipmentItems {
     public static final Item CRYSTALITE_ELYTRA = EndItems.getItemRegistry()
             .defineArmorItem(
                     "elytra_crystalite",
-                    (def) -> new ArmoredElytra(1.0, def)
+                    (def) -> new CrystaliteElytra(1.0, def)
             )
             .addTrait(ItemTraits.ELYTRA_ITEM.with(EndResourceItems.ENCHANTED_MEMBRANE))
             .addTrait(EndArmorItemTraitBuilder.BUILDER.with(
                     ArmorSlot.CHESTPLATE_SLOT,
                     EndArmorTier.CRYSTALITE_ELYTRA,
-                    1.2f, 1.25f, 0.5f,
-                    false
+                    // Under the Crystalite chestplate's 8 armor / 1.2 toughness - reduced protection is
+                    // the price of flight and stays. Stated outright rather than divided, see the
+                    // Aeternium elytra above: the old factors landed on 6.666666 and 0.96.
+                    // The fireproof flag is not part of that trade - every other Crystalite piece is
+                    // fireproof, and so is the Aeternium elytra, which left this one as the only
+                    // exception. Knockback resistance is the Crystalite material's own value now.
+                    6.5f, 1.0f, 0.1f,
+                    true
             ))
+            .addTags(EndTags.CRYSTALITE_SET)
             .durability(650)
             .rarity(Rarity.EPIC)
             .buildAndRegister();

@@ -26,7 +26,14 @@ public class StalactiteFeature extends Feature<StalactiteFeatureConfig> {
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         final StalactiteFeatureConfig cfg = featureConfig.config();
-        if (!cfg.allowedGround.test(world, cfg.ceiling ? pos.above() : pos.below())) {
+        final BlockPos groundPos = cfg.ceiling ? pos.above() : pos.below();
+        if (!cfg.allowedGround.test(world, groundPos)) {
+            return false;
+        }
+        // The ground check only confirms the material is end stone, but the village structure (and
+        // others) is built with plain end stone for its floors - see SmaragdantCrystalFeature's matching
+        // guard. Skip growth anchored on a structure so stalactites don't sprout inside player buildings.
+        if (world.getLevel().structureManager().hasAnyStructureAt(groundPos)) {
             return false;
         }
 

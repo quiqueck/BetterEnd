@@ -28,12 +28,19 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
  * span crosses, and each of those chunks writes only its own slice during {@code postProcess} via
  * {@link ChunkAccess} (world coordinates outside the current chunk are masked away by {@code ChunkAccess}).
  * <p>
- * Geometry (all derived from the endpoints + seed, so every chunk agrees without cross-chunk reads):
- * a 3-wide deck following a gentle upward arch between the endpoint heights, end-stone-brick-wall
- * railings on both edges (with ~20% ruined gaps), a 1-block brick underside, brick support pillars
- * every 8 blocks where terrain sits within 12 blocks below the deck, and 5-wide ramp landings seated
- * into the terrain at each end. Deck blocks replace only air/replaceable columns (mid-span columns that
- * would clip into solid terrain are skipped); landings are the sole exception and seat onto the ground.
+ * The footprint itself lives in {@link EndBridgeGeometry} (endpoints only, no world reads, so every
+ * chunk agrees without cross-chunk reads). On top of it this piece writes: a 5-column deck following a
+ * gentle upward arch between the endpoint heights, end-stone-brick-wall railings on the outer ring only
+ * (with ~20% ruined gaps), a 1-block brick underside, brick support pillars every 8 blocks where terrain
+ * sits within 12 blocks below the deck, and wider ramp landings seated into the terrain at each end.
+ * Deck blocks replace only air/replaceable columns (mid-span columns that would clip into solid terrain
+ * are skipped); landings are the sole exception and seat onto the ground.
+ * <p>
+ * Two rules keep a ruined bridge crossable. Railings go only on columns that
+ * {@link EndBridgeGeometry#isEdge} reports as the outer ring, which leaves the 3-wide interior
+ * continuously walkable at any bridge angle (see EndBridgeWalkwayTest). And the erosion pass that drops
+ * ~5% of the deck surface never drops the underside of the same column, so an eroded spot is a shallow
+ * dip rather than a hole through the deck.
  */
 public class EndBridgePiece extends BasePiece {
     private static final BlockState DECK = Blocks.END_STONE_BRICKS.defaultBlockState();
@@ -43,13 +50,13 @@ public class EndBridgePiece extends BasePiece {
             EndStoneBlocks.END_STONE_BRICK_VARIATIONS.getBlock(StoneSlots.WEATHERED_SOURCE).defaultBlockState();
     private static final BlockState RAILING = Blocks.END_STONE_BRICK_WALL.defaultBlockState();
 
-    private static final int LANDING_LEN = 4;   // last N blocks of each end widen into a ramp landing
     private static final int PILLAR_SPACING = 8;
     private static final int PILLAR_MAX_DROP = 12;
 
     private static final float WEATHERED_CHANCE = 0.10f;
     private static final float CRACKED_CHANCE = 0.15f; // applied after weathered
     private static final float RAILING_GAP_CHANCE = 0.20f;
+    private static final float EROSION_CHANCE = 0.05f;
 
     private BlockPos start;
     private BlockPos end;
@@ -130,36 +137,23 @@ public class EndBridgePiece extends BasePiece {
         final int z1 = Math.min(boundingBox.maxZ(), sz + 15);
         if (x0 > x1 || z0 > z1) return;
 
-        final double ax = start.getX() + 0.5;
-        final double az = start.getZ() + 0.5;
-        final double ay = start.getY();
-        final double by = end.getY();
-        final double dxSeg = (end.getX() + 0.5) - ax;
-        final double dzSeg = (end.getZ() + 0.5) - az;
-        final double segLenSq = dxSeg * dxSeg + dzSeg * dzSeg;
-        if (segLenSq < 1.0) return;
-        final double spanLen = Math.sqrt(segLenSq);
-        final double rise = Mth.clamp(spanLen / 20.0, 2.0, 5.0);
+        final EndBridgeGeometry span = new EndBridgeGeometry(start, end);
+        if (span.lengthSq() < 1.0) return;
 
         final MutableBlockPos POS = new MutableBlockPos();
 
         for (int x = x0; x <= x1; x++) {
             for (int z = z0; z <= z1; z++) {
                 // Project column centre onto the span.
-                double t = ((x + 0.5 - ax) * dxSeg + (z + 0.5 - az) * dzSeg) / segLenSq;
-                final double tc = Mth.clamp(t, 0.0, 1.0);
-                final double cx = ax + tc * dxSeg;
-                final double cz = az + tc * dzSeg;
-                final double perp = Math.sqrt((x + 0.5 - cx) * (x + 0.5 - cx) + (z + 0.5 - cz) * (z + 0.5 - cz));
-
-                final double along = tc * spanLen;
-                final double distEnd = Math.min(along, spanLen - along);
-                final boolean landing = distEnd < LANDING_LEN;
-                final double halfWidth = landing ? 2.0 : 1.0; // deck width 5 (ramp) or 3
+                final double tc = span.t(x, z);
+                final double perp = span.perp(x, z, tc);
+                final boolean landing = span.isLanding(tc);
+                final double halfWidth = span.halfWidth(tc);
 
                 if (perp > halfWidth + 0.5) continue; // outside the deck footprint
 
-                final int deckY = Mth.floor(Mth.lerp(tc, ay, by) + rise * 4.0 * tc * (1.0 - tc) + 0.5);
+                final double along = span.along(tc);
+                final int deckY = span.deckY(tc);
 
                 // Deterministic, chunk-independent per-column RNG so neighbouring chunks agree.
                 final RandomSource colRandom = RandomSource.create(
@@ -167,6 +161,12 @@ public class EndBridgePiece extends BasePiece {
                                 ^ ((long) x * 0x9E3779B97F4A7C15L)
                                 ^ ((long) z * 0xC2B2AE3D27D4EB4FL)
                 );
+
+                // Erosion: ~5% of the deck surface is missing, another ~5% of the underside. Never both
+                // in the same column, so an eroded column is a shallow dip instead of a hole to fall
+                // through.
+                final boolean erodeDeck = colRandom.nextFloat() < EROSION_CHANCE;
+                final boolean erodeUnderside = !erodeDeck && colRandom.nextFloat() < EROSION_CHANCE;
 
                 // Mid-span columns that would clip into a hill are skipped (bridge is clipped naturally).
                 // Landings are the exception: they seat onto the terrain at the endpoints.
@@ -178,14 +178,16 @@ public class EndBridgePiece extends BasePiece {
                 }
 
                 // ---- Deck ------------------------------------------------------------------------
+                boolean deckPlaced = false;
                 POS.set(x, deckY, z);
-                if (landing || isReplaceable(chunk.getBlockState(POS))) {
+                if (!erodeDeck && (landing || isReplaceable(chunk.getBlockState(POS)))) {
                     chunk.setBlockState(POS, deckMaterial(colRandom), 3);
+                    deckPlaced = true;
                 }
 
                 // ---- Underside (1 block thick) ---------------------------------------------------
                 POS.setY(deckY - 1);
-                if (isReplaceable(chunk.getBlockState(POS))) {
+                if (!erodeUnderside && isReplaceable(chunk.getBlockState(POS))) {
                     chunk.setBlockState(POS, deckMaterial(colRandom), 3);
                 }
 
@@ -197,9 +199,10 @@ public class EndBridgePiece extends BasePiece {
                     }
                 }
 
-                // ---- Railings (edge columns of the 3-wide deck, ~20% ruined gaps) ---------------
-                final boolean edge = perp > halfWidth - 0.5;
-                if (edge && !landing) {
+                // ---- Railings (outer ring of the deck only, ~20% ruined gaps) -------------------
+                // Restricting them to edge columns keeps the interior walkable at every bridge angle;
+                // a railing without deck under it (eroded away) is dropped as well.
+                if (!landing && deckPlaced && span.isEdge(x, z)) {
                     POS.setY(deckY + 1);
                     if (colRandom.nextFloat() >= RAILING_GAP_CHANCE && isReplaceable(chunk.getBlockState(POS))) {
                         chunk.setBlockState(POS, RAILING, 3);

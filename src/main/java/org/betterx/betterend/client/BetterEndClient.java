@@ -68,7 +68,9 @@ public class BetterEndClient implements ClientModInitializer {
 
     public static void registerTooltips() {
         ItemTooltipCallback.EVENT.register((player, stack, context, lines) -> {
-            if (stack.getItem() instanceof CrystaliteArmor) {
+            // Same tag hasFullSet consults, so the "Set bonus" line follows whatever a pack has put in
+            // it - including the Crystalite elytra, which is why it now advertises its membership too.
+            if (stack.is(EndTags.CRYSTALITE_SET)) {
                 boolean hasSet = false;
                 if (player != null) {
                     hasSet = CrystaliteArmor.hasFullSet(player);

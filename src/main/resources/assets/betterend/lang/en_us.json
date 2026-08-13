@@ -1120,6 +1120,7 @@
   "title.config.group.betterend.generator": "End Generator",
   "tooltip.armor.crystalite_boots": "Effect: Swiftness I",
   "tooltip.armor.crystalite_chest": "Effect: Dig Speed I",
+  "tooltip.armor.crystalite_elytra": "Set piece: less protection than the Chestplate",
   "tooltip.armor.crystalite_helmet": "Effect: Blindness Immunity",
   "tooltip.armor.crystalite_leggings": "Effect: Max Health +4",
   "tooltip.armor.crystalite_set": "Set bonus: Regeneration I",

@@ -134,6 +134,96 @@ public class CrystaliteEffectGameTest {
     }
 
     /**
+     * The Crystalite elytra is a set piece: worn in the chest slot it completes the set exactly as the
+     * chestplate does. The control is the Aeternium elytra, which must not - it is a different material
+     * and deliberately outside {@code EndTags.CRYSTALITE_SET}, so a failure here means the tag has been
+     * widened to "any BetterEnd elytra".
+     */
+    @GameTest(maxTicks = 200)
+    public void crystaliteElytraCompletesSet(GameTestHelper helper) {
+        final Villager withElytra = wearing(
+                helper, SUBJECT,
+                EndEquipmentItems.CRYSTALITE_HELMET,
+                EndEquipmentItems.CRYSTALITE_ELYTRA,
+                EndEquipmentItems.CRYSTALITE_LEGGINGS,
+                EndEquipmentItems.CRYSTALITE_BOOTS
+        );
+        final Villager wrongElytra = wearing(
+                helper, CONTROL,
+                EndEquipmentItems.CRYSTALITE_HELMET,
+                EndEquipmentItems.ARMORED_ELYTRA,
+                EndEquipmentItems.CRYSTALITE_LEGGINGS,
+                EndEquipmentItems.CRYSTALITE_BOOTS
+        );
+
+        helper.startSequence()
+              .thenIdle(SETTLE_TICKS)
+              .thenExecute(() -> {
+                  final List<String> failures = new ArrayList<>();
+                  requireEffect(withElytra, MobEffects.REGENERATION, "crystalite elytra in the set", failures);
+                  if (wrongElytra.hasEffect(MobEffects.REGENERATION)) {
+                      failures.add("the Aeternium elytra also completed a Crystalite set");
+                  }
+                  failIfAny(helper, "Crystalite elytra set membership regression", failures);
+              })
+              .thenSucceed();
+    }
+
+    /**
+     * The elytra's own chest-slot effect, the counterpart to {@link #chestplateGrantsDigSpeed}. The
+     * Aeternium elytra is again the control: it implements no {@code MobEffectApplier} at all.
+     */
+    @GameTest(maxTicks = 200)
+    public void crystaliteElytraGrantsDigSpeed(GameTestHelper helper) {
+        final Villager subject = wearing(helper, SUBJECT, EndEquipmentItems.CRYSTALITE_ELYTRA);
+        final Villager control = wearing(helper, CONTROL, EndEquipmentItems.ARMORED_ELYTRA);
+
+        helper.startSequence()
+              .thenIdle(SETTLE_TICKS)
+              .thenExecute(() -> {
+                  final List<String> failures = new ArrayList<>();
+                  requireEffect(subject, MobEffects.HASTE, "crystalite_elytra", failures);
+                  if (control.hasEffect(MobEffects.HASTE)) {
+                      failures.add("control: the Aeternium elytra also granted Haste");
+                  }
+                  failIfAny(helper, "Crystalite elytra stopped granting Dig Speed", failures);
+              })
+              .thenSucceed();
+    }
+
+    /**
+     * The other half of the deal, and the reason the effects above are not simply a free upgrade: the
+     * elytra must stay strictly below the chestplate defensively. Both bounds matter - if it ever
+     * reaches the chestplate the flight is free, and if it drops to zero the dividers have been
+     * misapplied rather than tuned.
+     */
+    @GameTest(maxTicks = 200)
+    public void crystaliteElytraKeepsReducedProtection(GameTestHelper helper) {
+        final Villager elytra = wearing(helper, SUBJECT, EndEquipmentItems.CRYSTALITE_ELYTRA);
+        final Villager chestplate = wearing(helper, CONTROL, EndEquipmentItems.CRYSTALITE_CHESTPLATE);
+
+        helper.startSequence()
+              .thenIdle(20)
+              .thenExecute(() -> {
+                  final List<String> failures = new ArrayList<>();
+                  final double elytraArmor = elytra.getAttributeValue(Attributes.ARMOR);
+                  final double chestplateArmor = chestplate.getAttributeValue(Attributes.ARMOR);
+
+                  if (elytraArmor <= 0.0) {
+                      failures.add("the Crystalite elytra measured " + elytraArmor
+                              + " armor - it should be reduced, not absent");
+                  } else if (elytraArmor >= chestplateArmor) {
+                      failures.add("the Crystalite elytra measured " + elytraArmor
+                              + " armor against the chestplate's " + chestplateArmor
+                              + " - flight is supposed to cost protection");
+                  }
+
+                  failIfAny(helper, "Crystalite elytra armor trade regression", failures);
+              })
+              .thenSucceed();
+    }
+
+    /**
      * The Crystalite helmet's blindness resistance, asserted both as the attribute value and as the
      * behaviour that attribute is supposed to produce, against a bare-headed control.
      */

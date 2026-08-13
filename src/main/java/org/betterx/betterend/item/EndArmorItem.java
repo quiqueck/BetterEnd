@@ -35,6 +35,15 @@ public class EndArmorItem extends Item {
         return BetterEnd.C.mk("toughness_boost_" + slot.name);
     }
 
+    /**
+     * Per-slot knockback resistance modifier id. Only chest-slot pieces use it today, so the single
+     * shared {@link #BASE_KNOCKBACK_RESISTANCE} it replaced could not yet collide - but it would the
+     * moment a second slot passed a value, in exactly the way {@link #armorBoostId(ArmorSlot)} describes.
+     */
+    public static Identifier knockbackBoostId(ArmorSlot slot) {
+        return BetterEnd.C.mk("knockback_boost_" + slot.name);
+    }
+
     public static Properties createDefaultEndArmorSettings(ArmorSlot slot, ArmorTier tier) {
         var values = tier.getValues(slot);
         if (values == null) {

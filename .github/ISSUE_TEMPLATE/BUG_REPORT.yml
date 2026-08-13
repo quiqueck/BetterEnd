@@ -28,7 +28,7 @@ body:
     attributes:
       label: BetterEnd
       description: What version of BetterEnd are you running?
-      placeholder: 26.201.1
+      placeholder: 26.201.2
     validations:
       required: true
   - type: input
@@ -36,7 +36,7 @@ body:
     attributes:
       label: BCLib
       description: What version of BCLib are you running?
-      placeholder: 26.201.1
+      placeholder: 26.201.2
     validations:
       required: true
   - type: input
@@ -44,7 +44,7 @@ body:
     attributes:
       label: WorldWeaver (Wover)
       description: What version of WorldWeaver are you running?
-      placeholder: 26.201.1
+      placeholder: 26.201.2
     validations:
       required: true
   - type: input

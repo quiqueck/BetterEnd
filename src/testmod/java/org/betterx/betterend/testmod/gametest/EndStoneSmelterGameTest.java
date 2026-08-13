@@ -3,6 +3,8 @@ package org.betterx.betterend.testmod.gametest;
 import org.betterx.betterend.blocks.entities.EndStoneSmelterBlockEntity;
 import org.betterx.betterend.client.gui.EndStoneSmelterMenu;
 import org.betterx.betterend.registry.block.EndFunctionalBlocks;
+import org.betterx.betterend.registry.block.EndMetalBlocks;
+import org.betterx.betterend.registry.item.EndResourceItems;
 import org.betterx.bclib.recipes.AlloyingRecipe;
 import org.betterx.bclib.recipes.AlloyingRecipeInput;
 
@@ -118,8 +120,10 @@ public class EndStoneSmelterGameTest {
 
     /**
      * Two-input path: iron ore in both slots matches {@code additional_iron}
-     * ({@code EndTags#ALLOYING_IRON} contains iron ore/deepslate iron ore/raw iron), which grows the
-     * result by 3 per the block entity's {@code AlloyingRecipeInfo.growsResultBy()}.
+     * ({@code EndTags#ALLOYING_IRON} contains iron ore/deepslate iron ore/raw iron), which yields the
+     * recipe's own {@code outputCount(3)} - the same-item bonus of {@code ceil(2.5 x 1)} is baked into
+     * the recipe by {@link org.betterx.datagen.betterend.recipes.AlloyingRecipesProvider}, not applied
+     * at runtime, so that recipe viewers show what the block actually hands out.
      */
     @GameTest(maxTicks = 600)
     public void alloyingPathTriplesTheResult(GameTestHelper helper) {
@@ -149,6 +153,58 @@ public class EndStoneSmelterGameTest {
                               + result.getCount());
                   }
                   failIfAny(helper, "End Stone Smelter alloying-path regression", failures);
+              })
+              .thenSucceed();
+    }
+
+    /**
+     * Regression test for <a href="https://github.com/quiqueck/BetterEnd/issues/597">#597</a>: every craft
+     * has to be worth the recipe's own result count, not just the first one.
+     * <p>
+     * {@code AlloyingRecipeInfo.growsResultBy()} used to return a hardcoded {@code 3}, while
+     * {@code createResultItem} seeds an <em>empty</em> result slot with {@code assemble()}'s stack - the
+     * true count. The first craft was therefore correct and every craft after it added 3 regardless of
+     * the recipe. It went unnoticed because the four {@code additional_*} recipes declare
+     * {@code outputCount(3)}, so the constant happened to match them; the three recipes that declare
+     * {@code outputCount(1)} - terminite (both variants) and aeternium - duplicated instead, at roughly
+     * 3x, and cascaded into everything crafted from them.
+     * <p>
+     * Two iron ingots and two ender dust are two {@code terminite_ingot} crafts and must be worth exactly
+     * 2 ingots. Before the fix this produced 4 (1, then +3). Deliberately asserted on a
+     * {@code outputCount(1)} recipe: no {@code additional_*} recipe can catch this, and neither can a
+     * single craft of anything.
+     */
+    @GameTest(maxTicks = 1200)
+    public void alloyingGrowsByTheRecipeCountOnEveryCraft(GameTestHelper helper) {
+        helper.setBlock(SMELTER_POS, EndFunctionalBlocks.END_STONE_SMELTER);
+        final EndStoneSmelterBlockEntity smelter = smelter(helper);
+
+        smelter.setItem(EndStoneSmelterMenu.FUEL_SLOT, new ItemStack(Items.COAL_BLOCK, 64));
+        smelter.setItem(EndStoneSmelterMenu.INGREDIENT_SLOT_A, new ItemStack(Items.IRON_INGOT, 2));
+        smelter.setItem(EndStoneSmelterMenu.INGREDIENT_SLOT_B, new ItemStack(EndResourceItems.ENDER_DUST, 2));
+
+        helper.startSequence()
+              // Both ingredient slots empty is the only reliable "both crafts are done" signal - the
+              // result slot is non-empty from the first craft onwards.
+              .thenWaitUntil(() -> {
+                  final boolean consumed = smelter.getItem(EndStoneSmelterMenu.INGREDIENT_SLOT_A).isEmpty()
+                          && smelter.getItem(EndStoneSmelterMenu.INGREDIENT_SLOT_B).isEmpty();
+                  if (!consumed) {
+                      throw helper.assertionException(Component.literal("still cooking"));
+                  }
+              })
+              .thenExecute(() -> {
+                  final ItemStack result = smelter.getItem(EndStoneSmelterMenu.RESULT_SLOT);
+                  final List<String> failures = new ArrayList<>();
+                  if (!result.is(EndMetalBlocks.TERMINITE.equipment.ingot)) {
+                      failures.add("alloying iron ingots with ender dust produced " + result
+                              + " instead of terminite ingots");
+                  } else if (result.getCount() != 2) {
+                      failures.add("two terminite_ingot crafts (outputCount 1) should yield exactly 2 ingots,"
+                              + " got " + result.getCount()
+                              + " - the result slot is growing by a constant instead of by the recipe's count");
+                  }
+                  failIfAny(helper, "End Stone Smelter result-count regression (#597)", failures);
               })
               .thenSucceed();
     }

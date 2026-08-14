@@ -83,6 +83,9 @@ public class EndPortals {
     }
 
     public static int getColor(int state) {
+        if (state < 0 || state >= portals.length) {
+            return portals[0].color;
+        }
         return portals[state].color;
     }
 

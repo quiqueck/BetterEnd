@@ -1,9 +1,7 @@
 package org.betterx.datagen.betterend.worldgen;
 
-import org.betterx.bclib.BCLib;
-import org.betterx.bclib.util.JsonFactory;
+import org.betterx.betterend.registry.EndBiomeBuildings;
 import org.betterx.betterend.registry.EndBiomes;
-import org.betterx.betterend.registry.EndFeatures;
 import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
@@ -13,43 +11,21 @@ import org.betterx.betterend.world.biome.air.FlowerIsletsBiome;
 import org.betterx.betterend.world.biome.air.WaterfallPondsBiome;
 import org.betterx.betterend.world.biome.cave.*;
 import org.betterx.betterend.world.biome.land.*;
-import org.betterx.betterend.world.features.BuildingListFeature;
-import org.betterx.betterend.world.features.BuildingListFeatureConfig;
-import org.betterx.betterend.world.features.NBTFeature;
 import de.ambertation.wover.biome.api.builder.BiomeBootstrapContext;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.datagen.api.provider.multi.WoverBiomeProvider;
-import de.ambertation.wover.feature.api.configured.ConfiguredFeatureKey;
-import de.ambertation.wover.feature.api.configured.ConfiguredFeatureManager;
-import de.ambertation.wover.feature.api.configured.configurators.WithConfiguration;
-import de.ambertation.wover.feature.api.placed.PlacedConfiguredFeatureKey;
-import de.ambertation.wover.feature.api.placed.PlacedFeatureManager;
-import de.ambertation.wover.state.api.WorldState;
 import de.ambertation.wover.tag.api.predefined.CommonBiomeTags;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-import com.google.common.collect.Lists;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
 public class EndBiomesProvider extends WoverBiomeProvider {
-    public record BiomeInfo(EndBiome.Config config, TagKey<Biome>[] tags,
-                            List<BuildingListFeature.StructureInfo> structures,
-                            ConfiguredFeatureKey<WithConfiguration<BuildingListFeature, BuildingListFeatureConfig>> configuredFeatureKey,
-                            PlacedConfiguredFeatureKey placed) {
+    public record BiomeInfo(EndBiome.Config config, TagKey<Biome>[] tags) {
     }
 
     public static final Map<EndBiomeKey<?, ?>, BiomeInfo> BIOMES = new HashMap<>();
@@ -113,81 +89,18 @@ public class EndBiomesProvider extends WoverBiomeProvider {
 
     @SafeVarargs
     private static void putBiome(EndBiomeKey<?, ?> key, EndBiome.Config config, TagKey<Biome>... tags) {
-        final List<BuildingListFeature.StructureInfo> structures = getBiomeStructures(key.key.identifier());
-        PlacedConfiguredFeatureKey placed = null;
-        ConfiguredFeatureKey<WithConfiguration<BuildingListFeature, BuildingListFeatureConfig>> configuredFeatureKey = null;
-        if (structures != null) {
-            configuredFeatureKey
-                    = ConfiguredFeatureManager.configuration(
-                    Identifier.fromNamespaceAndPath(
-                            key.key.identifier().getNamespace(),
-                            key.key.identifier().getPath() + "_structures"
-                    ),
-                    EndFeatures.BUILDING_LIST_FEATURE
-            );
-
-            placed = PlacedFeatureManager
-                    .createKey(configuredFeatureKey)
-                    .setDecoration(GenerationStep.Decoration.SURFACE_STRUCTURES);
-        }
-
-        BIOMES.put(key, new BiomeInfo(config, tags, structures, configuredFeatureKey, placed));
+        BIOMES.put(key, new BiomeInfo(config, tags));
     }
 
     @Override
     protected void bootstrap(BiomeBootstrapContext context) {
         for (Map.Entry<EndBiomeKey<?, ?>, BiomeInfo> e : BIOMES.entrySet()) {
             final EndBiomeBuilder builder = e.getKey().bootstrap(context, e.getValue().config, e.getValue().tags);
-            if (e.getValue().placed != null)
-                builder.feature(e.getValue().placed);
+            // the biome's buildings and ruins, each a structure of its own (see EndBiomeBuildings)
+            for (EndBiomeBuildings.Building building : EndBiomeBuildings.of(e.getKey())) {
+                builder.structure(building.structure());
+            }
             builder.register();
         }
-    }
-
-    private static List<BuildingListFeature.StructureInfo> getBiomeStructures(
-            Identifier loc
-    ) {
-        String ns = loc.getNamespace();
-        String nm = loc.getPath();
-        return getBiomeStructures(ns, nm);
-    }
-
-    private static List<BuildingListFeature.StructureInfo> getBiomeStructures(
-            String ns,
-            String nm
-    ) {
-        Identifier id = Identifier.fromNamespaceAndPath(ns, nm + "_structures");
-
-        if (WorldState.allStageRegistryAccess() != null) {
-            Registry<PlacedFeature> features = WorldState.allStageRegistryAccess()
-                                                         .lookupOrThrow(Registries.PLACED_FEATURE);
-            if (features.containsKey(id)) {
-                BCLib.LOGGER.info("Feature for " + id + " was already build");
-            }
-        }
-
-        String path = "/data/" + ns + "/structure/biome/" + nm + "/";
-        InputStream inputstream = EndFeatures.class.getResourceAsStream(path + "structures.json");
-        if (inputstream != null) {
-            JsonObject obj = JsonFactory.getJsonObject(inputstream);
-            JsonArray structures = obj.getAsJsonArray("structures");
-            if (structures != null) {
-                List<BuildingListFeature.StructureInfo> list = Lists.newArrayList();
-                structures.forEach((entry) -> {
-                    JsonObject e = entry.getAsJsonObject();
-                    String structure = path + e.get("nbt").getAsString() + ".nbt";
-                    NBTFeature.TerrainMerge terrainMerge = NBTFeature.TerrainMerge.getFromString(e
-                            .get("terrainMerge")
-                            .getAsString());
-                    int offsetY = e.get("offsetY").getAsInt();
-                    list.add(new BuildingListFeature.StructureInfo(structure, offsetY, terrainMerge));
-                });
-
-                if (!list.isEmpty()) {
-                    return list;
-                }
-            }
-        }
-        return null;
     }
 }

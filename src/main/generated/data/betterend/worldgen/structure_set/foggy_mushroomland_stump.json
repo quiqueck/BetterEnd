@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1507900225,
+    "separation": 6,
+    "spacing": 12
+  },
+  "structures": [
+    {
+      "structure": "betterend:foggy_mushroomland_stump",
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1733716903,
+    "separation": 3,
+    "spacing": 7
+  },
+  "structures": [
+    {
+      "structure": "betterend:umbrella_jungle_ruins",
+      "weight": 1
+    }
+  ]
+}

@@ -36,8 +36,6 @@ public class JukeboxRegistryProvider extends WoverRegistryContentProvider<Jukebo
         register(context, EndSounds.RECORD_GRASPING_AT_STARS, EndSounds.RECORD_GRASPING_AT_STARS_SOUND, (8 * 60) + 48, 0);
         register(context, EndSounds.RECORD_ENDSEEKER, EndSounds.RECORD_ENDSEEKER_SOUND, (7 * 60) + 41, 0);
         register(context, EndSounds.RECORD_EO_DRACONA, EndSounds.RECORD_EO_DRACONA_SOUND, (5 * 60) + 53, 0);
-        register(context, EndSounds.RECORD_ENDER_HOLLOW, EndSounds.RECORD_ENDER_HOLLOW_SOUND, (3 * 60) + 39, 0);
-        register(context, EndSounds.RECORD_MOONLIT_UNDERCURRENTS, EndSounds.RECORD_MOONLIT_UNDERCURRENTS_SOUND, (3 * 60) + 51, 0);
 
     }
 }

@@ -29,9 +29,10 @@ public class BigAuroraCrystalFeature extends DefaultFeature {
      * alone (the vegetation-patch invocation has no placement-modifier chain to attach onceEvery to). Gating
      * here covers both call sites uniformly. Tuned from an in-game report of ~10 formations generating in a
      * single cave with no gate at all; a whole hex-prism formation is meant to be a rare highlight, not a
-     * common filler, so the target is roughly none-or-one per cave. Adjust if that reads wrong in practice.
+     * common filler, so the target is roughly none-or-one per cave. 10 turned out to leave Aurora caves too
+     * bare, so it is 7 now (about 40% more formations, still a highlight rather than a filler).
      */
-    private static final int RARITY_DIVISOR = 10;
+    private static final int RARITY_DIVISOR = 7;
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {

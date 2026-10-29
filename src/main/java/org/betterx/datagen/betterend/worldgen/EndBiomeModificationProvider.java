@@ -49,22 +49,6 @@ public class EndBiomeModificationProvider extends WoverRegistryContentProvider<B
                 .addFeature(EndOreFeatures.ENDER_ORE)
                 .register();
 
-        // The crashed ship stays APPENDED, for the same reason the ores must not be: it sits behind
-        // minecraft:end_gateway_return in BetterEnd's own SURFACE_STRUCTURES step, so it has to stay behind
-        // it in the foreign biomes that have that feature too.
-        BiomeModification
-                .build(context, BetterEnd.C.id("defaults"))
-                .allOf(
-                        BiomePredicate.not(BiomePredicate.inNamespace(BetterEnd.C)),
-                        BiomePredicate.anyOf(
-                                BiomePredicate.hasTag(CommonBiomeTags.IS_END_BARRENS),
-                                BiomePredicate.hasTag(CommonBiomeTags.IS_END_MIDLAND),
-                                BiomePredicate.hasTag(CommonBiomeTags.IS_END_HIGHLAND)
-                        )
-                )
-                .addFeature(EndTerrainFeatures.CRASHED_SHIP)
-                .register();
-
         // The cave surface coat has to be declared by EVERY biome that can own a column in the End, foreign
         // ones included, or it does not run at all in some chunks that hold part of the cave band: a placed
         // feature only runs where the biome at the rolled position declared it, and the roll is one random

@@ -67,7 +67,10 @@ public class EndLakePiece extends BasePiece {
     private float depth;
     private ResourceKey<Biome> biomeID;
     private BlockState cachedBorderMaterial;
-    private BlockState sampledSurfaceMaterial;
+    // The surface sampled in the chunk being generated. Per thread and reset for every chunk: one shared
+    // field took whatever chunk had sampled last, so the shore material depended on the order (and the
+    // threads) the chunks of a lake were generated in.
+    private final ThreadLocal<BlockState> sampledSurfaceMaterial = new ThreadLocal<>();
 
     public EndLakePiece(
             BlockPos center,
@@ -134,8 +137,9 @@ public class EndLakePiece extends BasePiece {
      * the chunks that make up one lake and cannot trigger the "Requested chunk unavailable" crash.
      */
     private BlockState borderMaterial(WorldGenLevel world) {
-        if (sampledSurfaceMaterial != null) {
-            return sampledSurfaceMaterial;
+        final BlockState sampled = sampledSurfaceMaterial.get();
+        if (sampled != null) {
+            return sampled;
         }
         if (cachedBorderMaterial != null) {
             return cachedBorderMaterial;
@@ -169,7 +173,7 @@ public class EndLakePiece extends BasePiece {
         if (state.is(CommonBlockTags.TERRAIN)
                 && !state.is(Blocks.END_STONE)
                 && !state.is(EndTerrainBlocks.ENDSTONE_DUST)) {
-            sampledSurfaceMaterial = state;
+            sampledSurfaceMaterial.set(state);
         }
     }
 
@@ -326,6 +330,7 @@ public class EndLakePiece extends BasePiece {
             BlockPos blockPos
     ) {
         final ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
+        sampledSurfaceMaterial.remove();
         final int sx = SectionPos.sectionToBlockCoord(chunkPos.x());
         final int sz = SectionPos.sectionToBlockCoord(chunkPos.z());
 
@@ -536,5 +541,7 @@ public class EndLakePiece extends BasePiece {
         final int fixMinY = waterLevel - bott - 2;
         final int fixMaxY = cy + 20;
         BlockFixer.fixBlocks(world, new BlockPos(x0, fixMinY, z0), new BlockPos(x1, fixMaxY, z1), blockBox);
+        // Underwater life where the biome's own features cannot reach the floor (see LakeFloorLife).
+        LakeFloorLife.place(world, chunk, sx, sz, waterLevel - 1, biomeID, center.asLong());
     }
 }

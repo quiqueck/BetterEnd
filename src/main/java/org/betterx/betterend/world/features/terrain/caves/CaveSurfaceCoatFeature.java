@@ -296,6 +296,13 @@ public class CaveSurfaceCoatFeature extends Feature<CaveSurfaceCoatConfig> {
      * Reads one column of the band into {@code cells} and classifies its air: a maximal run of air counts as
      * {@link #CAVE_AIR} only when rock closes it both below and above <em>within the band</em>, otherwise it
      * is {@link #OPEN_AIR} (sky, or the void under an island) - see the class doc.
+     * <p>
+     * Decoration that is already standing in the cave ({@link #isDecoration}: stalagmites, shards, cave grass,
+     * bushes, ...) belongs to the air run it stands in. Counting it as rock closed the run at the decoration,
+     * so the block under every stalagmite or shard never looked like a floor and kept its bare End stone,
+     * which showed as pale specks all over the moss. A decoration cell is never painted itself, and in a run
+     * that reaches the sky it is open air like the rest of the run, so plants on an island top still keep
+     * the coat away from the rock under them.
      */
     private static void readColumn(
             CaveSurfaceCoatConfig config,
@@ -314,7 +321,7 @@ public class CaveSurfaceCoatFeature extends Feature<CaveSurfaceCoatConfig> {
             mut.set(x, config.minY() + dy, z);
             final BlockState state = world.getBlockState(mut);
             final int idx = index(dx, dy, dz, height);
-            if (state.isAir()) {
+            if (state.isAir() || isDecoration(config, world, mut, state)) {
                 cells[idx] = OPEN_AIR;
                 if (runStart == NO_RUN) {
                     // A run that starts at the very bottom of the band has no rock below it inside the band;
@@ -398,6 +405,18 @@ public class CaveSurfaceCoatFeature extends Feature<CaveSurfaceCoatConfig> {
      */
     private static boolean coatable(CaveSurfaceCoatConfig config, BlockState state) {
         return state.is(config.replaceable()) && !state.is(config.protect());
+    }
+
+    /**
+     * Whether a non-air block is decoration the air run passes through rather than rock that bounds it: a
+     * block the coat may not paint, without a fluid and without a full collision box - stalagmites and
+     * stalactites, crystal shards, cave grass, bushes and the like. Full blocks (crystals, leaves, ores) and
+     * water stay solid, so nothing changes for them.
+     */
+    private static boolean isDecoration(CaveSurfaceCoatConfig config, WorldGenLevel world, BlockPos pos, BlockState state) {
+        return !coatable(config, state)
+                && state.getFluidState().isEmpty()
+                && !state.isCollisionShapeFullBlock(world, pos);
     }
 
     /**

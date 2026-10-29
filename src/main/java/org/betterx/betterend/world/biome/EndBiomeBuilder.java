@@ -1,6 +1,7 @@
 package org.betterx.betterend.world.biome;
 
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
+import org.betterx.betterend.world.biome.cave.EndCaveBiome;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndFeatures;
 import org.betterx.betterend.registry.EndSounds;
@@ -59,9 +60,14 @@ public class EndBiomeBuilder extends WoverBiomeBuilder.AbstractWoverBiomeBuilder
     }
 
     EndBiomeBuilder configure(EndBiome.Config biomeConfig) {
-        this.startSurface()
-            .rule(biomeConfig.surfaceMaterial().surface().build())
-            .finishSurface();
+        // Cave biomes own the whole column below the cave-biome top, and carving runs after the surface pass,
+        // so a cave biome's surface rule never reaches a cave face (CaveSurfaceCoatFeature paints those) - it
+        // only ever painted the top of a low island in that column, e.g. with lush caves' cave moss (#615).
+        if (!(biomeConfig instanceof EndCaveBiome.Config<?>)) {
+            this.startSurface()
+                .rule(biomeConfig.surfaceMaterial().surface().build())
+                .finishSurface();
+        }
 
         this.surface = biomeConfig.surfaceMaterial();
 

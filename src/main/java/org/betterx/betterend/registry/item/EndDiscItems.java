@@ -67,15 +67,5 @@ public class EndDiscItems {
             EndSounds.RECORD_EO_DRACONA
     );
 
-    public final static Item MUSIC_DISC_ENDER_HOLLOW = EndItems.registerEndDisc(
-            "music_disc_ender_hollow",
-            EndSounds.RECORD_ENDER_HOLLOW
-    );
-
-    public final static Item MUSIC_DISC_MOONLIT_UNDERCURRENTS = EndItems.registerEndDisc(
-            "music_disc_moonlit_undercurrents",
-            EndSounds.RECORD_MOONLIT_UNDERCURRENTS
-    );
-
     public static void ensureLoaded() {}
 }

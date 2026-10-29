@@ -1044,6 +1044,7 @@
   "title.config.betterend.client.rendering.custom_sky": "Benutzerdefinierter Himmel",
   "title.config.betterend.client.rendering.sulfur_water_color": "Schwefelwasserfarbe ändern",
   "title.config.betterend.generator.cosmetic.change_chorus_plant": "Choruspflanzen ändern",
+  "title.config.betterend.generator.entity.give_guide_book": "Leitfaden beim Betreten eines Endtransitportals geben",
   "title.config.betterend.generator.entity.has_dragon_fights": "Drachenkämpfe",
   "title.config.betterend.generator.entity.spawn.has_spawn": "Endspawn verschieben",
   "title.config.betterend.generator.generator.use_new_generator": "Neue Generatorregeln anwenden",

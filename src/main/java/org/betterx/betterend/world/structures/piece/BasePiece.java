@@ -1,7 +1,6 @@
 package org.betterx.betterend.world.structures.piece;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.world.level.WorldGenLevel;
@@ -9,6 +8,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -31,30 +33,35 @@ public abstract class BasePiece extends StructurePiece {
      * for a chunk that is still being generated - independent of any blocks features or structure pieces
      * have placed since.
      * <p>
-     * Do not use {@code world.getHeight(WORLD_SURFACE_WG, ...)} or
-     * {@code chunk.getOrCreateHeightmapUnprimed(WORLD_SURFACE_WG)} for this: the worldgen heightmaps are
-     * only persisted up to the SURFACE status, so a chunk that was saved at CARVERS or later (every chunk
-     * left half-generated when the world is closed, and every finished neighbour) comes back without
-     * them. {@code getOrCreateHeightmapUnprimed} then hands out an empty heightmap (every column at the
-     * world bottom), and {@code getHeight} re-primes it from the chunk's current blocks - including a
-     * mountain or lake this very piece already placed there before the reload. Either way the piece
-     * shapes itself differently in chunks generated after a reload than in the ones generated before
-     * it, which shows up as hard cut-offs along chunk borders (#556). A chunk that still has its
-     * worldgen heightmap keeps using it; otherwise the generator's noise height, which is what that
-     * heightmap was primed from in the first place, stands in for it.
+     * A chunk's {@code WORLD_SURFACE_WG} heightmap is primed from the noise terrain and stops changing once the
+     * chunk reaches the carver stage (from then on block changes update the final heightmaps only), so reading
+     * it gives the same answer in every generation order. It is only persisted up to the BIOMES status though:
+     * a chunk saved at TERRAIN or later comes back without it, and {@code getOrCreateHeightmapUnprimed} would
+     * then hand out an empty heightmap (#556). For such a chunk the generator's noise height - what the
+     * heightmap was primed from in the first place - stands in, cached per piece and column because a noise
+     * column is expensive.
+     * <p>
+     * (For a while every call went to the noise height, and then to an 8-block grid of it to keep that fast;
+     * the grid put slopes several blocks off, which moved lake shorelines up steps and carved pit ponds.)
      */
-    protected static int worldgenSurfaceHeight(WorldGenLevel world, int x, int z) {
-        final ChunkAccess chunk = world.getChunk(
-                SectionPos.blockToSectionCoord(x),
-                SectionPos.blockToSectionCoord(z)
-        );
+    protected int worldgenSurfaceHeight(WorldGenLevel world, int x, int z) {
+        final ChunkAccess chunk = world.getChunk(x >> 4, z >> 4);
         if (chunk.hasPrimedHeightmap(Heightmap.Types.WORLD_SURFACE_WG)) {
             return chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) + 1;
         }
-        final ServerChunkCache source = world.getLevel().getChunkSource();
-        return source.getGenerator()
-                     .getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, world, source.randomState());
+        final long key = ((long) x << 32) | (z & 0xFFFFFFFFL);
+        Integer h = noiseSurface.get(key);
+        if (h == null) {
+            final ServerChunkCache source = world.getLevel().getChunkSource();
+            h = source.getGenerator().getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, world, source.randomState());
+            noiseSurface.put(key, h);
+        }
+        return h;
     }
+
+    // Noise heights of columns whose chunk has lost its worldgen heightmap; concurrent because a piece is
+    // post-processed for several chunks at once on different worker threads.
+    private final Map<Long, Integer> noiseSurface = new ConcurrentHashMap<>();
 
     /**
      * Writes {@code state} straight into {@code chunk} like {@link ChunkAccess#setBlockState}, but also
@@ -69,19 +76,22 @@ public abstract class BasePiece extends StructurePiece {
      * block entity ... but state ... does not allow" or "Failed to create block entity" once the chunk is
      * promoted or saved. A ship's brewing stand or chests can end up the same way.
      * <p>
-     * Several pieces (the mountains among them) address the chunk with chunk-local x/z, which
-     * {@code setBlockState} accepts because it masks them to the section anyway. The chunk's block
-     * entities, however, are keyed by world position, so the position is converted before removing one -
-     * removing at the local position silently misses it.
+     * Several pieces (the mountains among them) address the chunk with chunk-local x/z. The position is
+     * converted to a world position first: the chunk's block entities are keyed by it, and a full chunk
+     * passes it on to the block's {@code onPlace}.
      */
     protected static void setChunkBlock(ChunkAccess chunk, BlockPos pos, BlockState state) {
-        final BlockState old = chunk.setBlockState(pos, state, Block.UPDATE_ALL);
+        // Always hand the chunk a world position: a full chunk (a structure placed with /place) runs the
+        // block's onPlace with the position it is given, and water or plants then scheduled their ticks at
+        // the chunk-local position ("Trying to schedule tick in not loaded position").
+        final BlockPos worldPos = new BlockPos(
+                chunk.getPos().getBlockX(pos.getX() & 15),
+                pos.getY(),
+                chunk.getPos().getBlockZ(pos.getZ() & 15)
+        );
+        final BlockState old = chunk.setBlockState(worldPos, state, Block.UPDATE_ALL);
         if (old != null && old.hasBlockEntity() && !old.is(state.getBlock())) {
-            chunk.removeBlockEntity(new BlockPos(
-                    chunk.getPos().getBlockX(pos.getX() & 15),
-                    pos.getY(),
-                    chunk.getPos().getBlockZ(pos.getZ() & 15)
-            ));
+            chunk.removeBlockEntity(worldPos);
         }
     }
 

@@ -13,7 +13,7 @@
       "default": {
         "max_delay": 24000,
         "min_delay": 12000,
-        "sound": "betterend:betterend.music.ender_hollow"
+        "sound": "betterend:betterend.music.dark"
       }
     },
     "minecraft:visual/ambient_particles": [
@@ -41,9 +41,7 @@
     [],
     [],
     [
-      "minecraft:end_gateway_return",
-      "betterend:crashed_ship",
-      "betterend:shadow_forest_structures"
+      "minecraft:end_gateway_return"
     ],
     [],
     [

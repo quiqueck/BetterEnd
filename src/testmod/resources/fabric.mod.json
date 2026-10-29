@@ -70,7 +70,8 @@
       "org.betterx.betterend.testmod.gametest.WaystonesBiomeTagGameTest",
       "org.betterx.betterend.testmod.gametest.SaplingSoilGameTest",
       "org.betterx.betterend.testmod.gametest.SaplingBonemealGameTest",
-      "org.betterx.betterend.testmod.gametest.DescriptionTooltipGameTest"
+      "org.betterx.betterend.testmod.gametest.DescriptionTooltipGameTest",
+      "org.betterx.betterend.testmod.gametest.SetPropertyOrderGameTest"
     ]
   },
   "mixins": [

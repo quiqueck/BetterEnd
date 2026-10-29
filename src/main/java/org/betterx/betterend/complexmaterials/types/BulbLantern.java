@@ -15,11 +15,15 @@ import de.ambertation.wover.block.api.trait.BlockTraits;
 import de.ambertation.wover.recipe.api.RecipeBuilder;
 import de.ambertation.wover.sets.api.blocks.BlockSet;
 import de.ambertation.wover.sets.api.blocks.SlotFromDefinition;
+import de.ambertation.wover.sets.api.blocks.SlotType;
 
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.BiConsumer;
 
 public class BulbLantern extends SlotFromDefinition {
     public static final BulbLantern SLOT = new BulbLantern();
@@ -44,11 +48,6 @@ public class BulbLantern extends SlotFromDefinition {
         def.addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe());
         // noOcclusion() moved out of EndLanternBlock's constructor (R1, WP6.14) to here.
         def.noOcclusion();
-        def.getProperties()
-           .destroyTime(1)
-           .explosionResistance(1)
-           .lightLevel((bs) -> 15)
-           .sound(SoundType.LANTERN);
         def.addTrait(BlockTraits.LOOT_TABLE.dropSelf());
     }
 
@@ -69,5 +68,22 @@ public class BulbLantern extends SlotFromDefinition {
     @Override
     protected BlockModelBinding buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
         return BulbVineLanternBlock.buildModel(set, traitLookup);
+    }
+
+    @Override
+    protected void finalizeBlockDefinitions(
+            BlockSet<?> set,
+            BlockDefinition<?, ? extends BlockDefinition<?, ?>> def,
+            BiConsumer<SlotType, Block> blockDefinitionConsumer
+    ) {
+        // The lantern's own strength, sound and light go here, after the set material: METAL_BLOCK and the
+        // material's strength/sound setters run in the common hook (after addSlotSpecificDefinitions), and
+        // VanillaMetalSet's copy-base trait replaces the properties wholesale, so anything set earlier was
+        // lost (the iron bulb lantern gave no light at all). This branch has no finalizeDefinitions hook, so
+        // the setters are queued here, right before the definition is built.
+        def.strength(1.0F)
+           .lightLevel((bs) -> 15)
+           .sound(SoundType.LANTERN);
+        super.finalizeBlockDefinitions(set, def, blockDefinitionConsumer);
     }
 }

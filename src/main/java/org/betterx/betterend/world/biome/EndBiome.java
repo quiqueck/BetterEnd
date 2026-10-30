@@ -10,6 +10,7 @@ import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.bclib.util.GenerationArea;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.EndBiomeBuildings;
 import org.betterx.betterend.registry.EndFeatures;
 import org.betterx.betterend.registry.EndSounds;
 import org.betterx.betterend.registry.EndTags;
@@ -204,6 +205,10 @@ public class EndBiome extends BCLBiome implements SurfaceMaterialProvider {
                 .type(type);
 
         biomeConfig.addCustomBuildData(builder);
+        // the biome's buildings and ruins, each a structure of its own (see EndBiomeBuildings)
+        for (EndBiomeBuildings.Building building : EndBiomeBuildings.of(biomeConfig.ID)) {
+            builder.structure(building.structure());
+        }
         EndFeatures.addDefaultFeatures(biomeConfig.ID, builder, biomeConfig.hasCaves());
 
         if (biomeConfig.hasReturnGateway()) {

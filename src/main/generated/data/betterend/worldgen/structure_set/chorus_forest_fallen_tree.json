@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 13318154,
+    "separation": 5,
+    "spacing": 11
+  },
+  "structures": [
+    {
+      "structure": "betterend:chorus_forest_fallen_tree",
+      "weight": 1
+    }
+  ]
+}

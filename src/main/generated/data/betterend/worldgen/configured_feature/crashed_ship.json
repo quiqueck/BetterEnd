@@ -1,8 +1,0 @@
-{
-  "type": "betterend:crashed_ship",
-  "config": {
-    "default": {
-      "Name": "minecraft:end_stone"
-    }
-  }
-}

@@ -14,7 +14,8 @@
       "org.betterx.betterend.testmod.compat.CompatWorldgenBootCheck"
     ],
     "fabric-gametest": [
-      "org.betterx.betterend.testmod.gametest.BlockRegistrationGameTest"
+      "org.betterx.betterend.testmod.gametest.BlockRegistrationGameTest",
+      "org.betterx.betterend.testmod.gametest.EndStoneSmelterGameTest"
     ]
   },
   "depends": {

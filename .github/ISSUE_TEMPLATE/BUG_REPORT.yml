@@ -33,7 +33,7 @@ body:
     attributes:
       label: BCLib
       description: What version of BCLib are you running?
-      placeholder: 3.0.15
+      placeholder: 3.0.17
     validations:
       required: true
   - type: input

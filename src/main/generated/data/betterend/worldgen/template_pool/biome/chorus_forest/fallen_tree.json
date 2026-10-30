@@ -1,0 +1,41 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/chorus_forest/fallen_tree_1",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/chorus_forest/fallen_tree_2",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/chorus_forest/fallen_tree_3",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/chorus_forest/fallen_tree_4",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

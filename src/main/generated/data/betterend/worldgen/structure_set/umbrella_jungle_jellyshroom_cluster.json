@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 13315796,
+    "separation": 8,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "betterend:umbrella_jungle_jellyshroom_cluster",
+      "weight": 1
+    }
+  ]
+}

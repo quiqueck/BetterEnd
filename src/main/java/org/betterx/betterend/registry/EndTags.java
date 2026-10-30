@@ -15,6 +15,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import com.google.common.collect.Lists;
 
@@ -26,6 +27,11 @@ public class EndTags {
 
     // Block Tags
     public static final TagKey<Block> PEDESTALS = TagManager.BLOCKS.makeTag(BetterEnd.MOD_ID, "pedestal");
+    /**
+     * The hull blocks of the crashed ship that may rot away (its block_rot processor); chests, TNT and the
+     * dragon head always stay.
+     */
+    public static final TagKey<Block> CRASHED_SHIP_ROTS = TagManager.BLOCKS.makeTag(BetterEnd.MOD_ID, "crashed_ship_rots");
 
     // Item Tags
     public static final TagKey<Item> ALLOYING_IRON = TagManager.ITEMS.makeTag(BetterEnd.MOD_ID, "alloying_iron");
@@ -75,6 +81,11 @@ public class EndTags {
                 EndBlocks.BRIMSTONE
         );
         TagManager.BLOCKS.add(CommonBlockTags.END_STONES, EndBlocks.BRIMSTONE);
+        TagManager.BLOCKS.add(
+                CRASHED_SHIP_ROTS,
+                Blocks.PURPUR_BLOCK, Blocks.PURPUR_PILLAR, Blocks.PURPUR_STAIRS, Blocks.PURPUR_SLAB,
+                Blocks.END_STONE_BRICKS, Blocks.OBSIDIAN, Blocks.MAGENTA_STAINED_GLASS, Blocks.END_ROD, Blocks.LADDER
+        );
         TagManager.BLOCKS.add(BlockTags.ANVIL, EndBlocks.AETERNIUM_ANVIL);
         TagManager.BLOCKS.add(BlockTags.BEACON_BASE_BLOCKS, EndBlocks.AETERNIUM_BLOCK);
         TagManager.ITEMS.add(ItemTags.BEACON_PAYMENT_ITEMS, EndItems.AETERNIUM_INGOT);

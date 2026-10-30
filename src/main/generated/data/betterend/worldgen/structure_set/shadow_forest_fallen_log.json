@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 13318073,
+    "separation": 7,
+    "spacing": 14
+  },
+  "structures": [
+    {
+      "structure": "betterend:shadow_forest_fallen_log",
+      "weight": 1
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.fabricmc.api.EnvType;
@@ -129,9 +130,19 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<Container> {
     }
 
     protected boolean isSmeltable(ItemStack itemStack) {
-        return world.getRecipeManager()
-                    .getRecipeFor(AlloyingRecipe.TYPE, new SimpleContainer(itemStack), world)
-                    .isPresent();
+        // A lone stack never satisfies a two-ingredient alloying recipe, so test it as either
+        // ingredient of any alloying recipe, or as a plain blasting input.
+        if (world.getRecipeManager()
+                 .getRecipeFor(RecipeType.BLASTING, new SimpleContainer(itemStack), world)
+                 .isPresent()) {
+            return true;
+        }
+        for (AlloyingRecipe recipe : world.getRecipeManager().getAllRecipesFor(AlloyingRecipe.TYPE)) {
+            if (recipe.getIngredients().stream().anyMatch(i -> i.test(itemStack))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isFuel(ItemStack itemStack) {
@@ -150,20 +161,23 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<Container> {
                 return ItemStack.EMPTY;
             }
             slot.onQuickCraft(slotStack, itemStack);
-        } else if (((index == FUEL_SLOT) || (index == INGREDIENT_SLOT_A) || (index == INGREDIENT_SLOT_B))
-                ? !this.moveItemStackTo(slotStack, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)
-                : (this.isSmeltable(slotStack)
-                        ? !this.moveItemStackTo(slotStack, INGREDIENT_SLOT_A, FUEL_SLOT, false)
-                        : (this.isFuel(slotStack)
-                                ? !this.moveItemStackTo(slotStack, FUEL_SLOT, RESULT_SLOT, false)
-                                : (((index >= INV_SLOT_START) && (index < INV_SLOT_END))
-                                        ? !this.moveItemStackTo(slotStack, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)
-                                        : ((index >= USE_ROW_SLOT_START) && (index < USE_ROW_SLOT_END) && !this.moveItemStackTo(
-                                                slotStack,
-                                                INV_SLOT_START,
-                                                INV_SLOT_END,
-                                                false
-                                        )))))) {
+        } else if (index == INGREDIENT_SLOT_A || index == INGREDIENT_SLOT_B || index == FUEL_SLOT) {
+            if (!moveItemStackTo(slotStack, INV_SLOT_START, USE_ROW_SLOT_END, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (isSmeltable(slotStack)) {
+            if (!moveItemStackTo(slotStack, INGREDIENT_SLOT_A, FUEL_SLOT, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (isFuel(slotStack)) {
+            if (!moveItemStackTo(slotStack, FUEL_SLOT, RESULT_SLOT, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (index < INV_SLOT_END) {
+            if (!moveItemStackTo(slotStack, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (!moveItemStackTo(slotStack, INV_SLOT_START, INV_SLOT_END, false)) {
             return ItemStack.EMPTY;
         }
 

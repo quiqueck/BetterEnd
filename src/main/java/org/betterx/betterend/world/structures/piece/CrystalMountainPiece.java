@@ -28,6 +28,8 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
+import java.util.Arrays;
+
 public class CrystalMountainPiece extends MountainPiece {
     private BlockState top;
 
@@ -62,6 +64,10 @@ public class CrystalMountainPiece extends MountainPiece {
         final MutableBlockPos pos = GlobalState.stateForThread().POS;
         ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
         Heightmap map = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE);
+        // y of the crystal moss cover above each column (or MIN_VALUE for none). The cover is placed in a second
+        // pass once all columns of this chunk are built, so it sees the final neighbour columns.
+        final int[] coverY = new int[256];
+        Arrays.fill(coverY, Integer.MIN_VALUE);
         for (int x = 0; x < 16; x++) {
             int px = x + sx;
             int px2 = px - center.getX();
@@ -100,6 +106,9 @@ public class CrystalMountainPiece extends MountainPiece {
                             final double noise = SplitNoiseCondition.DEFAULT.getNoise(px, pz);
                             boolean needCover = noise > 0;
                             boolean needSurroundCover = Math.abs(noise) < 0.2;
+                            if (needSurroundCover && maxYI > minY - 1) {
+                                coverY[(x << 4) | z] = maxYI;
+                            }
                             for (int y = minY - 1; y < maxYI; y++) {
                                 pos.setY(y);
                                 if (needCover && y == cover) {
@@ -107,29 +116,14 @@ public class CrystalMountainPiece extends MountainPiece {
                                 } else {
                                     chunk.setBlockState(pos, Blocks.END_STONE.defaultBlockState(), false);
                                 }
-                                if (needSurroundCover && chunk.getBlockState(pos.above()).is(Blocks.AIR)) {
-                                    BlockState coverState = EndBlocks.CRYSTAL_MOSS_COVER
-                                            .defaultBlockState();
-                                    BlockPos above = pos.above();
-                                    boolean didChange = false;
-                                    for (Direction dir : Direction.values()) {
-                                        if (chunk.getBlockState(above.relative(dir)).is(CommonBlockTags.END_STONES)) {
-                                            coverState = coverState.setValue(
-                                                    CrystalMossCoverBlock.getFaceProperty(dir),
-                                                    true
-                                            );
-                                            didChange = true;
-                                        }
-                                    }
-                                    if (didChange) chunk.setBlockState(above, coverState, false);
-
-                                }
                             }
                         }
                     }
                 }
             }
         }
+
+        placeMossCover(chunk, coverY);
 
         map = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE);
 
@@ -166,6 +160,37 @@ public class CrystalMountainPiece extends MountainPiece {
                     int height = MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F);
                     crystal(chunk, pos, radius, height, fill, random);
                 }
+            }
+        }
+    }
+
+    /**
+     * Places the crystal moss cover on top of the columns collected in {@code coverY} and attaches it to every
+     * neighbouring end stone. Only neighbours inside this chunk are checked: {@link ChunkAccess#getBlockState} wraps
+     * local coordinates outside 0..15 back into the same chunk, which attached the cover to blocks on the opposite
+     * side of the chunk and left floating moss walls along chunk borders.
+     */
+    private void placeMossCover(ChunkAccess chunk, int[] coverY) {
+        final MutableBlockPos above = new MutableBlockPos();
+        final MutableBlockPos side = new MutableBlockPos();
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                final int y = coverY[(x << 4) | z];
+                if (y == Integer.MIN_VALUE) continue;
+                above.set(x, y, z);
+                if (!chunk.getBlockState(above).is(Blocks.AIR)) continue;
+
+                BlockState coverState = EndBlocks.CRYSTAL_MOSS_COVER.defaultBlockState();
+                boolean didChange = false;
+                for (Direction dir : Direction.values()) {
+                    side.setWithOffset(above, dir);
+                    if (side.getX() < 0 || side.getX() > 15 || side.getZ() < 0 || side.getZ() > 15) continue;
+                    if (chunk.getBlockState(side).is(CommonBlockTags.END_STONES)) {
+                        coverState = coverState.setValue(CrystalMossCoverBlock.getFaceProperty(dir), true);
+                        didChange = true;
+                    }
+                }
+                if (didChange) chunk.setBlockState(above, coverState, false);
             }
         }
     }

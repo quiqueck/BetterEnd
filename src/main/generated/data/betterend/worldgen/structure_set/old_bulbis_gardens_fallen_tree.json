@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 13318824,
+    "separation": 4,
+    "spacing": 8
+  },
+  "structures": [
+    {
+      "structure": "betterend:old_bulbis_gardens_fallen_tree",
+      "weight": 1
+    }
+  ]
+}

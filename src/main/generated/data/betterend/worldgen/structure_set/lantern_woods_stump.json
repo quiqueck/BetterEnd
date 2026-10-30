@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 13324636,
+    "separation": 4,
+    "spacing": 9
+  },
+  "structures": [
+    {
+      "structure": "betterend:lantern_woods_stump",
+      "weight": 1
+    }
+  ]
+}

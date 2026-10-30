@@ -47,6 +47,11 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
 
     private boolean initialised;
 
+    // Average colour of the sky at the horizon (measured from a rendered frame), published to BCLib's End fog
+    private static final float HORIZON_RED = 0.38f;
+    private static final float HORIZON_GREEN = 0.13f;
+    private static final float HORIZON_BLUE = 0.40f;
+
     private void initialise() {
         if (!initialised) {
             initStars();
@@ -70,6 +75,11 @@ public class BetterEndSkyRenderer implements DimensionRenderingRegistry.SkyRende
         }
 
         initialise();
+
+        BackgroundInfo.skyHorizonRed = HORIZON_RED;
+        BackgroundInfo.skyHorizonGreen = HORIZON_GREEN;
+        BackgroundInfo.skyHorizonBlue = HORIZON_BLUE;
+        BackgroundInfo.hasSkyHorizonColor = true;
 
         Matrix4f projectionMatrix = context.projectionMatrix();
         PoseStack matrices = context.matrixStack();

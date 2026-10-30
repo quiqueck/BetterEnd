@@ -1,17 +1,15 @@
 package org.betterx.betterend.registry;
 
-import org.betterx.bclib.BCLib;
 import org.betterx.bclib.api.v2.levelgen.biomes.BCLBiome;
 import org.betterx.bclib.api.v2.levelgen.biomes.BCLBiomeBuilder;
-import org.betterx.bclib.api.v2.levelgen.biomes.BCLBiomeRegistry;
 import org.betterx.bclib.api.v2.levelgen.biomes.BiomeAPI;
 import org.betterx.bclib.api.v3.levelgen.features.BCLConfigureFeature;
 import org.betterx.bclib.api.v3.levelgen.features.BCLFeature;
 import org.betterx.bclib.api.v3.levelgen.features.BCLFeatureBuilder;
 import org.betterx.bclib.api.v3.levelgen.features.config.ConditionFeatureConfig;
 import org.betterx.bclib.api.v3.levelgen.features.placement.InBiome;
-import org.betterx.bclib.util.JsonFactory;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.worlds.together.tag.v3.TagManager;
 import org.betterx.betterend.complexmaterials.StoneMaterial;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.cave.EndCaveBiome;
@@ -30,6 +28,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -41,21 +40,10 @@ import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-import com.google.common.collect.Lists;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import java.io.InputStream;
-import java.util.List;
-
 public class EndFeatures {
     public static final StalactiteFeature STALACTITE_FEATURE = inlineBuild(
             "stalactite_feature",
             new StalactiteFeature()
-    );
-    public static final BuildingListFeature BUILDING_LIST_FEATURE = inlineBuild(
-            "building_list_feature",
-            new BuildingListFeature()
     );
 
     public static final VineFeature VINE_FEATURE = inlineBuild(
@@ -965,12 +953,6 @@ public class EndFeatures {
     );
 
     // Buildings
-    public static final BCLFeature<CrashedShipFeature, NBTFeatureConfig> CRASHED_SHIP = registerChanced(
-            "crashed_ship",
-            inlineBuild("crashed_ship", new CrashedShipFeature()),
-            new NBTFeatureConfig(EndBiome.Config.DEFAULT_MATERIAL.getTopMaterial()),
-            500
-    );
 
     // Mobs
     public static final BCLFeature<SilkMothNestFeature, NoneFeatureConfiguration> SILK_MOTH_NEST = registerChanced(
@@ -1357,17 +1339,13 @@ public class EndFeatures {
             BiomeAPI.addBiomeFeature(biome, FLAVOLITE_LAYER);
             BiomeAPI.addBiomeFeature(biome, THALLASIUM_ORE);
             BiomeAPI.addBiomeFeature(biome, ENDER_ORE);
-            BiomeAPI.addBiomeFeature(biome, CRASHED_SHIP);
-
-            BCLBiome bclbiome = BiomeAPI.getBiome(id);
-            if (!BCLBiomeRegistry.isEmptyBiome(bclbiome)) {
-                BCLFeature<BuildingListFeature, BuildingListFeatureConfig> feature = getBiomeStructures(bclbiome.getID());
-                if (feature != null) {
-                    BiomeAPI.addBiomeFeature(biome, feature);
-                }
+            // like the old feature, the crashed ship also comes to the End biomes of other mods (not to the
+            // main island)
+            if (!id.equals(Biomes.THE_END.location())) {
+                TagManager.BIOMES.add(EndStructures.CRASHED_SHIP.biomeTag, biome.value());
             }
 
-
+            BCLBiome bclbiome = BiomeAPI.getBiome(id);
             boolean hasCaves = !(bclbiome instanceof EndCaveBiome);
             if (!(bclbiome instanceof EndCaveBiome) && bclbiome instanceof EndBiome endBiome) {
                 hasCaves = endBiome.hasCaves();
@@ -1380,61 +1358,6 @@ public class EndFeatures {
         }
     }
 
-    private static BCLFeature<BuildingListFeature, BuildingListFeatureConfig> getBiomeStructures(ResourceLocation loc) {
-        String ns = loc.getNamespace();
-        String nm = loc.getPath();
-        return getBiomeStructures(ns, nm);
-    }
-
-    private static BCLFeature<BuildingListFeature, BuildingListFeatureConfig> getBiomeStructures(String ns, String nm) {
-        ResourceLocation id = new ResourceLocation(ns, nm + "_structures");
-
-        if (WorldBootstrap.getLastRegistryAccess() != null) {
-            Registry<PlacedFeature> features = WorldBootstrap.getLastRegistryAccess()
-                                                             .registryOrThrow(Registries.PLACED_FEATURE);
-            if (features.containsKey(id)) {
-                BCLib.LOGGER.info("Feature for " + id + " was already build");
-            }
-        }
-
-        String path = "/data/" + ns + "/structures/biome/" + nm + "/";
-        InputStream inputstream = EndFeatures.class.getResourceAsStream(path + "structures.json");
-        if (inputstream != null) {
-            JsonObject obj = JsonFactory.getJsonObject(inputstream);
-            JsonArray structures = obj.getAsJsonArray("structures");
-            if (structures != null) {
-                List<BuildingListFeature.StructureInfo> list = Lists.newArrayList();
-                structures.forEach((entry) -> {
-                    JsonObject e = entry.getAsJsonObject();
-                    String structure = path + e.get("nbt").getAsString() + ".nbt";
-                    NBTFeature.TerrainMerge terrainMerge = NBTFeature.TerrainMerge.getFromString(e
-                            .get("terrainMerge")
-                            .getAsString());
-                    int offsetY = e.get("offsetY").getAsInt();
-                    list.add(new BuildingListFeature.StructureInfo(structure, offsetY, terrainMerge));
-                });
-                if (!list.isEmpty()) {
-                    return BCLFeatureBuilder.start(
-                                                    new ResourceLocation(ns, nm + "_structures"),
-                                                    BUILDING_LIST_FEATURE
-                                            )
-                                            .configuration(new BuildingListFeatureConfig(
-                                                    list,
-                                                    Blocks.END_STONE.defaultBlockState()
-                                            ))
-                                            .build()
-                                            .place()
-                                            .decoration(Decoration.SURFACE_STRUCTURES)
-                                            .onceEvery(10)
-                                            .squarePlacement()
-                                            .onlyInBiome()
-                                            .build();
-                }
-            }
-        }
-        return null;
-    }
-
     public static BCLBiomeBuilder addDefaultFeatures(
             ResourceLocation biomeID,
             BCLBiomeBuilder builder,
@@ -1442,12 +1365,7 @@ public class EndFeatures {
     ) {
         builder.feature(THALLASIUM_ORE);
         builder.feature(ENDER_ORE);
-        builder.feature(CRASHED_SHIP);
-
-        BCLFeature<BuildingListFeature, BuildingListFeatureConfig> feature = getBiomeStructures(biomeID);
-        if (feature != null) {
-            builder.feature(feature);
-        }
+        builder.structure(EndStructures.CRASHED_SHIP);
 
         if (hasCaves) {
             builder.feature(ROUND_CAVE);

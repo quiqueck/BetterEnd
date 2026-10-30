@@ -17,6 +17,14 @@ public class EndProcessors {
     public static final ResourceKey<StructureProcessorList> END_STREET =
             ProcessorHelper.createKey(BetterEnd.makeID("end_street"));
     
+    public static final ResourceKey<StructureProcessorList> BIOME_BUILDING =
+            ProcessorHelper.createKey(BetterEnd.makeID("biome_building"));
+    public static final ResourceKey<StructureProcessorList> BIOME_BUILDING_MOUND =
+            ProcessorHelper.createKey(BetterEnd.makeID("biome_building_mound"));
+
+    public static final ResourceKey<StructureProcessorList> CRASHED_SHIP =
+            ProcessorHelper.createKey(BetterEnd.makeID("crashed_ship"));
+
     public static final ResourceKey<StructureProcessorList> CRYING_10_PERCENT =
             ProcessorHelper.createKey(BetterEnd.makeID("crying_10_percent"));
 }

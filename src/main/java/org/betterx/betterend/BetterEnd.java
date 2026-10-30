@@ -58,6 +58,7 @@ public class BetterEnd implements ModInitializer {
         EndPotions.register();
         InfusionRecipe.register();
         EndStructures.register();
+        EndBiomeBuildings.register();
         BonemealPlants.init();
         GeneratorOptions.init();
         LootTableUtil.init();

@@ -15,6 +15,7 @@
     "EnderManMixin",
     "EndPodiumFeatureMixin",
     "EndSpikeMixin",
+    "JigsawStructureMixin",
     "LevelMixin",
     "LivingEntityMixin",
     "NoiseBasedChunkGeneratorAccessor",

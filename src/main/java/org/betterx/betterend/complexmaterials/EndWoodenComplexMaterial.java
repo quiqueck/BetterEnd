@@ -3,17 +3,22 @@ package org.betterx.betterend.complexmaterials;
 import org.betterx.bclib.furniture.slots.BarStool;
 import org.betterx.bclib.furniture.slots.Chair;
 import org.betterx.bclib.furniture.slots.Taburet;
+import org.betterx.bclib.trait.block.TemplateModelTrait;
 import org.betterx.bclib.trait.block.WeightedBark;
 import org.betterx.bclib.trait.block.WeightedLog;
 import org.betterx.betterend.BetterEnd;
 import de.ambertation.wover.block.api.BlockDefinition;
+import de.ambertation.wover.block.api.model.BlockModelBinding;
+import de.ambertation.wover.block.api.trait.BlockTraitLookup;
 import de.ambertation.wover.block.api.trait.BlockTraits;
 import de.ambertation.wover.block.api.trait.behaviour.FlammableBlockTrait;
 import de.ambertation.wover.recipe.api.RecipeBuilder;
+import de.ambertation.wover.sets.api.blocks.BlockSet;
 import de.ambertation.wover.sets.api.blocks.SlotMap;
 import de.ambertation.wover.sets.api.blocks.SlotType;
 import de.ambertation.wover.sets.api.blocks.WoodenBlockSet;
 import de.ambertation.wover.sets.api.blocks.slots.WoodSlots;
+import de.ambertation.wover.sets.api.blocks.types.Ladder;
 import de.ambertation.wover.tag.api.event.context.ItemTagBootstrapContext;
 import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
 
@@ -106,6 +111,12 @@ public class EndWoodenComplexMaterial extends WoodenBlockSet<EndWoodenComplexMat
         // migration dropped. The Wall slot builds a WallBlock textured with this set's planks and a plank-over-fence
         // recipe; village structures reference these blocks, and their lang entries were never removed.
         final SlotMap map = addFurniture(super.createDefaultDefinitions()).add(WoodSlots.WALL);
+        map.replace(new Ladder() {
+            @Override
+            protected BlockModelBinding buildModel(BlockSet<?> set, BlockTraitLookup traitLookup) {
+                return TemplateModelTrait.ladder(BetterEnd.C.mk("block/ladder"));
+            }
+        });
         if (logVariantWeights != null) {
             map.replace(new WeightedLog(true, logVariantWeights))
                .replace(new WeightedBark(true, logVariantWeights));

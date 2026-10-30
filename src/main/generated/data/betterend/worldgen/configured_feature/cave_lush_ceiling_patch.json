@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:vegetation_patch",
+  "type": "betterend:cave_vegetation_patch",
   "config": {
     "depth": 1,
     "extra_bottom_block_chance": 0.1,

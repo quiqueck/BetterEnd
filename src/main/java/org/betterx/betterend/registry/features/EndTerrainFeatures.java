@@ -46,9 +46,6 @@ public class EndTerrainFeatures {
             .createKey(BetterEnd.C.mk("thin_umbralith_arch"))
             .setDecoration(GenerationStep.Decoration.SURFACE_STRUCTURES);
 
-    public static final PlacedFeatureKey CRASHED_SHIP = PlacedFeatureManager
-            .createKey(BetterEnd.C.mk("crashed_ship"))
-            .setDecoration(GenerationStep.Decoration.SURFACE_STRUCTURES);
 
     public static final PlacedFeatureKey SILK_MOTH_NEST = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("silk_moth_nest"))

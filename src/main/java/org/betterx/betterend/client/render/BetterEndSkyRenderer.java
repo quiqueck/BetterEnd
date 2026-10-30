@@ -81,6 +81,11 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
     private static final Identifier STARS = BetterEnd.C.mk("textures/sky/stars.png");
     private static final Identifier FOG = BetterEnd.C.mk("textures/sky/fog.png");
 
+    // Average colour of the sky at the horizon (measured from a rendered frame), published to BCLib's End fog
+    private static final float HORIZON_RED = 0.38f;
+    private static final float HORIZON_GREEN = 0.13f;
+    private static final float HORIZON_BLUE = 0.40f;
+
     private SkyMesh nebula1;
     private SkyMesh nebula2;
     private SkyMesh horizon;
@@ -120,8 +125,13 @@ public class BetterEndSkyRenderer implements LevelRenderEvents.StartMain {
     public void startMain(LevelTerrainRenderContext context) {
         ClientLevel world = Minecraft.getInstance().level;
         if (world == null || world.dimension() != Level.END || !Configs.CLIENT_CONFIG.customSky.get()) {
+            BackgroundInfo.hasSkyHorizonColor = false;
             return;
         }
+        BackgroundInfo.skyHorizonRed = HORIZON_RED;
+        BackgroundInfo.skyHorizonGreen = HORIZON_GREEN;
+        BackgroundInfo.skyHorizonBlue = HORIZON_BLUE;
+        BackgroundInfo.hasSkyHorizonColor = true;
 
         CameraRenderState cameraRenderState = context.levelState().cameraRenderState;
         if (cameraRenderState == null || cameraRenderState.viewRotationMatrix == null) {

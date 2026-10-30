@@ -1,0 +1,23 @@
+{
+  "processors": [
+    {
+      "blocks": [
+        {
+          "Name": "minecraft:structure_block",
+          "Properties": {
+            "mode": "load"
+          }
+        },
+        {
+          "Name": "minecraft:air"
+        }
+      ],
+      "processor_type": "minecraft:block_ignore"
+    },
+    {
+      "integrity": 0.75,
+      "processor_type": "minecraft:block_rot",
+      "rottable_blocks": "#betterend:crashed_ship_rots"
+    }
+  ]
+}

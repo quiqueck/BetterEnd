@@ -80,7 +80,11 @@ public class SmaragdantCrystalFeature extends DefaultFeature {
                             blocked = true;
                             break;
                         }
-                        if (random.nextInt(8) == 0) {
+                        // Only the block that replaces the floor (j == 0) may be budding: a budding block
+                        // anywhere higher sat on top of plain crystal and read as a misplaced block. The
+                        // per-column chance of 1/3 keeps the overall count where the old 1/8 per block put
+                        // it (a column is 2.4 blocks on average).
+                        if (j == 0 && random.nextInt(3) == 0) {
                             BlocksHelper.setWithoutUpdate(world, mut, buddingCrystal);
                             for (Direction k : BlocksHelper.HORIZONTAL) {
                                 BlockPos sidePos = mut.relative(k);

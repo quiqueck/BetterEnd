@@ -9,5 +9,8 @@ public class EndProcessors {
     public static final StructureProcessorKey CRACK_20_PERCENT = StructureKeys.processor(BetterEnd.C.mk("crack_20_percent"));
     public static final StructureProcessorKey CRACK_AND_WEATHER = StructureKeys.processor(BetterEnd.C.mk("crack_and_weather"));
     public static final StructureProcessorKey END_STREET = StructureKeys.processor(BetterEnd.C.mk("end_street"));
+    public static final StructureProcessorKey BIOME_BUILDING = StructureKeys.processor(BetterEnd.C.mk("biome_building"));
+    public static final StructureProcessorKey BIOME_BUILDING_MOUND = StructureKeys.processor(BetterEnd.C.mk("biome_building_mound"));
+    public static final StructureProcessorKey CRASHED_SHIP = StructureKeys.processor(BetterEnd.C.mk("crashed_ship"));
     public static final StructureProcessorKey CRYING_10_PERCENT = StructureKeys.processor(BetterEnd.C.mk("crying_10_percent"));
 }

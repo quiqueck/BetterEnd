@@ -1,0 +1,77 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/blossoming_spires/ruins_1",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/blossoming_spires/ruins_2",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/blossoming_spires/ruins_3",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/blossoming_spires/ruins_4",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/blossoming_spires/ruins_5",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/blossoming_spires/ruins_6",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/blossoming_spires/ruins_7",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "betterend:biome/blossoming_spires/ruins_8",
+        "processors": "betterend:biome_building",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

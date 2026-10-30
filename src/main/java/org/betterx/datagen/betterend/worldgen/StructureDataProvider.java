@@ -6,8 +6,10 @@ import org.betterx.betterend.registry.block.EndTerrainBlocks;
 import org.betterx.betterend.registry.block.EndWoodBlocks;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.EndBiomeBuildings;
 import org.betterx.betterend.registry.EndProcessors;
 import org.betterx.betterend.registry.EndStructures;
+import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.world.structures.village.VillagePools;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.datagen.api.provider.multi.WoverStructureProvider;
@@ -15,23 +17,38 @@ import de.ambertation.wover.sets.api.blocks.slots.StoneSlots;
 import de.ambertation.wover.sets.api.blocks.slots.WoodSlots;
 import de.ambertation.wover.structure.api.sets.StructureSetManager;
 import de.ambertation.wover.tag.api.event.context.TagBootstrapContext;
+import de.ambertation.wover.tag.api.predefined.CommonBiomeTags;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
+import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 public class StructureDataProvider extends WoverStructureProvider {
+    /**
+     * Lowest floor of a biome building, as the bottom dimension padding of its jigsaw structure.
+     */
+    private static final int BUILDING_MIN_FLOOR_Y = 58;
+    /**
+     * Lowest floor of the buried crashed ship (the old feature wanted ground above y 5).
+     */
+    private static final int CRASHED_SHIP_MIN_FLOOR_Y = 8;
+
     public StructureDataProvider(@NotNull ModCore modCore) {
         super(modCore);
     }
@@ -59,6 +76,52 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .maxDepth(6)
                 .startHeight(ConstantHeight.of(VerticalAnchor.absolute(0)))
                 .register();
+
+        // Floats in free air: no heightmap projection and no terrain adaptation. The template is 32 blocks
+        // tall (end stone stub at the bottom, house on top), so a start height of 96..128 keeps the whole
+        // island between roughly y 95 and y 160.
+        EndStructures.BLOSSOMING_SPIRES_HOUSE
+                .bootstrap(context)
+                .startPool(EndStructures.BLOSSOMING_SPIRES_HOUSE_POOL)
+                .adjustment(TerrainAdjustment.NONE)
+                // max depth must be >= 1: vanilla's JigsawPlacement only adds the start piece to the
+                // structure inside its "maxDepth > 0" branch. The template has no jigsaw blocks, so nothing
+                // else attaches to it.
+                .maxDepth(1)
+                .startHeight(UniformHeight.of(VerticalAnchor.absolute(96), VerticalAnchor.absolute(128)))
+                .register();
+
+        // Buried 3 to 6 blocks into the ground (the old feature's 1/8 to 1/4 of the 24 block high template; the
+        // jigsaw already sets the lowest layer into the ground, so the start height is one more). The
+        // bottom padding keeps it out of the void, where the heightmap reports the bottom of the world.
+        EndStructures.CRASHED_SHIP
+                .bootstrap(context)
+                .startPool(EndStructures.CRASHED_SHIP_POOL)
+                .adjustment(TerrainAdjustment.NONE)
+                .projectStartToHeightmap(Heightmap.Types.WORLD_SURFACE_WG)
+                .startHeight(UniformHeight.of(VerticalAnchor.absolute(-5), VerticalAnchor.absolute(-2)))
+                .dimensionPadding(new DimensionPadding(CRASHED_SHIP_MIN_FLOOR_Y, 0))
+                .maxDepth(1)
+                .register();
+
+        // The biome buildings and ruins stand on the ground at the centre of the template. The bottom
+        // padding rejects starts whose floor would be below y 58 (the old feature's limit). Above the void
+        // the heightmap reports the bottom of the world, so this also keeps them out of the void.
+        // The start height is one more than the template's offset: the jigsaw sets the lowest layer of a
+        // template into the ground (vanilla templates have a foundation layer there), but these templates
+        // stand on the surface, and sunk by one their bottom layer would replace the painted surface block.
+        for (EndBiomeBuildings.Building building : EndBiomeBuildings.all()) {
+            building.structure()
+                    .bootstrap(context)
+                    .startPool(building.pool())
+                    .adjustment(building.adjustment())
+                    .projectStartToHeightmap(Heightmap.Types.WORLD_SURFACE_WG)
+                    .startHeight(ConstantHeight.of(VerticalAnchor.absolute(building.offsetY() + 1)))
+                    .dimensionPadding(new DimensionPadding(BUILDING_MIN_FLOOR_Y, 0))
+                    // see BLOSSOMING_SPIRES_HOUSE: without max depth >= 1 the start piece is never added
+                    .maxDepth(1)
+                    .register();
+        }
     }
 
     @Override
@@ -130,10 +193,71 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .bootstrap(EndStructures.END_VILLAGE, context)
                 .randomPlacement(34, 8)
                 .register();
+
+        // Rare: one candidate per 24x24 chunk cell (384 blocks, at least 8 chunks apart), and it only
+        // generates when the cell's candidate position lies in a biome of has_structure/blossoming_spires_house.
+        // Blossoming Spires patches are a few hundred blocks wide, so from inside the biome the next house
+        // is roughly 1000-2000 blocks away (checked with /locate from several origins).
+        StructureSetManager
+                .bootstrap(EndStructures.BLOSSOMING_SPIRES_HOUSE, context)
+                .randomPlacement(24, 8)
+                .register();
+
+        // The old feature tried once in 500 chunks (and failed where the chunk centre had no end stone);
+        // a 24x24 chunk cell is about one in 580.
+        StructureSetManager
+                .bootstrap(EndStructures.CRASHED_SHIP, context)
+                .randomPlacement(24, 12)
+                .register();
+
+        // One set per structure, so /locate finds exactly the structure it is asked for (a set shared by
+        // several structures with the same biomes would let /locate report a spot where another one of
+        // them generates). The old feature put one random template of the biome's list into roughly one
+        // in 20 chunks, and failed often; a set nearly always succeeds, so all buildings of a biome
+        // together aim at about one in 30 chunks, shared out by the number of templates of each:
+        // spacing = sqrt(30 * templates in the biome / templates of this structure).
+        for (EndBiomeBuildings.Building building : EndBiomeBuildings.all()) {
+            final int spacing = (int) Math.round(Math.sqrt(
+                    30.0 * EndBiomeBuildings.templateCount(building.biome()) / building.templates().size()
+            ));
+            StructureSetManager
+                    .bootstrap(building.structure(), context)
+                    .randomPlacement(spacing, spacing / 2)
+                    .register();
+        }
     }
 
     @Override
     protected void bootstrapPools(BootstrapContext<StructureTemplatePool> context) {
+        EndStructures.CRASHED_SHIP_POOL
+                .bootstrap(context)
+                .emptyTerminator()
+                .startSingle(BetterEnd.C.mk("crashed_ship"))
+                .processor(EndProcessors.CRASHED_SHIP)
+                .endElement()
+                .projection(StructureTemplatePool.Projection.RIGID)
+                .register();
+
+        // all variants of a building with the same weight: the jigsaw picks one of them at random
+        for (EndBiomeBuildings.Building building : EndBiomeBuildings.all()) {
+            final var pool = building.pool().bootstrap(context).emptyTerminator();
+            for (Identifier template : building.templateIds()) {
+                pool.startSingle(template)
+                    .processor(building.mound() ? EndProcessors.BIOME_BUILDING_MOUND : EndProcessors.BIOME_BUILDING)
+                    .endElement();
+            }
+            pool.projection(StructureTemplatePool.Projection.RIGID).register();
+        }
+
+        EndStructures.BLOSSOMING_SPIRES_HOUSE_POOL
+                .bootstrap(context)
+                .emptyTerminator()
+                .startSingle(BetterEnd.C.mk("biome/blossoming_spires/house"))
+                .emptyProcessor()
+                .endElement()
+                .projection(StructureTemplatePool.Projection.RIGID)
+                .register();
+
         VillagePools.TERMINATORS_KEY
                 .bootstrap(context)
                 .startSingleEnd(BetterEnd.C.mk("village/terminators/stree_terminator_01")).emptyProcessor().endElement()
@@ -345,6 +469,32 @@ public class StructureDataProvider extends WoverStructureProvider {
 
     @Override
     protected void bootstrapProcessors(BootstrapContext<StructureProcessorList> bootstapContext) {
+        // Neither template air nor template end stone replace the ground. Air in a building sunk into a slope
+        // would cut away the surface block the surface rules painted; plain end stone only appears in the
+        // bottom layer of some templates (Umbrella Jungle house_1, jellyshroom_cluster, ruins_2/6) as a
+        // foundation and would show up as bare stone. beard_thin already shapes the ground in the noise,
+        // where the surface rules still paint it, and the vegetation fills the rest.
+        EndProcessors
+                .BIOME_BUILDING
+                .bootstrap(bootstapContext)
+                .add(new BlockIgnoreProcessor(List.of(Blocks.STRUCTURE_BLOCK, Blocks.AIR, Blocks.END_STONE)))
+                .register();
+        // ... except for a building set into a mound of end stone (Umbrella Jungle house_1): its end stone is the
+        // mound and has to stay.
+        EndProcessors
+                .BIOME_BUILDING_MOUND
+                .bootstrap(bootstapContext)
+                .add(new BlockIgnoreProcessor(List.of(Blocks.STRUCTURE_BLOCK, Blocks.AIR)))
+                .register();
+
+        // Template air does not carve the ground the ship is buried in, and a quarter of the hull is gone.
+        EndProcessors
+                .CRASHED_SHIP
+                .bootstrap(bootstapContext)
+                .add(new BlockIgnoreProcessor(List.of(Blocks.STRUCTURE_BLOCK, Blocks.AIR)))
+                .add(new BlockRotProcessor(bootstapContext.lookup(Registries.BLOCK).getOrThrow(EndTags.CRASHED_SHIP_ROTS), 0.75f))
+                .register();
+
         EndProcessors
                 .CRYING_10_PERCENT
                 .bootstrap(bootstapContext).startRule().add(new ProcessorRule(
@@ -423,6 +573,15 @@ public class StructureDataProvider extends WoverStructureProvider {
         // IS_SMALL_END_ISLAND can additionally opt in via `.structure(EndStructures.END_BRIDGE)` in its
         // biome class; two dedicated void biomes arriving in a follow-up task will do exactly that.
         context.add(EndStructures.END_BRIDGE.biomeTag(), Biomes.SMALL_END_ISLANDS);
+
+        // BetterEnd's own biomes add themselves (EndFeatures#addDefaultFeatures); like the old feature, the
+        // ship also comes to the land biomes of other mods.
+        context.add(
+                EndStructures.CRASHED_SHIP.biomeTag(),
+                CommonBiomeTags.IS_END_BARRENS,
+                CommonBiomeTags.IS_END_MIDLAND,
+                CommonBiomeTags.IS_END_HIGHLAND
+        );
     }
 
 }

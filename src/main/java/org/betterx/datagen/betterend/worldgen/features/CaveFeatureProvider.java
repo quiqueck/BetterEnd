@@ -31,6 +31,7 @@ import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -41,10 +42,14 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProv
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.SurfaceRelativeThresholdFilter;
 
 import org.jetbrains.annotations.NotNull;
 
 public class CaveFeatureProvider extends WoverFeatureProvider {
+    /** How far a lush vegetation patch searches up/down for its floor or ceiling ({@code vertical_range}). */
+    private static final int LUSH_PATCH_VERTICAL_RANGE = 5;
+
     public CaveFeatureProvider(@NotNull ModCore modCore) {
         super(modCore, modCore.id("caves"));
     }
@@ -185,7 +190,7 @@ public class CaveFeatureProvider extends WoverFeatureProvider {
                 surface,
                 ConstantInt.of(1),
                 0.1F,
-                5,
+                LUSH_PATCH_VERTICAL_RANGE,
                 0.7F,
                 UniformInt.of(4, 7),
                 0.3F
@@ -270,6 +275,7 @@ public class CaveFeatureProvider extends WoverFeatureProvider {
                 .onlyInBiome()
                 .modifier(caveHeight())
                 .findSolidFloor(12)
+                .modifier(underCover(0))
                 .register();
 
         // Ceiling scatters: the sub-feature requires solid End stone directly above the origin, which is where
@@ -338,6 +344,8 @@ public class CaveFeatureProvider extends WoverFeatureProvider {
            .squarePlacement()
            .onlyInBiome()
            .modifier(caveHeight())
+           // No placement filter: CaveVegetationPatchFeature skips the columns that would end up in the open
+           // itself, so a patch at a cave edge or under a thin roof still decorates its covered part.
            .register();
     }
 
@@ -353,6 +361,7 @@ public class CaveFeatureProvider extends WoverFeatureProvider {
            .onlyInBiome()
            .modifier(caveHeight())
            .findSolidFloor(12)
+           .modifier(underCover(0))
            .register();
     }
 
@@ -378,5 +387,19 @@ public class CaveFeatureProvider extends WoverFeatureProvider {
     // without reaching above where the band was pulled back to avoid breaching island surfaces.
     private static HeightRangePlacement caveHeight() {
         return HeightRangePlacement.uniform(VerticalAnchor.absolute(4), VerticalAnchor.absolute(56));
+    }
+
+    /**
+     * Keeps a cave decoration under cover: the (final) position must lie at least {@code margin} + 2 blocks
+     * below the OCEAN_FLOOR_WG heightmap, i.e. there is solid ground above it.
+     * <p>
+     * The cave biomes are vertical (a cave column is a cave column at every Y below the cave-biome ceiling),
+     * so {@code onlyInBiome()} alone can't tell a cave floor from the top of a low island in the same column:
+     * {@link #caveHeight()} rolls up to Y56 and {@code findSolidFloor(12)} then happily lands on an island
+     * surface around Y57-68. That put cave bushes, cave grass, cave moss and smaragdant crystals out in the
+     * open (#615).
+     */
+    private static SurfaceRelativeThresholdFilter underCover(int margin) {
+        return SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -2 - margin);
     }
 }

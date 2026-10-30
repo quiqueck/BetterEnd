@@ -44,11 +44,6 @@ public class BulbLantern extends SlotFromDefinition {
         def.addTrait(BlockTraits.MINEABLE_WITH.needsPickAxe());
         // noOcclusion() moved out of EndLanternBlock's constructor (R1, WP6.14) to here.
         def.noOcclusion();
-        def.getProperties()
-           .destroyTime(1)
-           .explosionResistance(1)
-           .lightLevel((bs) -> 15)
-           .sound(SoundType.LANTERN);
         def.addTrait(BlockTraits.LOOT_TABLE.dropSelf());
     }
 
@@ -77,5 +72,12 @@ public class BulbLantern extends SlotFromDefinition {
         // archetype - a cube renders what it swallowed as a block model, and a lantern inside one reads as
         // a bug.
         def.addTrait(BlockTraits.SULFUR_CUBE_ARCHETYPE.notSwallowable());
+        // The lantern's own strength, sound and light go here, after the set material: METAL_BLOCK and the
+        // material's strength/sound setters run in the common hook (after addSlotSpecificDefinitions), and
+        // VanillaMetalSet's copy-base trait replaces the properties wholesale, so anything set earlier was
+        // lost (the iron bulb lantern gave no light at all).
+        def.strength(1.0F)
+           .lightLevel((bs) -> 15)
+           .sound(SoundType.LANTERN);
     }
 }

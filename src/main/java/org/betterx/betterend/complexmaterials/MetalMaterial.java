@@ -179,8 +179,8 @@ public class MetalMaterial extends MetalBlockSet<MetalMaterial> implements Mater
     protected void addCommonBlockDefinitions(SlotType slot, BlockDefinition<?, ?> blockDefinition) {
         super.addCommonBlockDefinitions(slot, blockDefinition);
 
+        // MetalBlockSet already added METAL_BLOCK in super(); a second copy only re-ran the same setters.
         blockDefinition
-                .addTrait(BlockTraits.METAL_BLOCK)
                 .mapColor(MapColor.METAL)
                 .instrument(NoteBlockInstrument.IRON_XYLOPHONE)
                 .strength(5.0F, 6.0F)

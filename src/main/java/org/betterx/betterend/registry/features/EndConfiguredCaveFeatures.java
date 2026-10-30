@@ -10,6 +10,7 @@ import org.betterx.betterend.world.features.bushes.BushFeatureConfig;
 import org.betterx.betterend.world.features.terrain.*;
 import org.betterx.betterend.world.features.terrain.caves.CaveSurfaceCoatConfig;
 import org.betterx.betterend.world.features.terrain.caves.CaveSurfaceCoatFeature;
+import org.betterx.betterend.world.features.terrain.caves.CaveVegetationPatchFeature;
 import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterConfig;
 import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import de.ambertation.wover.feature.api.configured.ConfiguredFeatureKey;
@@ -46,7 +47,7 @@ public class EndConfiguredCaveFeatures {
     public static final ConfiguredFeatureKey<WithConfiguration<StalactiteClusterFeature, StalactiteClusterConfig>> STALACTITE_CLUSTER_CAVEMOSS = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("stalactite_cluster_cavemoss"), EndFeatures.STALACTITE_CLUSTER);
 
     // WP4.4: lush cave vegetation patches (vanilla VegetationPatchFeature, data-only).
-    public static final ConfiguredFeatureKey<WithConfiguration<Feature<VegetationPatchConfiguration>, VegetationPatchConfiguration>> CAVE_LUSH_FLOOR_PATCH = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_lush_floor_patch"), Feature.VEGETATION_PATCH);
-    public static final ConfiguredFeatureKey<WithConfiguration<Feature<VegetationPatchConfiguration>, VegetationPatchConfiguration>> CAVE_LUSH_CEILING_PATCH = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_lush_ceiling_patch"), Feature.VEGETATION_PATCH);
+    public static final ConfiguredFeatureKey<WithConfiguration<CaveVegetationPatchFeature, VegetationPatchConfiguration>> CAVE_LUSH_FLOOR_PATCH = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_lush_floor_patch"), EndFeatures.CAVE_VEGETATION_PATCH_FEATURE);
+    public static final ConfiguredFeatureKey<WithConfiguration<CaveVegetationPatchFeature, VegetationPatchConfiguration>> CAVE_LUSH_CEILING_PATCH = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_lush_ceiling_patch"), EndFeatures.CAVE_VEGETATION_PATCH_FEATURE);
 
 }

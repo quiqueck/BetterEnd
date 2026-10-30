@@ -2,7 +2,6 @@ package org.betterx.betterend.entity;
 
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.interfaces.ISlime;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.util.GlobalState;
 import de.ambertation.wover.enchantment.api.EnchantmentUtils;
@@ -13,7 +12,6 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -31,6 +29,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.cubemob.AbstractCubeMob;
 import net.minecraft.world.entity.monster.cubemob.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -134,42 +133,14 @@ public class EndSlimeEntity extends Slime {
     }
 
     @Override
-    public void remove(RemovalReason reason) {
-        int i = this.getSize();
-        if (!this.level().isClientSide() && i > 1 && this.isDeadOrDying()) {
-            Component text = this.getCustomName();
-            boolean bl = this.isNoAi();
-            float f = (float) i / 4.0F;
-            int j = i / 2;
-            int k = 2 + this.random.nextInt(3);
-            int type = this.getSlimeType();
-
-            for (int l = 0; l < k; ++l) {
-                float g = ((float) (l % 2) - 0.5F) * f;
-                float h = ((float) (l / 2) - 0.5F) * f;
-                EndSlimeEntity slimeEntity = (EndSlimeEntity) this.getType().create(this.level(), EntitySpawnReason.TRIGGERED);
-                if (this.isPersistenceRequired()) {
-                    slimeEntity.setPersistenceRequired();
-                }
-
-                slimeEntity.setSlimeType(type);
-                slimeEntity.setCustomName(text);
-                slimeEntity.setNoAi(bl);
-                slimeEntity.setInvulnerable(this.isInvulnerable());
-                ((ISlime) slimeEntity).be_setSlimeSize(j, true);
-                slimeEntity.refreshDimensions();
-                slimeEntity.snapTo(
-                        this.getX() + (double) g,
-                        this.getY() + 0.5D,
-                        this.getZ() + (double) h,
-                        this.random.nextFloat() * 360.0F,
-                        0.0F
-                );
-                this.level().addFreshEntity(slimeEntity);
-            }
+    protected void setUpSplitCube(AbstractCubeMob cubeMob, int halfSize, float xd, float zd) {
+        super.setUpSplitCube(cubeMob, halfSize, xd, zd);
+        // The vanilla split (convertTo) creates a fresh entity with the default variant, so hand the
+        // variant (chorus/mossy/lake/amber) down to the smaller slimes.
+        if (cubeMob instanceof EndSlimeEntity child) {
+            child.setSlimeType(this.getSlimeType());
+            child.refreshDimensions();
         }
-
-        ((ISlime) this).entityRemove(reason);
     }
 
     @Override

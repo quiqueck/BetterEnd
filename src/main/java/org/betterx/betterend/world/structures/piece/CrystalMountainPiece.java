@@ -44,8 +44,21 @@ public class CrystalMountainPiece extends MountainPiece {
     // density * footprint approaches the chunk area. A small hard cap keeps them as rare,
     // isolated highlights instead.
     private static final int CRYSTAL_BIG_MAX_COUNT = 6;
+    // The peak crown: a few tall, straight (not leaning) radius 2-3 crystals clustered around the
+    // highest column of the mountain. The retuned passes above leave a peak with at most a couple
+    // of big crystals, often none, where older versions grew a crown of tall spikes.
+    private static final int CROWN_MIN_COUNT = 3;
+    private static final int CROWN_MAX_COUNT = 5;
+    // How far from the centre the peak is searched for, and how far the crown spreads around it.
+    private static final int CROWN_SEARCH_RADIUS = 8;
+    private static final int CROWN_SPREAD = 6;
+    // A peak lower than this above the mountain's base gets no crown (a mountain the biome border
+    // flattened is not a peak).
+    private static final int CROWN_MIN_PEAK_HEIGHT = 12;
 
     private BlockState top;
+    // Horizontal position of the peak (see findPeak), packed as BlockPos#asLong; computed lazily.
+    private volatile long peak = Long.MIN_VALUE;
 
     public CrystalMountainPiece(BlockPos center, float radius, float height, RandomSource random, Holder<Biome> biome) {
         super(EndStructures.MOUNTAIN_PIECE, center, radius, height, random, biome);
@@ -158,6 +171,8 @@ public class CrystalMountainPiece extends MountainPiece {
             int height = crystalHeight(radius, y, random);
             crystal(chunk, pos, radius, height, fill, random, EndCrystalBlocks.AURORA_CRYSTAL.defaultBlockState());
         }
+
+        placeCrown(chunk, chunkPos, pos);
     }
 
     // The altitude term dominated for every radius alike, so small (radius 1) and big (radius 2-3)
@@ -169,6 +184,103 @@ public class CrystalMountainPiece extends MountainPiece {
     private int crystalHeight(int radius, int y, RandomSource random) {
         float altitudeFactor = (radius - 1) * 0.9F;
         return MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F * altitudeFactor);
+    }
+
+    /**
+     * Crowns the peak with {@link #CROWN_MIN_COUNT}-{@link #CROWN_MAX_COUNT} big, tall crystals that
+     * stand straight up. Everything about the crown (where the peak is, where each crystal stands, its
+     * size) comes from the piece's own seed, not from the chunk's random, so every chunk the crown
+     * touches agrees on it and the per-chunk passes keep their random sequence. A crystal is drawn only
+     * by the chunk its centre column falls into, nudged inwards so its whole footprint fits that chunk:
+     * crystal() clips at the chunk border, and a crown crystal cut in half there would be worse than
+     * one that stands a block or two off its planned spot.
+     * <p>
+     * Runs after the small/big passes, so their random sequence (and with it every crystal they place)
+     * stays exactly what it was; a crown crystal that lands on one of their crystals looks through it for
+     * the mountain's surface and simply grows through it.
+     */
+    private void placeCrown(ChunkAccess chunk, ChunkPos chunkPos, MutableBlockPos pos) {
+        final long peakPos = findPeak();
+        final int peakX = BlockPos.getX(peakPos);
+        final int peakZ = BlockPos.getZ(peakPos);
+        final RandomSource crownRandom = RandomSource.create(((long) seed1 << 32) ^ (seed2 & 0xFFFFFFFFL) ^ 0x63726F776EL);
+        final int count = MHelper.randRange(CROWN_MIN_COUNT, CROWN_MAX_COUNT, crownRandom);
+        final Heightmap map = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE);
+        final int sx = chunkPos.getMinBlockX();
+        final int sz = chunkPos.getMinBlockZ();
+        final BlockState crystalState = EndCrystalBlocks.AURORA_CRYSTAL.defaultBlockState();
+        for (int i = 0; i < count; i++) {
+            // The first crystal is the apex, right on the peak and the biggest; the rest ring it.
+            final float angle = MHelper.randRange(0F, (float) (Math.PI * 2), crownRandom);
+            final float spread = i == 0 ? 0 : MHelper.randRange(3.5F, CROWN_SPREAD, crownRandom);
+            final int radius = i == 0 ? 3 : MHelper.randRange(2, 3, crownRandom);
+            final float fill = MHelper.randRange(0.3F, 1F, crownRandom);
+            final float size = MHelper.randRange(2.5F, 4F, crownRandom) * (i == 0 ? 1.25F : 1F);
+            final long crystalSeed = crownRandom.nextLong();
+
+            final int px = peakX + Math.round(Mth.sin(angle) * spread);
+            final int pz = peakZ + Math.round(Mth.cos(angle) * spread);
+            if ((px >> 4) != chunkPos.x() || (pz >> 4) != chunkPos.z()) {
+                continue;
+            }
+            final int x = Mth.clamp(px - sx, radius, 15 - radius);
+            final int z = Mth.clamp(pz - sz, radius, 15 - radius);
+            final float dx = x + sx - center.getX();
+            final float dz = z + sz - center.getZ();
+            if (dx * dx + dz * dz >= r2) {
+                continue;
+            }
+            pos.set(x, map.getFirstAvailable(x, z), z);
+            while (pos.getY() > 60 && chunk.getBlockState(pos.below()).is(crystalState.getBlock())) {
+                pos.setY(pos.getY() - 1);
+            }
+            final int y = pos.getY();
+            if (y <= 60 || y < center.getY() + CROWN_MIN_PEAK_HEIGHT) {
+                continue;
+            }
+            final BlockState below = chunk.getBlockState(pos.below());
+            if (!below.is(Blocks.END_STONE) && !below.is(EndTerrainBlocks.CRYSTAL_MOSS)) {
+                continue;
+            }
+            // The altitude term is the one older versions gave every crystal ((y - 80) * 0.3), so the
+            // crown grows with the mountain like the peaks used to.
+            final int height = MHelper.floor(radius * size + Math.max(0, y - 80) * 0.3F);
+            crystal(chunk, pos, radius, height, fill, RandomSource.create(crystalSeed), crystalState, true);
+        }
+    }
+
+    /**
+     * The column the crown stands on: the highest point of the mountain's shape within
+     * {@link #CROWN_SEARCH_RADIUS} of the centre. Only the world-independent part of placeMountain's
+     * height formula is compared (the radial falloff and both noise factors); the height clamp it also
+     * multiplies in is a 12-block average that barely changes across the search area. That keeps the
+     * answer identical for every chunk without reading any blocks.
+     */
+    private long findPeak() {
+        long cached = peak;
+        if (cached != Long.MIN_VALUE) {
+            return cached;
+        }
+        int bestX = center.getX();
+        int bestZ = center.getZ();
+        float best = -1;
+        for (int dx = -CROWN_SEARCH_RADIUS; dx <= CROWN_SEARCH_RADIUS; dx++) {
+            for (int dz = -CROWN_SEARCH_RADIUS; dz <= CROWN_SEARCH_RADIUS; dz++) {
+                final int px = center.getX() + dx;
+                final int pz = center.getZ() + dz;
+                float h = 1 - (float) Math.pow((dx * dx + dz * dz) / r2, 0.3);
+                h *= (float) noise1.eval(px * 0.05, pz * 0.05) * 0.3F + 0.7F;
+                h *= (float) noise1.eval(px * 0.1, pz * 0.1) * 0.1F + 0.8F;
+                if (h > best) {
+                    best = h;
+                    bestX = px;
+                    bestZ = pz;
+                }
+            }
+        }
+        cached = BlockPos.asLong(bestX, 0, bestZ);
+        peak = cached;
+        return cached;
     }
 
     private void placeMountain(
@@ -262,6 +374,23 @@ public class CrystalMountainPiece extends MountainPiece {
             RandomSource random,
             BlockState crystalState
     ) {
+        crystal(chunk, pos, radius, height, fill, random, crystalState, false);
+    }
+
+    /**
+     * @param straight grow straight up (no lean, only the slanted tip) instead of leaning; the peak
+     *                 crown uses this.
+     */
+    private void crystal(
+            ChunkAccess chunk,
+            BlockPos pos,
+            int radius,
+            int height,
+            float fill,
+            RandomSource random,
+            BlockState crystalState,
+            boolean straight
+    ) {
         MutableBlockPos mut = new MutableBlockPos();
         int max = MHelper.floor(fill * radius + radius + 0.5F);
         int top = height + pos.getY();
@@ -270,7 +399,8 @@ public class CrystalMountainPiece extends MountainPiece {
         // stone" look - the buried portion is underground either way and doesn't affect the
         // visible above-ground height, which crystalHeight() controls).
         int embedBonus = Math.max(0, 3 - radius);
-        int base = map.getFirstAvailable(pos.getX(), pos.getZ()) - MHelper.randRange(
+        // min with pos: a crown crystal can stand where an earlier crystal already raised the heightmap.
+        int base = Math.min(map.getFirstAvailable(pos.getX(), pos.getZ()), pos.getY()) - MHelper.randRange(
                 3 + embedBonus,
                 7 + embedBonus,
                 random
@@ -301,6 +431,10 @@ public class CrystalMountainPiece extends MountainPiece {
         float dirZ = Mth.cos(angle);
         int leanBlocks = Math.min(MHelper.randRange(radius, radius * 2, random), Math.max(1, span / 2));
         int slantBlocks = Math.min(MHelper.randRange(radius, radius * 2, random), Math.max(1, span / 2));
+        if (straight) {
+            leanBlocks = 0;
+            slantBlocks = Math.min(slantBlocks, radius);
+        }
         int maxTop = top + slantBlocks + 1;
 
         for (int y = base; y < maxTop; y++) {

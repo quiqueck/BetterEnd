@@ -4,7 +4,9 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.world.structures.features.*;
 import org.betterx.betterend.world.structures.piece.*;
 import de.ambertation.wover.structure.api.StructureKey;
+import de.ambertation.wover.structure.api.StructureKeys;
 import de.ambertation.wover.structure.api.StructureManager;
+import de.ambertation.wover.structure.api.pools.StructurePoolKey;
 
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -79,6 +81,25 @@ public class EndStructures {
 
     public static final StructureKey.Jigsaw END_VILLAGE = StructureManager
             .jigsaw(BetterEnd.C.mk("end_village"))
+            .step(Decoration.SURFACE_STRUCTURES);
+
+    // Floating Tenanea house (biome/blossoming_spires/house.nbt) as a plain vanilla jigsaw structure with a
+    // single-element start pool: it is found by /locate structure, and datapacks can add biomes through
+    // the has_structure/blossoming_spires_house biome tag or replace the template pool / structure JSON.
+    // TOP_LAYER_MODIFICATION places it after the vegetation step, so moss/vines don't grow inside the house.
+    public static final StructurePoolKey BLOSSOMING_SPIRES_HOUSE_POOL = StructureKeys.pool(BetterEnd.C.mk("biome/blossoming_spires/house"));
+    public static final StructureKey.Jigsaw BLOSSOMING_SPIRES_HOUSE = StructureManager
+            .jigsaw(BetterEnd.C.mk("blossoming_spires_house"))
+            .step(Decoration.TOP_LAYER_MODIFICATION);
+
+    // The crashed end ship (structure/crashed_ship.nbt: vanilla's end_city/ship with a trapped chest; the end
+    // stone block below it passes the signal down to a hidden layer of TNT) as a vanilla jigsaw structure, so
+    // /locate finds it. It replaces the old CrashedShipFeature;
+    // the buried start height and the crashed_ship processor list (no air carving, a quarter of the hull
+    // rotted away) stand in for its burying and erosion.
+    public static final StructurePoolKey CRASHED_SHIP_POOL = StructureKeys.pool(BetterEnd.C.mk("crashed_ship"));
+    public static final StructureKey.Jigsaw CRASHED_SHIP = StructureManager
+            .jigsaw(BetterEnd.C.mk("crashed_ship"))
             .step(Decoration.SURFACE_STRUCTURES);
 
     public static void register() {

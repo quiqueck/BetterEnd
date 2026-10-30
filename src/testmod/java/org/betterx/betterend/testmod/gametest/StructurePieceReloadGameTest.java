@@ -1,5 +1,6 @@
 package org.betterx.betterend.testmod.gametest;
 
+import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.world.structures.piece.CrystalMountainPiece;
 import org.betterx.betterend.world.structures.piece.PaintedMountainPiece;
 import org.betterx.betterend.world.structures.piece.VoxelPiece;
@@ -68,11 +69,42 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
  * </ul>
  */
 public class StructurePieceReloadGameTest {
+    private static final double SLOW_COLUMN_MS = 10.0;
     private static final int PATCH = 2; // chunks -2..2 exist (mountains sample terrain 12 blocks around)
     private static final int PLACE = 1; // pieces are placed into chunks -1..1
 
+    /**
+     * This test asks the End's generator for the height of thousands of columns. That is cheap on vanilla's End
+     * and on BetterEnd's own terrain, but another mod's density-function End (for example Stellarity's) makes
+     * every column a full scan of its density graph, and the test then keeps the server busy for many minutes
+     * without testing anything about BetterEnd. So the cost of a few columns is measured first, and an End
+     * where they are slow is skipped.
+     */
+    private static boolean skipIfHeightScansAreSlow(GameTestHelper helper) {
+        final ServerLevel end = helper.getLevel().getServer().getLevel(Level.END);
+        if (end == null) return false;
+        final ChunkGenerator generator = end.getChunkSource().getGenerator();
+        final RandomState randomState = end.getChunkSource().randomState();
+
+        final int columns = 4;
+        final long start = System.nanoTime();
+        for (int i = 0; i < columns; i++) {
+            generator.getBaseHeight(1000 + i * 37, -1000 - i * 53, Heightmap.Types.WORLD_SURFACE_WG, end, randomState);
+        }
+        final double msPerColumn = (System.nanoTime() - start) / 1e6 / columns;
+        if (msPerColumn < SLOW_COLUMN_MS) return false;
+
+        BetterEnd.LOGGER.info(
+                "StructurePieceReloadGameTest skipped: a height scan takes {} ms per column here (limit {} ms)",
+                String.format("%.1f", msPerColumn), SLOW_COLUMN_MS
+        );
+        helper.succeed();
+        return true;
+    }
+
     @GameTest(maxTicks = 2400)
     public void crystalMountainSurvivesReload(GameTestHelper helper) {
+        if (skipIfHeightScansAreSlow(helper)) return;
         final Env env = new Env(helper);
         final BlockPos center = env.surfaceCenter();
         check(helper, env, "crystal mountain", () -> new CrystalMountainPiece(
@@ -83,6 +115,7 @@ public class StructurePieceReloadGameTest {
 
     @GameTest(maxTicks = 2400)
     public void paintedMountainSurvivesReload(GameTestHelper helper) {
+        if (skipIfHeightScansAreSlow(helper)) return;
         final Env env = new Env(helper);
         final BlockPos center = env.surfaceCenter();
         final BlockState[] slices = {
@@ -99,6 +132,7 @@ public class StructurePieceReloadGameTest {
     /** VoxelPiece keeps all its blocks in BCLib's StructureWorld; its NBT round trip must be lossless. */
     @GameTest(maxTicks = 2400)
     public void voxelPieceSurvivesReload(GameTestHelper helper) {
+        if (skipIfHeightScansAreSlow(helper)) return;
         final Env env = new Env(helper);
         final BlockPos center = env.surfaceCenter().above(20);
         final BlockState[] states = {

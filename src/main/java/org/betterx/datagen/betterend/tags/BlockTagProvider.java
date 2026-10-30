@@ -20,6 +20,7 @@ import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.Set;
@@ -142,6 +143,11 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
         );
 
         context.add(EndTags.BONEMEAL_TARGET_WATER_GRASS, CommonBlockTags.END_STONES);
+        context.add(
+                EndTags.CRASHED_SHIP_ROTS,
+                Blocks.PURPUR_BLOCK, Blocks.PURPUR_PILLAR, Blocks.PURPUR_STAIRS, Blocks.PURPUR_SLAB,
+                Blocks.END_STONE_BRICKS, Blocks.OBSIDIAN, Blocks.STAINED_GLASS.pick(DyeColor.MAGENTA), Blocks.END_ROD, Blocks.LADDER
+        );
 
         EndBiomesProvider
                 .BIOMES

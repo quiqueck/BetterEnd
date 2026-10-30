@@ -6,6 +6,7 @@ import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndEntities;
 import org.betterx.betterend.registry.EndSounds;
+import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.features.EndTerrainFeatures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
@@ -48,6 +49,7 @@ public class BlossomingSpiresBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.TWISTED_MOSS)
                 .feature(EndVegetationFeatures.TWISTED_MOSS_WOOD)
                 .feature(EndTerrainFeatures.SILK_MOTH_NEST)
+                .structure(EndStructures.BLOSSOMING_SPIRES_HOUSE)
                 .spawn(EntityTypes.ENDERMAN, 3, 1, 4)
                 .spawn(EndEntities.SILK_MOTH.type(), 5, 1, 2);
     }

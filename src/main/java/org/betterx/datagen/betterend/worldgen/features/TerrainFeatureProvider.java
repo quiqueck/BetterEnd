@@ -8,13 +8,10 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndFeatures;
 import org.betterx.betterend.registry.features.EndTerrainFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
-import org.betterx.betterend.world.features.BuildingListFeatureConfig;
-import org.betterx.betterend.world.features.NBTFeatureConfig;
 import org.betterx.betterend.world.features.terrain.ArchFeatureConfig;
 import org.betterx.betterend.world.features.terrain.IceStarFeatureConfig;
 import org.betterx.betterend.world.features.terrain.ThinArchFeatureConfig;
 import org.betterx.betterend.world.structures.village.VillagePools;
-import org.betterx.datagen.betterend.worldgen.EndBiomesProvider;
 import de.ambertation.wover.core.api.ModCore;
 import de.ambertation.wover.datagen.api.provider.multi.WoverFeatureProvider;
 import de.ambertation.wover.feature.api.placed.PlacedFeatureKey;
@@ -41,21 +38,6 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
 
     @Override
     protected void bootstrapConfigured(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        // Randomly place nbt features from folder
-        EndBiomesProvider
-                .BIOMES
-                .values()
-                .stream()
-                .filter(i -> i.configuredFeatureKey() != null)
-                .forEach(info -> {
-                    info.configuredFeatureKey()
-                        .bootstrap(context)
-                        .configuration(new BuildingListFeatureConfig(info.structures(), info
-                                .config()
-                                .surfaceMaterial()
-                                .getTopMaterial()))
-                        .register();
-                });
     }
 
     @Override
@@ -118,7 +100,6 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
         // rejects entirely ("none"). onceEvery(N) gives one arch per ~N chunks, evenly, no stacking.
         registerChanced(context, EndTerrainFeatures.UMBRALITH_ARCH, EndFeatures.ARCH_FEATURE, new ArchFeatureConfig(EndStoneBlocks.UMBRALITH.getBlock(SlotType.SOURCE), ArchFeatureConfig.SurfaceFunction.UMBRA_VALLEY), 3);
         registerChanced(context, EndTerrainFeatures.THIN_UMBRALITH_ARCH, EndFeatures.THIN_ARCH_FEATURE, new ThinArchFeatureConfig(EndStoneBlocks.UMBRALITH.getBlock(SlotType.SOURCE)), 4);
-        registerChanced(context, EndTerrainFeatures.CRASHED_SHIP, EndFeatures.CRASHED_SHIP_FEATURE, new NBTFeatureConfig(EndBiome.Config.DEFAULT_MATERIAL.getTopMaterial()), 500);
         registerChanced(context, EndTerrainFeatures.SILK_MOTH_NEST, EndFeatures.SILK_MOTH_NEST_FEATURE, FeatureConfiguration.NONE, 2);
 
         registerChanced(context, EndTerrainFeatures.SPIRE, EndFeatures.SPIRE_FEATURE, FeatureConfiguration.NONE, 4);
@@ -156,20 +137,6 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
                 .register();
 
 
-        // Randomly place nbt features from folder
-        EndBiomesProvider
-                .BIOMES
-                .values()
-                .stream()
-                .filter(i -> i.placed() != null)
-                .forEach(info -> {
-                    info.placed()
-                        .place(context)
-                        .onceEvery(10)
-                        .squarePlacement()
-                        .onlyInBiome()
-                        .register();
-                });
     }
 
     /**

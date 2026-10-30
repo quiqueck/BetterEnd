@@ -31,7 +31,7 @@ public class ShadowForestBiome extends EndBiome.Config {
                 .waterAndFogColor(42, 45, 80)
                 .particles(ParticleTypes.MYCELIUM, 0.01F)
                 .loop(EndSounds.AMBIENT_CHORUS_FOREST)
-                .music(EndSounds.MUSIC_ENDER_HOLLOW)
+                .music(EndSounds.MUSIC_DARK)
                 .feature(EndOreFeatures.VIOLECITE_LAYER)
                 .structure(EndStructures.END_LAKE_RARE)
                 .feature(EndVegetationFeatures.DRAGON_TREE)

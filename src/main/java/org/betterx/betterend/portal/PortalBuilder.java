@@ -200,16 +200,24 @@ public class PortalBuilder {
 
         return oPos.map(poiPos -> {
             this.targetLevel.getChunkSource().addTicketWithRadius(TicketType.PORTAL, ChunkPos.containing(poiPos), 3);
-            BlockState blockState = this.targetLevel.getBlockState(poiPos);
-            return new FoundPortalRect(BlockUtil.getLargestRectangleAround(
-                    poiPos,
-                    blockState.getValue(BlockStateProperties.HORIZONTAL_AXIS),
-                    21,
-                    Direction.Axis.Y,
-                    21,
-                    bp -> this.targetLevel.getBlockState(bp) == blockState
-            ), poiPos);
+            return this.getPortalAt(poiPos);
         });
+    }
+
+    /**
+     * The portal that contains the portal block at {@code portalPos}. Use this right after {@link #createPortal}:
+     * the level registers the new blocks as POI only in a later task, so {@link #findPortalAround} may not see them yet.
+     */
+    public FoundPortalRect getPortalAt(BlockPos portalPos) {
+        BlockState blockState = this.targetLevel.getBlockState(portalPos);
+        return new FoundPortalRect(BlockUtil.getLargestRectangleAround(
+                portalPos,
+                blockState.getValue(BlockStateProperties.HORIZONTAL_AXIS),
+                21,
+                Direction.Axis.Y,
+                21,
+                bp -> this.targetLevel.getBlockState(bp) == blockState
+        ), portalPos);
     }
 
     public static BlockPos getStartingPos(

@@ -53,6 +53,11 @@ public class EndTags {
     public static final TagKey<Item> CRYSTALITE_SET = TagManager.ITEMS.makeTag(BetterEnd.C, "armor_set/crystalite");
 
 
+    /**
+     * The hull blocks of the crashed ship that may rot away (its block_rot processor); chests, TNT and the
+     * dragon head always stay.
+     */
+    public static final TagKey<Block> CRASHED_SHIP_ROTS = TagManager.BLOCKS.makeTag(BetterEnd.C, "crashed_ship_rots");
     public static final TagKey<Block> BONEMEAL_SOURCE_DRAGON_BONE = TagManager.BLOCKS.makeTag(
             BetterEnd.C,
             "bonemeal/source/dragon_bone"

@@ -150,6 +150,8 @@ public class LakePieceConcurrentHeightCacheGameTest {
     private static WorldGenLevel fakeWorldGenLevel(Holder<Biome> biome) {
         final InvocationHandler handler = (proxy, method, args) -> switch (method.getName()) {
             case "getBiome" -> biome;
+            // computeHeightClamp samples the biome at the top of the world
+            case "getMaxY" -> 319;
             case "equals" -> proxy == (args.length > 0 ? args[0] : null);
             case "hashCode" -> System.identityHashCode(proxy);
             case "toString" -> "FakeWorldGenLevel";

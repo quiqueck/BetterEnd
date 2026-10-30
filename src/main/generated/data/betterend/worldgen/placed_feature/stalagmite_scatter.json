@@ -26,6 +26,11 @@
     {
       "type": "wover:solid_in_dir",
       "random_select": false
+    },
+    {
+      "type": "minecraft:surface_relative_threshold_filter",
+      "heightmap": "OCEAN_FLOOR_WG",
+      "max_inclusive": -2
     }
   ]
 }

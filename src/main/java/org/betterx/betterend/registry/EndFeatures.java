@@ -10,6 +10,7 @@ import org.betterx.betterend.world.features.bushes.*;
 import org.betterx.betterend.world.features.terrain.*;
 import org.betterx.betterend.world.features.terrain.caves.CaveSurfaceCoatFeature;
 import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
+import org.betterx.betterend.world.features.terrain.caves.CaveVegetationPatchFeature;
 import org.betterx.betterend.world.features.trees.*;
 import de.ambertation.wover.feature.api.FeatureManager;
 import de.ambertation.wover.state.api.WorldState;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 
 public class EndFeatures {
     public static final StalactiteFeature STALACTITE_FEATURE = inlineBuild("stalactite_feature", new StalactiteFeature());
-    public static final BuildingListFeature BUILDING_LIST_FEATURE = inlineBuild("building_list_feature", new BuildingListFeature());
+    public static final CaveVegetationPatchFeature CAVE_VEGETATION_PATCH_FEATURE = inlineBuild("cave_vegetation_patch", new CaveVegetationPatchFeature());
     public static final VineFeature VINE_FEATURE = inlineBuild("vine_feature", new VineFeature());
     public static final WallPlantFeature WALL_PLANT_FEATURE = inlineBuild("wall_plant_feature", new WallPlantFeature());
     public static final WallPlantOnLogFeature WALL_PLANT_ON_LOG_FEATURE = inlineBuild("wall_plant_on_log_feature", new WallPlantOnLogFeature());
@@ -80,7 +81,6 @@ public class EndFeatures {
     public static final ObsidianPillarBasementFeature OBSIDIAN_PILLAR_FEATURE = inlineBuild("obsidian_pillar_basement", new ObsidianPillarBasementFeature());
     public static final ObsidianBoulderFeature OBSIDIAN_BOULDER_FEATURE = inlineBuild("obsidian_boulder", new ObsidianBoulderFeature());
     public static final FallenPillarFeature FALLEN_PILLAR_FEATURE = inlineBuild("fallen_pillar", new FallenPillarFeature());
-    public static final CrashedShipFeature CRASHED_SHIP_FEATURE = inlineBuild("crashed_ship", new CrashedShipFeature());
     public static final SilkMothNestFeature SILK_MOTH_NEST_FEATURE = inlineBuild("silk_moth_nest", new SilkMothNestFeature());
     public static final IceStarFeature ICE_STAR_FEATURE = inlineBuild("ice_star", new IceStarFeature());
     public static final SpireFeature SPIRE_FEATURE = inlineBuild("spire", new SpireFeature());
@@ -124,7 +124,7 @@ public class EndFeatures {
     ) {
         builder.feature(EndOreFeatures.THALLASIUM_ORE);
         builder.feature(EndOreFeatures.ENDER_ORE);
-        builder.feature(EndTerrainFeatures.CRASHED_SHIP);
+        builder.structure(EndStructures.CRASHED_SHIP);
         // The cave surface coat goes on EVERY End biome, land ones included, even though it only ever paints
         // cave columns. It is not a per-biome decoration: one placement sweeps the whole chunk and decides
         // per column what to do (see CaveSurfaceCoatFeature). What it needs from the placement is simply to

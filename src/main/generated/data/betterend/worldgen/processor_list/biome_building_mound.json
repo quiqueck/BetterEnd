@@ -1,0 +1,18 @@
+{
+  "processors": [
+    {
+      "blocks": [
+        {
+          "Name": "minecraft:structure_block",
+          "Properties": {
+            "mode": "load"
+          }
+        },
+        {
+          "Name": "minecraft:air"
+        }
+      ],
+      "processor_type": "minecraft:block_ignore"
+    }
+  ]
+}

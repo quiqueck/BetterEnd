@@ -42,7 +42,13 @@ public class MegaLakeStructure extends FeatureBaseStructure {
         int y = chunkGenerator.getBaseHeight(x, z, Types.WORLD_SURFACE_WG, levelHeightAccessor, rState);
 
         if (y > 5) {
-            Holder<Biome> biome = getNoiseBiome(chunkGenerator, rState, x >> 2, y >> 2, z >> 2);
+            // The land biome of the lake centre, probed above the cave band like LakePiece does: below it a
+            // vertical cave biome can own the column.
+            Holder<Biome> biome = getNoiseBiome(chunkGenerator, rState, x >> 2, levelHeightAccessor.getMaxY() >> 2, z >> 2);
+            // The lake centre is a random column of the chunk, not the column the start was validated at, and it
+            // can fall into a neighbouring biome. A lake that took that biome over carved itself into it (only
+            // its columns count for the lake) and got none of the megalake's shore and water plants.
+            if (!context.validBiome().test(biome)) return;
 
             float radius = MHelper.randRange(32, 64, random);
             float depth = MHelper.randRange(7, 15, random);

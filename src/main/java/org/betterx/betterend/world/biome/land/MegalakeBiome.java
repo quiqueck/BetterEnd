@@ -10,7 +10,10 @@ import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
+import de.ambertation.wover.surface.api.Conditions;
+import de.ambertation.wover.surface.api.SurfaceRuleBuilder;
 
+import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -59,6 +62,20 @@ public class MegalakeBiome extends EndBiome.Config {
             @Override
             public BlockState getAltTopMaterial() {
                 return EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState();
+            }
+
+            @Override
+            public SurfaceRuleBuilder surface() {
+                // Mostly end moss: the threshold sits at the ~10th percentile of the noise (plus
+                // roughness), so only about 10% of the surface is end stone dust.
+                return SurfaceRuleBuilder
+                        .start()
+                        .chancedFloor(
+                                getTopMaterial(),
+                                getAltTopMaterial(),
+                                Conditions.threshold(4141, -0.58, UniformFloat.of(-0.4f, 0.4f), 0.1, 0.1)
+                        )
+                        .filler(getUnderMaterial());
             }
         };
     }

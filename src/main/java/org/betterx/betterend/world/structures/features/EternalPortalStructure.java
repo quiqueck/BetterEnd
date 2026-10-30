@@ -4,11 +4,13 @@ import org.betterx.bclib.api.v2.levelgen.structures.StructurePlacementType;
 import org.betterx.bclib.api.v2.levelgen.structures.TemplateStructure;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndStructures;
+import org.betterx.betterend.registry.block.EndStoneBlocks;
 import de.ambertation.wover.structure.api.StructureUtils;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -62,6 +64,15 @@ public class EternalPortalStructure extends TemplateStructure {
     @Override
     protected boolean cover(RandomSource rnd) {
         return true;
+    }
+
+    /**
+     * The runed frame is unbreakable, so erosion alone often leaves it whole; one of its blocks is always missing,
+     * so a found portal has to be repaired before it can be lit.
+     */
+    @Override
+    protected Block alwaysBroken() {
+        return EndStoneBlocks.FLAVOLITE_RUNED_ETERNAL;
     }
 
     public static TemplateStructure.Config cfg(String name, int offsetY, StructurePlacementType type, float chance) {

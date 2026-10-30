@@ -18,7 +18,7 @@
           "max_delay": 2400,
           "min_delay": 600,
           "replace_current_music": true,
-          "sound": "betterend:betterend.music.ender_hollow"
+          "sound": "betterend:betterend.music.dark"
         },
         "weight": 1
       }
@@ -40,9 +40,7 @@
     [],
     [],
     [
-      "minecraft:end_gateway_return",
-      "betterend:crashed_ship",
-      "betterend:shadow_forest_structures"
+      "minecraft:end_gateway_return"
     ],
     [],
     [

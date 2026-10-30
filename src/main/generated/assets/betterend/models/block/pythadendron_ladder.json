@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/ladder",
+  "parent": "betterend:block/ladder",
   "textures": {
     "particle": "betterend:block/pythadendron_ladder",
     "texture": "betterend:block/pythadendron_ladder"

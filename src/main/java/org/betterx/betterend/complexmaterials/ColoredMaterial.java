@@ -167,6 +167,13 @@ public class ColoredMaterial implements MaterialManager.Material {
     }
 
     /**
+     * @return the colored variants, in the order they were registered
+     */
+    public List<Block> getBlocks() {
+        return List.copyOf(colors.values());
+    }
+
+    /**
      * The 16 vanilla dye colors. Mods like Dye Depot append their own constants to {@link DyeColor}, so
      * {@code DyeColor.values()} must not be used here: those colors have no dye item when our blocks are
      * registered (looking them up crashed the game) and may share a map color with a vanilla one, which would

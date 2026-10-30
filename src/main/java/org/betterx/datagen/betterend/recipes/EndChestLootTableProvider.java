@@ -77,9 +77,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                 .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_STRANGE_AND_ALIEN))
                 .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_GRASPING_AT_STARS))
                 .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDSEEKER))
-                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_EO_DRACONA))
-                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDER_HOLLOW))
-                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_MOONLIT_UNDERCURRENTS));
+                .add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_EO_DRACONA));
     }
 
     private LootPool.Builder endCitySmithingTemplates() {
@@ -396,8 +394,6 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
         builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_GRASPING_AT_STARS));
         builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDSEEKER));
         builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_EO_DRACONA));
-        builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_ENDER_HOLLOW));
-        builder.add(LootItem.lootTableItem(EndDiscItems.MUSIC_DISC_MOONLIT_UNDERCURRENTS));
         table.withPool(builder);
 
         builder = LootPool.lootPool();

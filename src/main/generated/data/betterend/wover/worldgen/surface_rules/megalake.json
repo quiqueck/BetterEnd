@@ -28,7 +28,7 @@
                 "scale_x": 0.1,
                 "scale_z": 0.1,
                 "seed": 4141,
-                "threshold": 0.0
+                "threshold": -0.58
               },
               "then_run": {
                 "type": "minecraft:block",

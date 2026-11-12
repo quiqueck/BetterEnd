@@ -7,6 +7,8 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.world.generator.GeneratorOptions;
 import org.betterx.betterend.world.generator.TerrainGenerator;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -29,7 +31,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -59,14 +60,15 @@ public abstract class ServerLevelMixin extends Level {
     }
 
     // 26.1 retarget: the constructor no longer branches on Holder.is(ResourceKey) for the End
-    // dimension type - it now asks the DimensionType itself via hasEnderDragonFight(). Redirect
-    // that call instead of modifying an argument that no longer exists.
-    @Redirect(method = "<init>*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/DimensionType;hasEnderDragonFight()Z"))
-    private boolean be_hasEnderDragonFight(DimensionType dimensionType) {
+    // dimension type - it now asks the DimensionType itself via hasEnderDragonFight(). Wrap
+    // that call instead of modifying an argument that no longer exists. @WrapOperation instead of @Redirect:
+    // older MixinExtras crash on the array `at` of a @Redirect since Mixin 0.17.4 (quiqueck/BCLib#250).
+    @WrapOperation(method = "<init>*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/DimensionType;hasEnderDragonFight()Z"))
+    private boolean be_hasEnderDragonFight(DimensionType dimensionType, Operation<Boolean> original) {
         if (!GeneratorOptions.hasDragonFights() && this.dimensionTypeRegistration().is(BuiltinDimensionTypes.END)) {
             return false;
         }
-        return dimensionType.hasEnderDragonFight();
+        return original.call(dimensionType);
     }
 
     @Inject(method = "<init>*", at = @At("TAIL"))

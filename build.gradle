@@ -42,6 +42,13 @@ repositories {
 
 loom {
     accessWidenerPath = file("src/main/resources/betterend.accesswidener")
+    // Ship a mixin refmap like releases up to 4.0.11 did. Loom 1.18 would otherwise
+    // remap the mixin annotations in the class files only, which Sinytra Connector
+    // (Forge) can not fully remap (quiqueck/BCLib#249).
+    mixin {
+        useLegacyMixinAp = true
+        defaultRefmapName = "better-end-refmap.json"
+    }
     interfaceInjection {
         // When enabled injected interfaces from dependecies will be applied.
         enableDependencyInterfaceInjection = true

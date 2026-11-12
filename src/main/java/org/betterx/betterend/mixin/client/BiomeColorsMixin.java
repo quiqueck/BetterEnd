@@ -5,13 +5,11 @@ import org.betterx.betterend.client.ClientOptions;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.ui.ColorUtil;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
-
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.world.level.block.state.BlockState;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,17 +28,24 @@ public class BiomeColorsMixin {
 
     @Inject(method = "getAverageWaterColor", at = @At("RETURN"), cancellable = true)
     private static void be_getWaterColor(BlockAndTintGetter world, BlockPos pos, CallbackInfoReturnable<Integer> info) {
-        if (ClientOptions.useSulfurWaterColor()) {
+        if (world == null || !ClientOptions.useSulfurWaterColor()) return;
+
+        // Third-party getters (e.g. Distant Horizons' LOD tint getter) may not support block lookups
+        // at all; in that case we keep the vanilla biome colour instead of breaking the tint (#581).
+        try {
             MutableBlockPos mut = new MutableBlockPos();
             mut.setY(pos.getY());
             for (int i = 0; i < OFFSETS.length; i++) {
                 mut.setX(pos.getX() + OFFSETS[i].x);
                 mut.setZ(pos.getZ() + OFFSETS[i].y);
-                if ((world.getBlockState(mut).is(EndBlocks.BRIMSTONE))) {
+                BlockState state = world.getBlockState(mut);
+                if (state != null && state.is(EndBlocks.BRIMSTONE)) {
                     info.setReturnValue(i < 4 ? POISON_COLOR : STREAM_COLOR);
                     return;
                 }
             }
+        } catch (RuntimeException ignored) {
+            // keep the vanilla water colour
         }
     }
 

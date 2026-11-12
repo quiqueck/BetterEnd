@@ -3,6 +3,7 @@ package org.betterx.betterend.client;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.client.render.BetterEndSkyRenderer;
 import org.betterx.betterend.events.ItemTooltipCallback;
+import org.betterx.betterend.integration.Integrations;
 import org.betterx.betterend.interfaces.MultiModelItem;
 import org.betterx.betterend.item.CrystaliteArmor;
 import org.betterx.betterend.registry.*;
@@ -18,6 +19,9 @@ import net.minecraft.world.level.Level;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class BetterEndClient implements ClientModInitializer {
     @Override
@@ -51,6 +55,17 @@ public class BetterEndClient implements ClientModInitializer {
         }
         if (BetterEnd.RUNS_TRINKETS) {
             org.betterx.betterend.integration.trinkets.ElytraClient.register();
+        }
+
+        //connected textures and material maps for BYG blocks, only needed (and only valid) when BYG is installed
+        if (Integrations.BYG.modIsInstalled()) {
+            FabricLoader.getInstance().getModContainer(BetterEnd.MOD_ID).ifPresent(mod ->
+                    ResourceManagerHelper.registerBuiltinResourcePack(
+                            BetterEnd.makeID("byg_extensions"),
+                            mod,
+                            ResourcePackActivationType.ALWAYS_ENABLED
+                    )
+            );
         }
     }
 

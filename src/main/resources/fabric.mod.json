@@ -1,9 +1,9 @@
 {
     "schemaVersion": 1,
     "id": "betterend",
-    "version": "21.800.4",
+    "version": "21.800.5",
     "name": "Better End",
-    "description": "More content for The End dimension, including new biomes, plants, mobs, mechanics, terrain generation and more.\nMade by:\n- paulevs (code & art)\n- Bulldog83 (code & art)\n- Edos (building)\n- Yuki (art)\n- Seaward (art)\n- Firel (music)\n",
+    "description": "More content for The End dimension, including new biomes, plants, mobs, mechanics, terrain generation and more.\nMade by:\n- paulevs (code & art)\n- Bulldog83 (code & art)\n- Edos (building)\n- Yuki (art)\n- Seaward (art)\n- GustlGo (building: End village)\n- Elixy (building: End village)\n- Firel (music)\n",
     "authors": [
         "Quiqueck (code)",
         "paulevs (code & art)",
@@ -11,6 +11,8 @@
         "Edos (building)",
         "Yuki (art)",
         "Seaward (art)",
+        "GustlGo (building: End village)",
+        "Elixy (building: End village)",
         "Firel (music)"
     ],
     "contact": {
@@ -64,9 +66,9 @@
         "wunderlib": "21.800.x"
     },
     "breaks": {
-        "bclib": "<21.800.4",
+        "bclib": "<21.800.5",
         "wover": "<21.800.4",
-        "wunderlib": "<21.800.3"
+        "wunderlib": "<21.800.4"
     },
     "suggests": {
         "jei": ">=24.2.0.6",

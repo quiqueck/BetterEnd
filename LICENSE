@@ -21,5 +21,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ___________________________
-Some of our Assets (see LICENSE.ASSETS for a Listing) is licensed under CC BY-NC-SA 4.0
+ASSETS
+
+The MIT License above applies solely to the source code of this repository. The
+Assets (textures, images, models, music, sounds, ...) are not covered by it and are
+governed by LICENSE.ASSETS (dated 2026-10-30).
+Some of our Assets (see LICENSE.ASSETS for a Listing) are licensed under CC BY-NC-SA 4.0
 See https://creativecommons.org/licenses/by-nc-sa/4.0/ for Details.
